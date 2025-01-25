@@ -19,15 +19,16 @@ public enum BodyState
 public abstract class FreeBody : Body
 {
     public BodyState State;
-    public Collider2D Collider;
+    public BoxCollider2D SurfaceCollider;
+    public Bounds ActualColliderBounds;
     public ContactPoint2D[] Contacts = new ContactPoint2D[20];
-    public LayerMask LayerMask;
-
 
     private float dt;
     public float Gravity;
 
-    private float GROUNDING_BOX_OFFSET = 0.05f;
+    private float COLLISION_SNAP_OFFSET = 0.05f;
+    // how far away you have to be from a surface to be considered "collidiing" with it,
+    // snapping towards the surface afterwards
     private const float LAND_SLOPE_FACTOR = 0.9f;
     const float TerminalVelocity = 40; 
 
@@ -35,7 +36,9 @@ public abstract class FreeBody : Body
     {
         base.Awake();
         Unlock();
-        Collider = GetComponent<Collider2D>();
+        SurfaceCollider = GetComponent<BoxCollider2D>();
+        ActualColliderBounds = SurfaceCollider.bounds;  // Save original collider size
+        SurfaceCollider.size += Vector2.one * COLLISION_SNAP_OFFSET * 2;    // Add an offset to collider size, for reliable collision detection
     }
 
     protected override void Update()
@@ -74,7 +77,7 @@ public abstract class FreeBody : Body
     // Find all colliders touching with this body
     protected virtual void CheckCollisions()
     {
-        Collider.GetContacts(Contacts);
+        SurfaceCollider.GetContacts(Contacts);
         ContactFilter2D contactFilter = new ContactFilter2D();
         contactFilter.NoFilter();
     }
@@ -83,12 +86,8 @@ public abstract class FreeBody : Body
     // Otherwise, if this body is grounded and there is no barrier below it, start falling
     protected virtual void CheckGrounded()
     {
-        Vector2 groundingBox = (Vector2)transform.position + Collider.offset + Vector2.down * GROUNDING_BOX_OFFSET;
-        var groundingCollider = Physics2D.OverlapBox(groundingBox, Collider.bounds.size, 0f);
-        ContactPoint2D[] groundContacts = new ContactPoint2D[20];
-        groundingCollider.GetContacts(groundContacts);
         bool grounded = false;
-        foreach (ContactPoint2D contactPoint in groundContacts)
+        foreach (ContactPoint2D contactPoint in Contacts)
         {
             // vertical collisions
             if (contactPoint.normal.normalized.y > LAND_SLOPE_FACTOR)
@@ -96,9 +95,6 @@ public abstract class FreeBody : Body
                 grounded = true;
                 if (State == BodyState.InAir) Land(contactPoint);
             }
-           
-            // horizontal collisions
-            // (todo)
         }
         if (State == BodyState.OnGround)
         {
@@ -120,15 +116,17 @@ public abstract class FreeBody : Body
     }
     protected virtual void Land(ContactPoint2D point)
     {
-        
         if (State == BodyState.InAir)
         {
-            Debug.Log("Landed");
             State = BodyState.OnGround;
             Velocity.y = 0;
-            transform.position = new Vector2(transform.position.x, point.point.y + Collider.bounds.size.y / 2);
-        }
 
+            // Calculate the correction based on the separation and normal
+            Vector2 correction = point.normal * -point.separation;
+            // Apply the correction and snap to the ground
+            transform.position += (Vector3)correction - Vector3.up * COLLISION_SNAP_OFFSET;
+
+        }
     }
 
 

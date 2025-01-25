@@ -10,6 +10,7 @@ public class PlayerMovement : FreeBody
 
     protected override void Awake()
     {
+        base.Awake();
         Instance = this;
     }
 
