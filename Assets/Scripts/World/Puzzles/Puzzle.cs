@@ -1,5 +1,9 @@
 using UnityEngine;
 
+/// <summary>
+/// Abstract class that executes general code whenever a puzzle is completed or 
+/// reset.
+/// </summary>
 public abstract class Puzzle : MonoBehaviour
 {
     /// <summary>
