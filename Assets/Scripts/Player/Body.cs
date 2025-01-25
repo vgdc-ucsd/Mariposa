@@ -6,7 +6,7 @@ public abstract class Body : MonoBehaviour
     public Vector2 Velocity;
     public Rigidbody2D Rb;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         Rb = GetComponent<Rigidbody2D>();
     }

@@ -31,8 +31,9 @@ public abstract class FreeBody : Body
     private const float LAND_SLOPE_FACTOR = 0.9f;
     const float TerminalVelocity = 40; 
 
-    protected virtual void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         Unlock();
         Collider = GetComponent<Collider2D>();
     }
@@ -82,44 +83,30 @@ public abstract class FreeBody : Body
     // Otherwise, if this body is grounded and there is no barrier below it, start falling
     protected virtual void CheckGrounded()
     {
-        foreach (ContactPoint2D contactPoint in Contacts)
+        Vector2 groundingBox = (Vector2)transform.position + Collider.offset + Vector2.down * GROUNDING_BOX_OFFSET;
+        var groundingCollider = Physics2D.OverlapBox(groundingBox, Collider.bounds.size, 0f);
+        ContactPoint2D[] groundContacts = new ContactPoint2D[20];
+        groundingCollider.GetContacts(groundContacts);
+        bool grounded = false;
+        foreach (ContactPoint2D contactPoint in groundContacts)
         {
             // vertical collisions
-            if (State == BodyState.InAir && contactPoint.normal.normalized.y > LAND_SLOPE_FACTOR)
+            if (contactPoint.normal.normalized.y > LAND_SLOPE_FACTOR)
             {
-                Land(contactPoint);
+                grounded = true;
+                if (State == BodyState.InAir) Land(contactPoint);
             }
+           
             // horizontal collisions
             // (todo)
         }
-
         if (State == BodyState.OnGround)
         {
-            // while grounded, use a collider with a slight vertical offset downwards
-            // to check if body is still grounded, to remove any edge cases causing jank
-
-            Vector2 groundingBox = (Vector2)transform.position + Collider.offset + Vector2.down * GROUNDING_BOX_OFFSET;
-            var groundingCollider = Physics2D.OverlapBox(groundingBox, Collider.bounds.size, 0f);
-            ContactPoint2D[] groundContacts = new ContactPoint2D[20];
-            groundingCollider.GetContacts(groundContacts);
-            bool grounded = false;
-            foreach (ContactPoint2D contactPoint in groundContacts)
-            {
-                // vertical collisions
-                if (contactPoint.normal.normalized.y > LAND_SLOPE_FACTOR)
-                {
-                    grounded = true;
-                }
-                // horizontal collisions
-                // (todo)
-            }
             if (!grounded)
             {
                 StartFalling();
             }
-
         }
-
 
         
     }
@@ -133,8 +120,10 @@ public abstract class FreeBody : Body
     }
     protected virtual void Land(ContactPoint2D point)
     {
+        
         if (State == BodyState.InAir)
         {
+            Debug.Log("Landed");
             State = BodyState.OnGround;
             Velocity.y = 0;
             transform.position = new Vector2(transform.position.x, point.point.y + Collider.bounds.size.y / 2);

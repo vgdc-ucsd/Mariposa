@@ -6,6 +6,13 @@ public class PlayerMovement : FreeBody
 {
     public float MoveSpeed = 10;
 
+    public static PlayerMovement Instance;
+
+    protected override void Awake()
+    {
+        Instance = this;
+    }
+
     protected override void Update()
     {
         base.Update();
