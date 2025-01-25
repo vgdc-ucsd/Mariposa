@@ -7,22 +7,16 @@ public class Lever  : Switch
     /// <summary>
    /// boolean for if lever is pulled or not
    /// </summary>
-   public bool isPulled;
+   public bool SwitchToggled;
    
    /// <summary>
-   /// Override of TriggerSwitch from switch class which checks if lever is 
-   /// pulled and either pushes it back up or pulls it if unpulled
-   /// when pulled lever should "do some action" that will be implemented later
+   /// Override of TriggerSwitch from switch class which switchs lever to opposite value
    /// </summary>
    
    @Override
    public abstract void TriggerSwitch() 
    {
-    if(isPulled)
-    {
-        isPulled=false;
-    }
-    isPulled=true;
+    SwitchToggled=!SwitchToggled;
     
    }
 
