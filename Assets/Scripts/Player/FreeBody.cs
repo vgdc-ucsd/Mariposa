@@ -29,6 +29,7 @@ public abstract class FreeBody : Body
 
     private float GROUNDING_BOX_OFFSET = 0.05f;
     private const float LAND_SLOPE_FACTOR = 0.9f;
+    const float TerminalVelocity = 40; 
 
     protected virtual void Awake()
     {
@@ -60,7 +61,12 @@ public abstract class FreeBody : Body
     {
         if (State == BodyState.InAir)
         {
-            Velocity.y -= Gravity * dt;
+            if (Velocity.y < TerminalVelocity) {
+                Velocity.y -= Gravity * dt;
+            }
+            else {
+                Velocity.y = TerminalVelocity;
+            }
         }
     }
 
