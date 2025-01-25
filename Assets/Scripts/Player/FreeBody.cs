@@ -79,7 +79,7 @@ public abstract class FreeBody : Body
     protected virtual void CheckCollisions()
     {
         
-        Debug.Log(SurfaceCollider.GetContacts(Contacts));
+        SurfaceCollider.GetContacts(Contacts);
         ContactFilter2D contactFilter = new ContactFilter2D();
         contactFilter.NoFilter();
     }
