@@ -3,15 +3,6 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
 
-// The external forces this object can currently experience 
-
-public enum BodyState
-{
-    OnGround, // Experiences sliding friction
-    InAir, // Experiences gravity, (horizontal) air friction, and terminal drag
-    Locked  // Cannot move and does not experience any force
-}
-
 public class PlayerMovement : MonoBehaviour
 {
     public static PlayerMovement Instance;

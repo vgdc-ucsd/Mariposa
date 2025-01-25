@@ -12,12 +12,20 @@ public enum BodyState
     Locked  // Cannot move and does not experience any force
 }
 
+
+
 // Any solid object that moves and falls freely, but interacts with barriers (e.g. floor).
 // Common behavior is defined in the abstract class (e.g. falling, sliding on ground),
 // and each individual class defines any additional movements
-public static class FreeBody
+public abstract class FreeBody : Body
 {
-    public float defaulytGravity;
+    public BodyState State;
+    public BoxCollider2D SurfaceCollider;
+    public Bounds ActualColliderBounds;
+    public List<ContactPoint2D> Contacts = new();
+
+    private float dt;
+    public float Gravity;
 
     private float COLLISION_SNAP_OFFSET = 0.05f;
     // how far away you have to be from a surface to be considered "collidiing" with it,
