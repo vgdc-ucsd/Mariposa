@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEditor.Rendering;
@@ -21,7 +22,7 @@ public abstract class FreeBody : Body
     public BodyState State;
     public BoxCollider2D SurfaceCollider;
     public Bounds ActualColliderBounds;
-    public ContactPoint2D[] Contacts = new ContactPoint2D[20];
+    public List<ContactPoint2D> Contacts = new();
 
     private float dt;
     public float Gravity;
@@ -77,7 +78,8 @@ public abstract class FreeBody : Body
     // Find all colliders touching with this body
     protected virtual void CheckCollisions()
     {
-        SurfaceCollider.GetContacts(Contacts);
+        
+        Debug.Log(SurfaceCollider.GetContacts(Contacts));
         ContactFilter2D contactFilter = new ContactFilter2D();
         contactFilter.NoFilter();
     }
