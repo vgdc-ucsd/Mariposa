@@ -1,16 +1,10 @@
 using UnityEngine;
-
-public class Lever : MonoBehaviour
+/// <summary>
+/// Interactable object. Lever that turns on when approached or touched and then off when touched again.
+/// </summary>
+public class Lever  : Switch
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public bool isPulled;
+    
+    
 }
