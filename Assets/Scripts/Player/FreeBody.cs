@@ -123,8 +123,10 @@ public abstract class FreeBody : Body
 
             // Calculate the correction based on the separation and normal
             Vector2 correction = point.normal * -point.separation;
+
+
             // Apply the correction and snap to the ground
-            transform.position += (Vector3)correction - Vector3.up * COLLISION_SNAP_OFFSET;
+            transform.position += (Vector3)correction - Vector3.up * (COLLISION_SNAP_OFFSET + 2 * Physics2D.defaultContactOffset);
 
         }
     }
