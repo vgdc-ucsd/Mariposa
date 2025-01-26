@@ -49,7 +49,7 @@ public abstract class FreeBody : Body
         Fall();
         CheckCollisions();
         CheckGrounded();
-
+        CheckTouchingWalls();
         ApplyFriction();
 
         base.Update();
@@ -109,6 +109,24 @@ public abstract class FreeBody : Body
         
     }
 
+    protected virtual void CheckTouchingWalls()
+    {
+        foreach (ContactPoint2D contactPoint in Contacts)
+        {
+            if (contactPoint.normal.normalized.x > 0.1f)
+            {
+                TouchWall(contactPoint, -1);
+            }
+            else if (contactPoint.normal.normalized.x < -0.1f)
+            {
+                TouchWall(contactPoint, 1);
+            }
+        }
+    }
+
+    
+
+
     protected virtual void StartFalling()
     {
         if (State == BodyState.OnGround)
@@ -132,6 +150,33 @@ public abstract class FreeBody : Body
 
         }
     }
+
+    // dir -1 = left, 1 = right
+    protected virtual void TouchWall(ContactPoint2D point, int dir)
+    {
+        State = BodyState.OnGround;
+
+        Vector3 wallDirection;
+        if (dir == -1)
+        {
+            Velocity.x = Mathf.Min(0, Velocity.x);
+            wallDirection = Vector3.left;
+        }
+        else
+        {
+            Velocity.x = Mathf.Max(0, Velocity.x);
+            wallDirection = Vector3.right;
+        }
+
+        // Calculate the correction based on the separation and normal
+        Vector2 correction = point.normal * -point.separation;
+
+        // Apply the correction and snap to the ground
+        transform.position += (Vector3)correction - wallDirection * (COLLISION_SNAP_OFFSET + 2 * Physics2D.defaultContactOffset);
+
+        
+    }
+
 
 
 
