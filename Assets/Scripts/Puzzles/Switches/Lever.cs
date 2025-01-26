@@ -4,10 +4,6 @@ using UnityEngine;
 /// </summary>
 public class Lever  : Switch
 {
-    /// <summary>
-   /// boolean for if lever is pulled or not
-   /// </summary>
-   public bool SwitchToggled;
    
    /// <summary>
    /// Override of TriggerSwitch from switch class which switchs lever to opposite value
