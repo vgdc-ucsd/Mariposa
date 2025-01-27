@@ -10,7 +10,7 @@ public class FileDataManager : Singleton<FileDataManager>
     /// </summary>
     /// <param name="dataDirPath">Sets the directory where data is saved in</param>
     /// <param name="dataFileName">Sets the name of the save file</param>
-    public FileDataHandler(string dataDirPath, string dataFileName)
+    public void FileDataHandler(string dataDirPath, string dataFileName)
     {
         this.dataDirPath = dataDirPath;
         this.dataFileName = dataFileName;
