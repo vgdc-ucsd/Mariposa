@@ -7,12 +7,14 @@ public class Lever  : Switch
    
    /// <summary>
    /// Override of TriggerSwitch from switch class which switchs lever to opposite value
+   /// calls public ChangeState method to open a door or close a door
    /// </summary>
    
    @Override
    public abstract void TriggerSwitch() 
    {
-    SwitchToggled=!SwitchToggled;
+        SwitchToggled=!SwitchToggled;
+        ChangeState();
     
    }
 
