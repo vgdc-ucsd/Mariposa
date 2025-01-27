@@ -4,6 +4,7 @@ public class Door : MonoBehaviour
 {
     private BoxCollider2D boxCollider;
     private bool isOpen;
+    private bool isLocked;
 
     /// <summary>
     /// Finds the current collider and sets it to boxCollider.
@@ -19,6 +20,37 @@ public class Door : MonoBehaviour
         }
         
         boxCollider = GetComponent<BoxCollider2D>();
+    }
+    /// <summary>
+    /// Function to call when something external wants to open or
+    /// close the door. ChangeState() toggles the isOpen bool then
+    /// checks to run Open() or Close(). If the Door is locked
+    /// the door will not open/close.
+    /// </summary>
+    public void ChangeState()
+    {
+        if (isLocked)
+        {
+            Debug.Log("Door is Locked");
+            return;
+        }
+        
+        isOpen = !isOpen;
+        
+        if(isOpen) Open();
+        
+        if(!isOpen) Close();
+        
+        Debug.Log("Door has changed open state");
+    }
+
+    /// <summary>
+    /// Calling this function toggles the lock on the door.
+    /// </summary>
+    public void ToggleLock()
+    {
+        isLocked = !isLocked;
+        Debug.Log("Door has changed locked state");
     }
     
     /// <summary>
@@ -39,19 +71,5 @@ public class Door : MonoBehaviour
     {
         Debug.Log("Close");
         boxCollider.isTrigger = false;
-    }
-
-    /// <summary>
-    /// Function to call when something external wants to open or
-    /// close the door. ChangeState() toggles the isOpen bool then
-    /// checks to run Open() or Close().
-    /// </summary>
-    public void ChangeState()
-    {
-        isOpen = !isOpen;
-        
-        if(isOpen) Open();
-        
-        if(!isOpen) Close();
     }
 }
