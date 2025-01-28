@@ -27,6 +27,11 @@ public abstract class FreeBody : Body
     private float dt;
     public float Gravity;
 
+
+    [SerializeField] private LayerMask playerLayer;
+
+    private const float COLLISION_CHECK_DISTANCE = 0.05f; // how far away you have to be from a surface to be considered "colliding" with it
+
     private float COLLISION_SNAP_OFFSET = 0.05f;
     // how far away you have to be from a surface to be considered "collidiing" with it,
     // snapping towards the surface afterwards
@@ -39,7 +44,7 @@ public abstract class FreeBody : Body
         Unlock();
         SurfaceCollider = GetComponent<BoxCollider2D>();
         ActualColliderBounds = SurfaceCollider.bounds;  // Save original collider size
-        SurfaceCollider.size += Vector2.one * COLLISION_SNAP_OFFSET * 2;    // Add an offset to collider size, for reliable collision detection
+        // SurfaceCollider.size += Vector2.one * COLLISION_SNAP_OFFSET * 2;    // Add an offset to collider size, for reliable collision detection
     }
 
     protected override void Update()
@@ -88,24 +93,25 @@ public abstract class FreeBody : Body
     // Otherwise, if this body is grounded and there is no barrier below it, start falling
     protected virtual void CheckGrounded()
     {
-        bool grounded = false;
-        foreach (ContactPoint2D contactPoint in Contacts)
+        RaycastHit2D groundHit = Physics2D.BoxCast(SurfaceCollider.bounds.center, SurfaceCollider.bounds.size,
+            0f, Vector2.down, COLLISION_CHECK_DISTANCE, ~playerLayer);
+
+        if (groundHit)
         {
+
             // vertical collisions
-            if (contactPoint.normal.normalized.y > LAND_SLOPE_FACTOR)
+            if (groundHit.normal.normalized.y > LAND_SLOPE_FACTOR)
             {
-                grounded = true;
-                if (State == BodyState.InAir) Land(contactPoint);
+                if (State == BodyState.InAir) Land(groundHit);
             }
         }
-        if (State == BodyState.OnGround)
+        else
         {
-            if (!grounded)
+            if (State == BodyState.OnGround)
             {
                 StartFalling();
             }
         }
-
         
     }
 
@@ -134,7 +140,7 @@ public abstract class FreeBody : Body
             State = BodyState.InAir;
         }
     }
-    protected virtual void Land(ContactPoint2D point)
+    protected virtual void Land(RaycastHit2D hit)
     {
         if (State == BodyState.InAir)
         {
@@ -142,11 +148,11 @@ public abstract class FreeBody : Body
             Velocity.y = 0;
 
             // Calculate the correction based on the separation and normal
-            Vector2 correction = point.normal * -point.separation;
+            Vector2 correction = hit.normal * -hit.distance;
 
 
             // Apply the correction and snap to the ground
-            transform.position += (Vector3)correction - Vector3.up * (COLLISION_SNAP_OFFSET + 2 * Physics2D.defaultContactOffset);
+            transform.position += (Vector3)correction - Vector3.up * (COLLISION_SNAP_OFFSET + Physics2D.defaultContactOffset);
 
         }
     }
