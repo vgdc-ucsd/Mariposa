@@ -131,12 +131,10 @@ public abstract class FreeBody : Body
     // returns whether snap actually occurred
     protected virtual bool SnapToSurface(RaycastHit2D hit, bool checkVelocity = false)
     {
-        float normalSize = Mathf.Abs(Vector2.Dot(SurfaceCollider.bounds.size, hit.normal));
-        Debug.Log(normalSize);
-
-
         // reject if player is moving away from the surface
-        if (checkVelocity && Vector2.Dot(hit.normal, Velocity) >= 0) return false;
+        if (checkVelocity && Vector2.Dot(hit.normal, Velocity) > 0) return false;
+
+        float normalSize = Mathf.Abs(Vector2.Dot(SurfaceCollider.bounds.size, hit.normal));
 
         // Calculate the correction based on the separation and normal
         Vector2 correction = hit.normal * -(hit.distance - normalSize / 2 + COLLISION_BOXCAST_SIZE);
