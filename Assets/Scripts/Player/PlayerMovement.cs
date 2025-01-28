@@ -14,16 +14,15 @@ public class PlayerMovement : FreeBody
         Instance = this;
     }
 
-    protected override void Update()
+    protected virtual void Update()
     {
-        base.Update();
 
         // very temporary code until we get proper input handling set up
         if (Input.GetKey(KeyCode.D)) Move(1);
         else if (Input.GetKey(KeyCode.A)) Move(-1);
         else Move(0);
 
-        if (Input.GetKey(KeyCode.Space)) Jump(100);
+        if (Input.GetKeyDown(KeyCode.Space)) Jump(1);
 
 
     }
@@ -31,6 +30,8 @@ public class PlayerMovement : FreeBody
     // Move by player input: 1 = right, -1 = left
     private void Move(int dir)
     {
+        if (dir == 0) Velocity.x = 0;
+        if ((dir == 1 && !touchingRight) || (dir == -1 && !touchingLeft))
         Velocity.x = MoveSpeed * dir;
     }
 
