@@ -15,6 +15,10 @@ public class DataPersistenceManager : Singleton<DataPersistenceManager>
     /// Makes a new GameData object with default data values, as defined
     /// in the GameData constructor
     /// </summary>
+    private void Start()
+    {
+        this.dataPersistenceObjects = FindAllDataPersistenceObjects()
+    }
     public void NewGame()
     {
         this.gameData = new GameData();
@@ -34,6 +38,10 @@ public class DataPersistenceManager : Singleton<DataPersistenceManager>
         // TODO - Make this method load the game data from disk using the file data handler
         // TODO - Make this method pass data to every Monobehavior component that implements
         //        the IDataPersistence interface and call the LoadGame() method on each of those components
+        foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)
+        {
+            dataPersistenceObj.LoadData(gameData)
+        }
     }
     /// <summary>
     /// Passes a reference of gameData to each component with the IDataPersistence interface and then
@@ -43,5 +51,15 @@ public class DataPersistenceManager : Singleton<DataPersistenceManager>
     {
         // TODO - give data to other scripts to actually save data
         // TODO - make it save the json file to disk with a separate file data handler
+        foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)
+        {
+            dataPersistenceObj.SaveData(ref  gameData)
+        }
+
+    }
+    private List<IDataPersistence> FindAllDataPersistenceObjects()
+    {
+        IEnumerable<IDataPersistence> dataPersistenceObjects = FindObjectsOfType<MonoBehaviour>().OfType<IDataPersistence>
+        return new List<IDataPersistence>(dataPersistenceObjects)
     }
 }
