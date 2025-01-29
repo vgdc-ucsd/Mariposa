@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public enum ItemType {
+public enum InventoryItemType {
 	Permanent,
 	Single_Use,
 	Memento
@@ -8,10 +8,10 @@ public enum ItemType {
 
 public class InventoryItem 
 {
-	public const string Name;
-	public const string FlavorText;
-	public const uint ID; 
-	public const enum ItemType Type;
+	public string Name;
+	public string FlavorText;
+	public uint ID; 
+	public enum InventoryItemType Type;
 
 	/// <summary>
 	/// Creates a record representing an item. 
@@ -20,7 +20,7 @@ public class InventoryItem
 	/// <param name="text">Item flavor text</param>
 	/// <param name="id">Item ID, for later use</param>
 	/// <param name="type">Which category of item does this item fit into?</param>
-	public InventoryItem(string name, string text, uint id, enum ItyemType type)
+	public InventoryItem(string name, string text, uint id, enum InventoryItemType type)
 	{
 		this.Name = name;
 		this.FlavorText = text;
