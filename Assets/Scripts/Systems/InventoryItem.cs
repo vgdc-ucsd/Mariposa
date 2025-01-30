@@ -11,7 +11,7 @@ public class InventoryItem
 	public string Name;
 	public string FlavorText;
 	public uint ID; 
-	public enum InventoryItemType Type;
+	public InventoryItemType Type;
 
 	/// <summary>
 	/// Creates a record representing an item. 
@@ -20,7 +20,7 @@ public class InventoryItem
 	/// <param name="text">Item flavor text</param>
 	/// <param name="id">Item ID, for later use</param>
 	/// <param name="type">Which category of item does this item fit into?</param>
-	public InventoryItem(string name, string text, uint id, enum InventoryItemType type)
+	public InventoryItem(string name, string text, uint id, InventoryItemType type)
 	{
 		this.Name = name;
 		this.FlavorText = text;
