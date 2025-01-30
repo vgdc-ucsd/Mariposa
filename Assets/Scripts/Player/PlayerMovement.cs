@@ -1,43 +1,162 @@
+using NUnit.Framework.Internal.Commands;
+using Unity.VisualScripting;
 using UnityEngine;
-
-
+using UnityEngine.Experimental.GlobalIllumination;
 
 public class PlayerMovement : FreeBody
 {
+    public static PlayerMovement Instance;
+
+    [Header("Horizontal Parameters")]
+
+    [Tooltip("The maximum horizontal movement speed")]
     public float MoveSpeed = 10;
 
-    public static PlayerMovement Instance;
+    
+
+    [Tooltip("The time it takes to accelerate to maximum horizontal speed from rest on the ground")]
+    [SerializeField] private float groundAccelerationTime;
+    private float groundAcceleration;
+
+    [Tooltip("The time it takes to decelerate to rest from maximum horizontal speed on the ground")]
+    [SerializeField] private float groundDecelerationTime;
+    private float groundDeceleration;
+
+    [Tooltip("The time it takes to accelerate to maximum horizontal speed from rest in the air")]
+    [SerializeField] private float airAccelerationTime;
+    private float airAcceleration;
+
+    [Tooltip("The time it takes to decelerate to rest by moving from maximum horizontal speed in the air")]
+    [SerializeField] private float airMovementDecelerationTime;
+    private float airMovementDeceleration;
+
+    [Tooltip("The time it takes to decelerate to rest via drag from maximum horizontal speed in the air")]
+    [SerializeField] private float airDragDecelerationTime;
+    private float airDragDeceleration;
+
+    [Header("Vertical Parameters")]
+    [Tooltip("Vertical speed is set to this value on jump")]
+    public float JumpSpeed = 6; // todo: change to define height
+
+    [Tooltip("The amount of extra time the player has to jump after leaving the ground")]
+    [SerializeField] private float coyoteTime;
+    private float coyoteTimeRemaining = 0.0f;
+
+    [Tooltip("The amount of time the player has to buffer a jump input")]
+    [SerializeField] private float jumpBufferTime;
+    private float jumpBufferTimeRemaining = 0.0f;
+
+
+    // Useful for when their dependent values are changed during runtime
+    private void InitDerivedConsts()
+    {
+        groundAcceleration = MoveSpeed / groundAccelerationTime;
+        groundDeceleration = MoveSpeed / groundDecelerationTime;
+        airAcceleration = MoveSpeed / airAccelerationTime;
+        airMovementDeceleration = MoveSpeed / airMovementDecelerationTime;
+        airDragDeceleration = MoveSpeed / airDragDecelerationTime;
+    }
 
     protected override void Awake()
     {
         base.Awake();
+
+        InitDerivedConsts();
         Instance = this;
     }
 
-    protected virtual void Update()
+    protected override void Update()
     {
+        base.Update();
 
-        // very temporary code until we get proper input handling set up
+        // All "Down" inputs should be in Update() to avoid inputs dropping between physics frames
+        if (Input.GetKeyDown(KeyCode.Space)) Jump();
+    }
+
+    private void OnValidate()
+    {
+        InitDerivedConsts();
+    }
+
+    
+    protected override void FixedUpdate()
+    {
+        base.FixedUpdate();
+
         if (Input.GetKey(KeyCode.D)) Move(1);
         else if (Input.GetKey(KeyCode.A)) Move(-1);
         else Move(0);
 
-        if (Input.GetKeyDown(KeyCode.Space)) Jump(1);
-
-
+        UpdateTimers(fdt);
     }
 
-    // Move by player input: 1 = right, -1 = left
+    // Move by player input: 1 = right, -1 = left, 0 = none
     private void Move(int dir)
     {
-        if (dir == 0) Velocity.x = 0;
-        if ((dir == 1 && !touchingRight) || (dir == -1 && !touchingLeft))
-        Velocity.x = MoveSpeed * dir;
+        // Check which acceleration parameter to use
+        float accelerationParam = (dir * Velocity.x > 0)
+            ? (State == BodyState.InAir)
+                ? airAcceleration
+                : groundAcceleration
+            : (State == BodyState.InAir)
+                ? (dir == 0)
+                    ? airDragDeceleration
+                    : airMovementDeceleration
+                : groundDeceleration;
+        // Compute the difference between the max velocity and the current velocity
+        float deltaV = dir * MoveSpeed - Velocity.x;
+        // If the acceleration parameter would cause the player to exceed their maximum speed,
+        // use enough acceleration to reach maximum speed. Otherwise, use the acceleration parameter
+        float acceleration = Mathf.Min(Mathf.Abs(deltaV / fdt), accelerationParam);
+
+        // Apply the acceleration
+        Velocity.x += acceleration * fdt * Mathf.Sign(deltaV);
     }
 
-    private void Jump(int dir)
+
+    // Directly set the player's y velocity
+    private void Jump()
     {
-        Velocity.y = MoveSpeed * dir; 
+        if (State == BodyState.OnGround || coyoteTimeRemaining > 0f)
+        {
+            Velocity.y = JumpSpeed;
+            StartFalling();
+            coyoteTimeRemaining = 0f;   // consume coyote time
+        }
+        else if (State != BodyState.OnGround && coyoteTimeRemaining <= 0.0f)
+        {
+            jumpBufferTimeRemaining = jumpBufferTime;
+            return;
+        }
+
     }
+
+    protected override bool Land(RaycastHit2D hit)
+    {
+        if (base.Land(hit))
+        {
+            if (jumpBufferTimeRemaining > 0.0f) Jump();
+            return true;
+        }
+        return false;
+    }
+
+    protected override bool StartFalling()
+    {
+        if (base.StartFalling())
+        {
+            coyoteTimeRemaining = coyoteTime;
+            return true;
+        }
+        return false;
+    }
+
+    // Updates the time of all movement-related timers
+    private void UpdateTimers(float dt)
+    {
+        if (coyoteTimeRemaining > 0) coyoteTimeRemaining -= dt;
+        if (jumpBufferTimeRemaining > 0) jumpBufferTimeRemaining -= dt;
+    }
+
 
 }
