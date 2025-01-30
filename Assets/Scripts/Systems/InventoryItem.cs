@@ -11,7 +11,7 @@ public class InventoryItem
 	public string Name;
 	public string FlavorText;
 	public uint ID; 
-	public enum InventoryItemType Type;
+	public InventoryItemType Type;
 
 	/// <summary>
 	/// Creates a record representing an item. 
