@@ -7,7 +7,7 @@ using UnityEngine;
 /// LoadData will provide a GameData json object
 /// SaveData gives a reference to a GameData json object that can be modified
 /// </summary>
-public interface IDataPersistance
+public interface IDataPersistence
 {
     void LoadData(GameData data);
     void SaveData(ref GameData data);

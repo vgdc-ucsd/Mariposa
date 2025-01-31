@@ -9,20 +9,30 @@ using System.Linq;
 /// </summary>
 public class DataPersistenceManager : Singleton<DataPersistenceManager>
 {
+    [Header("File Storage Config")]
+    [SerializeField] private string fileName;
+
+
     private GameData gameData;
     private List<IDataPersistence> dataPersistenceObjects;
+    private FileDataManager dataManager;
+    
+
+    private void Start()
+    {
+        this.dataManager = new FileDataManager(Application.persistentDataPath, fileName);
+        this.dataPersistenceObjects = FindAllDataPersistenceObjects();
+    }
+
     /// <summary>
     /// Makes a new GameData object with default data values, as defined
     /// in the GameData constructor
     /// </summary>
-    private void Start()
-    {
-        this.dataPersistenceObjects = FindAllDataPersistenceObjects()
-    }
     public void NewGame()
     {
         this.gameData = new GameData();
     }
+
     /// <summary>
     /// Loads the gameData object from disk using the FileDataManager.
     /// After loading, the data is passed to each component with the IDataPersistence interface
@@ -30,6 +40,7 @@ public class DataPersistenceManager : Singleton<DataPersistenceManager>
     /// </summary>
     public void LoadGame()
     {
+        this.gameData = dataManager.Load();
         if (this.gameData == null)
         {
             Debug.Log("No data was found, using default data values");
@@ -40,9 +51,10 @@ public class DataPersistenceManager : Singleton<DataPersistenceManager>
         //        the IDataPersistence interface and call the LoadGame() method on each of those components
         foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)
         {
-            dataPersistenceObj.LoadData(gameData)
+            dataPersistenceObj.LoadData(gameData);
         }
     }
+
     /// <summary>
     /// Passes a reference of gameData to each component with the IDataPersistence interface and then
     /// calls the SaveGame() method on each of those components
@@ -53,13 +65,14 @@ public class DataPersistenceManager : Singleton<DataPersistenceManager>
         // TODO - make it save the json file to disk with a separate file data handler
         foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)
         {
-            dataPersistenceObj.SaveData(ref  gameData)
+            dataPersistenceObj.SaveData(ref gameData);
         }
-
+        dataManager.Save(gameData);
     }
     private List<IDataPersistence> FindAllDataPersistenceObjects()
     {
-        IEnumerable<IDataPersistence> dataPersistenceObjects = FindObjectsOfType<MonoBehaviour>().OfType<IDataPersistence>
-        return new List<IDataPersistence>(dataPersistenceObjects)
+        IEnumerable<IDataPersistence> dataPersistenceObjects = FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None)
+                                                                .OfType<IDataPersistence>();
+        return new List<IDataPersistence>(dataPersistenceObjects);
     }
 }
