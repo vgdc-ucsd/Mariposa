@@ -22,6 +22,9 @@ public class DataPersistenceManager : Singleton<DataPersistenceManager>
     {
         this.dataManager = new FileDataManager(Application.persistentDataPath, fileName);
         this.dataPersistenceObjects = FindAllDataPersistenceObjects();
+
+        // For testing, load data on application startup
+        LoadGame();
     }
 
     /// <summary>
@@ -68,6 +71,13 @@ public class DataPersistenceManager : Singleton<DataPersistenceManager>
             dataPersistenceObj.SaveData(ref gameData);
         }
         dataManager.Save(gameData);
+    }
+
+    // Save the game when the application closes
+    // This can be changed later!!!!!!
+    private void OnApplicationQuit()
+    {
+        SaveGame();
     }
     private List<IDataPersistence> FindAllDataPersistenceObjects()
     {

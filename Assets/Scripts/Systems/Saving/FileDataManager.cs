@@ -46,7 +46,7 @@ public class FileDataManager : Singleton<FileDataManager>
                 }
                 // Deserialize the JSON back into a C# object
                 loadedData = JsonUtility.FromJson<GameData>(dataToLoad);
-
+                Debug.Log("Loaded data successfuly from: " + fullPath);
             }
             catch (Exception e)
             {
@@ -77,6 +77,7 @@ public class FileDataManager : Singleton<FileDataManager>
                     writer.Write(dataToStore);
                 }
             }
+            Debug.Log("Saved data successfuly to: " + fullPath);
         }
         catch (Exception e)
         {

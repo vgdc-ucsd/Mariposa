@@ -8,13 +8,13 @@ using UnityEngine;
 public class GameData
 {
     // REMOVE THIS VARIABLE LATER! This is just to test the saving :)
-    public int testNum;
+    public int TEST_keyStrokeCount;
     /// <summary>
     /// Constructor for the GameData object
     /// Creates a new object with the default values
     /// </summary>
     public GameData()
     {
-        this.testNum = 0;
+        this.TEST_keyStrokeCount = 0;
     }
 }
