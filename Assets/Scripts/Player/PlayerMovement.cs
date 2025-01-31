@@ -62,7 +62,11 @@ public class PlayerMovement : FreeBody
         base.Awake();
 
         InitDerivedConsts();
-        Instance = this;
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        
     }
 
     protected override void Update()

@@ -5,15 +5,16 @@ public class Player : MonoBehaviour
 {
 	public RespawnPoint CurrentRespawnPoint = null;
 
+	public static Player ActivePlayer;
+
 	private void Awake()
 	{
-
+		if (ActivePlayer == null)
+		{
+			ActivePlayer = this;
+		}
 	}
 
-	private void Start()
-	{
-
-	}
 
 	// when initialized / reactivated, have the player listen for any respawn point interactions and update it as needed
 	// NOTE: this may introduce memory leaks or issues if i didnt implement the failsafes correctly
