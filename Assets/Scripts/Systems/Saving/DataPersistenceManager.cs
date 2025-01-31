@@ -49,9 +49,6 @@ public class DataPersistenceManager : Singleton<DataPersistenceManager>
             Debug.Log("No data was found, using default data values");
             NewGame();
         }
-        // TODO - Make this method load the game data from disk using the file data handler
-        // TODO - Make this method pass data to every Monobehavior component that implements
-        //        the IDataPersistence interface and call the LoadGame() method on each of those components
         foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)
         {
             dataPersistenceObj.LoadData(gameData);
@@ -64,8 +61,6 @@ public class DataPersistenceManager : Singleton<DataPersistenceManager>
     /// </summary>
     public void SaveGame()
     {
-        // TODO - give data to other scripts to actually save data
-        // TODO - make it save the json file to disk with a separate file data handler
         foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)
         {
             dataPersistenceObj.SaveData(ref gameData);

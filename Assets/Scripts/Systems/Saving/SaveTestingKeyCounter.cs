@@ -1,6 +1,9 @@
 using UnityEditor.Overlays;
 using UnityEngine;
 
+/// <summary>
+/// Testing component for the saving system that counts every frame the up key is held
+/// </summary>
 public class SaveTestingKeyCounter : MonoBehaviour, IDataPersistence
 {
     private int keyCount = 0;
