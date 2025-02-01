@@ -11,10 +11,12 @@ public class Lever  : Switch
    /// </summary>
    
    @Override
-   public abstract void TriggerSwitch() 
+   public Door myDoor;
+   public override void TriggerSwitch() 
    {
-        SwitchToggled=!SwitchToggled;
-        ChangeState();
+      //door = new Door();
+      SwitchToggled=!SwitchToggled;
+      if (myDoor != null) myDoor.ChangeState();
     
    }
 
