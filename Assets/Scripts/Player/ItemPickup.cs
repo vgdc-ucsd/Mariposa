@@ -24,7 +24,7 @@ public class ItemPickup : MonoBehaviour
     // Makes the object disappear and no longer have effects in game if the player collides with it
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.name == "Player")
+        if(collision.gameObject.name == Player.ActivePlayer.gameObject)
         {
             Debug.Log(gameObject.name + " collected by Player");
             gameObject.SetActive(false);
