@@ -3,6 +3,10 @@ using System.Collections.Generic;
 
 public class InventoryManager : Singleton<InventoryManager>
 {
+    /// <summary>
+    /// list that acts as the inventory of the player
+    /// depending on the design of the game, list can be a static-size array
+    /// </summary>
     List<InventoryItem> Inventory = new List<InventoryItem>();
 
 	/// <summary>
