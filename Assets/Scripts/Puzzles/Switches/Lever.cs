@@ -10,7 +10,6 @@ public class Lever  : Switch
    /// calls public ChangeState method to open a door or close a door
    /// </summary>
    
-   @Override
    public Door myDoor;
    public override void TriggerSwitch() 
    {
