@@ -3,8 +3,8 @@ using UnityEngine;
 public class Door : MonoBehaviour
 {
     private BoxCollider2D boxCollider;
-    private bool isOpen;
-    private bool isLocked;
+    [SerializeField] private bool isOpen;
+    [SerializeField] private bool isLocked;
 
     /// <summary>
     /// Finds the current collider and sets it to boxCollider.
@@ -51,6 +51,10 @@ public class Door : MonoBehaviour
     {
         isLocked = !isLocked;
         Debug.Log("Door has changed locked state");
+        
+        if (isLocked) Debug.Log("Door is Locked");
+        
+        if (!isLocked) Debug.Log("Door is unlocked");
     }
     
     /// <summary>
@@ -60,6 +64,9 @@ public class Door : MonoBehaviour
     private void Open()
     {
         Debug.Log("Open");
+        
+        if (boxCollider == null) return;
+        
         boxCollider.isTrigger = true;
     }
 
@@ -70,6 +77,9 @@ public class Door : MonoBehaviour
     private void Close()
     {
         Debug.Log("Close");
+        
+        if (boxCollider == null) return;
+        
         boxCollider.isTrigger = false;
     }
 }
