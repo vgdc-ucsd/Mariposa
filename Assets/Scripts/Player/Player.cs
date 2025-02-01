@@ -4,7 +4,6 @@ public class Player : MonoBehaviour
 {
 	private void Awake()
 	{
-
 	}
 
 	private void Start()
@@ -14,7 +13,6 @@ public class Player : MonoBehaviour
 
 	private void Update()
 	{
-
 	}
 
 	private void FixedUpdate()
