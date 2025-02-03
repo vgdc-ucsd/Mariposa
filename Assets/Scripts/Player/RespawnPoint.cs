@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Jobs;
 
-public class RespawnPoint : MonoBehaviour, IInteractable
+public class RespawnPoint : Interactable
 {
     // creates an action handler that will eventually pass this object to the player when Interact() is called
     public static event Action<RespawnPoint> OnRespawnPointInteract;
@@ -16,8 +16,9 @@ public class RespawnPoint : MonoBehaviour, IInteractable
     public Vector3 RespawnPosition = new Vector3(0f, 0f, POS_Z);
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    override protected void Start()
     {
+        base.Start();
         respawnDebug = Settings.Instance.Debug.GetRespawnDebug();
     }
 
@@ -46,7 +47,7 @@ public class RespawnPoint : MonoBehaviour, IInteractable
 
     // Sets the player's current respawn point to the RespawnPoint object
     [ContextMenu("Set Respawn Here")]
-    public void Interact()
+    public override void OnInteract()
     {
         if (respawnDebug) Debug.Log($"{gameObject.name} was interacted");
 
@@ -60,5 +61,10 @@ public class RespawnPoint : MonoBehaviour, IInteractable
         {
             if (respawnDebug) Debug.Log($"{gameObject.name} had no one to listen to (Player was not subscribed to Action)");
         }
+    }
+
+    protected override void SetProximity()
+    {
+        Proximity = 1f;
     }
 }

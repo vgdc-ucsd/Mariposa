@@ -1,17 +1,17 @@
 using UnityEngine;
 
-public abstract class Interactable
+public abstract class Interactable : MonoBehaviour
 {
     public float Proximity { get; set; }
     // field for Interactable pop up
 
-    // also set the Interactable pop up here    
-    protected Interactable(float proximity)
+    protected virtual void Start()
     {
-        Proximity = proximity;
+        SetProximity();
     }
 
     // Check whether within proximity first
     // Load the pop up
     public abstract void OnInteract();
+    protected abstract void SetProximity();
 }
