@@ -9,6 +9,8 @@ public class RespawnPoint : MonoBehaviour, IInteractable
 
     // can be changed in case it differs from zero
     private const float POS_Z = 0f;
+    // Toggles debug messages
+    private const bool RESPAWN_DEBUG = false;
 
     // Where to respawn the player (this is separate from the transform property as the player may need to spawn differently from the respawn point sprite)
     public Vector3 RespawnPosition = new Vector3(0f, 0f, POS_Z);
@@ -29,7 +31,7 @@ public class RespawnPoint : MonoBehaviour, IInteractable
     private void OnDisable()
     {
         OnRespawnPointInteract = null;
-        Debug.Log($"{this.gameObject.name} was cleaned up");
+        if (RESPAWN_DEBUG) Debug.Log($"{this.gameObject.name} was cleaned up");
     }
 
     public Vector3 GetRespawnPosition()
@@ -46,7 +48,7 @@ public class RespawnPoint : MonoBehaviour, IInteractable
     [ContextMenu("Set Respawn Here")]
     public void Interact()
     {
-        Debug.Log($"{gameObject.name} was interacted");
+        if (RESPAWN_DEBUG) Debug.Log($"{gameObject.name} was interacted");
 
         // check to see if any object is currently listening to the action
         if (OnRespawnPointInteract != null)
@@ -56,7 +58,7 @@ public class RespawnPoint : MonoBehaviour, IInteractable
         }
         else
         {
-            Debug.Log($"{gameObject.name} had no one to listen to (Player was not subscribed to Action)");
+            if (RESPAWN_DEBUG) Debug.Log($"{gameObject.name} had no one to listen to (Player was not subscribed to Action)");
         }
     }
 }
