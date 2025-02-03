@@ -3,28 +3,33 @@ using System.Collections;
 
 public class Turret : MonoBehaviour
 {
+    public GameObject bodyPart;
     public GameObject bullet;
     public GameObject laser;
     public Player player;
     public float rotationSpeed = 3f;
 
+    [Header("View Range")]
+    [SerializeField] float sizeX;
+    [SerializeField] float sizeY;
+    [SerializeField] float offsetX;
+    [SerializeField] float offsetY;
+
     [Header("Debug")] 
     [SerializeField] bool isOn;
     [SerializeField] bool isCharging;
     [SerializeField] bool isFiring;
-
-    BoxCollider2D boxCollider; // used as sight
-    Rigidbody2D body;
+    [SerializeField] bool hasBattery;
 
     public bool IsOn { get => isOn;}
 
 
     private void Start()
     {
-        boxCollider = GetComponent<BoxCollider2D>();
-        body = GetComponent<Rigidbody2D>();
+        player = FindAnyObjectByType<Player>();
 
-        boxCollider.isTrigger = true;
+        hasBattery = true;
+        bodyPart.GetComponent<SpriteRenderer>().color = Color.green;
         bullet.SetActive(false);
         laser.SetActive(false);
     }
@@ -33,8 +38,11 @@ public class Turret : MonoBehaviour
     // Charging -> Firing
     private void Update()
     {
-        if (isOn)
+        if (IsPlayerInRange()) isOn = true;
+        else isOn = false;
+        if (hasBattery && isOn)
         {
+            // Charge and fire
             if (!isCharging && Input.GetKeyDown(KeyCode.J))
             {
                 isCharging = true;
@@ -45,30 +53,34 @@ public class Turret : MonoBehaviour
                 TurnToPlayer();
             }
         }
-    }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player"))
+        if (Input.GetKeyDown(KeyCode.K))
         {
-            isOn = true;
-            Debug.Log("Player in view, Turret is on now");
+            hasBattery = false;
+            bodyPart.GetComponent<SpriteRenderer>().color = Color.gray;
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    private bool IsPlayerInRange()
     {
-        if (collision.CompareTag("Player"))
-        {
-            isOn = false;
-        }
-    }
+        float playerX = player.transform.position.x;
+        float playerY = player.transform.position.y;
+        float minX = transform.position.x - offsetX - (sizeX / 2);
+        float maxX = transform.position.x + offsetX + (sizeX / 2);
+        float minY = transform.position.y - offsetY - (sizeX / 2);
+        float maxY = transform.position.y + offsetY + (sizeY / 2);
+
+        bool isPlayerInRange = (playerX > minX && playerX < maxX) && (playerY > minY && playerY < maxY);
+        return isPlayerInRange;
+	}
+
 
     private void TurnToPlayer()
     {
         Vector2 lookDir = player.transform.position - transform.position;
         float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;
-        body.rotation = angle;
+        Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, angle));
+        transform.rotation = Quaternion.LerpUnclamped(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
     }
 
 
@@ -90,7 +102,6 @@ public class Turret : MonoBehaviour
         // Firing
         isFiring = true;
         laser.SetActive(true);
-        boxCollider.enabled = false; // disable to prevent the raycast hit itself
         Vector2 upward = transform.TransformDirection(Vector2.up);
         RaycastHit2D hit = Physics2D.Raycast(transform.position, upward, 10f);
         if (hit)
@@ -101,7 +112,6 @@ public class Turret : MonoBehaviour
                 // Do something to the player
             }
         }
-        boxCollider.enabled = true;
 
         // Laser shrinking
         float laserScaleX = laser.transform.localScale.x;
@@ -118,4 +128,12 @@ public class Turret : MonoBehaviour
         isCharging = false;
         isFiring = false;
 	}
+    
+    private void OnDrawGizmos()
+    {
+        if (IsPlayerInRange()) Gizmos.color = Color.red;
+        Vector3 center = new Vector3(transform.position.x + offsetX, transform.position.y + offsetY, 0);
+        Vector3 size = new Vector3(sizeX, sizeY, 0);
+        Gizmos.DrawWireCube(center, size);
+    }
 }
