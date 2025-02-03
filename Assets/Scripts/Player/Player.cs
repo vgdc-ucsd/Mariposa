@@ -6,7 +6,7 @@ public class Player : MonoBehaviour
 	public RespawnPoint CurrentRespawnPoint = null;
 
 	public static Player ActivePlayer;
-	private const bool PLAYER_DEBUG = false;
+	private bool playerDebug;
 
 	private void Awake()
 	{
@@ -16,6 +16,11 @@ public class Player : MonoBehaviour
 		}
 	}
 
+	void Start()
+	{
+		playerDebug = Settings.Instance.Debug.GetPlayerDebug();
+	}
+
 
 	// when initialized / reactivated, have the player listen for any respawn point interactions and update it as needed
 	// NOTE: this may introduce memory leaks or issues if i didnt implement the failsafes correctly
@@ -23,14 +28,14 @@ public class Player : MonoBehaviour
 	{
 		RespawnPoint.OnRespawnPointInteract -= UpdateRespawn; // insures listener is empty
 		RespawnPoint.OnRespawnPointInteract += UpdateRespawn;
-		if (PLAYER_DEBUG) Debug.Log("Player is now listening for respawn interacts");
+		if (playerDebug) Debug.Log("Player is now listening for respawn interacts");
 	}
 
 	// insures no memory leaks occur when scene unloads or player is destroyed
 	private void OnDisable()
 	{
 		RespawnPoint.OnRespawnPointInteract -= UpdateRespawn;
-		if (PLAYER_DEBUG) Debug.Log("Player was cleaned up");
+		if (playerDebug) Debug.Log("Player was cleaned up");
 	}
 
 	private void Update()
@@ -46,7 +51,7 @@ public class Player : MonoBehaviour
 	private void UpdateRespawn(RespawnPoint receivedRespawnPoint)
 	{
 		CurrentRespawnPoint = receivedRespawnPoint;
-		if (PLAYER_DEBUG) Debug.Log($"Player's current respawn point updated to: {CurrentRespawnPoint.gameObject.name} @ {CurrentRespawnPoint.GetRespawnPosition().ToString()}");
+		if (playerDebug) Debug.Log($"Player's current respawn point updated to: {CurrentRespawnPoint.gameObject.name} @ {CurrentRespawnPoint.GetRespawnPosition().ToString()}");
 	}
 
 	// when respawning, change position to current respawn position. if not found, default to origin
@@ -56,12 +61,12 @@ public class Player : MonoBehaviour
 		if (CurrentRespawnPoint == null)
 		{
 			transform.position = new Vector3(0f, 0f, transform.position.z);
-			if (PLAYER_DEBUG) Debug.Log($"Player respawned to: {transform.position.ToString()}");
+			if (playerDebug) Debug.Log($"Player respawned to: {transform.position.ToString()}");
 		}
 		else
 		{
 			transform.position = CurrentRespawnPoint.GetComponent<RespawnPoint>().GetRespawnPosition();
-			if (PLAYER_DEBUG) Debug.Log($"Player respawned to: {CurrentRespawnPoint.gameObject.name} @ {CurrentRespawnPoint.GetRespawnPosition().ToString()}");
+			if (playerDebug) Debug.Log($"Player respawned to: {CurrentRespawnPoint.gameObject.name} @ {CurrentRespawnPoint.GetRespawnPosition().ToString()}");
 		}
 	}
 }
