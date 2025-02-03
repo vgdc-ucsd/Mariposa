@@ -18,14 +18,19 @@ public class Turret : MonoBehaviour
 
     public bool IsOn { get => isOn;}
 
+
     private void Start()
     {
         boxCollider = GetComponent<BoxCollider2D>();
         body = GetComponent<Rigidbody2D>();
+
+        boxCollider.isTrigger = true;
         bullet.SetActive(false);
         laser.SetActive(false);
     }
 
+
+    // Charging -> Firing
     private void Update()
     {
         if (isOn)
@@ -42,6 +47,23 @@ public class Turret : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player"))
+        {
+            isOn = true;
+            Debug.Log("Player in view, Turret is on now");
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player"))
+        {
+            isOn = false;
+        }
+    }
+
     private void TurnToPlayer()
     {
         Vector2 lookDir = player.transform.position - transform.position;
@@ -49,14 +71,6 @@ public class Turret : MonoBehaviour
         body.rotation = angle;
     }
 
-    /*
-    // Not working, don't know why
-    private void OnTriggerEnter(Collider other)
-    {
-        Debug.Log("Player in view");
-        isOn = true;
-    }
-    */
 
     IEnumerator ChargingRoutine()
     {
@@ -76,16 +90,20 @@ public class Turret : MonoBehaviour
         // Firing
         isFiring = true;
         laser.SetActive(true);
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.up * 10f);
+        boxCollider.enabled = false; // disable to prevent the raycast hit itself
+        Vector2 upward = transform.TransformDirection(Vector2.up);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, upward, 10f);
         if (hit)
         {
-            Debug.Log("Turret hit something");
+            Debug.Log("Turret hit: " + hit.transform.name);
+            if (hit.transform.TryGetComponent(out Player player))
+            {
+                // Do something to the player
+            }
         }
-        if (hit.transform.TryGetComponent<Player>(out Player player))
-        {
-            Debug.Log("Turret hit player");
-        }
+        boxCollider.enabled = true;
 
+        // Laser shrinking
         float laserScaleX = laser.transform.localScale.x;
         float laserScaleY = laser.transform.localScale.y;
         float laserScaleZ = laser.transform.localScale.z;
