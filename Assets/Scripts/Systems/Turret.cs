@@ -122,6 +122,7 @@ public class Turret : MonoBehaviour
         Vector3 laserOriginScale = laser.transform.localScale;
         Vector2 upward = transform.TransformDirection(Vector2.up);
         RaycastHit2D hit = Physics2D.Raycast(chargingPoint.transform.position, upward, laserOriginScale.x, hitLayer);
+        laser.transform.localScale = new Vector3(hit.distance, laser.transform.localScale.y, 1);
         laser.SetActive(true);
         if (hit)
         {
@@ -132,7 +133,6 @@ public class Turret : MonoBehaviour
             }
             else
             {
-                laser.transform.localScale = new Vector3(hit.distance, laser.transform.localScale.y, 1);
                 // Do something to the breakable
             }
         }
