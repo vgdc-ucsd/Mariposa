@@ -15,6 +15,9 @@ public class FruitScalePuzzle : Puzzle
     [SerializeField] private List<Fruit> fruits; // TODO: used for debug, remove later
     private bool isComplete;
 
+    /// <summary>
+    /// Ensure there is only one instance of the puzzle's singleton
+    /// </summary>
     void Awake()
     {
         if(Instance == null) Instance = this;

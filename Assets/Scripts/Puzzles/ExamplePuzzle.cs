@@ -6,8 +6,23 @@ using UnityEngine;
 /// </summary>
 public class ExamplePuzzle : Puzzle
 {
+    public static ExamplePuzzle Instance;
     private bool testCondition;
     private bool isComplete;
+
+    /// <summary>
+    /// Ensure there is only one instance of the puzzle's singleton
+    /// </summary>
+    void Awake()
+    {
+        if(Instance == null) Instance = this;
+        else
+        {
+            // Update warning message with your puzzle class name
+            Debug.LogWarning("Tried to create more than one instance of the ExamplePuzzle singleton!");
+            Destroy(this);
+        }
+    }
 
     void Start()
     {
