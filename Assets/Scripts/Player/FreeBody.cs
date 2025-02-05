@@ -141,7 +141,7 @@ public abstract class FreeBody : Body
     protected virtual bool SnapToSurface(RaycastHit2D hit, bool checkVelocity = false)
     {
         // reject if player is moving away from the surface
-        if (checkVelocity && Vector2.Dot(hit.normal, Velocity) >= 0) return false;
+        if (checkVelocity && Vector2.Dot(hit.normal, Velocity) >= -0.0001f) return false;
 
         float normalSize = Mathf.Abs(Vector2.Dot(SurfaceCollider.bounds.size, hit.normal));
 
