@@ -3,17 +3,13 @@ using System.Collections;
 
 public class Turret : MonoBehaviour
 {
-    public GameObject bodyPart;
-    public GameObject bullet;
-    public GameObject laser;
-    public Player player;
-    public float rotationSpeed = 3f;
+    public bool IsOn { get => isOn;}
+    public bool HasBattery { get => hasBattery; }
 
-    [Header("View Range")]
-    [SerializeField] float sizeX;
-    [SerializeField] float sizeY;
-    [SerializeField] float offsetX;
-    [SerializeField] float offsetY;
+    // These three are for testing, need to use anim in the future
+    public GameObject bodyPart;
+    public GameObject chargingPoint;
+    public GameObject laser;
 
     [Header("Debug")] 
     [SerializeField] bool isOn;
@@ -21,25 +17,34 @@ public class Turret : MonoBehaviour
     [SerializeField] bool isFiring;
     [SerializeField] bool hasBattery;
 
-    public bool IsOn { get => isOn;}
+    // -------- private variables --------
+    [Header("Turret Attribute")]
+    [SerializeField][Range(0, 10)] float rotationSpeed;
+    [SerializeField][Range(1, 10)] float chargeTime;
+    [SerializeField][Range(1, 10)] float targetBulletSize;
+    // -------- private variables --------
 
+    // -------- Components --------
+    private Player player;
+    private PlayerInRangeDetect playerInRangeDetect;
+    // -------- Components --------
 
     private void Start()
     {
         player = FindAnyObjectByType<Player>();
+        playerInRangeDetect = GetComponent<PlayerInRangeDetect>();
 
-        hasBattery = true;
         bodyPart.GetComponent<SpriteRenderer>().color = Color.green;
-        bullet.SetActive(false);
+        chargingPoint.SetActive(false);
         laser.SetActive(false);
+        hasBattery = true;
     }
 
 
     // Charging -> Firing
     private void Update()
     {
-        if (IsPlayerInRange()) isOn = true;
-        else isOn = false;
+        isOn = playerInRangeDetect.IsPlayerInRange();
         if (hasBattery && isOn)
         {
             // Charge and fire
@@ -61,19 +66,15 @@ public class Turret : MonoBehaviour
         }
     }
 
-    private bool IsPlayerInRange()
+    public void RemoveBattery()
     {
-        float playerX = player.transform.position.x;
-        float playerY = player.transform.position.y;
-        float minX = transform.position.x - offsetX - (sizeX / 2);
-        float maxX = transform.position.x + offsetX + (sizeX / 2);
-        float minY = transform.position.y - offsetY - (sizeX / 2);
-        float maxY = transform.position.y + offsetY + (sizeY / 2);
-
-        bool isPlayerInRange = (playerX > minX && playerX < maxX) && (playerY > minY && playerY < maxY);
-        return isPlayerInRange;
+        hasBattery = false;
 	}
 
+
+    
+
+    // ---------- private functions ----------
 
     private void TurnToPlayer()
     {
@@ -83,27 +84,30 @@ public class Turret : MonoBehaviour
         transform.rotation = Quaternion.LerpUnclamped(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
     }
 
-
     IEnumerator ChargingRoutine()
     {
         // Charging
         // Play charning anim
-        bullet.transform.localScale = Vector3.zero;
-        bullet.SetActive(true);
+        chargingPoint.transform.localScale = Vector3.zero;
+        chargingPoint.SetActive(true);
         Vector3 laserOriginScale = laser.transform.localScale;
-        while (bullet.transform.localScale.magnitude < 1f)
+
+        float bulletGrowingRate = targetBulletSize / chargeTime;
+        while (chargingPoint.transform.localScale.magnitude < targetBulletSize)
         {
-            Debug.DrawRay(transform.position, transform.up * 10f, Color.red);
-            bullet.transform.localScale += Vector3.one * 0.2f * Time.deltaTime;
+            RaycastHit2D aimHit = Physics2D.Raycast(chargingPoint.transform.position, transform.TransformDirection(Vector2.up), 10f);
+            if (aimHit) Debug.DrawLine(chargingPoint.transform.position, aimHit.transform.position, Color.red);
+            chargingPoint.transform.localScale += bulletGrowingRate * Time.deltaTime * Vector3.one;
             yield return null;
 		}
-        bullet.SetActive(false);
+        chargingPoint.SetActive(false);
+
 
         // Firing
         isFiring = true;
         laser.SetActive(true);
         Vector2 upward = transform.TransformDirection(Vector2.up);
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, upward, 10f);
+        RaycastHit2D hit = Physics2D.Raycast(chargingPoint.transform.position, upward, 10f);
         if (hit)
         {
             Debug.Log("Turret hit: " + hit.transform.name);
@@ -128,12 +132,4 @@ public class Turret : MonoBehaviour
         isCharging = false;
         isFiring = false;
 	}
-    
-    private void OnDrawGizmos()
-    {
-        if (IsPlayerInRange()) Gizmos.color = Color.red;
-        Vector3 center = new Vector3(transform.position.x + offsetX, transform.position.y + offsetY, 0);
-        Vector3 size = new Vector3(sizeX, sizeY, 0);
-        Gizmos.DrawWireCube(center, size);
-    }
 }
