@@ -61,8 +61,16 @@ public class Turret : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.K))
         {
-            hasBattery = false;
-            bodyPart.GetComponent<SpriteRenderer>().color = Color.gray;
+            if (hasBattery)
+            {
+                hasBattery = false;
+                bodyPart.GetComponent<SpriteRenderer>().color = Color.gray;
+            }
+            else
+            { 
+                hasBattery = true;
+                bodyPart.GetComponent<SpriteRenderer>().color = Color.green;
+			}
         }
     }
 
