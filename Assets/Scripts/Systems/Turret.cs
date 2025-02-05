@@ -100,7 +100,6 @@ public class Turret : MonoBehaviour
         // Play charning anim
         chargingPoint.transform.localScale = Vector3.zero;
         chargingPoint.SetActive(true);
-        Vector3 laserOriginScale = laser.transform.localScale;
 
         float chargePointGrowingRate = chargePointSize / chargeTime;
         while (chargingPoint.transform.localScale.magnitude < chargePointSize)
@@ -111,20 +110,30 @@ public class Turret : MonoBehaviour
             yield return null;
 		}
         chargingPoint.SetActive(false);
+        isCharging = false;
 
+        StartCoroutine(FireRoutine());
+	}
 
+    IEnumerator FireRoutine()
+    { 
         // Firing
         isFiring = true;
+        Vector3 laserOriginScale = laser.transform.localScale;
         Vector2 upward = transform.TransformDirection(Vector2.up);
-        RaycastHit2D hit = Physics2D.Raycast(chargingPoint.transform.position, upward, 10f, hitLayer);
+        RaycastHit2D hit = Physics2D.Raycast(chargingPoint.transform.position, upward, laserOriginScale.x, hitLayer);
         laser.SetActive(true);
         if (hit)
         {
-            laser.transform.localScale = new Vector3(hit.distance, laser.transform.localScale.y, 1);
             Debug.Log("Turret hit: " + hit.transform.name);
             if (hit.transform.TryGetComponent(out Player player))
             {
                 // Do something to the player
+            }
+            else
+            {
+                laser.transform.localScale = new Vector3(hit.distance, laser.transform.localScale.y, 1);
+                // Do something to the breakable
             }
         }
 
@@ -141,7 +150,6 @@ public class Turret : MonoBehaviour
 		}
         laser.SetActive(false);
         laser.transform.localScale = laserOriginScale;
-        isCharging = false;
         isFiring = false;
 	}
 }
