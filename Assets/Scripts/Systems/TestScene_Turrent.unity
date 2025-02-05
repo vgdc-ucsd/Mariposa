@@ -263,9 +263,9 @@ GameObject:
   m_Component:
   - component: {fileID: 216885362}
   - component: {fileID: 216885361}
-  - component: {fileID: 216885360}
   - component: {fileID: 216885359}
   - component: {fileID: 216885363}
+  - component: {fileID: 216885364}
   m_Layer: 0
   m_Name: TestPlayer
   m_TagString: Player
@@ -300,18 +300,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &216885360
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 216885358}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e3c33aca79224cd4bb959c6d810240ba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!212 &216885361
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -428,6 +416,18 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 2}
   m_EdgeRadius: 0
+--- !u!114 &216885364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 216885358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3c33aca79224cd4bb959c6d810240ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &410105090
 GameObject:
   m_ObjectHideFlags: 0
@@ -571,6 +571,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 659295391}
+  - component: {fileID: 659295394}
   - component: {fileID: 659295389}
   - component: {fileID: 659295393}
   m_Layer: 0
@@ -593,14 +594,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bodyPart: {fileID: 1952158681}
-  bullet: {fileID: 1087500032}
+  chargingPoint: {fileID: 1087500032}
   laser: {fileID: 1142673520}
-  player: {fileID: 216885360}
-  rotationSpeed: 3
-  sizeX: 11.27
-  sizeY: 5.08
-  offsetX: 0
-  offsetY: 2
+  rotationSpeed: 4
+  chargeTime: 1
+  targetBulletSize: 1
+  sizeX: 15.5
+  sizeY: 7
+  offsetX: 1
+  offsetY: 3
   isOn: 0
   isCharging: 0
   isFiring: 0
@@ -640,6 +642,52 @@ MonoBehaviour:
     it''s on.
 
     TODO: Let the laser being blocked by the wall'
+--- !u!61 &659295394
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 659295388}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
 --- !u!1 &1087500032
 GameObject:
   m_ObjectHideFlags: 0
