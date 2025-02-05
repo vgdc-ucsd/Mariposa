@@ -11,18 +11,20 @@ public class Turret : MonoBehaviour
     public GameObject chargingPoint;
     public GameObject laser;
 
+    // -------- private variables --------
+    [Header("Turret Attribute")]
+    [SerializeField] LayerMask hitLayer;
+    [SerializeField][Range(0.1f, 10)] float rotationSpeed;
+    [SerializeField][Range(0.1f, 10)] float chargeTime;
+    [SerializeField][Range(0.1f, 10)] float laserShrinkTime;
+    [SerializeField][Range(0.1f, 10)] float chargePointSize;
+    // -------- private variables --------
+
     [Header("Debug")] 
     [SerializeField] bool isOn;
     [SerializeField] bool isCharging;
     [SerializeField] bool isFiring;
     [SerializeField] bool hasBattery;
-
-    // -------- private variables --------
-    [Header("Turret Attribute")]
-    [SerializeField][Range(0, 10)] float rotationSpeed;
-    [SerializeField][Range(1, 10)] float chargeTime;
-    [SerializeField][Range(1, 10)] float targetBulletSize;
-    // -------- private variables --------
 
     // -------- Components --------
     private Player player;
@@ -100,12 +102,12 @@ public class Turret : MonoBehaviour
         chargingPoint.SetActive(true);
         Vector3 laserOriginScale = laser.transform.localScale;
 
-        float bulletGrowingRate = targetBulletSize / chargeTime;
-        while (chargingPoint.transform.localScale.magnitude < targetBulletSize)
+        float chargePointGrowingRate = chargePointSize / chargeTime;
+        while (chargingPoint.transform.localScale.magnitude < chargePointSize)
         {
             RaycastHit2D aimHit = Physics2D.Raycast(chargingPoint.transform.position, transform.TransformDirection(Vector2.up), 10f);
             if (aimHit) Debug.DrawLine(chargingPoint.transform.position, aimHit.transform.position, Color.red);
-            chargingPoint.transform.localScale += bulletGrowingRate * Time.deltaTime * Vector3.one;
+            chargingPoint.transform.localScale += chargePointGrowingRate * Time.deltaTime * Vector3.one;
             yield return null;
 		}
         chargingPoint.SetActive(false);
@@ -113,11 +115,12 @@ public class Turret : MonoBehaviour
 
         // Firing
         isFiring = true;
-        laser.SetActive(true);
         Vector2 upward = transform.TransformDirection(Vector2.up);
-        RaycastHit2D hit = Physics2D.Raycast(chargingPoint.transform.position, upward, 10f);
+        RaycastHit2D hit = Physics2D.Raycast(chargingPoint.transform.position, upward, 10f, hitLayer);
+        laser.SetActive(true);
         if (hit)
         {
+            laser.transform.localScale = new Vector3(hit.distance, laser.transform.localScale.y, 1);
             Debug.Log("Turret hit: " + hit.transform.name);
             if (hit.transform.TryGetComponent(out Player player))
             {
@@ -129,9 +132,10 @@ public class Turret : MonoBehaviour
         float laserScaleX = laser.transform.localScale.x;
         float laserScaleY = laser.transform.localScale.y;
         float laserScaleZ = laser.transform.localScale.z;
-        while (laser.transform.localScale.x > 0f)
+        float laserShrinkingRate = laserScaleY / laserShrinkTime;
+        while (laserScaleY > 0)
         {
-            laserScaleX -= 0.5f * Time.deltaTime;
+            laserScaleY -= laserShrinkingRate * Time.deltaTime;
             laser.transform.localScale = new Vector3(laserScaleX, laserScaleY, laserScaleZ);  
             yield return null;
 		}
