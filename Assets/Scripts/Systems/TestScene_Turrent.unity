@@ -573,6 +573,7 @@ GameObject:
   - component: {fileID: 659295391}
   - component: {fileID: 659295394}
   - component: {fileID: 659295389}
+  - component: {fileID: 659295395}
   - component: {fileID: 659295393}
   m_Layer: 0
   m_Name: Turret
@@ -596,17 +597,13 @@ MonoBehaviour:
   bodyPart: {fileID: 1952158681}
   chargingPoint: {fileID: 1087500032}
   laser: {fileID: 1142673520}
-  rotationSpeed: 4
-  chargeTime: 1
-  targetBulletSize: 1
-  sizeX: 15.5
-  sizeY: 7
-  offsetX: 1
-  offsetY: 3
   isOn: 0
   isCharging: 0
   isFiring: 0
   hasBattery: 0
+  rotationSpeed: 4
+  chargeTime: 1
+  targetBulletSize: 1
 --- !u!4 &659295391
 Transform:
   m_ObjectHideFlags: 0
@@ -688,6 +685,22 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &659295395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 659295388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56222678b4a224447b603f46c2f574e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sizeX: 13
+  sizeY: 6
+  offsetX: 0
+  offsetY: 3
 --- !u!1 &1087500032
 GameObject:
   m_ObjectHideFlags: 0
