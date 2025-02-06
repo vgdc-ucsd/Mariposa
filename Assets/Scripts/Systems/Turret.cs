@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(InRangeDetect))]
 public class Turret : MonoBehaviour
 {
     public bool IsOn { get => isOn;}
@@ -27,14 +28,12 @@ public class Turret : MonoBehaviour
     [SerializeField] bool hasBattery;
 
     // -------- Components --------
-    private Player player;
-    private PlayerInRangeDetect playerInRangeDetect;
+    private InRangeDetect inRangeDetector;
     // -------- Components --------
 
     private void Start()
     {
-        player = FindAnyObjectByType<Player>();
-        playerInRangeDetect = GetComponent<PlayerInRangeDetect>();
+        inRangeDetector = GetComponent<InRangeDetect>();
 
         bodyPart.GetComponent<SpriteRenderer>().color = Color.green;
         chargingPoint.SetActive(false);
@@ -46,7 +45,7 @@ public class Turret : MonoBehaviour
     // Charging -> Firing
     private void Update()
     {
-        isOn = playerInRangeDetect.IsPlayerInRange();
+        isOn = inRangeDetector.IsTargetInRange();
         if (hasBattery && isOn)
         {
             // Charge and fire
@@ -57,7 +56,7 @@ public class Turret : MonoBehaviour
             }
             if (!isFiring)
             {
-                TurnToPlayer();
+                TurnToTarget();
             }
         }
 
@@ -86,9 +85,9 @@ public class Turret : MonoBehaviour
 
     // ---------- private functions ----------
 
-    private void TurnToPlayer()
+    private void TurnToTarget()
     {
-        Vector2 lookDir = player.transform.position - transform.position;
+        Vector2 lookDir = inRangeDetector.Target.transform.position - transform.position;
         float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;
         Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, angle));
         transform.rotation = Quaternion.LerpUnclamped(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
@@ -145,7 +144,8 @@ public class Turret : MonoBehaviour
         while (laserScaleY > 0)
         {
             laserScaleY -= laserShrinkingRate * Time.deltaTime;
-            laser.transform.localScale = new Vector3(laserScaleX, laserScaleY, laserScaleZ);  
+            laser.SetLocalScaleY(laserScaleY);
+            //laser.transform.localScale = new Vector3(laserScaleX, laserScaleY, laserScaleZ);  
             yield return null;
 		}
         laser.SetActive(false);
