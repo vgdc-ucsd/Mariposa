@@ -19,8 +19,22 @@ public class Fruit : MonoBehaviour
         if(fruitSR == null) Debug.LogWarning("Fruit sprite renderer not found!");
     }
 
+    /// <summary>
+    /// Getter for the fruit's weight.
+    /// </summary>
+    /// <returns></returns>
     public int GetWeight() { return weight; }
-    public void SetScale(FruitScale scale) { this.Scale = scale; }
+
+    /// <summary>
+    /// Setter for the scale the fruit is on. Makes the scale the parent 
+    /// transform for the fruit to move with.
+    /// </summary>
+    /// <param name="scale"></param>
+    public void SetScale(FruitScale scale)
+    {
+        this.Scale = scale;
+        transform.SetParent(scale.transform);
+    }
 
     /// <summary>
     /// When the player clicks on the fruit, select it and set its origin scale.

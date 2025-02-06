@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 /// <summary>
@@ -6,6 +7,7 @@ using UnityEngine;
 public class FruitScale : MonoBehaviour
 {
     private const float OFFSET_MULTIPLIER = 0.75f;
+    private const float MOVE_SPEED = 4f;
 
     [SerializeField]
     [Range(FruitScalePuzzle.FRUIT_MIN_WEIGHT, FruitScalePuzzle.FRUIT_MAX_WEIGHT)]
@@ -53,10 +55,35 @@ public class FruitScale : MonoBehaviour
     /// </summary>
     public void SetPositionY()
     {
-        transform.localPosition = new Vector3(
+        transform.localPosition = new Vector3
+        (
             transform.localPosition.x,
             Mathf.Max(CalcWeightDiff() * OFFSET_MULTIPLIER, -1),
             transform.localPosition.z
         );
+    }
+
+    /// <summary>
+    /// Moves the scale to its new position over time.
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator LerpPositionY()
+    {
+        Vector3 target = new Vector3
+        (
+            transform.localPosition.x,
+            Mathf.Max(CalcWeightDiff() * OFFSET_MULTIPLIER, -1),
+            transform.localPosition.z
+        );
+
+        while(Vector3.Distance(transform.localPosition, target) > 0.001f)
+        {
+            var step = MOVE_SPEED * Time.deltaTime;
+            transform.localPosition = Vector3.MoveTowards(transform.localPosition, target, step);
+
+            yield return null;
+        }
+
+        transform.localPosition = target;
     }
 }

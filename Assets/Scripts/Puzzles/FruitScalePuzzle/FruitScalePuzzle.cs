@@ -60,8 +60,8 @@ public class FruitScalePuzzle : Puzzle
         SelectedFruit = null;
 
         // Update vertical positions for old and new scales
-        if(!newScale.IsStorage()) newScale.SetPositionY();
-        if(!Instance.OldScale.IsStorage()) Instance.OldScale.SetPositionY();
+        if(!newScale.IsStorage()) StartCoroutine(newScale.LerpPositionY());
+        if(!Instance.OldScale.IsStorage()) StartCoroutine(Instance.OldScale.LerpPositionY());
 
         // Prepare scale colliders for next action
         Instance.OldScale.GetComponent<BoxCollider2D>().enabled = true;
@@ -70,6 +70,8 @@ public class FruitScalePuzzle : Puzzle
         // Check if puzzle is solved after each action
         if(CheckScales())
         {
+            // TODO: this currently triggers instantly when the last fruit is placed on its scale
+            // Should trigger after final scale finishes moving into its balanced position place
             IsComplete = true;
             OnComplete();
         }
