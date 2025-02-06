@@ -11,9 +11,11 @@ public class FruitScalePuzzle : Puzzle
     public const int FRUIT_MIN_WEIGHT = 1;
     public const int FRUIT_MAX_WEIGHT = 5;
 
+    public Fruit SelectedFruit;
+    public FruitScale OldScale;
+    public bool IsComplete;
+
     [SerializeField] private List<FruitScale> scales;
-    [SerializeField] private List<Fruit> fruits; // TODO: used for debug, remove later
-    private bool isComplete;
 
     /// <summary>
     /// Ensure there is only one instance of the puzzle's singleton
@@ -28,33 +30,63 @@ public class FruitScalePuzzle : Puzzle
         }
     }
 
-    void Start()
+    /// <summary>
+    /// When the puzzle is enabled, initialize all scales' initial positions
+    /// </summary>
+    void OnEnable()
     {
-        // TODO: used for debugging, remove later
-        for(int i = 0; i < scales.Count; ++i)
-        {
-            scales[i].SetFruit(fruits[i]);
+        foreach(FruitScale scale in scales) {
+            scale.SetPositionY();
         }
-        CheckScales();
     }
 
     /// <summary>
-    /// TODO: description
+    /// When the player moves a fruit, update references and visual positions
     /// </summary>
-    private void CheckScales()
+    /// <param name="newScale">The scale the fruit was moved to</param>
+    public void PlaceFruit(FruitScale newScale)
     {
         // If the puzzle is already complete, do nothing
         // This theorietically should be unnecessary, but good for safety
-        if (isComplete) return;
-        
+        if(IsComplete) return;
+
+        SelectedFruit.SetScale(newScale);
+        newScale.SetFruit(SelectedFruit);
+        Instance.OldScale.SetFruit(null);
+
+        // Visually move fruit to new scale position
+        SelectedFruit.transform.position = newScale.transform.position;
+        SelectedFruit.Deselect();
+        SelectedFruit = null;
+
+        // Update vertical positions for old and new scales
+        if(!newScale.IsStorage()) newScale.SetPositionY();
+        if(!Instance.OldScale.IsStorage()) Instance.OldScale.SetPositionY();
+
+        // Prepare scale colliders for next action
+        Instance.OldScale.GetComponent<BoxCollider2D>().enabled = true;
+        newScale.GetComponent<BoxCollider2D>().enabled = false;
+
+        // Check if puzzle is solved after each action
+        if(CheckScales())
+        {
+            IsComplete = true;
+            OnComplete();
+        }
+    }
+
+    /// <summary>
+    /// Check if all scales are properly balanced
+    /// </summary>
+    private bool CheckScales()
+    {
         foreach(FruitScale scale in scales)
         {
             // If any of the scales are not balanced, puzzle is not complete
-            if(scale.CalcWeightDiff() != 0) return;
+            if(scale.CalcWeightDiff() != 0) return false;
         }
 
-        // If all of the scales are balanced, complete the puzzle
-        isComplete = true;
-        OnComplete();
+        // If all of the scales are balanced, the puzzle is solved
+        return true;
     }
 }
