@@ -34,10 +34,10 @@ public class Turret : MonoBehaviour
     private void Start()
     {
         inRangeDetector = GetComponent<InRangeDetect>();
-
-        bodyPart.GetComponent<SpriteRenderer>().color = Color.green;
+        bodyPart.GetComponent<SpriteRenderer>().color = Color.green; // For battery test
         chargingPoint.SetActive(false);
         laser.SetActive(false);
+        SetLaserMaxLength();
         hasBattery = true;
     }
 
@@ -84,6 +84,14 @@ public class Turret : MonoBehaviour
     
 
     // ---------- private functions ----------
+
+    private void SetLaserMaxLength()
+    {
+        float lengthX = inRangeDetector.SizeX / 2 + inRangeDetector.OffsetX;
+        float lengthY = inRangeDetector.SizeY / 2 + inRangeDetector.OffsetY;
+        float maxLength = Mathf.Sqrt(Mathf.Pow(lengthX, 2) + Mathf.Pow(lengthY, 2));
+        laser.SetLocalScaleX(maxLength);
+	}
 
     private void TurnToTarget()
     {
@@ -137,15 +145,12 @@ public class Turret : MonoBehaviour
         }
 
         // Laser shrinking
-        float laserScaleX = laser.transform.localScale.x;
         float laserScaleY = laser.transform.localScale.y;
-        float laserScaleZ = laser.transform.localScale.z;
         float laserShrinkingRate = laserScaleY / laserShrinkTime;
         while (laserScaleY > 0)
         {
             laserScaleY -= laserShrinkingRate * Time.deltaTime;
             laser.SetLocalScaleY(laserScaleY);
-            //laser.transform.localScale = new Vector3(laserScaleX, laserScaleY, laserScaleZ);  
             yield return null;
 		}
         laser.SetActive(false);
