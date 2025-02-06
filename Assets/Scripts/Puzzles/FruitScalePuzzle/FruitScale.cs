@@ -55,7 +55,7 @@ public class FruitScale : MonoBehaviour
     {
         transform.localPosition = new Vector3(
             transform.localPosition.x,
-            CalcWeightDiff() * OFFSET_MULTIPLIER,
+            Mathf.Max(CalcWeightDiff() * OFFSET_MULTIPLIER, -1),
             transform.localPosition.z
         );
     }

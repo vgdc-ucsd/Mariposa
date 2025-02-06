@@ -9,6 +9,7 @@ public class Fruit : MonoBehaviour
     [Range(FruitScalePuzzle.FRUIT_MIN_WEIGHT, FruitScalePuzzle.FRUIT_MAX_WEIGHT)]
     private int weight;
     [SerializeField] private FruitScale Scale;
+    [SerializeField] private Color DebugColor; // TODO: for debug, remove later
     private SpriteRenderer fruitSR;
 
     void Awake()
@@ -83,7 +84,8 @@ public class Fruit : MonoBehaviour
         }
         FruitScalePuzzle.Instance.SelectedFruit = this;
 
-        fruitSR.color = Color.white * 0.7f;
+        // fruitSR.color = Color.white * 0.7f;
+        fruitSR.color = DebugColor * 0.7f; // TODO: for debug, remove later
     }
 
     /// <summary>
@@ -91,6 +93,7 @@ public class Fruit : MonoBehaviour
     /// </summary>
     public void Deselect()
     {
-        fruitSR.color = Color.white;
+        // fruitSR.color = Color.white;
+        fruitSR.color = DebugColor; // TODO: for debug, remove later
     }
 }
