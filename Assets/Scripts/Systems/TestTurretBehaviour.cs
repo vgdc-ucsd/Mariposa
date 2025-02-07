@@ -8,15 +8,14 @@ public class TestTurretBehaviour : MonoBehaviour, ITurretBehaviour
 		if (turret.HasBattery && turret.IsOn)
 		{
 			// Charge and fire
-			if (!turret.IsCharging && Input.GetKeyDown(KeyCode.J))
-			{
-				turret.IsCharging = true;
-				turret.StartChargingRoutine();
-			}
 			if (!turret.IsFiring)
 			{
 				turret.TurnToTarget();
-			}
+				if (!turret.IsCoolingDown && !turret.IsCharging)
+				{
+                    turret.StartChargingRoutine();
+                }
+            }
 		}
 
 		if (Input.GetKeyDown(KeyCode.K))
