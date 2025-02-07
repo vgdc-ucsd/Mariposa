@@ -100,6 +100,7 @@ GameObject:
   - component: {fileID: 4916113313253334998}
   - component: {fileID: 6117323216057472955}
   - component: {fileID: 6715710922159046111}
+  - component: {fileID: 8003148100234699860}
   m_Layer: 0
   m_Name: Turret
   m_TagString: Untagged
@@ -194,8 +195,10 @@ MonoBehaviour:
   chargeTime: 1
   laserShrinkTime: 1
   chargePointSize: 1
+  fireTimeInterval: 3
   isOn: 0
   isCharging: 0
+  isCoolingDown: 0
   isFiring: 0
   hasBattery: 0
 --- !u!114 &6117323216057472955
@@ -211,8 +214,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  sizeX: 5
-  sizeY: 5
+  sizeX: 13.7
+  sizeY: 15.9
   offsetX: 0
   offsetY: 0
   inRange: {r: 1, g: 0, b: 0, a: 1}
@@ -229,13 +232,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49c7eb40c50f94f5da5a52e4b5e7afd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  description: 'For now, press J to fire when player is in range.
-
-    If change
-    the View Range, need to change the Laser X scale to fit the range.
-
-    Press
-    K to take the battery off from the turret (No range detection yet).'
+  description: For now, press K to take the battery off from the turret (No range
+    detection yet).
+--- !u!114 &8003148100234699860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4814468383069501733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 660c71c3bbdca47bca0f590a5a101457, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6739177535207289801
 GameObject:
   m_ObjectHideFlags: 0
