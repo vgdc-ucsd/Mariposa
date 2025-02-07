@@ -33,9 +33,11 @@ public class Turret : MonoBehaviour
     [SerializeField] bool isFiring;
     [SerializeField] bool hasBattery;
 
+    // -------- IEnumerator --------
+    IEnumerator chargingCO; // Have this so that we can stop the charging when take off the battery
+
     // -------- Components --------
     private InRangeDetect inRangeDetector;
-    // -------- Components --------
 
     private void Start()
     {
@@ -54,6 +56,12 @@ public class Turret : MonoBehaviour
     {
         isOn = inRangeDetector.IsTargetInRange();
         turretBehaviour.Act(this);
+        if (!hasBattery && chargingCO != null)
+        {
+            StopCoroutine(chargingCO);
+            StartCoroutine(ShutdownRoutine());
+            chargingCO = null;
+        }
     }
 
     public void RemoveBattery()
@@ -82,12 +90,16 @@ public class Turret : MonoBehaviour
         transform.rotation = Quaternion.LerpUnclamped(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
     }
 
-	public void StartFireRoutine(){
+	public void StartFireRoutine()
+	{
         StartCoroutine(FireRoutine());
 	}
-	public void StartChargingRoutine(){
-		StartCoroutine(ChargingRoutine());
-	}
+
+	public void StartChargingRoutine()
+	{
+        chargingCO = ChargingRoutine();
+		StartCoroutine(chargingCO);
+    }
 
     IEnumerator ChargingRoutine()
     {
@@ -103,6 +115,7 @@ public class Turret : MonoBehaviour
             RaycastHit2D aimHit = Physics2D.Raycast(chargingPoint.transform.position, transform.TransformDirection(Vector2.up), 10f);
             if (aimHit) Debug.DrawLine(chargingPoint.transform.position, aimHit.transform.position, Color.red);
             chargingPoint.transform.localScale += chargePointGrowingRate * Time.deltaTime * Vector3.one;
+
             yield return null;
 		}
         chargingPoint.SetActive(false);
@@ -149,5 +162,18 @@ public class Turret : MonoBehaviour
         isCoolingDown = true;
         yield return new WaitForSeconds(fireTimeInterval);
         isCoolingDown = false;
+	}
+
+    IEnumerator ShutdownRoutine()
+    {
+        Debug.Log("Shotdown Routine");
+        float chargePointShrinkingRate = (chargePointSize / chargeTime) * 2;
+        while (chargingPoint.transform.localScale.x > 0)
+        {
+            chargingPoint.transform.localScale -= chargePointShrinkingRate * Time.deltaTime * Vector3.one;
+            yield return null;
+		}
+        chargingPoint.SetActive(false);
+        isCharging = false;
 	}
 }
