@@ -5,9 +5,10 @@ using System.Collections;
 public class Turret : MonoBehaviour
 {
     public bool IsOn { get => isOn; set => isOn = value;}
-    public bool HasBattery { get => hasBattery; set => hasBattery = value;}
-	public bool IsFiring  {get => isFiring; set => isFiring = value;}
 	public bool IsCharging {get => isCharging; set => isCharging = value;}
+	public bool IsFiring  {get => isFiring; set => isFiring = value;}
+	public bool IsCoolingDown {get => isCoolingDown; set => isCoolingDown = value;}
+    public bool HasBattery { get => hasBattery; set => hasBattery = value;}
 
     // These three are for testing, need to use anim in the future
     public GameObject bodyPart;
@@ -22,11 +23,13 @@ public class Turret : MonoBehaviour
     [SerializeField][Range(0.1f, 10)] float chargeTime;
     [SerializeField][Range(0.1f, 10)] float laserShrinkTime;
     [SerializeField][Range(0.1f, 10)] float chargePointSize;
+    [SerializeField][Range(0.1f, 10)] float fireTimeInterval;
     // -------- private variables --------
 
     [Header("Debug")] 
     [SerializeField] bool isOn;
     [SerializeField] bool isCharging;
+    [SerializeField] bool isCoolingDown;
     [SerializeField] bool isFiring;
     [SerializeField] bool hasBattery;
 
@@ -89,7 +92,8 @@ public class Turret : MonoBehaviour
     IEnumerator ChargingRoutine()
     {
         // Charging
-        // Play charning anim
+        // TODO: Play charning anim
+        isCharging = true;
         chargingPoint.transform.localScale = Vector3.zero;
         chargingPoint.SetActive(true);
 
@@ -114,10 +118,10 @@ public class Turret : MonoBehaviour
         Vector3 laserOriginScale = laser.transform.localScale;
         Vector2 upward = transform.TransformDirection(Vector2.up);
         RaycastHit2D hit = Physics2D.Raycast(chargingPoint.transform.position, upward, laserOriginScale.x, hitLayer);
-        laser.transform.localScale = new Vector3(hit.distance, laser.transform.localScale.y, 1);
         laser.SetActive(true);
         if (hit)
         {
+            laser.SetLocalScaleX(hit.distance);
             Debug.Log("Turret hit: " + hit.transform.name);
             if (hit.transform.TryGetComponent(out Player player))
             {
@@ -141,5 +145,9 @@ public class Turret : MonoBehaviour
         laser.SetActive(false);
         laser.transform.localScale = laserOriginScale;
         isFiring = false;
+
+        isCoolingDown = true;
+        yield return new WaitForSeconds(fireTimeInterval);
+        isCoolingDown = false;
 	}
 }
