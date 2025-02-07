@@ -4,13 +4,16 @@ using System.Collections;
 [RequireComponent(typeof(InRangeDetect))]
 public class Turret : MonoBehaviour
 {
-    public bool IsOn { get => isOn;}
-    public bool HasBattery { get => hasBattery; }
+    public bool IsOn { get => isOn; set => isOn = value;}
+    public bool HasBattery { get => hasBattery; set => hasBattery = value;}
+	public bool IsFiring  {get => isFiring; set => isFiring = value;}
+	public bool IsCharging {get => isCharging; set => isCharging = value;}
 
     // These three are for testing, need to use anim in the future
     public GameObject bodyPart;
     public GameObject chargingPoint;
     public GameObject laser;
+	ITurretBehaviour turretBehaviour;
 
     // -------- private variables --------
     [Header("Turret Attribute")]
@@ -34,6 +37,7 @@ public class Turret : MonoBehaviour
     private void Start()
     {
         inRangeDetector = GetComponent<InRangeDetect>();
+		turretBehaviour = GetComponent<ITurretBehaviour>();
         bodyPart.GetComponent<SpriteRenderer>().color = Color.green; // For battery test
         chargingPoint.SetActive(false);
         laser.SetActive(false);
@@ -46,33 +50,7 @@ public class Turret : MonoBehaviour
     private void Update()
     {
         isOn = inRangeDetector.IsTargetInRange();
-        if (hasBattery && isOn)
-        {
-            // Charge and fire
-            if (!isCharging && Input.GetKeyDown(KeyCode.J))
-            {
-                isCharging = true;
-                StartCoroutine(ChargingRoutine());
-            }
-            if (!isFiring)
-            {
-                TurnToTarget();
-            }
-        }
-
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            if (hasBattery)
-            {
-                hasBattery = false;
-                bodyPart.GetComponent<SpriteRenderer>().color = Color.gray;
-            }
-            else
-            { 
-                hasBattery = true;
-                bodyPart.GetComponent<SpriteRenderer>().color = Color.green;
-			}
-        }
+        turretBehaviour.Act(this);
     }
 
     public void RemoveBattery()
@@ -93,13 +71,20 @@ public class Turret : MonoBehaviour
         laser.SetLocalScaleX(maxLength);
 	}
 
-    private void TurnToTarget()
+    public void TurnToTarget()
     {
         Vector2 lookDir = inRangeDetector.Target.transform.position - transform.position;
         float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;
         Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, angle));
         transform.rotation = Quaternion.LerpUnclamped(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
     }
+
+	public void StartFireRoutine(){
+        StartCoroutine(FireRoutine());
+	}
+	public void StartChargingRoutine(){
+		StartCoroutine(ChargingRoutine());
+	}
 
     IEnumerator ChargingRoutine()
     {
