@@ -11,11 +11,27 @@ public class FruitScale : MonoBehaviour
 
     [SerializeField]
     [Range(FruitScalePuzzle.FRUIT_MIN_WEIGHT, FruitScalePuzzle.FRUIT_MAX_WEIGHT)]
-    private int value;
-    [SerializeField] private bool isStorage;
+    private int scaleValue;
+    public bool IsStorage
+    { get; set; }
     [SerializeField] private Fruit fruit;
+    public Fruit Fruit
+    {
+        get => fruit;
+        set { fruit = value; }
+    }
+    public BoxCollider2D Collider2D
+    { get; set; }
 
-    public bool IsStorage() { return isStorage; }
+    /// <summary>
+    /// Initialize collider reference and set initial Y position
+    /// </summary>
+    public void InitializeScale()
+    {
+        Collider2D = gameObject.GetComponent<BoxCollider2D>();
+        Collider2D.enabled = false;
+        SetPositionY();
+    }
 
     /// <summary>
     /// Tries to place a fruit on this scale
@@ -29,15 +45,6 @@ public class FruitScale : MonoBehaviour
     }
 
     /// <summary>
-    /// Setter for the fruit instance variable.
-    /// </summary>
-    /// <param name="fruit">The fruit placed on the scale</param>
-    public void SetFruit(Fruit fruit)
-    {
-        this.fruit = fruit;
-    }
-
-    /// <summary>
     /// Calculates the difference between the scale's value and the weight of 
     /// the fruit on it. Can be used for determining visual offset when a fruit 
     /// is placed.
@@ -45,20 +52,19 @@ public class FruitScale : MonoBehaviour
     /// <returns>The difference between the scale's value and weight of the fruit</returns>
     public int CalcWeightDiff()
     {
-        if(fruit == null) return value;
-        else return value - fruit.GetWeight();
+        if(fruit == null) return scaleValue;
+        else return scaleValue - fruit.Weight;
     }
 
     /// <summary>
-    /// Sets the vertical position of the scale to show its balance. May be 
-    /// replaced with a coroutine for smooth movement.
+    /// Immediately sets the vertical position of the scale to show its balance.
     /// </summary>
     public void SetPositionY()
     {
         transform.localPosition = new Vector3
         (
             transform.localPosition.x,
-            Mathf.Max(CalcWeightDiff() * OFFSET_MULTIPLIER, -1),
+            Mathf.Max(CalcWeightDiff() * OFFSET_MULTIPLIER, -1 * OFFSET_MULTIPLIER),
             transform.localPosition.z
         );
     }
@@ -72,7 +78,7 @@ public class FruitScale : MonoBehaviour
         Vector3 target = new Vector3
         (
             transform.localPosition.x,
-            Mathf.Max(CalcWeightDiff() * OFFSET_MULTIPLIER, -1),
+            Mathf.Max(CalcWeightDiff() * OFFSET_MULTIPLIER, -1 * OFFSET_MULTIPLIER),
             transform.localPosition.z
         );
 
