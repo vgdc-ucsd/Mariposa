@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8735546968983528647}
   - component: {fileID: 1149912641927170045}
   - component: {fileID: 1293031241779685936}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: RengeDetector_Attack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -64,7 +64,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49c7eb40c50f94f5da5a52e4b5e7afd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  description: The `Target GameObject` will be setup as the Turret's target
+  description: The Target GameObject will be setup as the Turret's target
 --- !u!1 &4500608776631591427
 GameObject:
   m_ObjectHideFlags: 0
@@ -76,7 +76,7 @@ GameObject:
   - component: {fileID: 7605113145053355007}
   - component: {fileID: 833284915798796028}
   - component: {fileID: 5895646781431159436}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: RengeDetector_Battery
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -129,7 +129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49c7eb40c50f94f5da5a52e4b5e7afd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  description: The `Target GameObject` will be setup as the Turret's target
+  description: The Target GameObject will be setup as the Turret's target
 --- !u!1 &4607164945865906330
 GameObject:
   m_ObjectHideFlags: 0
@@ -140,7 +140,7 @@ GameObject:
   m_Component:
   - component: {fileID: 626630925245366616}
   - component: {fileID: 7541580473963051580}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -226,10 +226,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1497888325757346219}
-  - component: {fileID: 477769876393530770}
+  - component: {fileID: 4648444225927750529}
   - component: {fileID: 4916113313253334998}
   - component: {fileID: 6715710922159046111}
-  m_Layer: 6
+  - component: {fileID: 8003148100234699860}
+  m_Layer: 0
   m_Name: Turret
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -257,8 +258,8 @@ Transform:
   - {fileID: 7605113145053355007}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!58 &477769876393530770
-CircleCollider2D:
+--- !u!61 &4648444225927750529
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -292,7 +293,17 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 0.7
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
 --- !u!114 &4916113313253334998
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -308,11 +319,10 @@ MonoBehaviour:
   bodyPart: {fileID: 4607164945865906330}
   chargingPoint: {fileID: 8273548997583937401}
   laser: {fileID: 6739177535207289801}
-  turretBehaviourSO: {fileID: 11400000, guid: b2e8ef9dee6404ad2a15347a3b6c3487, type: 2}
-  target: {fileID: 0}
+  player: {fileID: 0}
   hitLayer:
     serializedVersion: 2
-    m_Bits: 320
+    m_Bits: 1
   rotationSpeed: 3
   chargeTime: 1
   laserShrinkTime: 1
@@ -340,6 +350,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   description: For now, press K to take the battery off from the turret (No range
     detection yet).
+--- !u!114 &8003148100234699860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4814468383069501733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 660c71c3bbdca47bca0f590a5a101457, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6739177535207289801
 GameObject:
   m_ObjectHideFlags: 0
@@ -350,7 +372,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7257211420580705709}
   - component: {fileID: 4613307091244084585}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Laser
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -437,7 +459,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2467527455637292152}
   - component: {fileID: 6117010177785448886}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -524,7 +546,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5212190691631706109}
   - component: {fileID: 7676059915046003116}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Charging Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
