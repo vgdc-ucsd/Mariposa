@@ -81,7 +81,6 @@ public abstract class FreeBody : Body
             return;
         }
 
-        Debug.Log(hits.Length + " hits");
         if (hits.Length > 2) Debug.LogError("Can't handle more than 2 collisions at once");
 
         if (hits.Length == 1) // single collision
@@ -117,8 +116,6 @@ public abstract class FreeBody : Body
             }
             Velocity = Vector2.zero;
         }
-            //Debug.Log("normal check: " + Vector2.Dot(hit.normal, move.normalized));
-            //Debug.Log("Movement vector " + move + " caused a collision with " + hit.rigidbody.name);
     }
 
     // Drop players in the air at the start of a scene or after an interaction
