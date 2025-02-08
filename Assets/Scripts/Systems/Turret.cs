@@ -53,8 +53,8 @@ public class Turret : MonoBehaviour
         hasBattery = true;
 
         // setup rangeDetector's target to the player
-        rangeDetectorForAttack.SetTarget(player);
-        rangeDetectorForBattery.SetTarget(player);
+        rangeDetectorForAttack.SetTarget(target);
+        rangeDetectorForBattery.SetTarget(target);
     }
 
 
