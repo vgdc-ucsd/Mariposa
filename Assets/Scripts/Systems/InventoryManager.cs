@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class InventoryManager : Singleton<InventoryManager>
+public class InventoryManager : Singleton<InventoryManager>, IDataPersistence
 {
     /// <summary>
     /// list that acts as the inventory of the player
@@ -59,4 +59,25 @@ public class InventoryManager : Singleton<InventoryManager>
         }
     }
 
+    /** 
+     * Saving and loading from game data 
+     */
+
+    /// <summary>
+	/// Loads the last saved game data from the GameData object
+	/// </summary>
+	/// <param name="data">GameData object</param>
+    public void LoadData(GameData data)
+    {
+        this.Inventory = data.Inventory  
+    }
+
+    /// <summary>
+	/// Writes the current inventory to the GameData object
+	/// </summary>
+	/// <param name="data">GameData object</param>
+    public void SaveData(ref GameData data)
+    {
+        data.Inventory = this.Inventory  
+    }
 }
