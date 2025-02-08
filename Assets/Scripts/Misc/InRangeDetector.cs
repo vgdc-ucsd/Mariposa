@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class InRangeDetect : MonoBehaviour
+public class InRangeDetector : MonoBehaviour
 {
     public GameObject Target => target;
 
@@ -22,6 +22,11 @@ public class InRangeDetect : MonoBehaviour
     public float OffsetX => offsetX;
     public float OffsetY => offsetY;
 
+    public void SetTarget(GameObject newTarget)
+    {
+        target = newTarget;
+	}
+
     public bool IsTargetInRange()
     {
         float targetX = target.transform.position.x;
@@ -40,9 +45,9 @@ public class InRangeDetect : MonoBehaviour
         {
             if (IsTargetInRange()) Gizmos.color = inRange;
             else Gizmos.color = notInRange;
-            Vector3 center = new Vector3(transform.position.x + offsetX, transform.position.y + offsetY, 0);
-            Vector3 size = new Vector3(sizeX, sizeY, 0);
-            Gizmos.DrawWireCube(center, size);
         }
+        Vector3 center = new Vector3(transform.position.x + offsetX, transform.position.y + offsetY, 0);
+        Vector3 size = new Vector3(sizeX, sizeY, 0);
+        Gizmos.DrawWireCube(center, size);
     }
 }
