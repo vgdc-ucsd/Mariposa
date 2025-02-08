@@ -15,6 +15,7 @@ public class Turret : MonoBehaviour
     public GameObject chargingPoint;
     public GameObject laser;
 	ITurretBehaviour turretBehaviour;
+	public TurretBehaviourSO turretBehaviourSO;
 
     // -------- private variables --------
     [Header("Turret Attribute")]
@@ -45,7 +46,7 @@ public class Turret : MonoBehaviour
 
     private void Start()
     {
-		turretBehaviour = GetComponent<ITurretBehaviour>();
+		/*turretBehaviour = GetComponent<ITurretBehaviour>();*/
         bodyPart.GetComponent<SpriteRenderer>().color = Color.green; // For battery test
         chargingPoint.SetActive(false);
         laser.SetActive(false);
@@ -63,7 +64,7 @@ public class Turret : MonoBehaviour
     {
         isOn = rangeDetectorForAttack.IsTargetInRange();
         canRemoveBattery = rangeDetectorForBattery.IsTargetInRange();
-        turretBehaviour.Act(this);
+        turretBehaviourSO.Act(this);
         if (!hasBattery && chargingCO != null)
         {
             StopCoroutine(chargingCO);
