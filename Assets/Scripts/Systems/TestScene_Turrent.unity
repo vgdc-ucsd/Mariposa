@@ -562,6 +562,42 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &606477749 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4500608776631591427, guid: 4bee0012becff47cabc13c8cfca12144, type: 3}
+  m_PrefabInstance: {fileID: 3384522503766597323}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &606477752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 606477749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49c7eb40c50f94f5da5a52e4b5e7afd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  description: The Target GameObject will be setup as the Turret's target
+--- !u!1 &1676115093 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2961788255296094152, guid: 4bee0012becff47cabc13c8cfca12144, type: 3}
+  m_PrefabInstance: {fileID: 3384522503766597323}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1676115096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1676115093}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49c7eb40c50f94f5da5a52e4b5e7afd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  description: The Target GameObject will be setup as the Turret's target
 --- !u!1 &2057705689
 GameObject:
   m_ObjectHideFlags: 0
@@ -707,30 +743,19 @@ PrefabInstance:
       value: Turret
       objectReference: {fileID: 0}
     - target: {fileID: 4916113313253334998, guid: 4bee0012becff47cabc13c8cfca12144, type: 3}
-      propertyPath: fireTimeInterval
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 6117323216057472955, guid: 4bee0012becff47cabc13c8cfca12144, type: 3}
-      propertyPath: sizeX
-      value: 13
-      objectReference: {fileID: 0}
-    - target: {fileID: 6117323216057472955, guid: 4bee0012becff47cabc13c8cfca12144, type: 3}
-      propertyPath: sizeY
-      value: 13
-      objectReference: {fileID: 0}
-    - target: {fileID: 6117323216057472955, guid: 4bee0012becff47cabc13c8cfca12144, type: 3}
-      propertyPath: target
+      propertyPath: player
       value: 
       objectReference: {fileID: 216885358}
-    - target: {fileID: 6715710922159046111, guid: 4bee0012becff47cabc13c8cfca12144, type: 3}
-      propertyPath: description
-      value: For now, press K to take the battery off from the turret (No range detection
-        yet).
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2961788255296094152, guid: 4bee0012becff47cabc13c8cfca12144, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1676115096}
+    - targetCorrespondingSourceObject: {fileID: 4500608776631591427, guid: 4bee0012becff47cabc13c8cfca12144, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 606477752}
   m_SourcePrefab: {fileID: 100100000, guid: 4bee0012becff47cabc13c8cfca12144, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

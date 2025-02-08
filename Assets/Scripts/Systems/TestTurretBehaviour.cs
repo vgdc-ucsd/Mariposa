@@ -18,19 +18,6 @@ public class TestTurretBehaviour : MonoBehaviour, ITurretBehaviour
             }
 		}
 
-		if (Input.GetKeyDown(KeyCode.K))
-		{
-			if (turret.HasBattery)
-			{
-				turret.HasBattery = false;
-				turret.bodyPart.GetComponent<SpriteRenderer>().color = Color.gray;
-			}
-			else
-			{ 
-				turret.HasBattery = true;
-				turret.bodyPart.GetComponent<SpriteRenderer>().color = Color.green;
-			}
-		}
 	}
 
 }

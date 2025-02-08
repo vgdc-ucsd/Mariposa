@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections;
 
-[RequireComponent(typeof(InRangeDetect))]
 public class Turret : MonoBehaviour
 {
     public bool IsOn { get => isOn; set => isOn = value;}
@@ -9,6 +8,7 @@ public class Turret : MonoBehaviour
 	public bool IsFiring  {get => isFiring; set => isFiring = value;}
 	public bool IsCoolingDown {get => isCoolingDown; set => isCoolingDown = value;}
     public bool HasBattery { get => hasBattery; set => hasBattery = value;}
+    public bool CanRemoveBattery { get => canRemoveBattery; set => canRemoveBattery = value;}
 
     // These three are for testing, need to use anim in the future
     public GameObject bodyPart;
@@ -18,13 +18,19 @@ public class Turret : MonoBehaviour
 
     // -------- private variables --------
     [Header("Turret Attribute")]
+    [SerializeField] GameObject target;
     [SerializeField] LayerMask hitLayer;
     [SerializeField][Range(0.1f, 10)] float rotationSpeed;
     [SerializeField][Range(0.1f, 10)] float chargeTime;
     [SerializeField][Range(0.1f, 10)] float laserShrinkTime;
     [SerializeField][Range(0.1f, 10)] float chargePointSize;
     [SerializeField][Range(0.1f, 10)] float fireTimeInterval;
+
+    [Header("Children Range Detector")]
+    [SerializeField] InRangeDetector rangeDetectorForAttack;
+    [SerializeField] InRangeDetector rangeDetectorForBattery;
     // -------- private variables --------
+
 
     [Header("Debug")] 
     [SerializeField] bool isOn;
@@ -32,29 +38,31 @@ public class Turret : MonoBehaviour
     [SerializeField] bool isCoolingDown;
     [SerializeField] bool isFiring;
     [SerializeField] bool hasBattery;
+    [SerializeField] bool canRemoveBattery;
 
     // -------- IEnumerator --------
     IEnumerator chargingCO; // Have this so that we can stop the charging when take off the battery
 
-    // -------- Components --------
-    private InRangeDetect inRangeDetector;
-
     private void Start()
     {
-        inRangeDetector = GetComponent<InRangeDetect>();
 		turretBehaviour = GetComponent<ITurretBehaviour>();
         bodyPart.GetComponent<SpriteRenderer>().color = Color.green; // For battery test
         chargingPoint.SetActive(false);
         laser.SetActive(false);
         SetLaserMaxLength();
         hasBattery = true;
+
+        // setup rangeDetector's target to the player
+        rangeDetectorForAttack.SetTarget(player);
+        rangeDetectorForBattery.SetTarget(player);
     }
 
 
     // Charging -> Firing
     private void Update()
     {
-        isOn = inRangeDetector.IsTargetInRange();
+        isOn = rangeDetectorForAttack.IsTargetInRange();
+        canRemoveBattery = rangeDetectorForBattery.IsTargetInRange();
         turretBehaviour.Act(this);
         if (!hasBattery && chargingCO != null)
         {
@@ -62,6 +70,22 @@ public class Turret : MonoBehaviour
             StartCoroutine(ShutdownRoutine());
             chargingCO = null;
         }
+
+
+        // Remove Battery
+		if (canRemoveBattery && Input.GetKeyDown(KeyCode.K))
+		{
+			if (hasBattery)
+			{
+				hasBattery = false;
+				bodyPart.GetComponent<SpriteRenderer>().color = Color.gray;
+			}
+			else
+			{ 
+				hasBattery = true;
+				bodyPart.GetComponent<SpriteRenderer>().color = Color.green;
+			}
+		}
     }
 
     public void RemoveBattery()
@@ -69,22 +93,21 @@ public class Turret : MonoBehaviour
         hasBattery = false;
 	}
 
-
     
 
     // ---------- private functions ----------
 
     private void SetLaserMaxLength()
     {
-        float lengthX = inRangeDetector.SizeX / 2 + inRangeDetector.OffsetX;
-        float lengthY = inRangeDetector.SizeY / 2 + inRangeDetector.OffsetY;
+        float lengthX = rangeDetectorForAttack.SizeX / 2 + rangeDetectorForAttack.OffsetX;
+        float lengthY = rangeDetectorForAttack.SizeY / 2 + rangeDetectorForAttack.OffsetY;
         float maxLength = Mathf.Sqrt(Mathf.Pow(lengthX, 2) + Mathf.Pow(lengthY, 2));
         laser.SetLocalScaleX(maxLength);
 	}
 
     public void TurnToTarget()
     {
-        Vector2 lookDir = inRangeDetector.Target.transform.position - transform.position;
+        Vector2 lookDir = rangeDetectorForAttack.Target.transform.position - transform.position;
         float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;
         Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, angle));
         transform.rotation = Quaternion.LerpUnclamped(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
