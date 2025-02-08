@@ -161,7 +161,7 @@ public class PlayerMovement : FreeBody
         return false;
     }
 
-    protected virtual void Fall()
+    protected override void Fall()
     {
         if (State == BodyState.InAir)
         {
