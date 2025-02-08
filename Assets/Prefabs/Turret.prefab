@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8735546968983528647}
   - component: {fileID: 1149912641927170045}
+  - component: {fileID: 1293031241779685936}
   m_Layer: 0
   m_Name: RengeDetector_Attack
   m_TagString: Untagged
@@ -51,6 +52,19 @@ MonoBehaviour:
   offsetY: 3.3
   inRange: {r: 1, g: 0, b: 0, a: 1}
   notInRange: {r: 1, g: 1, b: 1, a: 1}
+--- !u!114 &1293031241779685936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2961788255296094152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49c7eb40c50f94f5da5a52e4b5e7afd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  description: The Target GameObject will be setup as the Turret's target
 --- !u!1 &4500608776631591427
 GameObject:
   m_ObjectHideFlags: 0
@@ -61,6 +75,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7605113145053355007}
   - component: {fileID: 833284915798796028}
+  - component: {fileID: 5895646781431159436}
   m_Layer: 0
   m_Name: RengeDetector_Battery
   m_TagString: Untagged
@@ -102,6 +117,19 @@ MonoBehaviour:
   offsetY: 0
   inRange: {r: 0.11936231, g: 0.6792453, b: 0, a: 1}
   notInRange: {r: 1, g: 1, b: 1, a: 1}
+--- !u!114 &5895646781431159436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4500608776631591427}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49c7eb40c50f94f5da5a52e4b5e7afd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  description: The Target GameObject will be setup as the Turret's target
 --- !u!1 &4607164945865906330
 GameObject:
   m_ObjectHideFlags: 0
