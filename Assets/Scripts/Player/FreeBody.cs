@@ -39,12 +39,14 @@ public abstract class FreeBody : Body
     protected const float CONTACT_OFFSET = 0.005f; // The gap between this body and a surface after a collision
     protected const float COLLIDER_SHRINK_FACTOR = 0.995f; // The factor by which the collider is shrunk to make collision smoother
 
+    protected const float LAND_SLOPE_FACTOR = 0.9f; // How horizontal a surface must be to be a ceiling or the ground
+    protected const float COLLISION_CHECK_DISTANCE = 0.1f; // how far away you have to be from a ceiling or the ground to be considered "colliding" with it
+
     protected override void Awake()
     {
         base.Awake();
         Unlock();
         SurfaceCollider = GetComponent<BoxCollider2D>();
-        
     }
 
     protected override void Update()
@@ -57,15 +59,31 @@ public abstract class FreeBody : Body
         fdt = Time.deltaTime;
 
         Fall();
+        CheckGrounded();
 
         Vector2 movement = Velocity * fdt;
         ApplyMovement(movement);
     }
 
+
     protected virtual void Fall()
     {
         if (State != BodyState.InAir) return;
         Velocity.y = Mathf.Max(Velocity.y - Gravity * fdt, -TerminalVelocity); // Cap the velocity 
+    }
+
+    protected virtual void CheckGrounded()
+    {
+        Bounds bounds = SurfaceCollider.bounds;
+        RaycastHit2D groundHit = Physics2D.BoxCast(bounds.center, bounds.size, 0f, Vector2.down, COLLISION_CHECK_DISTANCE, collisionLayer);
+        if (State != BodyState.OnGround && groundHit && groundHit.normal.normalized.y > LAND_SLOPE_FACTOR)
+        {
+            State = BodyState.OnGround;
+        }
+        else if (State == BodyState.OnGround && !groundHit)
+        {
+            State = BodyState.InAir;
+        }
     }
 
     protected virtual void ApplyMovement(Vector2 move)

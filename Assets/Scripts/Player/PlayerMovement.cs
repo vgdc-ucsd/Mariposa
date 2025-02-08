@@ -58,9 +58,6 @@ public class PlayerMovement : FreeBody
     [Tooltip("The minimum upward velocity required to corner correct")]
     [SerializeField] private float cornerCorrectMinVelocity;
 
-    private const float LAND_SLOPE_FACTOR = 0.9f; // How horizontal a surface must be to be a ceiling or the ground
-    private const float COLLISION_CHECK_DISTANCE = 0.1f; // how far away you have to be from a ceiling or the ground to be considered "colliding" with it
-
     // Useful for when their dependent values are changed during runtime
     private void InitDerivedConsts()
     {
@@ -103,7 +100,6 @@ public class PlayerMovement : FreeBody
         else if (Input.GetKey(KeyCode.A)) Move(-1);
         else Move(0);
 
-        CheckGrounded();
         CeilingCornerCorrect();
         base.FixedUpdate();
 
@@ -162,16 +158,9 @@ public class PlayerMovement : FreeBody
         Velocity.y = Mathf.Max(Velocity.y - currentGravity * fdt, -TerminalVelocity);
     }
 
-    // Updates the time of all movement-related timers
-    private void UpdateTimers(float dt)
-    {
-        if (coyoteTimeRemaining > 0) coyoteTimeRemaining -= dt;
-        if (jumpBufferTimeRemaining > 0) jumpBufferTimeRemaining -= dt;
-    }
-
     // If the player was in the air and has a barrier below it, they must now be on the ground
     // Otherwise, if the player was grounded and has no barrier below it, they must now be in the air
-    protected void CheckGrounded()
+    protected override void CheckGrounded()
     {
         Bounds bounds = SurfaceCollider.bounds;
         RaycastHit2D groundHit = Physics2D.BoxCast(bounds.center, bounds.size, 0f, Vector2.down, COLLISION_CHECK_DISTANCE, collisionLayer);
@@ -188,8 +177,8 @@ public class PlayerMovement : FreeBody
         }
     }
 
-    // This override is just for corner correction
-    protected void CeilingCornerCorrect()
+    // Shift the player horizontally when they barely bump a ceiling
+    private void CeilingCornerCorrect()
     {
         Bounds bounds = SurfaceCollider.bounds;
         RaycastHit2D ceilingHit = Physics2D.BoxCast(bounds.center, bounds.size, 0f, Vector2.up, COLLISION_CHECK_DISTANCE, collisionLayer);
@@ -208,5 +197,12 @@ public class PlayerMovement : FreeBody
         {
             transform.position += (rightInsetDistance + CONTACT_OFFSET) * Vector3.right;
         }
+    }
+
+    // Updates the time of all movement-related timers
+    private void UpdateTimers(float dt)
+    {
+        if (coyoteTimeRemaining > 0) coyoteTimeRemaining -= dt;
+        if (jumpBufferTimeRemaining > 0) jumpBufferTimeRemaining -= dt;
     }
 }
