@@ -36,7 +36,10 @@ public class PlayerMovement : FreeBody
 
     [Header("Vertical Parameters")]
     [Tooltip("Vertical speed is set to this value on jump")]
-    public float JumpSpeed = 6; // todo: change to define height
+    public float JumpHeight = 6;
+
+    [Tooltip("Checks if Player can use Double Jump")]
+    public bool DoubleJump = true; 
 
     [Tooltip("The amount of extra time the player has to jump after leaving the ground")]
     [SerializeField] private float coyoteTime;
@@ -80,7 +83,7 @@ public class PlayerMovement : FreeBody
         base.Update();
 
         // All "Down" inputs should be in Update() to avoid inputs dropping between physics frames
-        if (Input.GetKeyDown(KeyCode.Space)) Jump();
+        if (Input.GetKeyDown(KeyCode.Space))Jump();
     }
 
     private void OnValidate()
@@ -129,9 +132,15 @@ public class PlayerMovement : FreeBody
     {
         if (State == BodyState.OnGround || coyoteTimeRemaining > 0f)
         {
-            Velocity.y = JumpSpeed;
+            Velocity.y = JumpHeight;
             StartFalling();
             coyoteTimeRemaining = 0f;   // consume coyote time
+        }
+        else if(DoubleJump){
+            Velocity.y = 1.25f * JumpHeight;
+            DoubleJump = false;
+            StartFalling();
+            coyoteTimeRemaining = 0f;
         }
         else if (State != BodyState.OnGround && coyoteTimeRemaining <= 0.0f)
         {
@@ -146,9 +155,25 @@ public class PlayerMovement : FreeBody
         if (base.Land(hit))
         {
             if (jumpBufferTimeRemaining > 0.0f) Jump();
+            DoubleJump = true; 
             return true;
         }
         return false;
+    }
+
+    protected virtual void Fall()
+    {
+        if (State == BodyState.InAir)
+        {
+            if (Velocity.y > 0)
+            {
+                Velocity.y -= Gravity * fdt;
+            }
+            else
+            {
+                Velocity.y -= 0.6f * Gravity * fdt;
+            }
+        }
     }
 
     protected override bool StartFalling()
