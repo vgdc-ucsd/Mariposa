@@ -226,14 +226,15 @@ public abstract class FreeBody : Body
         else if (dir == 1) Velocity.x = Mathf.Min(0, Velocity.x);
     }
 
-    protected virtual void CheckTouchingCeiling()
+    protected virtual RaycastHit2D CheckTouchingCeiling()
     {
         var ceilCast = CollisionBoxCast(Vector2.up);
-        if (!ceilCast) return;
+        if (!ceilCast) return ceilCast;
         if (SnapToSurface(ceilCast, true))
         {
             Velocity.y = Mathf.Min(0, Velocity.y);
         }
+        return ceilCast;
     }
 
 

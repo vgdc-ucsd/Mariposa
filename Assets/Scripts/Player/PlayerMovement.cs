@@ -46,6 +46,12 @@ public class PlayerMovement : FreeBody
     [SerializeField] private float jumpBufferTime;
     private float jumpBufferTimeRemaining = 0.0f;
 
+    [Tooltip("The maximum horizontal distance by which the player's collider is inset the barrier's collider for corner correction")]
+    [SerializeField] private float cornerCorrectMaxInsetDistance;
+
+    [Tooltip("The minimum upward velocity required to corner correct")]
+    [SerializeField] private float cornerCorrectMinVelocity;
+
 
     // Useful for when their dependent values are changed during runtime
     private void InitDerivedConsts()
@@ -162,5 +168,26 @@ public class PlayerMovement : FreeBody
         if (jumpBufferTimeRemaining > 0) jumpBufferTimeRemaining -= dt;
     }
 
+    // This override is just for corner correction
+    protected override RaycastHit2D CheckTouchingCeiling()
+    {
+        var ceilCast = base.CheckTouchingCeiling();
 
+        if (!ceilCast) return ceilCast;
+        if (Velocity.y < cornerCorrectMinVelocity) return ceilCast;
+
+        float leftInsetDistance = Mathf.Abs(SurfaceCollider.bounds.max.x - ceilCast.collider.bounds.min.x);
+        if (leftInsetDistance < cornerCorrectMaxInsetDistance)
+        {
+            transform.position += leftInsetDistance * Vector3.left;
+        }
+
+        float rightInsetDistance = Mathf.Abs(SurfaceCollider.bounds.min.x - ceilCast.collider.bounds.max.x);
+        if (rightInsetDistance < cornerCorrectMaxInsetDistance)
+        {
+            transform.position += rightInsetDistance * Vector3.right;
+        }
+
+        return ceilCast;
+    }
 }
