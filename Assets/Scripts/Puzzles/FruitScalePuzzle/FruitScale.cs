@@ -12,6 +12,11 @@ public class FruitScale : MonoBehaviour
     [SerializeField]
     [Range(FruitScalePuzzle.FRUIT_MIN_WEIGHT, FruitScalePuzzle.FRUIT_MAX_WEIGHT)]
     private int scaleValue;
+    public int ScaleValue
+    {
+        get => scaleValue;
+        set { scaleValue = value; }
+    }
     public bool IsStorage
     { get; set; }
     [SerializeField] private Fruit fruit;

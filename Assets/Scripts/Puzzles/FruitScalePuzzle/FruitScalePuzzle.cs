@@ -41,9 +41,11 @@ public class FruitScalePuzzle : Puzzle
 
     [SerializeField] private List<FruitScale> scales;
     [SerializeField] private List<Fruit> fruits;
+    private List<int> weights = new();
 
     /// <summary>
-    /// Ensure there is only one instance of the puzzle's singleton
+    /// Ensure there is only one instance of the puzzle's singleton.
+    /// Initialize random values, set initial placements for fruits and scales.
     /// </summary>
     void Awake()
     {
@@ -53,6 +55,29 @@ public class FruitScalePuzzle : Puzzle
             Debug.LogWarning("Tried to create more than one instance of the FruitScalePuzzle singleton!");
             Destroy(this);
         }
+
+        if(scales.Count != fruits.Count)
+        {
+            Debug.LogWarning("Invalid number of fruits and scales");
+        }
+
+        // Create array of possible weights
+        int newWeight;
+        for(int i = 0; i < fruits.Count; ++i)
+        {
+            newWeight = Random.Range(FRUIT_MIN_WEIGHT, FRUIT_MAX_WEIGHT);
+            weights.Add(newWeight);
+            fruits[i].Weight = newWeight;
+            scales[i].ScaleValue = newWeight;
+        }
+
+        // TODO: debug print generated weights, remove later
+        string weightString = "{ ";
+        foreach(int i in weights)
+        {
+            weightString += i + " ";
+        }
+        Debug.Log("weights: " + weightString + "}");
 
         // Randomize fruit starting scales
         foreach(FruitScale scale in scales)
@@ -64,8 +89,6 @@ public class FruitScalePuzzle : Puzzle
             fruits.Remove(fruit);
             scale.InitializeScale();
         }
-
-        // TODO: randomize scale locations
     }
 
     /// <summary>
@@ -97,16 +120,17 @@ public class FruitScalePuzzle : Puzzle
         // Check if puzzle is solved after each action
         if(CheckScales())
         {
-            // TODO: trigger after final scale finishes moving into its balanced position place
+            // TODO: trigger after final scale finishes moving into its balanced position place?
             // Currently triggers instantly when the last fruit is placed on its scale
             IsComplete = true;
             OnComplete();
         }
     }
-
+    
     /// <summary>
     /// Check if all scales are properly balanced
     /// </summary>
+    /// <returns>True if all scales are balanced, false otherwise</returns>
     private bool CheckScales()
     {
         foreach(FruitScale scale in scales)
