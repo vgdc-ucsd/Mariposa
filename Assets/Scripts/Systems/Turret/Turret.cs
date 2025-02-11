@@ -9,6 +9,7 @@ public class Turret : MonoBehaviour
 	public bool IsCoolingDown {get => isCoolingDown; set => isCoolingDown = value;}
     public bool HasBattery { get => hasBattery; set => hasBattery = value;}
     public bool CanRemoveBattery { get => canRemoveBattery; set => canRemoveBattery = value;}
+    public bool CanRotate { get => canRotate; set => canRotate = value;}
 
     // These three are for testing, need to use anim in the future
     public GameObject bodyPart;
@@ -26,6 +27,7 @@ public class Turret : MonoBehaviour
     [SerializeField][Range(0.1f, 10)] float laserShrinkTime;
     [SerializeField][Range(0.1f, 10)] float chargePointSize;
     [SerializeField][Range(0.1f, 10)] float fireTimeInterval;
+    [SerializeField] bool canRotate;
 
     [Header("Children Range Detector")]
     [SerializeField] InRangeDetector rangeDetectorForAttack;
@@ -108,10 +110,13 @@ public class Turret : MonoBehaviour
 
     public void TurnToTarget()
     {
-        Vector2 lookDir = rangeDetectorForAttack.Target.transform.position - transform.position;
-        float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;
-        Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, angle));
-        transform.rotation = Quaternion.LerpUnclamped(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        if (canRotate)
+        {
+            Vector2 lookDir = rangeDetectorForAttack.Target.transform.position - transform.position;
+            float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;
+            Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, angle));
+            transform.rotation = Quaternion.LerpUnclamped(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        }
     }
 
 	public void StartFireRoutine()
