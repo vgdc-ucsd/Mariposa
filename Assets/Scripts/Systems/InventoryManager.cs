@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class InventoryManager : Singleton<InventoryManager>
+public class InventoryManager : MonoBehaviour
 {
     /// <summary>
     /// list that acts as the inventory of the player
