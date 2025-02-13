@@ -309,15 +309,71 @@ MonoBehaviour:
   chargingPoint: {fileID: 8273548997583937401}
   laser: {fileID: 6739177535207289801}
   turretBehaviourSO: {fileID: 11400000, guid: b2e8ef9dee6404ad2a15347a3b6c3487, type: 2}
+  hitPlayerEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4916113313253334998}
+        m_TargetAssemblyTypeName: Turret, Assembly-CSharp
+        m_MethodName: TestEventOne
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 4916113313253334998}
+        m_TargetAssemblyTypeName: Turret, Assembly-CSharp
+        m_MethodName: TestEventTwo
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  hitBreakableEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4916113313253334998}
+        m_TargetAssemblyTypeName: Turret, Assembly-CSharp
+        m_MethodName: TestEventThree
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 4916113313253334998}
+        m_TargetAssemblyTypeName: Turret, Assembly-CSharp
+        m_MethodName: TestEventFour
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   target: {fileID: 0}
   hitLayer:
     serializedVersion: 2
     m_Bits: 320
+  interactKey: 107
   rotationSpeed: 3
   chargeTime: 1
   laserShrinkTime: 1
   chargePointSize: 1
   fireTimeInterval: 3
+  canRotate: 0
   rangeDetectorForAttack: {fileID: 1149912641927170045}
   rangeDetectorForBattery: {fileID: 833284915798796028}
   isOn: 0
@@ -338,8 +394,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49c7eb40c50f94f5da5a52e4b5e7afd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  description: For now, press K to take the battery off from the turret (No range
-    detection yet).
+  description: 'Press `interactKey` to take the battery off from the turret when
+    player is in the RangeDetectorForBattery.
+
+    The `HitBreakableEvent()` is not
+    detecting if the hit is a breakable or not.'
 --- !u!1 &6739177535207289801
 GameObject:
   m_ObjectHideFlags: 0

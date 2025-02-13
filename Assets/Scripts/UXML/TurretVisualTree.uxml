@@ -1,15 +1,21 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
-    <engine:VisualElement name="Panel1" style="flex-grow: 1;">
+    <engine:VisualElement name="AttributePanel" style="flex-grow: 1; margin-bottom: 20px;">
         <editor:PropertyField binding-path="target" name="target" />
         <editor:PropertyField binding-path="hitLayer" name="hitLayer" />
+        <editor:PropertyField binding-path="interactKey" name="interactKey" />
         <editor:PropertyField binding-path="chargeTime" name="chargeTime" />
         <editor:PropertyField binding-path="laserShrinkTime" name="laserShrinkTime" />
         <editor:PropertyField binding-path="chargePointSize" name="chargePointSize" />
         <editor:PropertyField binding-path="fireTimeInterval" name="fireTimeInterval" />
-        <engine:Toggle label="canRotate" name="canRotateToggle" />
+        <engine:Toggle label="Can Rotate" name="canRotateToggle" />
         <editor:PropertyField binding-path="rotationSpeed" name="rotationSpeed" />
         <editor:PropertyField binding-path="rangeDetectorForAttack" name="rangeDetectorForAttack" />
         <editor:PropertyField binding-path="rangeDetectorForBattery" name="rangeDetectorForBattery" />
+    </engine:VisualElement>
+    <engine:VisualElement name="HitEventPanel" style="flex-grow: 1;">
+        <engine:Label text="(The events will be called in order)" name="hintText" />
+        <editor:PropertyField binding-path="hitPlayerEvent" name="hitPlayerEvent" />
+        <editor:PropertyField binding-path="hitBreakableEvent" name="hitBreakableEvent" />
     </engine:VisualElement>
     <engine:VisualElement name="DebugPanel" style="flex-grow: 1; display: flex; visibility: visible;">
         <editor:PropertyField binding-path="isOn" name="IsOn" />
