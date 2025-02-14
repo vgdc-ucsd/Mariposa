@@ -58,6 +58,9 @@ public class PlayerMovement : FreeBody
     [Tooltip("The minimum upward velocity required to corner correct")]
     [SerializeField] private float cornerCorrectMinVelocity;
 
+    // 1 = right, -1 = left
+    public int FacingDirection;
+
     // Useful for when their dependent values are changed during runtime
     private void InitDerivedConsts()
     {
@@ -106,9 +109,20 @@ public class PlayerMovement : FreeBody
         UpdateTimers(fdt);
     }
 
+    // turn towards last facing direction
+    public void TurnTowards(int dir)
+    {
+        if (dir != 0)
+        {
+            FacingDirection = dir;
+        }
+    }
+
     // Move by player input: 1 = right, -1 = left, 0 = none
     private void Move(int dir)
     {
+
+        
         // Check which acceleration parameter to use
         float accelerationParam = (dir * Velocity.x > 0)
             ? (State == BodyState.InAir)
