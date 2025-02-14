@@ -7,6 +7,8 @@ public class Player : MonoBehaviour
 
 	public static Player ActivePlayer;
 	private bool playerDebug;
+	public PlayerMovement Movement;
+
 
 	private void Awake()
 	{
@@ -14,6 +16,7 @@ public class Player : MonoBehaviour
 		{
 			ActivePlayer = this;
 		}
+		Movement = GetComponent<PlayerMovement>();
 	}
 
 	void Start()
