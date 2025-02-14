@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEditor.Rendering;
@@ -27,33 +28,25 @@ public abstract class FreeBody : Body
 
     [Tooltip("The downward vertical acceleration applied when in the air")]
     public float Gravity;
+
     [Tooltip("The maximum fall velocity")]
     [SerializeField] protected float TerminalVelocity;
 
     // Layers that this object receives forces from
-    [SerializeField] private LayerMask collisionLayer;
-
-    private const float COLLISION_CHECK_DISTANCE = 0.1f; // how far away you have to be from a surface to be considered "colliding" with it
-
-    // collision boxcasts have widths smaller than the player hitbox by this amount on both sides
-    private const float COLLISION_SURFACE_SPACING_VERT = 0.05f; // for vertical boxcasts
-    private const float COLLISION_SURFACE_SPACING_HORZ = 0.15f; // for horizontal boxcasts, increase for more vertical corner correction
-
-    private const float COLLISION_BOXCAST_SIZE = 0.1f;
-
-    // how far away you have to be from a surface to be considered "collidiing" with it,
-    // snapping towards the surface afterwards
-    private const float LAND_SLOPE_FACTOR = 0.9f;
+    [SerializeField] protected LayerMask collisionLayer;
 
 
-    public bool touchingLeft, touchingRight;
+    protected const float CONTACT_OFFSET = 0.005f; // The gap between this body and a surface after a collision
+    protected const float COLLIDER_SHRINK_FACTOR = 0.995f; // The factor by which the collider is shrunk to make collision smoother
+
+    protected const float LAND_SLOPE_FACTOR = 0.9f; // How horizontal a surface must be to be a ceiling or the ground
+    protected const float COLLISION_CHECK_DISTANCE = 0.1f; // how far away you have to be from a ceiling or the ground to be considered "colliding" with it
 
     protected override void Awake()
     {
         base.Awake();
         Unlock();
         SurfaceCollider = GetComponent<BoxCollider2D>();
-        
     }
 
     protected override void Update()
@@ -67,11 +60,80 @@ public abstract class FreeBody : Body
 
         Fall();
         CheckGrounded();
-        CheckTouchingWalls();
-        CheckTouchingCeiling();
-        ApplyFriction();
 
-        base.FixedUpdate();
+        Vector2 movement = Velocity * fdt;
+        ApplyMovement(movement);
+    }
+
+
+    protected virtual void Fall()
+    {
+        if (State != BodyState.InAir) return;
+        Velocity.y = Mathf.Max(Velocity.y - Gravity * fdt, -TerminalVelocity); // Cap the velocity 
+    }
+
+    protected virtual void CheckGrounded()
+    {
+        Bounds bounds = SurfaceCollider.bounds;
+        RaycastHit2D groundHit = Physics2D.BoxCast(bounds.center, bounds.size, 0f, Vector2.down, COLLISION_CHECK_DISTANCE, collisionLayer);
+        if (State != BodyState.OnGround && groundHit && groundHit.normal.normalized.y > LAND_SLOPE_FACTOR)
+        {
+            State = BodyState.OnGround;
+        }
+        else if (State == BodyState.OnGround && !groundHit)
+        {
+            State = BodyState.InAir;
+        }
+    }
+
+    protected virtual void ApplyMovement(Vector2 move)
+    {
+        if (Mathf.Approximately(move.magnitude, 0f)) return; // This avoids weird imprecision errors
+
+        Bounds bounds = SurfaceCollider.bounds;
+        RaycastHit2D[] hits = Physics2D.BoxCastAll (bounds.center, bounds.size * COLLIDER_SHRINK_FACTOR, 0f, move.normalized, move.magnitude, collisionLayer);
+
+        if (hits.Length == 0) // no collisions
+        {
+            transform.position += (Vector3)move;
+            return;
+        }
+
+        if (hits.Length > 2) Debug.LogError("Can't handle more than 2 collisions at once");
+
+        if (hits.Length == 1) // single collision
+        {
+            RaycastHit2D hit = hits[0];
+
+            // Snap to the surface plus a small offset to avoid imprecision errors
+            transform.position = hits[0].centroid + hits[0].normal.normalized * CONTACT_OFFSET;
+
+            // Resolve the collision
+            if (Mathf.Abs(hit.normal.y) > Mathf.Abs(hit.normal.x)) // Vertical collision
+            {
+                Velocity.y = 0;
+                transform.position += (1 - hit.fraction) * move.x * Vector3.right;
+            }
+            else // Horizontal collision
+            {
+                Velocity.x = 0;
+                transform.position += (1 - hit.fraction) * move.y * Vector3.up;
+            }
+        }
+        else // double collision
+        {
+            if (Mathf.Abs(hits[0].normal.y) > Mathf.Abs(hits[0].normal.x)) // hit 0 was the vertical collision
+            {
+                transform.position = new Vector2(hits[1].centroid.x + CONTACT_OFFSET * hits[1].normal.normalized.x, 
+                                                hits[0].centroid.y + CONTACT_OFFSET * hits[0].normal.normalized.y);
+            }
+            else // hit 1 was the vertical collision
+            {
+                transform.position = new Vector2(hits[0].centroid.x + CONTACT_OFFSET * hits[0].normal.normalized.x, 
+                                                hits[1].centroid.y + CONTACT_OFFSET * hits[1].normal.normalized.y);
+            }
+            Velocity = Vector2.zero;
+        }
     }
 
     // Drop players in the air at the start of a scene or after an interaction
@@ -79,175 +141,4 @@ public abstract class FreeBody : Body
     {
         State = BodyState.InAir;
     }
-
-    // Apply gravitational acceleration in the air
-    protected virtual void Fall()
-    {
-        if (State == BodyState.InAir)
-        {
-            if (Velocity.y > -TerminalVelocity) {
-                Velocity.y -= Gravity * fdt;
-            }
-            else {
-                Velocity.y = -TerminalVelocity;
-            }
-        }
-    }
-
-    // Projects a boxcast from the edge of the player towards dir for a fixed distance
-    // Retruns raycast results
-    // dir must be an orthogonal basis vector (Vector2.up, down, left, right)
-    private RaycastHit2D CollisionBoxCast(Vector2 dir)
-    {
-        float surfaceSize, normalSize;
-        Vector2 boxSize;
-        if (dir.x == 0)
-        {
-            // vertical
-
-            // box doesn't cover player width fully for corner correction
-            surfaceSize = SurfaceCollider.bounds.size.x - COLLISION_SURFACE_SPACING_VERT * 2;
-            // height of the player
-            normalSize = SurfaceCollider.bounds.size.y;
-            // boxcast envelops bottom half of the player
-            boxSize = new Vector2(surfaceSize, COLLISION_BOXCAST_SIZE);
-        }
-        else
-        {
-            // horizontal
-            surfaceSize = SurfaceCollider.bounds.size.y - COLLISION_SURFACE_SPACING_HORZ * 2;
-            normalSize = SurfaceCollider.bounds.size.x;
-            boxSize = new Vector2(COLLISION_BOXCAST_SIZE, surfaceSize);
-        }
-
-        // boxcast edge starts from center of the player
-        Vector2 boxCastStartPos = (Vector2)SurfaceCollider.bounds.center 
-            + dir * (COLLISION_BOXCAST_SIZE / 2);
-        float distance = normalSize / 2 - COLLISION_BOXCAST_SIZE / 2 + COLLISION_CHECK_DISTANCE;
-
-
-        RaycastHit2D groundHit = Physics2D.BoxCast(
-            boxCastStartPos,
-            boxSize,
-            0f, dir,
-            distance,
-            collisionLayer);
-        return groundHit;
-    }
-
-    // Snaps the player to toubhing a surface when they come close to it
-    // checkVelocity: whether snapping occurs only if player is moving towards the surface
-    // returns whether snap actually occurred
-    protected virtual bool SnapToSurface(RaycastHit2D hit, bool checkVelocity = false)
-    {
-        // reject if player is moving away from the surface
-        if (checkVelocity && Vector2.Dot(hit.normal, Velocity) >= -0.0001f) return false;
-
-        float normalSize = Mathf.Abs(Vector2.Dot(SurfaceCollider.bounds.size, hit.normal));
-
-        // Calculate the correction based on the separation and normal
-        Vector2 correction = hit.normal * -(hit.distance - normalSize / 2 + COLLISION_BOXCAST_SIZE);
-
-        // Apply the correction and snap to surface
-        transform.position += (Vector3)correction;
-        return true;
-    }
-
-    // If this body is in the air and has a barrier below it, land it
-    // Otherwise, if this body is grounded and there is no barrier below it, start falling
-    protected virtual void CheckGrounded()
-    {
-        var groundHit = CollisionBoxCast(Vector2.down);
-        if (groundHit)
-        {
-            if (groundHit.normal.normalized.y > LAND_SLOPE_FACTOR)
-            {
-                if (State == BodyState.InAir) Land(groundHit);
-            }
-        }
-        else
-        {
-            if (State == BodyState.OnGround)
-            {
-                StartFalling();
-            }
-        }
-        
-    }
-
-    // returns: whether there was an actual state change
-    protected virtual bool StartFalling()
-    {
-        if (State == BodyState.OnGround)
-        {
-            State = BodyState.InAir;
-            return true;
-        }
-        return false;
-    }
-
-    // returns: whether there was an actual state change
-    protected virtual bool Land(RaycastHit2D hit)
-    {
-        if (State == BodyState.InAir)
-        {
-            if (SnapToSurface(hit, true))
-            {
-                State = BodyState.OnGround;
-                Velocity.y = 0;
-                return true;
-            }
-        }
-        return false;
-    }
-
-
-
-    protected virtual void CheckTouchingWalls()
-    {
-        var leftCast = CollisionBoxCast(Vector2.left);
-        var rightCast = CollisionBoxCast(Vector2.right);
-        touchingLeft = leftCast;
-        touchingRight = rightCast;
-        if (leftCast)
-        {
-            TouchWall(leftCast, -1);
-        }
-        if (rightCast) TouchWall(rightCast, 1);
-    }
-
-
-    // dir -1 = left, 1 = right
-    protected virtual void TouchWall(RaycastHit2D hit, int dir)
-    {
-        // don't reset velocity if moving away from wall
-        if (!SnapToSurface(hit, true)) return;
-        if (dir == -1) Velocity.x = Mathf.Max(0, Velocity.x);
-        else if (dir == 1) Velocity.x = Mathf.Min(0, Velocity.x);
-    }
-
-    protected virtual RaycastHit2D CheckTouchingCeiling()
-    {
-        var ceilCast = CollisionBoxCast(Vector2.up);
-        if (!ceilCast) return ceilCast;
-        if (SnapToSurface(ceilCast, true))
-        {
-            Velocity.y = Mathf.Min(0, Velocity.y);
-        }
-        return ceilCast;
-    }
-
-
-    protected virtual void ApplyFriction()
-    {
-        if (State == BodyState.OnGround)
-        {
-            // ...
-        }
-        else if (State == BodyState.InAir)
-        {
-            // ...
-        }
-    }
-
 }

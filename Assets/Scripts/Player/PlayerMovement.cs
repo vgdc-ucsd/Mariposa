@@ -39,7 +39,7 @@ public class PlayerMovement : FreeBody
     public float JumpHeight = 6;
 
     [Tooltip("Checks if Player can use Double Jump")]
-    public bool DoubleJump = true; 
+    public bool CanDoubleJump = true; 
 
     [Tooltip("The amount of extra time the player has to jump after leaving the ground")]
     [SerializeField] private float coyoteTime;
@@ -49,12 +49,14 @@ public class PlayerMovement : FreeBody
     [SerializeField] private float jumpBufferTime;
     private float jumpBufferTimeRemaining = 0.0f;
 
+    [Tooltip("Multiplier applied to the player's gravity when they are falling")]
+    [SerializeField] private float fallingGravityMultiplier;
+
     [Tooltip("The maximum horizontal distance by which the player's collider is inset the barrier's collider for corner correction")]
     [SerializeField] private float cornerCorrectMaxInsetDistance;
 
     [Tooltip("The minimum upward velocity required to corner correct")]
     [SerializeField] private float cornerCorrectMinVelocity;
-
 
     // Useful for when their dependent values are changed during runtime
     private void InitDerivedConsts()
@@ -94,11 +96,12 @@ public class PlayerMovement : FreeBody
     
     protected override void FixedUpdate()
     {
-        base.FixedUpdate();
-
         if (Input.GetKey(KeyCode.D)) Move(1);
         else if (Input.GetKey(KeyCode.A)) Move(-1);
         else Move(0);
+
+        CeilingCornerCorrect();
+        base.FixedUpdate();
 
         UpdateTimers(fdt);
     }
@@ -126,64 +129,74 @@ public class PlayerMovement : FreeBody
         Velocity.x += acceleration * fdt * Mathf.Sign(deltaV);
     }
 
-
     // Directly set the player's y velocity
     private void Jump()
     {
         if (State == BodyState.OnGround || coyoteTimeRemaining > 0f)
         {
             Velocity.y = JumpHeight;
-            StartFalling();
             coyoteTimeRemaining = 0f;   // consume coyote time
         }
-        else if(DoubleJump){
+        else if(CanDoubleJump){
             Velocity.y = 1.25f * JumpHeight;
-            DoubleJump = false;
-            StartFalling();
+            CanDoubleJump = false;
             coyoteTimeRemaining = 0f;
         }
         else if (State != BodyState.OnGround && coyoteTimeRemaining <= 0.0f)
         {
             jumpBufferTimeRemaining = jumpBufferTime;
-            return;
         }
-
     }
 
-    protected override bool Land(RaycastHit2D hit)
-    {
-        if (base.Land(hit))
-        {
-            if (jumpBufferTimeRemaining > 0.0f) Jump();
-            DoubleJump = true; 
-            return true;
-        }
-        return false;
-    }
 
+    // This override makes the player fall slower/faster when falling
     protected override void Fall()
     {
-        if (State == BodyState.InAir)
+        if (State != BodyState.InAir) return;
+
+        float currentGravity = Velocity.y > 0 ? Gravity : Gravity * fallingGravityMultiplier;
+        Velocity.y = Mathf.Max(Velocity.y - currentGravity * fdt, -TerminalVelocity);
+    }
+
+    // If the player was in the air and has a barrier below it, they must now be on the ground
+    // Otherwise, if the player was grounded and has no barrier below it, they must now be in the air
+    protected override void CheckGrounded()
+    {
+        Bounds bounds = SurfaceCollider.bounds;
+        RaycastHit2D groundHit = Physics2D.BoxCast(bounds.center, bounds.size, 0f, Vector2.down, COLLISION_CHECK_DISTANCE, collisionLayer);
+        if (State != BodyState.OnGround && groundHit && groundHit.normal.normalized.y > LAND_SLOPE_FACTOR)
         {
-            if (Velocity.y > 0)
-            {
-                Velocity.y -= Gravity * fdt;
-            }
-            else
-            {
-                Velocity.y -= 0.6f * Gravity * fdt;
-            }
+            State = BodyState.OnGround;
+            CanDoubleJump = true;
+            if (jumpBufferTimeRemaining > 0.0f) Jump();
+        }
+        else if (State == BodyState.OnGround && !groundHit)
+        {
+            State = BodyState.InAir;
+            coyoteTimeRemaining = coyoteTime;
         }
     }
 
-    protected override bool StartFalling()
+    // Shift the player horizontally when they barely bump a ceiling
+    private void CeilingCornerCorrect()
     {
-        if (base.StartFalling())
+        Bounds bounds = SurfaceCollider.bounds;
+        RaycastHit2D ceilingHit = Physics2D.BoxCast(bounds.center, bounds.size, 0f, Vector2.up, COLLISION_CHECK_DISTANCE, collisionLayer);
+
+        if (!ceilingHit || ceilingHit.normal.normalized.y > -LAND_SLOPE_FACTOR) return;
+        if (Velocity.y < cornerCorrectMinVelocity) return;
+
+        float leftInsetDistance = Mathf.Abs(SurfaceCollider.bounds.max.x - ceilingHit.collider.bounds.min.x);
+        if (leftInsetDistance < cornerCorrectMaxInsetDistance)
         {
-            coyoteTimeRemaining = coyoteTime;
-            return true;
+            transform.position += (leftInsetDistance + CONTACT_OFFSET) * Vector3.left;
         }
-        return false;
+
+        float rightInsetDistance = Mathf.Abs(SurfaceCollider.bounds.min.x - ceilingHit.collider.bounds.max.x);
+        if (rightInsetDistance < cornerCorrectMaxInsetDistance)
+        {
+            transform.position += (rightInsetDistance + CONTACT_OFFSET) * Vector3.right;
+        }
     }
 
     // Updates the time of all movement-related timers
@@ -191,28 +204,5 @@ public class PlayerMovement : FreeBody
     {
         if (coyoteTimeRemaining > 0) coyoteTimeRemaining -= dt;
         if (jumpBufferTimeRemaining > 0) jumpBufferTimeRemaining -= dt;
-    }
-
-    // This override is just for corner correction
-    protected override RaycastHit2D CheckTouchingCeiling()
-    {
-        var ceilCast = base.CheckTouchingCeiling();
-
-        if (!ceilCast) return ceilCast;
-        if (Velocity.y < cornerCorrectMinVelocity) return ceilCast;
-
-        float leftInsetDistance = Mathf.Abs(SurfaceCollider.bounds.max.x - ceilCast.collider.bounds.min.x);
-        if (leftInsetDistance < cornerCorrectMaxInsetDistance)
-        {
-            transform.position += leftInsetDistance * Vector3.left;
-        }
-
-        float rightInsetDistance = Mathf.Abs(SurfaceCollider.bounds.min.x - ceilCast.collider.bounds.max.x);
-        if (rightInsetDistance < cornerCorrectMaxInsetDistance)
-        {
-            transform.position += rightInsetDistance * Vector3.right;
-        }
-
-        return ceilCast;
     }
 }

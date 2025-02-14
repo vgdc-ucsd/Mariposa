@@ -31,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.6, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -193,19 +193,21 @@ MonoBehaviour:
   Rb: {fileID: 0}
   State: 0
   SurfaceCollider: {fileID: 0}
-  Gravity: 25
+  Gravity: 40
   TerminalVelocity: 40
   collisionLayer:
     serializedVersion: 2
     m_Bits: 64
-  touchingLeft: 0
-  touchingRight: 0
-  MoveSpeed: 5
+  MoveSpeed: 6
   groundAccelerationTime: 0.15
   groundDecelerationTime: 0.1
   airAccelerationTime: 0.4
   airMovementDecelerationTime: 0.2
-  airDragDecelerationTime: 1
-  JumpSpeed: 8
+  airDragDecelerationTime: 0.5
+  JumpHeight: 13
+  CanDoubleJump: 0
   coyoteTime: 0.1
   jumpBufferTime: 0.15
+  fallingGravityMultiplier: 0.8
+  cornerCorrectMaxInsetDistance: 0
+  cornerCorrectMinVelocity: 0
