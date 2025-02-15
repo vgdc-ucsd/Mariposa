@@ -18,7 +18,7 @@ public class Player : MonoBehaviour
 
 	void Start()
 	{
-		playerDebug = Settings.Instance.Debug.GetPlayerDebug();
+//		playerDebug = Settings.Instance.Debug.GetPlayerDebug();
 	}
 
 

@@ -1,3 +1,6 @@
+using UnityEngine;
+
+[CreateAssetMenu(fileName = "BatteryItem", menuName = "Inventory/BatteryItem")]
 public class BatteryItem : InventoryItemSO
 {
     public static BatteryItem Instance { get; private set; }
