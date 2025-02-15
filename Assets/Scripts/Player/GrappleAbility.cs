@@ -96,7 +96,7 @@ public class GrappleAbility : MonoBehaviour
     {
         Player player = Player.ActivePlayer;
         currentTarget = target;
-        player.Movement.TurnTowards((int)Mathf.Sign(target.x - player.transform.position.x));
+        player.TurnTowards((int)Mathf.Sign(target.x - player.transform.position.x));
         state = GrappleState.Firing;
     }
 
@@ -150,7 +150,7 @@ public class GrappleAbility : MonoBehaviour
     {
         if (!(state == GrappleState.Pulling || state == GrappleState.Stopped)) return;
 
-        Vector2 launchDir = new Vector2(Player.ActivePlayer.Movement.FacingDirection, 0.4f).normalized;
+        Vector2 launchDir = new Vector2(Player.ActivePlayer.FacingDirection, 0.4f).normalized;
         Player.ActivePlayer.Movement.Velocity = launchDir * Mathf.Clamp(storedMomentum, baseLaunchForce, maxLaunchForce);
 
         state = GrappleState.Idle;

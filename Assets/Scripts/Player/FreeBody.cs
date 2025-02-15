@@ -22,7 +22,7 @@ public abstract class FreeBody : Body
 {
     public BodyState State;
     public BoxCollider2D SurfaceCollider;
-    public List<ContactPoint2D> Contacts = new();
+    protected List<RaycastHit2D> collisionHits = new(); // All collision hits for the current frame
 
     protected float fdt; // Shorthand for fixed delta time
 
@@ -88,25 +88,26 @@ public abstract class FreeBody : Body
 
     protected virtual void ApplyMovement(Vector2 move)
     {
+        collisionHits.Clear();
         if (Mathf.Approximately(move.magnitude, 0f)) return; // This avoids weird imprecision errors
 
         Bounds bounds = SurfaceCollider.bounds;
-        RaycastHit2D[] hits = Physics2D.BoxCastAll (bounds.center, bounds.size * COLLIDER_SHRINK_FACTOR, 0f, move.normalized, move.magnitude, collisionLayer);
+        collisionHits.AddRange(Physics2D.BoxCastAll(bounds.center, bounds.size * COLLIDER_SHRINK_FACTOR, 0f, move.normalized, move.magnitude, collisionLayer));
 
-        if (hits.Length == 0) // no collisions
+        if (collisionHits.Count == 0) // no collisions
         {
             transform.position += (Vector3)move;
             return;
         }
 
-        if (hits.Length > 2) Debug.LogError("Can't handle more than 2 collisions at once");
+        if (collisionHits.Count > 2) Debug.LogError("Can't handle more than 2 collisions at once");
 
-        if (hits.Length == 1) // single collision
+        if (collisionHits.Count == 1) // single collision
         {
-            RaycastHit2D hit = hits[0];
+            RaycastHit2D hit = collisionHits[0];
 
             // Snap to the surface plus a small offset to avoid imprecision errors
-            transform.position = hits[0].centroid + hits[0].normal.normalized * CONTACT_OFFSET;
+            transform.position = collisionHits[0].centroid + collisionHits[0].normal.normalized * CONTACT_OFFSET;
 
             // Resolve the collision
             if (Mathf.Abs(hit.normal.y) > Mathf.Abs(hit.normal.x)) // Vertical collision
@@ -122,15 +123,15 @@ public abstract class FreeBody : Body
         }
         else // double collision
         {
-            if (Mathf.Abs(hits[0].normal.y) > Mathf.Abs(hits[0].normal.x)) // hit 0 was the vertical collision
+            if (Mathf.Abs(collisionHits[0].normal.y) > Mathf.Abs(collisionHits[0].normal.x)) // hit 0 was the vertical collision
             {
-                transform.position = new Vector2(hits[1].centroid.x + CONTACT_OFFSET * hits[1].normal.normalized.x, 
-                                                hits[0].centroid.y + CONTACT_OFFSET * hits[0].normal.normalized.y);
+                transform.position = new Vector2(collisionHits[1].centroid.x + CONTACT_OFFSET * collisionHits[1].normal.normalized.x,
+                                                collisionHits[0].centroid.y + CONTACT_OFFSET * collisionHits[0].normal.normalized.y);
             }
             else // hit 1 was the vertical collision
             {
-                transform.position = new Vector2(hits[0].centroid.x + CONTACT_OFFSET * hits[0].normal.normalized.x, 
-                                                hits[1].centroid.y + CONTACT_OFFSET * hits[1].normal.normalized.y);
+                transform.position = new Vector2(collisionHits[0].centroid.x + CONTACT_OFFSET * collisionHits[0].normal.normalized.x,
+                                                collisionHits[1].centroid.y + CONTACT_OFFSET * collisionHits[1].normal.normalized.y);
             }
             Velocity = Vector2.zero;
         }
