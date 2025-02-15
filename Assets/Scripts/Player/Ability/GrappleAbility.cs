@@ -9,7 +9,7 @@ public enum GrappleState
     Idle, Firing, Pulling, Stopped
 }
 
-public class GrappleAbility : MonoBehaviour
+public class GrappleAbility : MonoBehaviour, IAbility
 {
     [SerializeField]
     private Transform testGrappleTarget;
@@ -52,25 +52,6 @@ public class GrappleAbility : MonoBehaviour
 
     private void Update()
     {
-        if (state == GrappleState.Idle)
-        {
-            if (Input.GetKeyDown(KeyCode.LeftShift))
-            {
-                GrappleTowards(testGrappleTarget.position);
-            }
-        }
-        else
-        {
-            if (!Input.GetKey(KeyCode.LeftShift))
-            {
-                GrappleRelease();
-            }
-            else if (Input.GetKeyDown(KeyCode.Space))
-            {
-                GrappleJump();
-            }
-        }
-
         RenderLine();
     }
 
@@ -88,6 +69,30 @@ public class GrappleAbility : MonoBehaviour
             case GrappleState.Stopped:
                 GrappleCling();
                 break;
+        }
+    }
+
+    public void AbilityInputDown()
+    {
+        if (state == GrappleState.Idle)
+        {
+            GrappleTowards(testGrappleTarget.position);
+        }
+    }
+
+    public void AbilityInputUp()
+    {
+        if (state != GrappleState.Idle)
+        {
+            GrappleRelease();
+        }
+    }
+
+    public void JumpInputDown()
+    {
+        if (state != GrappleState.Idle)
+        {
+            GrappleJump();
         }
     }
 
@@ -181,4 +186,6 @@ public class GrappleAbility : MonoBehaviour
         }
 
     }
+
+
 }
