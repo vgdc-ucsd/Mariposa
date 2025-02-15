@@ -142,7 +142,7 @@ public class PlayerMovement : FreeBody
     {
         int dir = Mathf.RoundToInt(moveDir.x);
 
-        if (dir != 0) Player.ActivePlayer.FacingDirection = dir;
+        //if (dir != 0) Player.ActivePlayer.FacingDirection = dir;
 
         // Lock the player's movement if they wall jumped recently
         if (wallJumpMoveLockTimeRemaining > 0.0f) dir = 0;
@@ -170,13 +170,16 @@ public class PlayerMovement : FreeBody
     // Directly set the player's y velocity
     private void Jump()
     {
-        if (wallNormal != 0)
+        CheckOnWall();
+        CheckGrounded();
+
+        if (wallNormal != 0 && State == BodyState.InAir)
         {
             Velocity.y = JumpHeight;
             Velocity.x = wallJumpHorizontalSpeed * wallNormal;
             wallJumpMoveLockTimeRemaining = wallJumpMoveLockTime;
         }
-        if (State == BodyState.OnGround || coyoteTimeRemaining > 0f)
+        else if (State == BodyState.OnGround || coyoteTimeRemaining > 0f)
         {
             Velocity.y = JumpHeight;
             coyoteTimeRemaining = 0f;   // consume coyote time
