@@ -1,4 +1,5 @@
 using NUnit.Framework.Internal.Commands;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
@@ -12,7 +13,16 @@ public class PlayerMovement : FreeBody
     [Tooltip("The maximum horizontal movement speed")]
     public float MoveSpeed = 10;
 
-    
+    private Vector2 moveDir = Vector2.zero;
+
+    [Tooltip("The amount of time that wall jumping locks the player out of movement")]
+    [SerializeField] private float wallJumpMoveLockTime;
+    private float wallJumpMoveLockTimeRemaining = 0.0f;
+
+    [Tooltip("The player's horizontal speed is set to this value on wall jump")]
+    [SerializeField] private float wallJumpHorizontalSpeed;
+
+    private int wallNormal = 0; // -1 = left, 1 = right, 0 = not on a wall
 
     [Tooltip("The time it takes to accelerate to maximum horizontal speed from rest on the ground")]
     [SerializeField] private float groundAccelerationTime;
@@ -33,6 +43,7 @@ public class PlayerMovement : FreeBody
     [Tooltip("The time it takes to decelerate to rest via drag from maximum horizontal speed in the air")]
     [SerializeField] private float airDragDecelerationTime;
     private float airDragDeceleration;
+
 
     [Header("Vertical Parameters")]
     [Tooltip("Vertical speed is set to this value on jump")]
@@ -99,12 +110,15 @@ public class PlayerMovement : FreeBody
     
     protected override void FixedUpdate()
     {
-        if (Input.GetKey(KeyCode.D)) Move(1);
-        else if (Input.GetKey(KeyCode.A)) Move(-1);
-        else Move(0);
+        if (Input.GetKey(KeyCode.D)) moveDir = Vector2.right;
+        else if (Input.GetKey(KeyCode.A)) moveDir = Vector2.left;
+        else moveDir = Vector2.zero;
 
-        CeilingCornerCorrect();
+        Move();
+
         base.FixedUpdate();
+        CeilingCornerCorrect();
+        CheckOnWall();
 
         UpdateTimers(fdt);
     }
@@ -118,15 +132,31 @@ public class PlayerMovement : FreeBody
         }
     }
 
-    // Move by player input: 1 = right, -1 = left, 0 = none
-    private void Move(int dir)
-    {
-
         
+
+    private void CheckOnWall()
+    {
+        Bounds bounds = SurfaceCollider.bounds;
+        RaycastHit2D rightHit = Physics2D.BoxCast(bounds.center, bounds.size, 0f, Vector2.right, COLLISION_CHECK_DISTANCE, collisionLayer);
+        bool hitLeftWall = Mathf.Abs(leftHit.normal.normalized.x) > LAND_SLOPE_FACTOR;
+        bool hitRightWall = Mathf.Abs(rightHit.normal.normalized.x) > LAND_SLOPE_FACTOR;
+
+        if (hitLeftWall) wallNormal = 1;
+        else if (hitRightWall) wallNormal = -1;
+        else wallNormal = 0;
+    }
+
+    // Move by player input: 1 = right, -1 = left, 0 = none
+    private void Move()
+    {
+        int dir = Mathf.RoundToInt(moveDir.x);
+
+        // Lock the player's movement if they wall jumped recently
+        if (wallJumpMoveLockTimeRemaining > 0.0f) dir = 0;
+
         // Check which acceleration parameter to use
         float accelerationParam = (dir * Velocity.x > 0)
             ? (State == BodyState.InAir)
-                ? airAcceleration
                 : groundAcceleration
             : (State == BodyState.InAir)
                 ? (dir == 0)
@@ -146,6 +176,12 @@ public class PlayerMovement : FreeBody
     // Directly set the player's y velocity
     private void Jump()
     {
+        if (wallNormal != 0)
+        {
+            Velocity.y = JumpHeight;
+            Velocity.x = wallJumpHorizontalSpeed * wallNormal;
+            wallJumpMoveLockTimeRemaining = wallJumpMoveLockTime;
+        }
         if (State == BodyState.OnGround || coyoteTimeRemaining > 0f)
         {
             Velocity.y = JumpHeight;
@@ -194,10 +230,9 @@ public class PlayerMovement : FreeBody
     // Shift the player horizontally when they barely bump a ceiling
     private void CeilingCornerCorrect()
     {
-        Bounds bounds = SurfaceCollider.bounds;
-        RaycastHit2D ceilingHit = Physics2D.BoxCast(bounds.center, bounds.size, 0f, Vector2.up, COLLISION_CHECK_DISTANCE, collisionLayer);
+        RaycastHit2D ceilingHit = collisionHits.Where(hit => hit.normal.normalized.y > -LAND_SLOPE_FACTOR).FirstOrDefault();
 
-        if (!ceilingHit || ceilingHit.normal.normalized.y > -LAND_SLOPE_FACTOR) return;
+        if (!ceilingHit) return;
         if (Velocity.y < cornerCorrectMinVelocity) return;
 
         float leftInsetDistance = Mathf.Abs(SurfaceCollider.bounds.max.x - ceilingHit.collider.bounds.min.x);
@@ -216,7 +251,8 @@ public class PlayerMovement : FreeBody
     // Updates the time of all movement-related timers
     private void UpdateTimers(float dt)
     {
-        if (coyoteTimeRemaining > 0) coyoteTimeRemaining -= dt;
-        if (jumpBufferTimeRemaining > 0) jumpBufferTimeRemaining -= dt;
+        coyoteTimeRemaining = Mathf.Max(coyoteTimeRemaining - dt, 0.0f);
+        jumpBufferTimeRemaining = Mathf.Max(jumpBufferTimeRemaining - dt, 0.0f);
+        wallJumpMoveLockTimeRemaining = Mathf.Max(wallJumpMoveLockTimeRemaining - dt, 0.0f);
     }
 }
