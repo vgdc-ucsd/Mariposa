@@ -29,6 +29,8 @@ public class Turret : MonoBehaviour
     [Header("Children Range Detector")]
     [SerializeField] InRangeDetector rangeDetectorForAttack;
     [SerializeField] InRangeDetector rangeDetectorForBattery;
+    
+    [SerializeField] private BatteryItem batteryItem;
     // -------- private variables --------
 
 
@@ -79,9 +81,11 @@ public class Turret : MonoBehaviour
 			{
 				hasBattery = false;
 				bodyPart.GetComponent<SpriteRenderer>().color = Color.gray;
+				InventoryManager.Instance.AddItem(batteryItem);
 			}
 			else
 			{ 
+				InventoryManager.Instance.DeleteItem(batteryItem);
 				hasBattery = true;
 				bodyPart.GetComponent<SpriteRenderer>().color = Color.green;
 			}
