@@ -33,6 +33,11 @@ public class WaterPuzzle : Puzzle
     /// </summary>
     public Sprite[] TileSprites;
 
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space)) GenerateSolution();
+    }
     private void Awake()
     {
         if (Instance == null)
@@ -62,11 +67,7 @@ public class WaterPuzzle : Puzzle
         }
         StartTile = Tiles[0, GridHeight / 2];
         EndTile = Tiles[GridWidth - 1, GridHeight / 2];
-        /*foreach (GameObject tile in tilesFound)
-        {
-            WaterPuzzleTile wpt = tile.GetComponent<WaterPuzzleTile>();
-            tiles[wpt.posX, wpt.posY] = wpt;
-        }*/
+        
 
         GenerateSolution();
     }
@@ -108,19 +109,44 @@ public class WaterPuzzle : Puzzle
     {
         tilesInSolution = new List<WaterPuzzleTile>();
         tilesInSolution.Add(StartTile);
-        int[] direction = { 0, 1 };
+        int[] direction = { 0, 0 };
         int[] right = { 1, 0 };
         int[] up = { 0, -1 };
         int[] left = { -1, 0 };
         int[] down = { 0, 1 };
         int x = StartTile.PosX;
         int y = StartTile.PosY;
+
+        switch (Random.Range(0, 3))
+        {
+            case 0:
+                right.CopyTo(direction, 0);
+                break;
+            case 1:
+                up.CopyTo(direction, 0);
+                break;
+            case 2:
+                down.CopyTo(direction, 0);
+                break;
+        }
+
+        int steps = 0;
+
         while (!tilesInSolution.Contains(EndTile))
         {
+            steps++;
+            if (steps > 1000)
+            {
+                Debug.Log("skill issue");
+                Debug.Log(x);
+                Debug.Log(y);
+                break;
+            }
+
 
             int[] prevDirection = { direction[0], direction[1] };
             bool turned = false;
-            if ((y == 0 || y == GridHeight - 1) && (direction[1] != 0))// direction should be up or down, set it to right
+            if ((y == 0 || y == GridHeight - 1) && (direction[1] != 0)) // direction should be up or down, set it to right
             {
                 right.CopyTo(direction, 0);
                 turned = true;
@@ -154,9 +180,14 @@ public class WaterPuzzle : Puzzle
             }
 
             // if the next tile is already in the solution, try to turn to avoid that tile.
-            // if 4 turns are made without finding an empty tile, then go through the tile anyway
+            // if there's no free direction to go, attempt to turn right
+            // also try to avoid making 180 degree turns if possible
             int turnsMade = 0;
-            while (!IsTileFree(x + direction[0], y + direction[1]))
+            while (!IsTileFree(x + direction[0], y + direction[1]) 
+                || (direction[0] == 1 && prevDirection[0] == -1)
+                || (direction[0] == -1 && prevDirection[0] == 1)
+                || (direction[1] == -1 && prevDirection[1] == 1)
+                || (direction[1] == 1 && prevDirection[1] == -1))
             {
                 TurnDirection(direction).CopyTo(direction, 0);
                 turned = !turned;
@@ -168,21 +199,21 @@ public class WaterPuzzle : Puzzle
                 }
             }
 
-            if ((direction[0] == 1 && prevDirection[0] == -1)
-                || (direction[0] == -1 && prevDirection[0] == 1)
-                || (direction[1] == -1 && prevDirection[1] == 1)
-                || (direction[1] == 1 && prevDirection[1] == -1)) continue;
 
 
-            
-            if (IsTileInBounds(x, y))
+            if (IsTileInBounds(x + direction[0], y + direction[1]))
             {
-                if (turned) Tiles[x, y].MustBeTurn = true;
-                else Tiles[x, y].MustBeStraight = true;
+
                 x += direction[0];
                 y += direction[1];
+                if (turned) Tiles[x - direction[0], y - direction[1]].MustBeTurn = true;
+                else Tiles[x - direction[0], y - direction[1]].MustBeStraight = true;
+                
+                
                 if (!tilesInSolution.Contains(Tiles[x, y])) tilesInSolution.Add(Tiles[x, y]);
                 else Tiles[x, y].MustBeCross = true;
+                
+                    
             }
 
 
@@ -191,8 +222,10 @@ public class WaterPuzzle : Puzzle
 
 
 
-
         }
+
+
+        Debug.Log(steps);
     }
 
     private bool IsTileFree(int x, int y)
