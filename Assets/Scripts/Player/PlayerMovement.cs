@@ -123,10 +123,14 @@ public class PlayerMovement : FreeBody
     private void CheckOnWall()
     {
         Bounds bounds = SurfaceCollider.bounds;
-        RaycastHit2D wallHit = Physics2D.BoxCast(bounds.center, bounds.size, 0f, moveDir, COLLISION_CHECK_DISTANCE, collisionLayer);
+        RaycastHit2D leftHit = Physics2D.BoxCast(bounds.center, bounds.size, 0f, Vector2.left, COLLISION_CHECK_DISTANCE, collisionLayer);
+        RaycastHit2D rightHit = Physics2D.BoxCast(bounds.center, bounds.size, 0f, Vector2.right, COLLISION_CHECK_DISTANCE, collisionLayer);
+        bool hitLeftWall = Mathf.Abs(leftHit.normal.normalized.x) > LAND_SLOPE_FACTOR;
+        bool hitRightWall = Mathf.Abs(rightHit.normal.normalized.x) > LAND_SLOPE_FACTOR;
 
-        if (!wallHit) wallNormal = 0;
-        wallNormal = Mathf.RoundToInt(wallHit.normal.normalized.x);
+        if (hitLeftWall) wallNormal = 1;
+        else if (hitRightWall) wallNormal = -1;
+        else wallNormal = 0;
     }
 
     private void Move()
