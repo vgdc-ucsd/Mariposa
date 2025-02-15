@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 using System.Collections;
 
 public class Turret : MonoBehaviour
@@ -9,6 +10,7 @@ public class Turret : MonoBehaviour
 	public bool IsCoolingDown {get => isCoolingDown; set => isCoolingDown = value;}
     public bool HasBattery { get => hasBattery; set => hasBattery = value;}
     public bool CanRemoveBattery { get => canRemoveBattery; set => canRemoveBattery = value;}
+    public bool CanRotate { get => canRotate; set => canRotate = value;}
 
     // These three are for testing, need to use anim in the future
     public GameObject bodyPart;
@@ -17,15 +19,20 @@ public class Turret : MonoBehaviour
 	ITurretBehaviour turretBehaviour;
 	public TurretBehaviourSO turretBehaviourSO;
 
+	[SerializeField] UnityEvent hitPlayerEvent;
+	[SerializeField] UnityEvent hitBreakableEvent;
+
     // -------- private variables --------
     [Header("Turret Attribute")]
     [SerializeField] GameObject target;
     [SerializeField] LayerMask hitLayer;
+    [SerializeField] KeyCode interactKey;
     [SerializeField][Range(0.1f, 10)] float rotationSpeed;
     [SerializeField][Range(0.1f, 10)] float chargeTime;
     [SerializeField][Range(0.1f, 10)] float laserShrinkTime;
     [SerializeField][Range(0.1f, 10)] float chargePointSize;
     [SerializeField][Range(0.1f, 10)] float fireTimeInterval;
+    [SerializeField] bool canRotate;
 
     [Header("Children Range Detector")]
     [SerializeField] InRangeDetector rangeDetectorForAttack;
@@ -74,7 +81,7 @@ public class Turret : MonoBehaviour
 
 
         // Remove Battery
-		if (canRemoveBattery && Input.GetKeyDown(KeyCode.K))
+		if (canRemoveBattery && Input.GetKeyDown(interactKey))
 		{
 			if (hasBattery)
 			{
@@ -94,8 +101,26 @@ public class Turret : MonoBehaviour
         hasBattery = false;
 	}
 
-    
 
+    public void TestEventOne()
+    {
+        Debug.Log("Test Event One");
+	}
+    
+    public void TestEventTwo()
+    {
+        Debug.Log("Test Event Two");
+	}
+
+    public void TestEventThree()
+    {
+        Debug.Log("Test Event Three");
+	}
+
+    public void TestEventFour()
+    {
+        Debug.Log("Test Event Four");
+	}
     // ---------- private functions ----------
 
     private void SetLaserMaxLength()
@@ -108,10 +133,13 @@ public class Turret : MonoBehaviour
 
     public void TurnToTarget()
     {
-        Vector2 lookDir = rangeDetectorForAttack.Target.transform.position - transform.position;
-        float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;
-        Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, angle));
-        transform.rotation = Quaternion.LerpUnclamped(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        if (canRotate)
+        {
+            Vector2 lookDir = rangeDetectorForAttack.Target.transform.position - transform.position;
+            float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;
+            Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, angle));
+            transform.rotation = Quaternion.LerpUnclamped(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        }
     }
 
 	public void StartFireRoutine()
@@ -163,10 +191,12 @@ public class Turret : MonoBehaviour
             if (hit.transform.TryGetComponent(out Player player))
             {
                 // Do something to the player
+                hitPlayerEvent?.Invoke(); // This is cool but don't know if it'll work
             }
             else
             {
                 // Do something to the breakable
+                hitBreakableEvent?.Invoke();
             }
         }
 
