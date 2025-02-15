@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4834160962878555924
 Transform:
   m_ObjectHideFlags: 0
@@ -45,13 +45,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a812288e96fc54040a6b5ee6c44eedad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  puzzleUI: {fileID: 775152224476311031}
-  startTile: {fileID: 8655027816952022225}
-  endTile: {fileID: 8259470393546572742}
-  gridWidth: 7
-  gridHeight: 5
-  puzzleComplete: 0
-  tileSprites:
+  PuzzleUI: {fileID: 775152224476311031}
+  StartTile: {fileID: 0}
+  EndTile: {fileID: 0}
+  GridWidth: 13
+  GridHeight: 9
+  PuzzleComplete: 0
+  tilePrefab: {fileID: 167192345093911540, guid: 31272c9e4c1162f4f84695da2f6321cb, type: 3}
+  RandomTurnChance: 0.1
+  TileWidth: 0.64
+  TileHeight: 0.64
+  TileSprites:
   - {fileID: 133982719826790466, guid: 9444aaf3afebe8c48bc7ce05f141279a, type: 3}
   - {fileID: -347702476747834141, guid: a8e8b0a920e8ccb4b8853fe5160368a3, type: 3}
   - {fileID: 2436689576485346197, guid: 908efb2c169a29f40ac6aa76ca53b83b, type: 3}
@@ -277,25 +281,3 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2561421951945813510, guid: feffb9f4de9b4f2419d97d5439e35602, type: 3}
   m_PrefabInstance: {fileID: 8636138109692184422}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8259470393546572742 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 380045460697089184, guid: feffb9f4de9b4f2419d97d5439e35602, type: 3}
-  m_PrefabInstance: {fileID: 8636138109692184422}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2dddb836fdfb37b48843ff9f2796be2f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &8655027816952022225 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1136433415972078519, guid: feffb9f4de9b4f2419d97d5439e35602, type: 3}
-  m_PrefabInstance: {fileID: 8636138109692184422}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2dddb836fdfb37b48843ff9f2796be2f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
