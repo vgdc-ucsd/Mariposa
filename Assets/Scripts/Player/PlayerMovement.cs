@@ -1,4 +1,5 @@
 using NUnit.Framework.Internal.Commands;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
@@ -12,7 +13,17 @@ public class PlayerMovement : FreeBody
     [Tooltip("The maximum horizontal movement speed")]
     public float MoveSpeed = 10;
 
-    
+    private Vector2 moveDir = Vector2.zero;
+
+
+    [Tooltip("The amount of time that wall jumping locks the player out of movement")]
+    [SerializeField] private float wallJumpMoveLockTime;
+    private float wallJumpMoveLockTimeRemaining = 0.0f;
+
+    [Tooltip("The player's horizontal speed is set to this value on wall jump")]
+    [SerializeField] private float wallJumpHorizontalSpeed;
+
+    private int wallNormal = 0; // -1 = left, 1 = right, 0 = not on a wall
 
     [Tooltip("The time it takes to accelerate to maximum horizontal speed from rest on the ground")]
     [SerializeField] private float groundAccelerationTime;
@@ -34,9 +45,13 @@ public class PlayerMovement : FreeBody
     [SerializeField] private float airDragDecelerationTime;
     private float airDragDeceleration;
 
+
     [Header("Vertical Parameters")]
     [Tooltip("Vertical speed is set to this value on jump")]
-    public float JumpSpeed = 6; // todo: change to define height
+    public float JumpHeight = 6;
+
+    [Tooltip("Checks if Player can use Double Jump")]
+    public bool CanDoubleJump = true;
 
     [Tooltip("The amount of extra time the player has to jump after leaving the ground")]
     [SerializeField] private float coyoteTime;
@@ -45,6 +60,16 @@ public class PlayerMovement : FreeBody
     [Tooltip("The amount of time the player has to buffer a jump input")]
     [SerializeField] private float jumpBufferTime;
     private float jumpBufferTimeRemaining = 0.0f;
+
+    [Tooltip("Multiplier applied to the player's gravity when they are falling")]
+    [SerializeField] private float fallingGravityMultiplier;
+
+    [Tooltip("The maximum horizontal distance by which the player's collider is inset the barrier's collider for corner correction")]
+    [SerializeField] private float cornerCorrectMaxInsetDistance;
+
+    [Tooltip("The minimum upward velocity required to corner correct")]
+    [SerializeField] private float cornerCorrectMinVelocity;
+
 
 
     // Useful for when their dependent values are changed during runtime
@@ -66,7 +91,7 @@ public class PlayerMovement : FreeBody
         {
             Instance = this;
         }
-        
+
     }
 
     protected override void Update()
@@ -82,21 +107,46 @@ public class PlayerMovement : FreeBody
         InitDerivedConsts();
     }
 
-    
+
     protected override void FixedUpdate()
     {
-        base.FixedUpdate();
+        if (Input.GetKey(KeyCode.D)) moveDir = Vector2.right;
+        else if (Input.GetKey(KeyCode.A)) moveDir = Vector2.left;
+        else moveDir = Vector2.zero;
 
-        if (Input.GetKey(KeyCode.D)) Move(1);
-        else if (Input.GetKey(KeyCode.A)) Move(-1);
-        else Move(0);
+        Move();
+
+        base.FixedUpdate();
+        CeilingCornerCorrect();
+        CheckOnWall();
 
         UpdateTimers(fdt);
     }
 
-    // Move by player input: 1 = right, -1 = left, 0 = none
-    private void Move(int dir)
+    private void CheckOnWall()
     {
+        Bounds bounds = SurfaceCollider.bounds;
+        RaycastHit2D leftHit = Physics2D.BoxCast(bounds.center, bounds.size, 0f, Vector2.left, COLLISION_CHECK_DISTANCE, collisionLayer);
+        RaycastHit2D rightHit = Physics2D.BoxCast(bounds.center, bounds.size, 0f, Vector2.right, COLLISION_CHECK_DISTANCE, collisionLayer);
+        bool hitLeftWall = Mathf.Abs(leftHit.normal.normalized.x) > LAND_SLOPE_FACTOR;
+        bool hitRightWall = Mathf.Abs(rightHit.normal.normalized.x) > LAND_SLOPE_FACTOR;
+
+        if (hitLeftWall) wallNormal = 1;
+        else if (hitRightWall) wallNormal = -1;
+        else wallNormal = 0;
+    }
+
+
+
+    private void Move()
+    {
+        int dir = Mathf.RoundToInt(moveDir.x);
+
+        if (dir != 0) Player.ActivePlayer.FacingDirection = dir;
+
+        // Lock the player's movement if they wall jumped recently
+        if (wallJumpMoveLockTimeRemaining > 0.0f) dir = 0;
+
         // Check which acceleration parameter to use
         float accelerationParam = (dir * Velocity.x > 0)
             ? (State == BodyState.InAir)
@@ -117,50 +167,87 @@ public class PlayerMovement : FreeBody
         Velocity.x += acceleration * fdt * Mathf.Sign(deltaV);
     }
 
-
     // Directly set the player's y velocity
     private void Jump()
     {
+        if (wallNormal != 0)
+        {
+            Velocity.y = JumpHeight;
+            Velocity.x = wallJumpHorizontalSpeed * wallNormal;
+            wallJumpMoveLockTimeRemaining = wallJumpMoveLockTime;
+        }
         if (State == BodyState.OnGround || coyoteTimeRemaining > 0f)
         {
-            Velocity.y = JumpSpeed;
-            StartFalling();
+            Velocity.y = JumpHeight;
             coyoteTimeRemaining = 0f;   // consume coyote time
+        }
+        else if (CanDoubleJump)
+        {
+            Velocity.y = 1.25f * JumpHeight;
+            CanDoubleJump = false;
+            coyoteTimeRemaining = 0f;
         }
         else if (State != BodyState.OnGround && coyoteTimeRemaining <= 0.0f)
         {
             jumpBufferTimeRemaining = jumpBufferTime;
-            return;
         }
-
     }
 
-    protected override bool Land(RaycastHit2D hit)
+
+    // This override makes the player fall slower/faster when falling
+    protected override void Fall()
     {
-        if (base.Land(hit))
+        if (State != BodyState.InAir) return;
+
+        float currentGravity = Velocity.y > 0 ? Gravity : Gravity * fallingGravityMultiplier;
+        Velocity.y = Mathf.Max(Velocity.y - currentGravity * fdt, -TerminalVelocity);
+    }
+
+    // If the player was in the air and has a barrier below it, they must now be on the ground
+    // Otherwise, if the player was grounded and has no barrier below it, they must now be in the air
+    protected override void CheckGrounded()
+    {
+        Bounds bounds = SurfaceCollider.bounds;
+        RaycastHit2D groundHit = Physics2D.BoxCast(bounds.center, bounds.size, 0f, Vector2.down, COLLISION_CHECK_DISTANCE, collisionLayer);
+        if (State != BodyState.OnGround && groundHit && groundHit.normal.normalized.y > LAND_SLOPE_FACTOR)
         {
+            State = BodyState.OnGround;
+            CanDoubleJump = true;
             if (jumpBufferTimeRemaining > 0.0f) Jump();
-            return true;
         }
-        return false;
+        else if (State == BodyState.OnGround && !groundHit)
+        {
+            State = BodyState.InAir;
+            coyoteTimeRemaining = coyoteTime;
+        }
     }
 
-    protected override bool StartFalling()
+    // Shift the player horizontally when they barely bump a ceiling
+    private void CeilingCornerCorrect()
     {
-        if (base.StartFalling())
+        RaycastHit2D ceilingHit = collisionHits.Where(hit => hit.normal.normalized.y > -LAND_SLOPE_FACTOR).FirstOrDefault();
+
+        if (!ceilingHit) return;
+        if (Velocity.y < cornerCorrectMinVelocity) return;
+
+        float leftInsetDistance = Mathf.Abs(SurfaceCollider.bounds.max.x - ceilingHit.collider.bounds.min.x);
+        if (leftInsetDistance < cornerCorrectMaxInsetDistance)
         {
-            coyoteTimeRemaining = coyoteTime;
-            return true;
+            transform.position += (leftInsetDistance + CONTACT_OFFSET) * Vector3.left;
         }
-        return false;
+
+        float rightInsetDistance = Mathf.Abs(SurfaceCollider.bounds.min.x - ceilingHit.collider.bounds.max.x);
+        if (rightInsetDistance < cornerCorrectMaxInsetDistance)
+        {
+            transform.position += (rightInsetDistance + CONTACT_OFFSET) * Vector3.right;
+        }
     }
 
     // Updates the time of all movement-related timers
     private void UpdateTimers(float dt)
     {
-        if (coyoteTimeRemaining > 0) coyoteTimeRemaining -= dt;
-        if (jumpBufferTimeRemaining > 0) jumpBufferTimeRemaining -= dt;
+        coyoteTimeRemaining = Mathf.Max(coyoteTimeRemaining - dt, 0.0f);
+        jumpBufferTimeRemaining = Mathf.Max(jumpBufferTimeRemaining - dt, 0.0f);
+        wallJumpMoveLockTimeRemaining = Mathf.Max(wallJumpMoveLockTimeRemaining - dt, 0.0f);
     }
-
-
 }
