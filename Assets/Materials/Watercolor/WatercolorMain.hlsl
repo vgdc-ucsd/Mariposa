@@ -1,5 +1,5 @@
-void Watercolor_float(float2 uv, float4 source, out float3 result)
+void Watercolor_float(float2 uv, out float3 result)
 {
+    float4 source = Unity_Universal_SampleBuffer_BlitSource_float(uv);
     result = float3(source.r, source.g, source.b);
-    result = lerp(result, float3(uv.x, uv.y, 0.0), 0.5);
 }
