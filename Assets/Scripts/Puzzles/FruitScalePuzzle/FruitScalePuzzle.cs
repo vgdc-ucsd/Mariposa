@@ -11,12 +11,13 @@ public class FruitScalePuzzle : Puzzle
     public const int FRUIT_MIN_WEIGHT = 1;
     public const int FRUIT_MAX_WEIGHT = 5;
 
-    private Fruit selectedFruit;
+    [SerializeField] private Fruit selectedFruit;
     public Fruit SelectedFruit
     {
         get => selectedFruit;
         set
         {
+            Debug.Log($"Set selected fruit to {value}");
             if(selectedFruit != null) selectedFruit.Deselect();
             selectedFruit = value;
             if(selectedFruit != null)
@@ -24,14 +25,14 @@ public class FruitScalePuzzle : Puzzle
                 selectedFruit.Select();
                 foreach(FruitScale scale in scales)
                 {
-                    scale.Collider2D.enabled = true;
+                    scale.BoxCollider2D.enabled = true;
                 }
             }
             else
             {
                 foreach(FruitScale scale in scales)
                 {
-                    scale.Collider2D.enabled = false;
+                    scale.BoxCollider2D.enabled = false;
                 }
             }
         }
@@ -91,6 +92,24 @@ public class FruitScalePuzzle : Puzzle
         }
     }
 
+    void Update()
+    {
+        if (Input.GetMouseButtonDown(0)) // Left-click
+        {
+            Vector2 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Collider2D hitCollider = Physics2D.OverlapPoint(worldPos);
+
+            if (hitCollider != null)
+            {
+                Debug.Log($"Clicked on: {hitCollider.gameObject.name}");
+            }
+            else
+            {
+                Debug.Log("Clicked on empty space.");
+            }
+        }
+    }
+
     /// <summary>
     /// When the player moves a fruit, update references and visual positions
     /// </summary>
@@ -103,19 +122,15 @@ public class FruitScalePuzzle : Puzzle
 
         // Update references for fruit and scales
         Fruit otherFruit = newScale.Fruit; // For directly swapping
-        otherFruit.Scale = Instance.OldScale;
-        Instance.OldScale.Fruit = otherFruit;
+        otherFruit.Scale = OldScale;
+        OldScale.Fruit = otherFruit;
         SelectedFruit.Scale = newScale;
         newScale.Fruit = SelectedFruit;
         SelectedFruit = null;
 
         // Update vertical positions for old and new scales
         if(!newScale.IsStorage) StartCoroutine(newScale.LerpPositionY());
-        if(!Instance.OldScale.IsStorage) StartCoroutine(Instance.OldScale.LerpPositionY());
-
-        // Prepare scale colliders for next action
-        Instance.OldScale.Collider2D.enabled = true;
-        newScale.Collider2D.enabled = false;
+        if(!OldScale.IsStorage) StartCoroutine(OldScale.LerpPositionY());
 
         // Check if puzzle is solved after each action
         if(CheckScales())

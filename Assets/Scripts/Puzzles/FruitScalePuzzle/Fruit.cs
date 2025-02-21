@@ -66,6 +66,7 @@ public class Fruit : MonoBehaviour
         if(!FruitScalePuzzle.Instance.IsComplete)
         {
             Vector2 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            bool fruitPlaced = false;
 
             Collider2D[] colliders = Physics2D.OverlapCircleAll(worldPos, 0.01f);
             foreach(Collider2D collider in colliders)
@@ -74,13 +75,13 @@ public class Fruit : MonoBehaviour
                 if(Scale != null)
                 {
                     Scale.TryPlaceFruit();
+                    fruitPlaced = true;
                     break;
                 }
             }
 
-            if(scale != null) transform.position = scale.transform.position;
-            else transform.localPosition = Vector3.zero;
-            FruitScalePuzzle.Instance.SelectedFruit = null;
+            if(!fruitPlaced) FruitScalePuzzle.Instance.SelectedFruit = null;
+            transform.localPosition = Vector3.zero;
         }
     }
 

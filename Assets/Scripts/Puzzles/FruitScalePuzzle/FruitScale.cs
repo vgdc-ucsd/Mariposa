@@ -25,7 +25,7 @@ public class FruitScale : MonoBehaviour
         get => fruit;
         set { fruit = value; }
     }
-    public BoxCollider2D Collider2D
+    public BoxCollider2D BoxCollider2D
     { get; set; }
 
     /// <summary>
@@ -33,8 +33,8 @@ public class FruitScale : MonoBehaviour
     /// </summary>
     public void InitializeScale()
     {
-        Collider2D = gameObject.GetComponent<BoxCollider2D>();
-        Collider2D.enabled = false;
+        BoxCollider2D = gameObject.GetComponent<BoxCollider2D>();
+        BoxCollider2D.enabled = false;
         SetPositionY();
     }
 
