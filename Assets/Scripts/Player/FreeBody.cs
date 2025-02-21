@@ -29,6 +29,8 @@ public abstract class FreeBody : Body
     [Tooltip("The downward vertical acceleration applied when in the air")]
     public float Gravity;
 
+    protected bool gravityEnabled = true;
+
     [Tooltip("The maximum fall velocity")]
     [SerializeField] protected float TerminalVelocity;
 
@@ -67,7 +69,7 @@ public abstract class FreeBody : Body
 
     protected virtual void Fall()
     {
-        if (State != BodyState.InAir) return;
+        if (State != BodyState.InAir || !gravityEnabled) return;
         Velocity.y = Mathf.Max(Velocity.y - Gravity * fdt, -TerminalVelocity); // Cap the velocity 
     }
 
@@ -120,5 +122,15 @@ public abstract class FreeBody : Body
     public virtual void Unlock()
     {
         State = BodyState.InAir;
+    }
+
+    public void ToggleGravity(bool toggle)
+    {
+        gravityEnabled = toggle;
+    }
+
+    public void Stop()
+    {
+        Velocity = Vector3.zero;
     }
 }

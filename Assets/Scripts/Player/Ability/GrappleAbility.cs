@@ -154,6 +154,8 @@ public class GrappleAbility : MonoBehaviour, IAbility
         Player player = Player.ActivePlayer;
         lockedTarget = target;
         player.TurnTowards((int)Mathf.Sign(target.x - player.transform.position.x));
+        player.Movement.Stop();
+        player.Movement.ToggleGravity(false);
         state = GrappleState.Firing;
     }
 
@@ -210,8 +212,7 @@ public class GrappleAbility : MonoBehaviour, IAbility
         Vector2 launchDir = new Vector2(Player.ActivePlayer.FacingDirection, 0.4f).normalized;
         Player.ActivePlayer.Movement.Velocity = launchDir * Mathf.Clamp(storedMomentum, baseLaunchForce, maxLaunchForce);
 
-        state = GrappleState.Idle;
-        storedMomentum = 0;
+        GrappleRelease();
 
     }
 
@@ -219,7 +220,11 @@ public class GrappleAbility : MonoBehaviour, IAbility
     private void GrappleRelease()
     {
         state = GrappleState.Idle;
+        storedMomentum = 0;
+        Player.ActivePlayer.Movement.ToggleGravity(true);
     }
+
+
 
     private void RenderLine()
     {

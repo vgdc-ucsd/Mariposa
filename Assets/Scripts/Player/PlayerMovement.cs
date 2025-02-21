@@ -208,7 +208,7 @@ public class PlayerMovement : FreeBody
     // This override makes the player fall slower/faster when falling
     protected override void Fall()
     {
-        if (State != BodyState.InAir) return;
+        if (State != BodyState.InAir || !gravityEnabled) return;
 
         float currentGravity = Velocity.y > 0 ? Gravity : Gravity * fallingGravityMultiplier;
         Velocity.y = Mathf.Max(Velocity.y - currentGravity * fdt, -TerminalVelocity);
