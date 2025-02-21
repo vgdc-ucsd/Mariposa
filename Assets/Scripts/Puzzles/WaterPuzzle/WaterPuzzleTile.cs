@@ -1,29 +1,102 @@
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class WaterPuzzleTile : MonoBehaviour
 {
-    public bool pipeRight, pipeUp, pipeLeft, pipeDown;
-    public bool hasWater;
-    public int posX, posY;
-    public BoxCollider2D myCollider;
-    public SpriteRenderer spriteRenderer;
+    [HideInInspector] public bool PipeRight, PipeUp, PipeLeft, PipeDown;
+    [HideInInspector] public bool HasWater;
+    [HideInInspector] public int PosX, PosY;
+    [HideInInspector] public BoxCollider2D MyCollider;
+    [HideInInspector] public SpriteRenderer SpriteRenderer;
+    [HideInInspector] public bool MustBeTurn;
+    [HideInInspector] public bool MustBeStraight;
+    [HideInInspector] public bool MustBeCross;
 
+    public float RandomPipeChance; // odds from 0 to 1 per side on this tile for a pipe to randomly spawn there
 
-    private void Awake()
+   
+    private void Start()
     {
-        
-        EmptyTile();
-
-    }
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        WaterPuzzle.Instance.tiles[posX, posY] = this;
-        if (WaterPuzzle.Instance.startTile == this) FillTile(true);
+        if (WaterPuzzle.Instance.StartTile == this) FillTile(true);
         else EmptyTile();
 
-        if (WaterPuzzle.Instance.endTile == this) spriteRenderer.material.color = Color.red;
+        if (WaterPuzzle.Instance.EndTile == this) SpriteRenderer.material.color = Color.red;
+
+        SetPipes();
         SetSprite();
+    }
+
+    /// <summary>
+    /// Called right when this tile is created to initialize key variables.
+    /// </summary>
+    public void InitializeTile()
+    {
+        MyCollider = GetComponent<BoxCollider2D>();
+        SpriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
+    /// <summary>
+    /// Assigns values to PipeRight, PipeUp, PipeLeft, and PipeDown, making sure that this tile can connect to adjacent tiles if it's part of the solution.
+    /// </summary>
+    private void SetPipes()
+    {
+        if (Random.Range(0f, 1f) < RandomPipeChance) PipeRight = true;
+        if (Random.Range(0f, 1f) < RandomPipeChance) PipeUp = true;
+        if (Random.Range(0f, 1f) < RandomPipeChance) PipeLeft = true;
+        if (Random.Range(0f, 1f) < RandomPipeChance) PipeDown = true;
+
+        if (MustBeTurn)
+        {
+            switch (Random.Range(0, 4))
+            {
+                case 0:
+                    PipeRight = true;
+                    PipeUp = true;
+                    break;
+
+                case 1:
+                    PipeLeft = true;
+                    PipeUp = true;
+                    break;
+
+                case 2:
+                    PipeRight = true;
+                    PipeDown = true;
+                    break;
+
+                case 3:
+                    PipeLeft = true;
+                    PipeDown = true;
+                    break;
+            }
+        }
+
+        if (MustBeStraight)
+        {
+            switch (Random.Range(0, 2))
+            {
+                case 0:
+                    PipeRight = true;
+                    PipeLeft = true;
+                    break;
+
+                case 1:
+                    PipeDown = true;
+                    PipeUp = true;
+                    break;
+            }
+        }
+
+        if (MustBeCross) PipeRight = PipeUp = PipeLeft = PipeDown = true;
+        if (WaterPuzzle.Instance.EndTile == this) PipeLeft = true;
+
+        if (WaterPuzzle.Instance.StartTile == this)
+        {
+            PipeLeft = true;
+            PipeRight = false;
+            PipeDown = false; 
+            PipeUp = false;
+        }
     }
 
     // Update is called once per frame
@@ -31,7 +104,7 @@ public class WaterPuzzleTile : MonoBehaviour
     {
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePos.z = 0;
-        if (Input.GetMouseButtonDown(0) && !WaterPuzzle.Instance.puzzleComplete && myCollider.bounds.Contains(mousePos))
+        if (Input.GetMouseButtonDown(0) && !WaterPuzzle.Instance.PuzzleComplete && MyCollider.bounds.Contains(mousePos))
         {
             RotateThisTile();
             WaterPuzzle.Instance.ResetPuzzle();
@@ -44,7 +117,7 @@ public class WaterPuzzleTile : MonoBehaviour
     public void SetSprite()
     {
         int spriteIndex = 0;
-        int numPipes = (pipeRight ? 1 : 0) + (pipeUp ? 1 : 0) + (pipeLeft ? 1 : 0) + (pipeDown ? 1 : 0);
+        int numPipes = (PipeRight ? 1 : 0) + (PipeUp ? 1 : 0) + (PipeLeft ? 1 : 0) + (PipeDown ? 1 : 0);
         int rotation = 0;
         switch (numPipes)
         {
@@ -53,26 +126,26 @@ public class WaterPuzzleTile : MonoBehaviour
 
             case 1:
                 spriteIndex = 1;
-                if (pipeUp) rotation = 90;
-                else if (pipeLeft) rotation = 180;
-                else if (pipeDown) rotation = 270;
+                if (PipeUp) rotation = 90;
+                else if (PipeLeft) rotation = 180;
+                else if (PipeDown) rotation = 270;
                 break;
 
             case 2:
-                if ((pipeRight && pipeLeft) || (pipeUp && pipeDown)) spriteIndex = 3;
+                if ((PipeRight && PipeLeft) || (PipeUp && PipeDown)) spriteIndex = 3;
                 else spriteIndex = 2;
 
-                if (pipeUp && pipeLeft) rotation = 90;
-                else if (pipeLeft && pipeDown) rotation = 180;
-                else if (pipeDown && pipeRight) rotation = 270;
-                else if (pipeUp && pipeDown) rotation = 90;
+                if (PipeUp && PipeLeft) rotation = 90;
+                else if (PipeLeft && PipeDown) rotation = 180;
+                else if (PipeDown && PipeRight) rotation = 270;
+                else if (PipeUp && PipeDown) rotation = 90;
                 break;
 
             case 3:
                 spriteIndex = 4;
-                if (!pipeDown) rotation = 90;
-                else if (!pipeRight) rotation = 180;
-                else if (!pipeUp) rotation = 270;
+                if (!PipeDown) rotation = 90;
+                else if (!PipeRight) rotation = 180;
+                else if (!PipeUp) rotation = 270;
                 break;
 
             case 4:
@@ -80,7 +153,7 @@ public class WaterPuzzleTile : MonoBehaviour
                 break;
         }
 
-        spriteRenderer.sprite = WaterPuzzle.Instance.tileSprites[spriteIndex];
+        SpriteRenderer.sprite = WaterPuzzle.Instance.TileSprites[spriteIndex];
         transform.eulerAngles += Vector3.forward * (transform.eulerAngles.z + rotation);
     }
 
@@ -89,11 +162,11 @@ public class WaterPuzzleTile : MonoBehaviour
     /// </summary>
     public void RotateThisTile()
     {
-        bool temp = pipeRight;
-        pipeRight = pipeUp;
-        pipeUp = pipeLeft;
-        pipeLeft = pipeDown;
-        pipeDown = temp;
+        bool temp = PipeRight;
+        PipeRight = PipeUp;
+        PipeUp = PipeLeft;
+        PipeLeft = PipeDown;
+        PipeDown = temp;
         transform.eulerAngles -= Vector3.forward * 90;
     }
 
@@ -102,16 +175,16 @@ public class WaterPuzzleTile : MonoBehaviour
     /// </summary>
     public void FillAdjacentTiles()
     {
-        if (!hasWater) return;
+        if (!HasWater) return;
         WaterPuzzleTile[] adjTiles = GetAdjacentTiles();
         // right
-        if (adjTiles[0] != null) adjTiles[0].FillTile(pipeRight && adjTiles[0].pipeLeft);
+        if (adjTiles[0] != null) adjTiles[0].FillTile(PipeRight && adjTiles[0].PipeLeft);
         // up
-        if (adjTiles[1] != null) adjTiles[1].FillTile(pipeUp && adjTiles[1].pipeDown);
+        if (adjTiles[1] != null) adjTiles[1].FillTile(PipeUp && adjTiles[1].PipeDown);
         // left
-        if (adjTiles[2] != null) adjTiles[2].FillTile(pipeLeft && adjTiles[2].pipeRight);
+        if (adjTiles[2] != null) adjTiles[2].FillTile(PipeLeft && adjTiles[2].PipeRight);
         // down
-        if (adjTiles[3] != null) adjTiles[3].FillTile(pipeDown && adjTiles[3].pipeUp);
+        if (adjTiles[3] != null) adjTiles[3].FillTile(PipeDown && adjTiles[3].PipeUp);
     }
 
     /// <summary>
@@ -123,24 +196,24 @@ public class WaterPuzzleTile : MonoBehaviour
         WaterPuzzleTile[] result = new WaterPuzzleTile[4];
 
         // right
-        if (posX < WaterPuzzle.Instance.gridWidth - 1)
+        if (PosX < WaterPuzzle.Instance.GridWidth - 1)
         {
-            result[0] = WaterPuzzle.Instance.tiles[posX + 1, posY];
+            result[0] = WaterPuzzle.Instance.Tiles[PosX + 1, PosY];
         }
         // up
-        if (posY > 0)
+        if (PosY > 0)
         {
-            result[1] = WaterPuzzle.Instance.tiles[posX, posY - 1];
+            result[1] = WaterPuzzle.Instance.Tiles[PosX, PosY - 1];
         }
         // left
-        if (posX > 0)
+        if (PosX > 0)
         {
-            result[2] = WaterPuzzle.Instance.tiles[posX - 1, posY];
+            result[2] = WaterPuzzle.Instance.Tiles[PosX - 1, PosY];
         }
         // down
-        if (posY < WaterPuzzle.Instance.gridHeight - 1)
+        if (PosY < WaterPuzzle.Instance.GridHeight - 1)
         {
-            result[3] = WaterPuzzle.Instance.tiles[posX, posY + 1];
+            result[3] = WaterPuzzle.Instance.Tiles[PosX, PosY + 1];
         }
 
         return result;
@@ -150,25 +223,29 @@ public class WaterPuzzleTile : MonoBehaviour
     /// Fill the tile with water, and update its sprite accordingly
     /// For now, this just makes the tile blue
     /// </summary>
+    /// <param name="filled"> Whether or not the tile should actually be filled</param>
     public void FillTile(bool filled)
     {
-        if (filled && !hasWater)
+        if (filled && !HasWater)
         {
-            if (WaterPuzzle.Instance.endTile == this)
+            if (WaterPuzzle.Instance.EndTile == this)
             {
                 WaterPuzzle.Instance.CompletePuzzle();
             }
 
-            spriteRenderer.material.color = Color.blue;
-            hasWater = true;
+            SpriteRenderer.material.color = Color.blue;
+            HasWater = true;
             FillAdjacentTiles();
         }
     }
 
+    /// <summary>
+    /// Get rid of the water in this tile
+    /// </summary>
     public void EmptyTile()
     {
-        if (WaterPuzzle.Instance.endTile != this) spriteRenderer.material.color = Color.white;
-        hasWater = false;
+        if (WaterPuzzle.Instance.EndTile != this) SpriteRenderer.material.color = Color.white;
+        HasWater = false;
     }
 
     
