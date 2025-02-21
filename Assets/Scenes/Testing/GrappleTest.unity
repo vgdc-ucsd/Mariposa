@@ -281,6 +281,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &379556181 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4875991570046858898, guid: 9c69fd4b7512ae441aba7847b155d9f1, type: 3}
+  m_PrefabInstance: {fileID: 9126329366663877090}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &619249825
 GameObject:
   m_ObjectHideFlags: 0
@@ -3297,9 +3302,33 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4056559922825081700, guid: 9c69fd4b7512ae441aba7847b155d9f1, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 0.85365856
+      objectReference: {fileID: 0}
+    - target: {fileID: 4056559922825081700, guid: 9c69fd4b7512ae441aba7847b155d9f1, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 1.2195122
+      objectReference: {fileID: 0}
     - target: {fileID: 4875991570046858898, guid: 9c69fd4b7512ae441aba7847b155d9f1, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 8170181342741015996, guid: 9c69fd4b7512ae441aba7847b155d9f1, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 9fa05a2b3dc3e9440801c5721dc69f25, type: 3}
+    - target: {fileID: 8170181342741015996, guid: 9c69fd4b7512ae441aba7847b155d9f1, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8170181342741015996, guid: 9c69fd4b7512ae441aba7847b155d9f1, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8170181342741015996, guid: 9c69fd4b7512ae441aba7847b155d9f1, type: 3}
+      propertyPath: m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8318424166693936505, guid: 9c69fd4b7512ae441aba7847b155d9f1, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3347,13 +3376,53 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8318424166693936505, guid: 9c69fd4b7512ae441aba7847b155d9f1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1151539241}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4875991570046858898, guid: 9c69fd4b7512ae441aba7847b155d9f1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 9126329366663877097}
+    - targetCorrespondingSourceObject: {fileID: 4875991570046858898, guid: 9c69fd4b7512ae441aba7847b155d9f1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 9126329366663877098}
   m_SourcePrefab: {fileID: 100100000, guid: 9c69fd4b7512ae441aba7847b155d9f1, type: 3}
 --- !u!4 &9126329366663877091 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8318424166693936505, guid: 9c69fd4b7512ae441aba7847b155d9f1, type: 3}
   m_PrefabInstance: {fileID: 9126329366663877090}
   m_PrefabAsset: {fileID: 0}
+--- !u!95 &9126329366663877097
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 379556181}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: fa08b54b1a669a946a98685778546df4, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &9126329366663877098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 379556181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5238931793b377a41b3a12b23d477c24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
