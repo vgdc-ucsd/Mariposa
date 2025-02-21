@@ -1,10 +1,7 @@
-using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml.Serialization;
 using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 public enum GrappleState
 {
@@ -23,7 +20,7 @@ public class GrappleAbility : MonoBehaviour, IAbility
     private LineRenderer lineRenderer;
 
     // when is the player considered "close"
-    private const float STOP_DISTANCE = 3;
+    private const float STOP_DISTANCE = 1;
     public float grappleForce = 50;
     private float fdt;
 
@@ -210,7 +207,7 @@ public class GrappleAbility : MonoBehaviour, IAbility
         if (!(state == GrappleState.Pulling || state == GrappleState.Stopped)) return;
 
         Vector2 launchDir = new Vector2(Player.ActivePlayer.FacingDirection, 0.4f).normalized;
-        Player.ActivePlayer.Movement.Velocity = launchDir * Mathf.Clamp(storedMomentum, baseLaunchForce, maxLaunchForce);
+        Player.ActivePlayer.Movement.Velocity = launchDir * Mathf.Clamp(storedMomentum + baseLaunchForce, baseLaunchForce, maxLaunchForce);
 
         GrappleRelease();
 
