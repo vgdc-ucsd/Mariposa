@@ -1,3 +1,4 @@
+using System.Collections;
 using NUnit.Framework.Internal.Commands;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -52,7 +53,13 @@ public class PlayerMovement : FreeBody
     [Tooltip("The minimum upward velocity required to corner correct")]
     [SerializeField] private float cornerCorrectMinVelocity;
 
-
+    [Header("Dash Parameters")]
+    [Tooltip("Force applied during dash")]
+    public float dashForce = 20f;
+    [Tooltip("Duration of the dash (seconds)")]
+    public float dashDuration = 0.2f;
+    private bool isDashing = false;
+    
     // Useful for when their dependent values are changed during runtime
     private void InitDerivedConsts()
     {
@@ -81,6 +88,15 @@ public class PlayerMovement : FreeBody
 
         // All "Down" inputs should be in Update() to avoid inputs dropping between physics frames
         if (Input.GetKeyDown(KeyCode.Space)) Jump();
+        
+        if (Input.GetKeyDown(KeyCode.V) && !isDashing)
+        {
+            if (InventoryManager.Instance.GetItemCount(BatteryItem.Instance) > 0)
+            {
+                InventoryManager.Instance.DeleteItem(BatteryItem.Instance);
+                StartCoroutine(DashRoutine());
+            }
+        }
     }
 
     private void OnValidate()
@@ -189,5 +205,14 @@ public class PlayerMovement : FreeBody
         }
 
         return ceilCast;
+    }
+    
+    private IEnumerator DashRoutine()
+    {
+        isDashing = true;
+        float dashDirection = Mathf.Sign(transform.localScale.x);
+        Velocity.x = dashForce * dashDirection;
+        yield return new WaitForSeconds(dashDuration);
+        isDashing = false;
     }
 }
