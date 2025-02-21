@@ -12,20 +12,23 @@ public class PlayerAnimation : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (Input.GetKey(KeyCode.A))
+        // at rest
+        if (Player.ActivePlayer.Movement.Velocity.sqrMagnitude <= 0.05f)
+        {
+            animator.SetFloat("xVelocity", 0);
+            return;
+        }
+
+        int dir = Player.ActivePlayer.FacingDirection;
+        if (dir == -1)
         {
             animator.SetFloat("xVelocity", 1);
             playerSprite.flipX = true;
         }
-
-        else if (Input.GetKey(KeyCode.D))
+        else
         {
             animator.SetFloat("xVelocity", 1);
             playerSprite.flipX = false;
-        }
-        else 
-        {
-            animator.SetFloat("xVelocity", 0);
         }
     }
 }

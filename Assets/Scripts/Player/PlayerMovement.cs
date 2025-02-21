@@ -97,9 +97,6 @@ public class PlayerMovement : FreeBody
     protected override void Update()
     {
         base.Update();
-
-        // All "Down" inputs should be in Update() to avoid inputs dropping between physics frames
-        if (Input.GetKeyDown(KeyCode.Space)) Jump();
     }
 
     private void OnValidate()
@@ -110,18 +107,6 @@ public class PlayerMovement : FreeBody
 
     protected override void FixedUpdate()
     {
-        if (Input.GetKey(KeyCode.D))
-        {
-            Player.ActivePlayer.TurnTowards(1);
-            moveDir = Vector2.right;
-        }
-        else if (Input.GetKey(KeyCode.A))
-        {
-            Player.ActivePlayer.TurnTowards(-1);
-            moveDir = Vector2.left;
-        }
-        else moveDir = Vector2.zero;
-
         Move();
 
         base.FixedUpdate();
@@ -144,7 +129,16 @@ public class PlayerMovement : FreeBody
         else wallNormal = 0;
     }
 
+    // public method to send a move command
+    public void MoveTowards(int dir)
+    {
+        // TurnTowards only changes "facing direction", which has no effect on movement
+        if (dir != 0) Player.ActivePlayer.TurnTowards(dir);
 
+        if (dir == 1) moveDir = Vector2.right;
+        else if (dir == -1) moveDir = Vector2.left;
+        else moveDir = Vector2.zero;
+    }
 
     private void Move()
     {
@@ -176,7 +170,7 @@ public class PlayerMovement : FreeBody
     }
 
     // Directly set the player's y velocity
-    private void Jump()
+    public void Jump()
     {
         CheckOnWall();
         CheckGrounded();
