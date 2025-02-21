@@ -114,22 +114,27 @@ public class GrappleAbility : MonoBehaviour, IAbility
     private void FindGrapplePoint()
     {
         List<GrappleTarget> potentialTargets = new();
+        List<GrappleTarget> behindTargets = new();
         int dir = Player.ActivePlayer.FacingDirection;
-        foreach (GrappleTarget target in grappleTargets) 
+
+        foreach (GrappleTarget target in grappleTargets)
         {
-            // reject targets behind the player
             int targetDir = target.transform.position.x < Player.ActivePlayer.transform.position.x ? -1 : 1;
             float dist = Vector2.Distance(target.transform.position, Player.ActivePlayer.transform.position);
-            if (dir == targetDir && dist <= grappleRange)
+            if (dist <= grappleRange)
             {
-                potentialTargets.Add(target);
+                if (dir == targetDir)
+                {
+                    potentialTargets.Add(target);
+                }
+                else behindTargets.Add(target);
             }
         }
-        // choose closest target out of valid ones
 
-        // WIP
-        // todo: all points in range should be considered, but the ones in the right direction always take precedence over 
-        // ones on the opposite side of the player's facing direction
+        // only if nothing in player's facing direction, check behind the player
+        if (potentialTargets.Count == 0) potentialTargets = behindTargets;
+
+
         GrappleTarget closest = potentialTargets.OrderBy(target => Vector2.Distance(target.transform.position, Player.ActivePlayer.transform.position)).FirstOrDefault();
 
         if (closest == currentTarget) return;

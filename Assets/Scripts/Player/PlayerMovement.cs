@@ -110,8 +110,16 @@ public class PlayerMovement : FreeBody
 
     protected override void FixedUpdate()
     {
-        if (Input.GetKey(KeyCode.D)) moveDir = Vector2.right;
-        else if (Input.GetKey(KeyCode.A)) moveDir = Vector2.left;
+        if (Input.GetKey(KeyCode.D))
+        {
+            Player.ActivePlayer.TurnTowards(1);
+            moveDir = Vector2.right;
+        }
+        else if (Input.GetKey(KeyCode.A))
+        {
+            Player.ActivePlayer.TurnTowards(-1);
+            moveDir = Vector2.left;
+        }
         else moveDir = Vector2.zero;
 
         Move();
