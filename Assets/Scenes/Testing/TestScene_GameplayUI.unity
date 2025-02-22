@@ -345,6 +345,7 @@ GameObject:
   - component: {fileID: 123539095}
   - component: {fileID: 123539094}
   - component: {fileID: 123539093}
+  - component: {fileID: 123539096}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -369,8 +370,8 @@ Camera:
   m_GameObject: {fileID: 123539092}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0.3962264, g: 0.3962264, b: 0.3962264, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -426,6 +427,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &123539096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 123539092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_AllowHDROutput: 1
+  m_UseScreenCoordOverride: 0
+  m_ScreenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
+  m_TaaSettings:
+    m_Quality: 3
+    m_FrameInfluence: 0.1
+    m_JitterScale: 1
+    m_MipBias: 0
+    m_VarianceClampScale: 0.9
+    m_ContrastAdaptiveSharpening: 0
 --- !u!1 &128772042
 GameObject:
   m_ObjectHideFlags: 0
@@ -836,53 +881,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 305281974}
     m_Modifications:
-    - target: {fileID: 1554183581097965388, guid: 5007d4510a3454d6a97ab05f2269e7f5, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1554183581097965388, guid: 5007d4510a3454d6a97ab05f2269e7f5, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2870748013282054447, guid: 5007d4510a3454d6a97ab05f2269e7f5, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2870748013282054447, guid: 5007d4510a3454d6a97ab05f2269e7f5, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4932430592406537968, guid: 5007d4510a3454d6a97ab05f2269e7f5, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4932430592406537968, guid: 5007d4510a3454d6a97ab05f2269e7f5, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4932430592406537968, guid: 5007d4510a3454d6a97ab05f2269e7f5, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4932430592406537968, guid: 5007d4510a3454d6a97ab05f2269e7f5, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4968017816208881884, guid: 5007d4510a3454d6a97ab05f2269e7f5, type: 3}
       propertyPath: m_Name
       value: Panel_PopupUI
-      objectReference: {fileID: 0}
-    - target: {fileID: 6573750571110184830, guid: 5007d4510a3454d6a97ab05f2269e7f5, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6573750571110184830, guid: 5007d4510a3454d6a97ab05f2269e7f5, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6573750571110184830, guid: 5007d4510a3454d6a97ab05f2269e7f5, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8505020376848040367, guid: 5007d4510a3454d6a97ab05f2269e7f5, type: 3}
       propertyPath: m_Pivot.x
@@ -950,7 +951,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8505020376848040367, guid: 5007d4510a3454d6a97ab05f2269e7f5, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: 163
       objectReference: {fileID: 0}
     - target: {fileID: 8505020376848040367, guid: 5007d4510a3454d6a97ab05f2269e7f5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -962,14 +963,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8505020376848040367, guid: 5007d4510a3454d6a97ab05f2269e7f5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8537965820231121368, guid: 5007d4510a3454d6a97ab05f2269e7f5, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8537965820231121368, guid: 5007d4510a3454d6a97ab05f2269e7f5, type: 3}
-      propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -1718,8 +1711,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49c7eb40c50f94f5da5a52e4b5e7afd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  description: The Item will have a `PopupDataSO`, and when it get picked up, it'll
+  description: 'The Item will have a `PopupDataSO`, and when it get picked up, it''ll
     call `PopupUiController.Show(PopupDataSO)`.
+
+    For test, press ''R'' to mimic
+    picking up a new item.'
 --- !u!1 &1348264140
 GameObject:
   m_ObjectHideFlags: 0
