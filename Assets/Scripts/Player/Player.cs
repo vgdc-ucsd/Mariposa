@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
 	public static Player ActivePlayer;
 	private bool playerDebug;
 	public PlayerMovement Movement;
+	public IAbility Ability;
 
 
     // which way the character is facing
@@ -22,6 +23,7 @@ public class Player : MonoBehaviour
 			ActivePlayer = this;
 		}
 		Movement = GetComponent<PlayerMovement>();
+		Ability = GetComponentInChildren<IAbility>();
 	}
 
 	void Start()
