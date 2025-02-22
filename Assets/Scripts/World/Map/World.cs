@@ -73,10 +73,11 @@ public class WorldManager : MonoBehaviour
 
         yield return null; // Let Unity process the changes
 
+
         // Activate the new world and character
         worldToActivate.SetActive(true);
         characterToActivate.SetActive(true);
-
+        Player.ActivePlayer = characterToActivate.GetComponent<Player>();
         // Update active world tracker
         isWorldAActive = (characterToActivate == unknown);
         isSwitching = false;
