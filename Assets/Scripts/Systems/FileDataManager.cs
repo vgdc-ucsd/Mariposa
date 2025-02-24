@@ -53,6 +53,10 @@ public class FileDataManager : Singleton<FileDataManager>
                 Debug.LogError("Error when trying to read data from file: " + fullPath + "\n" + e);
             }
         }
+        else
+        {
+            Debug.LogError("File doesn't exist")
+        }
         return loadedData;
     }
 
@@ -103,5 +107,20 @@ public class FileDataManager : Singleton<FileDataManager>
         {
             Debug.Log("Tried to delete save data that doesn't exist at " + fullPath);
         }
+    }
+
+    private void SetCurrentSaveSlot(string saveSlot)
+    {
+        this.dataFileName = saveSlot;
+    }
+
+    /// <summary>
+    /// Checks if the currently selected save is a valid save and isn't corrupted or has incorrect data types
+    /// </summary>
+    /// <returns>Boolean</returns>
+    private bool ValidateSave()
+    {
+        // TODO: Make this check the data types on the save
+        return true;
     }
 }

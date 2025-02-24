@@ -20,6 +20,7 @@ public class DataPersistenceManager : Singleton<DataPersistenceManager>
 
     private void Start()
     {
+        // Initialize the file data manager with the default file path and the file name given by the serialize field
         this.dataManager = new FileDataManager(Application.persistentDataPath, fileName);
         this.dataPersistenceObjects = FindAllDataPersistenceObjects();
 
@@ -41,8 +42,10 @@ public class DataPersistenceManager : Singleton<DataPersistenceManager>
     /// After loading, the data is passed to each component with the IDataPersistence interface
     /// and then calls the LoadGame() method on each of those components
     /// </summary>
-    public void LoadGame()
+    public void LoadGame(string saveName)
     {
+        SetCurrentSave(saveName)
+
         this.gameData = dataManager.Load();
         if (this.gameData == null)
         {
@@ -59,8 +62,9 @@ public class DataPersistenceManager : Singleton<DataPersistenceManager>
     /// Passes a reference of gameData to each component with the IDataPersistence interface and then
     /// calls the SaveGame() method on each of those components
     /// </summary>
-    public void SaveGame()
+    public void SaveGame(string saveName)
     {
+        SetCurrentSave(saveName)
         foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)
         {
             dataPersistenceObj.SaveData(ref gameData);
@@ -87,5 +91,15 @@ public class DataPersistenceManager : Singleton<DataPersistenceManager>
         IEnumerable<IDataPersistence> dataPersistenceObjects = FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None)
                                                                 .OfType<IDataPersistence>();
         return new List<IDataPersistence>(dataPersistenceObjects);
+    }
+
+    /// <summary>
+    /// Helper function that updates the file that the data persistence manager and the file data manager will modify
+    /// </summary>
+    /// <param name="saveSlot">Name of the file you want to use</param>
+    private void SetCurrentSave(string saveName)
+    {
+        this.fileName = saveName;
+        dataManager.SetCurrentSaveSlot(saveName);
     }
 }
