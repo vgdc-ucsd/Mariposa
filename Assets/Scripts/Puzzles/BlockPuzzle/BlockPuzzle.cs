@@ -1,13 +1,15 @@
 using UnityEngine;
 
-public class BlockPuzzle : MonoBehaviour
+public class BlockPuzzle : Puzzle
 {
     public static BlockPuzzle Instance;
     public int GridWidth = 5;
     public int GridHeight = 4;
+    public int SolutionColumn = 2;
     public GameObject blockPrefab;
     public GameObject previewPrefab;
     public GameObject gridVisualizerPrefab;
+    public bool IsComplete;
 
     private BlockPuzzleBlock[,] grid;
     private int blockCount = 0;
@@ -29,20 +31,19 @@ public class BlockPuzzle : MonoBehaviour
     private void InitializeGrid()
     {
         // Example: Instantiate blocks
-        CreateBlockAtPosition(0, 0, new Vector2Int(1, 1), Color.red); // Bottom left
-        CreateBlockAtPosition(1, 0, new Vector2Int(2, 1), Color.blue); // Bottom middle
-        CreateBlockAtPosition(4, 2, new Vector2Int(1, 2), Color.green); // Top right
-        CreateBlockAtPosition(2, 1, new Vector2Int(1, 1), Color.yellow); // Center area
+        CreateBlockAtPosition(new Vector2Int(0, 0), new Vector2Int(1, 1), Color.red);
+        CreateBlockAtPosition(new Vector2Int(1, 0), new Vector2Int(2, 1), Color.blue);
+        CreateBlockAtPosition(new Vector2Int(4, 2), new Vector2Int(1, 2), Color.green);
+        CreateBlockAtPosition(new Vector2Int(2, 1), new Vector2Int(1, 1), Color.yellow);
     }
 
-    private void CreateBlockAtPosition(int x, int y, Vector2Int size, Color color)
+    private void CreateBlockAtPosition(Vector2Int position, Vector2Int size, Color color)
     {
         GameObject blockGO = Instantiate(blockPrefab);
         blockGO.name = $"Block {blockCount++}";
         BlockPuzzleBlock block = blockGO.GetComponent<BlockPuzzleBlock>();
 
-        // Store the raw grid coordinates
-        block.Position = new Vector2Int(x, y);
+        block.Position = position;
         block.Size = size;
         block.Color = color;
         
@@ -91,6 +92,8 @@ public class BlockPuzzle : MonoBehaviour
 
     public bool CanMove(BlockPuzzleBlock block, Vector2Int direction)
     {
+        if (IsComplete) return false;
+
         Vector2Int newPosition = block.Position + direction;
 
         // Ensure the new position is within bounds of the grid
@@ -166,6 +169,13 @@ public class BlockPuzzle : MonoBehaviour
         
         // Update grid with new position
         SetBlockInGrid(block, block.Position);
+
+        // Check if puzzle is solved after each move
+        if (CheckSolution())
+        {
+            IsComplete = true;
+            OnComplete();
+        }
     }
 
     public void ClearBlockFromGrid(BlockPuzzleBlock block)
@@ -178,5 +188,14 @@ public class BlockPuzzle : MonoBehaviour
                 grid[block.Position.x + dx, block.Position.y + dy] = null;
             }
         }
+    }
+
+    private bool CheckSolution()
+    {
+        for (int i = 0; i < GridHeight; ++i)
+        {
+            if(grid[SolutionColumn, i] != null) return false;
+        }
+        return true;
     }
 }

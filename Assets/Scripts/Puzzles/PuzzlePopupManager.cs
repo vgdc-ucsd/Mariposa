@@ -60,6 +60,8 @@ public class PuzzlePopupManager : MonoBehaviour
         HidePuzzle();
     }
 
+    public void CompletePuzzle() => HidePuzzle();
+
     /// <summary>
     /// Hide the active puzzle
     /// </summary>
