@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class BlockPuzzleBlock : MonoBehaviour
 {
+    private const float BLOCK_SIZE_PADDING = 0.05f;
     public Vector2Int Size;
     public Vector2Int Position;
     public Color Color;
@@ -165,7 +166,7 @@ public class BlockPuzzleBlock : MonoBehaviour
     {
         if (spriteRenderer != null && boxCollider2D != null)
         {
-            spriteRenderer.transform.localScale = new Vector3(Size.x, Size.y, 1);
+            spriteRenderer.transform.localScale = new Vector3(Size.x - BLOCK_SIZE_PADDING, Size.y - BLOCK_SIZE_PADDING, 1);
             Vector3 adjustedPosition = new Vector3((Size.x - 1f) / 2f, (Size.y - 1f) / 2f, 0);
             spriteRenderer.transform.localPosition = adjustedPosition;
             

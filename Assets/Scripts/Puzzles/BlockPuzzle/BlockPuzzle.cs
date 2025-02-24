@@ -31,10 +31,13 @@ public class BlockPuzzle : Puzzle
     private void InitializeGrid()
     {
         // Example: Instantiate blocks
-        CreateBlockAtPosition(new Vector2Int(0, 0), new Vector2Int(1, 1), Color.red);
-        CreateBlockAtPosition(new Vector2Int(1, 0), new Vector2Int(2, 1), Color.blue);
-        CreateBlockAtPosition(new Vector2Int(4, 2), new Vector2Int(1, 2), Color.green);
-        CreateBlockAtPosition(new Vector2Int(2, 1), new Vector2Int(1, 1), Color.yellow);
+        CreateBlockAtPosition(new Vector2Int(0, 1), new Vector2Int(2, 1), Color.cyan);
+        CreateBlockAtPosition(new Vector2Int(0, 2), new Vector2Int(1, 2), Color.green);
+        CreateBlockAtPosition(new Vector2Int(1, 2), new Vector2Int(2, 2), Color.yellow);
+        CreateBlockAtPosition(new Vector2Int(2, 0), new Vector2Int(2, 2), Color.yellow);
+        CreateBlockAtPosition(new Vector2Int(3, 2), new Vector2Int(2, 1), Color.cyan);
+        CreateBlockAtPosition(new Vector2Int(4, 0), new Vector2Int(1, 1), Color.magenta);
+        CreateBlockAtPosition(new Vector2Int(4, 1), new Vector2Int(1, 1), Color.magenta);
     }
 
     private void CreateBlockAtPosition(Vector2Int position, Vector2Int size, Color color)
