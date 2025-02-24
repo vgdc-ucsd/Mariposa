@@ -10,14 +10,28 @@ public class BlockPuzzleBlock : MonoBehaviour
 
     private SpriteRenderer spriteRenderer;
     private BoxCollider2D boxCollider2D;
+    private BlockPreview preview;
 
     public void InitializeBlock()
     {
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         boxCollider2D = GetComponent<BoxCollider2D>();
 
+        // Create preview
+        GameObject previewObj = Instantiate(BlockPuzzle.Instance.previewPrefab);
+        preview = previewObj.GetComponent<BlockPreview>();
+        preview.SetSize(size);
+
         if (spriteRenderer != null && boxCollider2D != null) AdjustVisualSize();
         else Debug.LogWarning("SpriteRenderer not found on child object or BoxCollider2D not found on object.");
+    }
+
+    private void OnDestroy()
+    {
+        if (preview != null)
+        {
+            Destroy(preview.gameObject);
+        }
     }
 
     private void OnMouseDown()
@@ -35,7 +49,17 @@ public class BlockPuzzleBlock : MonoBehaviour
         {
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition) + mouseOffset;
             mousePosition.z = 0;  // Ensure the block stays on the 2D plane
+            
+            // Only constrain to grid when showing preview
+            Vector2Int validPos = GetValidPosition(mousePosition);
+            Vector3 constrainedPos = BlockPuzzle.Instance.GridToWorldPosition(validPos);
+            
+            // Allow free dragging, but highlight where the block will actually end up
             transform.position = mousePosition;
+            
+            // Here you could add visual feedback showing where the block will snap to
+            // For example, you could make a ghost/preview block at constrainedPos
+            ShowPreview(constrainedPos);
         }
     }
 
@@ -44,25 +68,91 @@ public class BlockPuzzleBlock : MonoBehaviour
         if (isDragging)
         {
             isDragging = false;
-
-            // Snap the block to the nearest grid position (limited to one cell)
-            Vector2Int snappedPosition = SnapToGrid(transform.position);
-
-            // Check if the move is valid in each direction (up, down, left, right)
-            Vector2Int direction = snappedPosition - position;
-
-            if (direction.magnitude == 1 && BlockPuzzle.Instance.CanMove(this, direction))
+            
+            // Get the closest valid position based on where the player dragged
+            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition) + mouseOffset;
+            Vector2Int newPosition = GetValidPosition(mousePosition);
+            
+            if (newPosition != position)
             {
-                // Use MoveBlock to move the block in the grid
-                BlockPuzzle.Instance.MoveBlock(this, direction);
+                Vector2Int movement = newPosition - position;
+                Vector2Int direction;
+                int steps;
+                
+                if (movement.x != 0)
+                {
+                    direction = new Vector2Int(movement.x > 0 ? 1 : -1, 0);
+                    steps = Mathf.Abs(movement.x);
+                }
+                else
+                {
+                    direction = new Vector2Int(0, movement.y > 0 ? 1 : -1);
+                    steps = Mathf.Abs(movement.y);
+                }
+                
+                BlockPuzzle.Instance.MoveBlock(this, direction, steps);
             }
             else
             {
-                Debug.Log($"Failed to move {this}");
-                // Return to original position if move is invalid
                 transform.position = BlockPuzzle.Instance.GridToWorldPosition(position);
             }
+            
+            // Hide the preview when dragging ends
+            HidePreview();
         }
+    }
+
+    private void ShowPreview(Vector3 position)
+    {
+        if (preview != null)
+        {
+            preview.SetPosition(position + new Vector3((size.x - 1f) / 2f, (size.y - 1f) / 2f, 0));
+            preview.Show();
+        }
+    }
+
+    private void HidePreview()
+    {
+        if (preview != null)
+        {
+            preview.Hide();
+        }
+    }
+
+    private Vector2Int GetValidPosition(Vector3 worldPosition)
+    {
+        Vector2Int targetPos = SnapToGrid(worldPosition);
+        Vector2Int movement = targetPos - position;
+        
+        // If movement is purely horizontal or vertical
+        if (movement.x != 0 && movement.y == 0)
+        {
+            // Horizontal movement
+            Vector2Int direction = new Vector2Int(movement.x > 0 ? 1 : -1, 0);
+            int maxSteps;
+            if (BlockPuzzle.Instance.CanMoveInDirection(this, direction, out maxSteps))
+            {
+                int desiredSteps = Mathf.Abs(movement.x);
+                // Allow any number of steps up to the maximum
+                int actualSteps = Mathf.Min(desiredSteps, maxSteps);
+                return position + (direction * actualSteps);
+            }
+        }
+        else if (movement.x == 0 && movement.y != 0)
+        {
+            // Vertical movement
+            Vector2Int direction = new Vector2Int(0, movement.y > 0 ? 1 : -1);
+            int maxSteps;
+            if (BlockPuzzle.Instance.CanMoveInDirection(this, direction, out maxSteps))
+            {
+                int desiredSteps = Mathf.Abs(movement.y);
+                // Allow any number of steps up to the maximum
+                int actualSteps = Mathf.Min(desiredSteps, maxSteps);
+                return position + (direction * actualSteps);
+            }
+        }
+        
+        return position;
     }
 
     // Snap block's world position to the nearest grid position

@@ -6,6 +6,8 @@ public class BlockPuzzle : MonoBehaviour
     public int GridWidth = 5;
     public int GridHeight = 4;
     public GameObject blockPrefab;
+    public GameObject previewPrefab;
+    public GameObject gridVisualizerPrefab;
 
     private BlockPuzzleBlock[,] grid; // Store blocks in the grid
     private int blockCount = 0;
@@ -20,6 +22,8 @@ public class BlockPuzzle : MonoBehaviour
         }
 
         grid = new BlockPuzzleBlock[GridWidth, GridHeight];
+        // Create grid visualizer
+        Instantiate(gridVisualizerPrefab, transform);
         InitializeGrid();
     }
 
@@ -91,27 +95,59 @@ public class BlockPuzzle : MonoBehaviour
         return true;  // The block can move
     }
 
-
-    public void MoveBlock(BlockPuzzleBlock block, Vector2Int direction)
+    public bool CanMoveInDirection(BlockPuzzleBlock block, Vector2Int direction, out int maxSteps)
     {
-        Debug.Log($"Trying to move {block}");
-        if (CanMove(block, direction))
+        maxSteps = 0;
+        if (direction == Vector2Int.zero) return true;
+        
+        // Keep checking positions in the direction until we hit an obstacle
+        while (true)
         {
-            Debug.Log($"Successfully moved {block}");
-            // Clear block from old position in grid
-            ClearBlockFromGrid(block);
-
-            // Move the block to the new position
-            block.position += direction;
-            block.transform.position = GridToWorldPosition(block.position);
-
-            // Update grid with new position
-            SetBlockInGrid(block, block.position);
+            Vector2Int newPosition = block.position + (direction * (maxSteps + 1));
+            
+            // Check grid bounds
+            if (newPosition.x < 0 || newPosition.x + block.size.x > GridWidth || 
+                newPosition.y < 0 || newPosition.y + block.size.y > GridHeight)
+            {
+                break;  // Hit the grid boundary
+            }
+            
+            // Check for other blocks
+            bool positionClear = true;
+            for (int dx = 0; dx < block.size.x; dx++)
+            {
+                for (int dy = 0; dy < block.size.y; dy++)
+                {
+                    int x = newPosition.x + dx;
+                    int y = newPosition.y + dy;
+                    
+                    if (grid[x, y] != null && grid[x, y] != block)
+                    {
+                        positionClear = false;
+                        break;
+                    }
+                }
+                if (!positionClear) break;
+            }
+            
+            if (!positionClear) break;
+            maxSteps++;
         }
-        else
-        {
-            Debug.LogWarning("Move failed for block at position " + block.position);
-        }
+        
+        return maxSteps > 0;
+    }
+
+    public void MoveBlock(BlockPuzzleBlock block, Vector2Int direction, int steps = 1)
+    {
+        // Clear block from old position
+        ClearBlockFromGrid(block);
+        
+        // Move the block to the new position
+        block.position += direction * steps;
+        block.transform.position = GridToWorldPosition(block.position);
+        
+        // Update grid with new position
+        SetBlockInGrid(block, block.position);
     }
 
     public void ClearBlockFromGrid(BlockPuzzleBlock block)
