@@ -9,7 +9,7 @@ public class BlockPuzzle : MonoBehaviour
     public GameObject previewPrefab;
     public GameObject gridVisualizerPrefab;
 
-    private BlockPuzzleBlock[,] grid; // Store blocks in the grid
+    private BlockPuzzleBlock[,] grid;
     private int blockCount = 0;
 
     void Awake()
@@ -22,44 +22,67 @@ public class BlockPuzzle : MonoBehaviour
         }
 
         grid = new BlockPuzzleBlock[GridWidth, GridHeight];
-        // Create grid visualizer
         Instantiate(gridVisualizerPrefab, transform);
         InitializeGrid();
     }
 
     private void InitializeGrid()
     {
-        // Example: Instantiate a few blocks at specific grid positions to leave room for testing movement
-        CreateBlockAtPosition(0, 0, new Vector2Int(1, 1)); // Block at (0, 0), size 1x1
-        CreateBlockAtPosition(1, 0, new Vector2Int(2, 1)); // Block at (1, 0), size 2x1
-        CreateBlockAtPosition(4, 2, new Vector2Int(1, 2)); // Block at (4, 2), size 1x2
-        CreateBlockAtPosition(2, 1, new Vector2Int(1, 1)); // Block at (2, 1), size 1x1
+        // Example: Instantiate blocks
+        CreateBlockAtPosition(0, 0, new Vector2Int(1, 1), Color.red); // Bottom left
+        CreateBlockAtPosition(1, 0, new Vector2Int(2, 1), Color.blue); // Bottom middle
+        CreateBlockAtPosition(4, 2, new Vector2Int(1, 2), Color.green); // Top right
+        CreateBlockAtPosition(2, 1, new Vector2Int(1, 1), Color.yellow); // Center area
     }
 
-    private void CreateBlockAtPosition(int x, int y, Vector2Int size)
+    private void CreateBlockAtPosition(int x, int y, Vector2Int size, Color color)
     {
         GameObject blockGO = Instantiate(blockPrefab);
         blockGO.name = $"Block {blockCount++}";
         BlockPuzzleBlock block = blockGO.GetComponent<BlockPuzzleBlock>();
 
-        block.position = new Vector2Int(x, y);  // Set the block's grid position
-        block.size = size;                       // Set the block's size
-        blockGO.transform.position = GridToWorldPosition(block.position);
+        // Store the raw grid coordinates
+        block.Position = new Vector2Int(x, y);
+        block.Size = size;
+        block.Color = color;
+        
+        // Convert to world position
+        blockGO.transform.position = GridToWorldPosition(block.Position);
 
         block.InitializeBlock();
-        SetBlockInGrid(block, block.position);  // Update grid with the block
+        SetBlockInGrid(block, block.Position);
     }
 
     public Vector3 GridToWorldPosition(Vector2Int gridPosition)
     {
-        return new Vector3(gridPosition.x, gridPosition.y, 0);
+        // Convert from grid coordinates to world coordinates
+        // Add 0.5f to center within grid cells
+        float offsetX = -GridWidth / 2f + 0.5f;
+        float offsetY = -GridHeight / 2f + 0.5f;
+        return new Vector3(
+            gridPosition.x + offsetX,
+            gridPosition.y + offsetY,
+            0
+        );
+    }
+
+    public Vector2Int WorldToGridPosition(Vector3 worldPosition)
+    {
+        // Convert from world coordinates to grid coordinates
+        // Subtract 0.5f to account for cell centering
+        float offsetX = GridWidth / 2f - 0.5f;
+        float offsetY = GridHeight / 2f - 0.5f;
+        return new Vector2Int(
+            Mathf.RoundToInt(worldPosition.x + offsetX),
+            Mathf.RoundToInt(worldPosition.y + offsetY)
+        );
     }
 
     public void SetBlockInGrid(BlockPuzzleBlock block, Vector2Int newPosition)
     {
-        for (int dx = 0; dx < block.size.x; dx++)
+        for (int dx = 0; dx < block.Size.x; dx++)
         {
-            for (int dy = 0; dy < block.size.y; dy++)
+            for (int dy = 0; dy < block.Size.y; dy++)
             {
                 grid[newPosition.x + dx, newPosition.y + dy] = block;
             }
@@ -68,26 +91,24 @@ public class BlockPuzzle : MonoBehaviour
 
     public bool CanMove(BlockPuzzleBlock block, Vector2Int direction)
     {
-        Vector2Int newPosition = block.position + direction;
+        Vector2Int newPosition = block.Position + direction;
 
         // Ensure the new position is within bounds of the grid
-        if (newPosition.x < 0 || newPosition.x + block.size.x > GridWidth || newPosition.y < 0 || newPosition.y + block.size.y > GridHeight)
+        if (newPosition.x < 0 || newPosition.x + block.Size.x > GridWidth || newPosition.y < 0 || newPosition.y + block.Size.y > GridHeight)
         {
-            Debug.Log($"Move out of bounds: {newPosition}");
             return false;  // Out of bounds
         }
 
         // Check if the new space is free (not occupied by other blocks)
-        for (int dx = 0; dx < block.size.x; dx++)
+        for (int dx = 0; dx < block.Size.x; dx++)
         {
-            for (int dy = 0; dy < block.size.y; dy++)
+            for (int dy = 0; dy < block.Size.y; dy++)
             {
                 int x = newPosition.x + dx;
                 int y = newPosition.y + dy;
 
                 if (grid[x, y] != null && grid[x, y] != block)
                 {
-                    Debug.Log($"Cannot move {block.name} to ({x}, {y}) - Occupied by {grid[x, y].name}");
                     return false;  // Space is occupied
                 }
             }
@@ -100,23 +121,20 @@ public class BlockPuzzle : MonoBehaviour
         maxSteps = 0;
         if (direction == Vector2Int.zero) return true;
         
-        // Keep checking positions in the direction until we hit an obstacle
         while (true)
         {
-            Vector2Int newPosition = block.position + (direction * (maxSteps + 1));
-            
-            // Check grid bounds
-            if (newPosition.x < 0 || newPosition.x + block.size.x > GridWidth || 
-                newPosition.y < 0 || newPosition.y + block.size.y > GridHeight)
+            Vector2Int newPosition = block.Position + (direction * (maxSteps + 1));
+
+            if (newPosition.x < 0 || newPosition.x + block.Size.x > GridWidth || 
+                newPosition.y < 0 || newPosition.y + block.Size.y > GridHeight)
             {
-                break;  // Hit the grid boundary
+                break;
             }
-            
-            // Check for other blocks
+
             bool positionClear = true;
-            for (int dx = 0; dx < block.size.x; dx++)
+            for (int dx = 0; dx < block.Size.x; dx++)
             {
-                for (int dy = 0; dy < block.size.y; dy++)
+                for (int dy = 0; dy < block.Size.y; dy++)
                 {
                     int x = newPosition.x + dx;
                     int y = newPosition.y + dy;
@@ -143,22 +161,21 @@ public class BlockPuzzle : MonoBehaviour
         ClearBlockFromGrid(block);
         
         // Move the block to the new position
-        block.position += direction * steps;
-        block.transform.position = GridToWorldPosition(block.position);
+        block.Position += direction * steps;
+        block.transform.position = GridToWorldPosition(block.Position);
         
         // Update grid with new position
-        SetBlockInGrid(block, block.position);
+        SetBlockInGrid(block, block.Position);
     }
 
     public void ClearBlockFromGrid(BlockPuzzleBlock block)
     {
-        Debug.Log($"Clearing grid for {block}");
         // Reset all positions occupied by the block to null
-        for (int dx = 0; dx < block.size.x; dx++)
+        for (int dx = 0; dx < block.Size.x; dx++)
         {
-            for (int dy = 0; dy < block.size.y; dy++)
+            for (int dy = 0; dy < block.Size.y; dy++)
             {
-                grid[block.position.x + dx, block.position.y + dy] = null;
+                grid[block.Position.x + dx, block.Position.y + dy] = null;
             }
         }
     }

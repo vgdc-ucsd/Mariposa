@@ -14,14 +14,17 @@ public class BlockGridVisualizer : MonoBehaviour
 
     private void CreateGrid()
     {
+        float startX = -puzzle.GridWidth / 2f;
+        float startY = -puzzle.GridHeight / 2f;
+        
         // Create horizontal lines
         horizontalLines = new LineRenderer[puzzle.GridHeight + 1];
         for (int y = 0; y <= puzzle.GridHeight; y++)
         {
             horizontalLines[y] = CreateLine($"HorizontalLine_{y}");
             SetLinePositions(horizontalLines[y], 
-                new Vector3(-0.5f, y - 0.5f, 0), 
-                new Vector3(puzzle.GridWidth - 0.5f, y - 0.5f, 0));
+                new Vector3(startX, startY + y, 0), 
+                new Vector3(startX + puzzle.GridWidth, startY + y, 0));
         }
 
         // Create vertical lines
@@ -30,8 +33,8 @@ public class BlockGridVisualizer : MonoBehaviour
         {
             verticalLines[x] = CreateLine($"VerticalLine_{x}");
             SetLinePositions(verticalLines[x], 
-                new Vector3(x - 0.5f, -0.5f, 0), 
-                new Vector3(x - 0.5f, puzzle.GridHeight - 0.5f, 0));
+                new Vector3(startX + x, startY, 0), 
+                new Vector3(startX + x, startY + puzzle.GridHeight, 0));
         }
     }
 

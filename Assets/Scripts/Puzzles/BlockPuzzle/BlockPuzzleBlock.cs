@@ -2,8 +2,9 @@ using UnityEngine;
 
 public class BlockPuzzleBlock : MonoBehaviour
 {
-    public Vector2Int size;
-    public Vector2Int position;
+    public Vector2Int Size;
+    public Vector2Int Position;
+    public Color Color;
 
     private Vector3 mouseOffset;
     private bool isDragging = false;
@@ -15,12 +16,14 @@ public class BlockPuzzleBlock : MonoBehaviour
     public void InitializeBlock()
     {
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        spriteRenderer.color = Color;
         boxCollider2D = GetComponent<BoxCollider2D>();
 
         // Create preview
         GameObject previewObj = Instantiate(BlockPuzzle.Instance.previewPrefab);
         preview = previewObj.GetComponent<BlockPreview>();
-        preview.SetSize(size);
+        preview.SetSize(Size);
+        preview.SetSprite(spriteRenderer.sprite, spriteRenderer.color);
 
         if (spriteRenderer != null && boxCollider2D != null) AdjustVisualSize();
         else Debug.LogWarning("SpriteRenderer not found on child object or BoxCollider2D not found on object.");
@@ -48,17 +51,12 @@ public class BlockPuzzleBlock : MonoBehaviour
         if (isDragging)
         {
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition) + mouseOffset;
-            mousePosition.z = 0;  // Ensure the block stays on the 2D plane
+            mousePosition.z = 0;
             
-            // Only constrain to grid when showing preview
             Vector2Int validPos = GetValidPosition(mousePosition);
             Vector3 constrainedPos = BlockPuzzle.Instance.GridToWorldPosition(validPos);
             
-            // Allow free dragging, but highlight where the block will actually end up
             transform.position = mousePosition;
-            
-            // Here you could add visual feedback showing where the block will snap to
-            // For example, you could make a ghost/preview block at constrainedPos
             ShowPreview(constrainedPos);
         }
     }
@@ -73,9 +71,9 @@ public class BlockPuzzleBlock : MonoBehaviour
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition) + mouseOffset;
             Vector2Int newPosition = GetValidPosition(mousePosition);
             
-            if (newPosition != position)
+            if (newPosition != Position)
             {
-                Vector2Int movement = newPosition - position;
+                Vector2Int movement = newPosition - Position;
                 Vector2Int direction;
                 int steps;
                 
@@ -94,7 +92,7 @@ public class BlockPuzzleBlock : MonoBehaviour
             }
             else
             {
-                transform.position = BlockPuzzle.Instance.GridToWorldPosition(position);
+                transform.position = BlockPuzzle.Instance.GridToWorldPosition(Position);
             }
             
             // Hide the preview when dragging ends
@@ -106,7 +104,8 @@ public class BlockPuzzleBlock : MonoBehaviour
     {
         if (preview != null)
         {
-            preview.SetPosition(position + new Vector3((size.x - 1f) / 2f, (size.y - 1f) / 2f, 0));
+            // Adjust preview position for centered blocks
+            preview.SetPosition(position + new Vector3((Size.x - 1f) / 2f, (Size.y - 1f) / 2f, 0));
             preview.Show();
         }
     }
@@ -122,7 +121,7 @@ public class BlockPuzzleBlock : MonoBehaviour
     private Vector2Int GetValidPosition(Vector3 worldPosition)
     {
         Vector2Int targetPos = SnapToGrid(worldPosition);
-        Vector2Int movement = targetPos - position;
+        Vector2Int movement = targetPos - Position;
         
         // If movement is purely horizontal or vertical
         if (movement.x != 0 && movement.y == 0)
@@ -135,7 +134,7 @@ public class BlockPuzzleBlock : MonoBehaviour
                 int desiredSteps = Mathf.Abs(movement.x);
                 // Allow any number of steps up to the maximum
                 int actualSteps = Mathf.Min(desiredSteps, maxSteps);
-                return position + (direction * actualSteps);
+                return Position + (direction * actualSteps);
             }
         }
         else if (movement.x == 0 && movement.y != 0)
@@ -148,19 +147,17 @@ public class BlockPuzzleBlock : MonoBehaviour
                 int desiredSteps = Mathf.Abs(movement.y);
                 // Allow any number of steps up to the maximum
                 int actualSteps = Mathf.Min(desiredSteps, maxSteps);
-                return position + (direction * actualSteps);
+                return Position + (direction * actualSteps);
             }
         }
         
-        return position;
+        return Position;
     }
 
     // Snap block's world position to the nearest grid position
     private Vector2Int SnapToGrid(Vector3 worldPosition)
     {
-        int x = Mathf.RoundToInt(worldPosition.x);
-        int y = Mathf.RoundToInt(worldPosition.y);
-        return new Vector2Int(x, y);
+        return BlockPuzzle.Instance.WorldToGridPosition(worldPosition);
     }
 
     // Adjust the visual size of the block based on its size
@@ -168,12 +165,12 @@ public class BlockPuzzleBlock : MonoBehaviour
     {
         if (spriteRenderer != null && boxCollider2D != null)
         {
-            spriteRenderer.transform.localScale = new Vector3(size.x, size.y, 1);
-            Vector3 adjustedPosition = new Vector3((size.x - 1f) / 2f, (size.y - 1f) / 2f, 0);
+            spriteRenderer.transform.localScale = new Vector3(Size.x, Size.y, 1);
+            Vector3 adjustedPosition = new Vector3((Size.x - 1f) / 2f, (Size.y - 1f) / 2f, 0);
             spriteRenderer.transform.localPosition = adjustedPosition;
             
-            boxCollider2D.size = new Vector2(size.x, size.y);
-            boxCollider2D.offset = new Vector2((size.x - 1f) / 2f, (size.y - 1f) / 2f);
+            boxCollider2D.size = new Vector2(Size.x, Size.y);
+            boxCollider2D.offset = new Vector2((Size.x - 1f) / 2f, (Size.y - 1f) / 2f);
         }
     }
 }
