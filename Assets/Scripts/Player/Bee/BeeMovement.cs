@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
 
-public class BeeMovement : FreeBody, IInputListener
+public class BeeMovement : FreeBody, IInputListener, IControllable
 {
     public static PlayerMovement Instance;
 

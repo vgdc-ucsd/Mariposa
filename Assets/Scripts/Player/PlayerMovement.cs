@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
 
-public class PlayerMovement : FreeBody, IInputListener
+public class PlayerMovement : FreeBody, IInputListener, IControllable
 {
     public static PlayerMovement Instance;
 
@@ -51,7 +51,10 @@ public class PlayerMovement : FreeBody, IInputListener
     public float JumpHeight = 6;
 
     [Tooltip("Checks if Player can use Double Jump")]
-    public bool CanDoubleJump = true;
+    public bool CanDoubleJump;
+
+    [Tooltip("Checks if Player can use Wall Jump")]
+    public bool CanWallJump;
 
     [Tooltip("The amount of extra time the player has to jump after leaving the ground")]
     [SerializeField] private float coyoteTime;
@@ -70,7 +73,8 @@ public class PlayerMovement : FreeBody, IInputListener
     [Tooltip("The minimum upward velocity required to corner correct")]
     [SerializeField] private float cornerCorrectMinVelocity;
 
-
+    // whether the player has a charge of double jump (whether player touched the ground since last double jump
+    private bool airJumpAvailable = false;
 
     // Useful for when their dependent values are changed during runtime
     private void InitDerivedConsts()
@@ -91,8 +95,6 @@ public class PlayerMovement : FreeBody, IInputListener
         {
             Instance = this;
         }
-
-        PlayerController.Instance.Subscribe(this);
 
     }
 
@@ -179,7 +181,8 @@ public class PlayerMovement : FreeBody, IInputListener
         CheckOnWall();
         CheckGrounded();
 
-        if (wallNormal != 0 && State == BodyState.InAir)
+
+        if (CanWallJump && wallNormal != 0 && State == BodyState.InAir)
         {
             Velocity.y = JumpHeight;
             Velocity.x = wallJumpHorizontalSpeed * wallNormal;
@@ -190,10 +193,10 @@ public class PlayerMovement : FreeBody, IInputListener
             Velocity.y = JumpHeight;
             coyoteTimeRemaining = 0f;   // consume coyote time
         }
-        else if (CanDoubleJump)
+        else if (CanDoubleJump && airJumpAvailable)
         {
             Velocity.y = 1.25f * JumpHeight;
-            CanDoubleJump = false;
+            airJumpAvailable = false;
             coyoteTimeRemaining = 0f;
         }
         else if (State != BodyState.OnGround && coyoteTimeRemaining <= 0.0f)
@@ -221,7 +224,7 @@ public class PlayerMovement : FreeBody, IInputListener
         if (State != BodyState.OnGround && groundHit && groundHit.normal.normalized.y > LAND_SLOPE_FACTOR)
         {
             State = BodyState.OnGround;
-            CanDoubleJump = true;
+            if (CanDoubleJump) airJumpAvailable = true;
             if (jumpBufferTimeRemaining > 0.0f) Jump();
         }
         else if (State == BodyState.OnGround && !groundHit)

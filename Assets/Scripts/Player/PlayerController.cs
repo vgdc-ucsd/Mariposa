@@ -1,16 +1,34 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
+public enum CharID
+{
+    Mariposa, Unnamed
+}
 public enum PlayerInput
 {
     MoveLeft, MoveRight, MoveUp, MoveDown, JumpPress, AbilityPress, AbilityRelease
 }
 
-
+// Handles delegating inputs to the active player, as well as managing switching between the two characters
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField]
+    private Player MariposaRef;
+    [SerializeField]
+    private Player UnnamedRef;
+
+    private Dictionary<CharID, Player> charIDMap = new();
+
+
     public static PlayerController Instance;
     private List<IInputListener> listeners = new();
+
+    public CharID StartingPlayer;
+    public Player ControlledPlayer;
+
+
 
     private Dictionary<PlayerInput, bool> currentInputs = new()
     {
@@ -26,7 +44,55 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         if (Instance == null) Instance = this;
+        if (MariposaRef == null || UnnamedRef == null)
+        {
+            Debug.LogError("Characters are not assigned to Player Controller");
+        }
+        charIDMap.Add(CharID.Mariposa, MariposaRef);
+        charIDMap.Add(CharID.Unnamed, UnnamedRef);
+
+        InitializePlayers();
     }
+
+    private void InitializePlayers()
+    {
+        foreach (Player player in new Player[] { MariposaRef, UnnamedRef })
+        {
+            player.gameObject.SetActive(false);
+        }
+        SwitchTo(StartingPlayer);
+
+    }
+
+    public void SwitchCharacters()
+    {
+        if (ControlledPlayer.Character.Id == CharID.Mariposa) SwitchTo(CharID.Unnamed);
+        else SwitchTo(CharID.Mariposa);  
+    }
+
+    public void SwitchTo(CharID character)
+    {
+        if (ControlledPlayer != null) ControlledPlayer.gameObject.SetActive(false);
+
+        // remove all input listeners that belong to a character
+        foreach (IInputListener listener in new List<IInputListener>(listeners))
+        {
+            if (listener is IControllable || listener is IAbility)
+            {
+                listeners.Remove(listener);
+            }
+        }
+
+
+        ControlledPlayer = charIDMap[character];
+        ControlledPlayer.gameObject.SetActive(true);
+        Subscribe(ControlledPlayer.Movement);
+        Subscribe(ControlledPlayer.Ability);
+        ControlledPlayer.Ability.Initialize();
+    }
+
+
+    /* INPUT HANDLING */
 
     public void Subscribe(IInputListener listener)
     {
@@ -48,6 +114,8 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(KeyCode.D)) SendInput(PlayerInput.MoveRight);
         if (Input.GetKey(KeyCode.W)) SendInput(PlayerInput.MoveUp);
         if (Input.GetKey(KeyCode.S)) SendInput(PlayerInput.MoveDown);
+
+        if (Input.GetKeyDown(KeyCode.Tab)) SwitchCharacters();
     }
 
     public void SendInput(PlayerInput input)

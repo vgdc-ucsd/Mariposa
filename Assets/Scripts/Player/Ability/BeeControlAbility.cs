@@ -11,8 +11,18 @@ public class BeeControlAbility : MonoBehaviour, IAbility
         ToggleBeeControl();
     }
 
+    public void Initialize()
+    {
+        controllingBee = false;
+    }
+
     private void ToggleBeeControl()
     {
+        if (BeeRef == null)
+        {
+            Debug.LogError("Bee is not assigned");
+            return;
+        }
         if (!controllingBee)
         {
             PlayerController.Instance.Unsubscribe(Player.ActivePlayer.Movement);
