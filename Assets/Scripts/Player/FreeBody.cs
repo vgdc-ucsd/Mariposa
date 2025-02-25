@@ -30,6 +30,7 @@ public abstract class FreeBody : Body
     public float Gravity;
 
     protected bool gravityEnabled = true;
+    protected bool collisionsEnabled = true;
 
     [Tooltip("The maximum fall velocity")]
     [SerializeField] protected float TerminalVelocity;
@@ -75,6 +76,7 @@ public abstract class FreeBody : Body
 
     protected virtual void CheckGrounded()
     {
+        if (!collisionsEnabled) return;
         Bounds bounds = SurfaceCollider.bounds;
         RaycastHit2D groundHit = Physics2D.BoxCast(bounds.center, bounds.size, 0f, Vector2.down, COLLISION_CHECK_DISTANCE, collisionLayer);
         if (State != BodyState.OnGround && groundHit && groundHit.normal.normalized.y > LAND_SLOPE_FACTOR)
@@ -89,6 +91,7 @@ public abstract class FreeBody : Body
 
     protected virtual void ApplyMovement(Vector2 move)
     {
+        if (!collisionsEnabled) return;
         collisionHits.Clear();
         if (Mathf.Approximately(move.magnitude, 0f)) return; // This avoids weird imprecision errors
 
