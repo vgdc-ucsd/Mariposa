@@ -15,7 +15,6 @@ public class PlayerMovement : FreeBody
 
     private Vector2 moveDir = Vector2.zero;
 
-
     [Tooltip("The amount of time that wall jumping locks the player out of movement")]
     [SerializeField] private float wallJumpMoveLockTime;
     private float wallJumpMoveLockTimeRemaining = 0.0f;
@@ -49,6 +48,9 @@ public class PlayerMovement : FreeBody
     [Header("Vertical Parameters")]
     [Tooltip("Vertical speed is set to this value on jump")]
     public float JumpHeight = 6;
+
+    [Tooltip("The factor by which the velocity of a normal jump is scaled by for a double jump")]
+    [SerializeField] private float DoubleJumpFactor = 0.5f;
 
     [Tooltip("Checks if Player can use Double Jump")]
     public bool CanDoubleJump = true;
@@ -188,7 +190,7 @@ public class PlayerMovement : FreeBody
         }
         else if (CanDoubleJump)
         {
-            Velocity.y = 1.25f * JumpHeight;
+            Velocity.y = JumpHeight * DoubleJumpFactor;
             CanDoubleJump = false;
             coyoteTimeRemaining = 0f;
         }
@@ -230,7 +232,7 @@ public class PlayerMovement : FreeBody
     // Shift the player horizontally when they barely bump a ceiling
     private void CeilingCornerCorrect()
     {
-        RaycastHit2D ceilingHit = collisionHits.Where(hit => hit.normal.normalized.y > -LAND_SLOPE_FACTOR).FirstOrDefault();
+        RaycastHit2D ceilingHit = collisionHits.Where(hit => hit.normal.normalized.y < -LAND_SLOPE_FACTOR).FirstOrDefault();
 
         if (!ceilingHit) return;
         if (Velocity.y < cornerCorrectMinVelocity) return;
