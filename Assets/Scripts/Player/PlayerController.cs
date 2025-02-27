@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour
 
     public CharID StartingPlayer;
     public Player ControlledPlayer;
+    public IControllable CurrentControllable;
 
 
 
@@ -70,6 +71,9 @@ public class PlayerController : MonoBehaviour
         else SwitchTo(CharID.Mariposa);  
     }
 
+
+
+
     public void SwitchTo(CharID character)
     {
         if (ControlledPlayer != null) ControlledPlayer.gameObject.SetActive(false);
@@ -86,11 +90,20 @@ public class PlayerController : MonoBehaviour
 
         ControlledPlayer = charIDMap[character];
         ControlledPlayer.gameObject.SetActive(true);
-        Subscribe(ControlledPlayer.Movement);
+        StartControlling(ControlledPlayer.Movement);
         Subscribe(ControlledPlayer.Ability);
         ControlledPlayer.Ability.Initialize();
+        
     }
 
+    // map inputs to this controllable and make it the camera target
+    public void StartControlling(IControllable controllable)
+    {
+        Unsubscribe(CurrentControllable);
+        Subscribe(controllable);
+        CurrentControllable = controllable;
+        CameraController.ActiveCamera.StartFollowing(controllable.transform);
+    }
 
     /* INPUT HANDLING */
 

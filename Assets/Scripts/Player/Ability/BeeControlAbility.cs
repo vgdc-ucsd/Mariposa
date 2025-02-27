@@ -25,14 +25,12 @@ public class BeeControlAbility : MonoBehaviour, IAbility
         }
         if (!controllingBee)
         {
-            PlayerController.Instance.Unsubscribe(Player.ActivePlayer.Movement);
-            PlayerController.Instance.Subscribe(BeeRef);
+            PlayerController.Instance.StartControlling(BeeRef);
             controllingBee = true;
         }
         else
         {
-            PlayerController.Instance.Unsubscribe(BeeRef);
-            PlayerController.Instance.Subscribe(Player.ActivePlayer.Movement);
+            PlayerController.Instance.StartControlling(Player.ActivePlayer.Movement);
             controllingBee = false;
         }
 
