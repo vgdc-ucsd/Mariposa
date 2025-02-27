@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using System.Linq;
-using static UnityEngine.Rendering.DebugUI.Table;
 
 public class BillboardPuzzle : Puzzle
 {
@@ -33,6 +32,26 @@ public class BillboardPuzzle : Puzzle
         board = new BillboardPuzzleTile[height, width];
         int index = 0;
         GenerateSolution();
+        for (int i = 0; i < height; i++)
+        {
+            for (int j = 0; j < width; j++)
+            {
+
+                board[i, j].x = j;
+                board[i, j].endX = endXValues[index];
+                board[i, j].spriteIndex = board[i, j].endX;
+                board[i, j].rotation = endRotValues[index];
+                index++;
+            }
+        }
+        UpdatePuzzleDisplay();
+    }
+
+    [ContextMenu("Reset Puzzle")]
+    private new void Reset()
+    {
+        base.Reset();
+        int index = 0;
         for (int i = 0; i < height; i++)
         {
             for (int j = 0; j < width; j++)
