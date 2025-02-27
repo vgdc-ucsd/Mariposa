@@ -84,21 +84,21 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
 
     private void Move()
     {
-        Vector2 dir = (horzMoveDir + vertMoveDir).normalized;
+        Vector2 controlDir = (horzMoveDir + vertMoveDir).normalized;
+        bool neutral = Mathf.Approximately(controlDir.magnitude, 0);
 
-        //if (dir != 0) Player.ActivePlayer.FacingDirection = dir;
 
 
         // Check which acceleration parameter to use
-        float accelerationParam = (Vector2.Dot(dir,Velocity) > 0)
+        float accelerationParam = (Vector2.Dot(controlDir, Velocity) > 0)
             ? airAcceleration
-            : (dir.magnitude == 0)
-                    ? airDragDeceleration
-                    : airMovementDeceleration;
-
+            : airMovementDeceleration;
         float acceleration = accelerationParam;
 
-        Vector2 tempVelocity = Velocity + acceleration * fdt * dir;
+        Vector2 tempVelocity = Velocity + acceleration * fdt * controlDir;
+
+        // on no inputs, slow down by drag
+        if (neutral) tempVelocity = Velocity - Velocity * airDragDeceleration * fdt;
 
         // if max speed is exceeded, slow down
         if (tempVelocity.magnitude > MoveSpeed)
@@ -106,6 +106,12 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
             tempVelocity *= MoveSpeed / tempVelocity.magnitude;
         }
         Velocity = tempVelocity;
+
+        // remove all speed when close to at rest and not moving in any direction
+        if (neutral && Velocity.magnitude <= 0.05f)
+        {
+            Velocity = Vector2.zero;
+        }
     }
 
 
