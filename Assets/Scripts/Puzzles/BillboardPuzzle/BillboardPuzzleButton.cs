@@ -34,7 +34,7 @@ public class BillboardPuzzleButton : Interactable
 
     void Update()
     {
-        // Comment these next few lines out if you want the bee to follow the mouse instead of moving how it normally does.
+        // Uncomment these next few lines if you want the bee to follow the mouse instead of moving how it normally does.
         /*if (bee != null)
         {
             bee.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
