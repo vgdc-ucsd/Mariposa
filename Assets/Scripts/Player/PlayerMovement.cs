@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
 
-public class PlayerMovement : FreeBody
+public class PlayerMovement : FreeBody, IInputListener
 {
     public static PlayerMovement Instance;
 
@@ -92,6 +92,8 @@ public class PlayerMovement : FreeBody
             Instance = this;
         }
 
+        PlayerController.Instance.Subscribe(this);
+
     }
 
     protected override void Update()
@@ -130,7 +132,7 @@ public class PlayerMovement : FreeBody
     }
 
     // public method to send a move command
-    public void MoveTowards(int dir)
+    public void HorzMoveTowards(int dir)
     {
         // TurnTowards only changes "facing direction", which has no effect on movement
         if (dir != 0) Player.ActivePlayer.TurnTowards(dir);
@@ -168,6 +170,8 @@ public class PlayerMovement : FreeBody
         // Apply the acceleration
         Velocity.x += acceleration * fdt * Mathf.Sign(deltaV);
     }
+
+    public void JumpInputDown() { Jump(); }
 
     // Directly set the player's y velocity
     public void Jump()

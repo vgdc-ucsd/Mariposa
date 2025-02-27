@@ -24,6 +24,10 @@ public class Player : MonoBehaviour
 		}
 		Movement = GetComponent<PlayerMovement>();
 		Ability = GetComponentInChildren<IAbility>();
+		if (Ability != null)
+		{
+			PlayerController.Instance.Subscribe(Ability);
+		}
 	}
 
 	void Start()
