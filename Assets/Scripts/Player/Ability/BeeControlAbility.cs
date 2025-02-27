@@ -2,8 +2,7 @@ using UnityEngine;
 
 public class BeeControlAbility : MonoBehaviour, IAbility
 {
-    public BeeMovement BeeRef;
-    public bool controllingBee = false;
+    public Bee BeeRef;
 
 
     public void AbilityInputDown()
@@ -13,7 +12,7 @@ public class BeeControlAbility : MonoBehaviour, IAbility
 
     public void Initialize()
     {
-        controllingBee = false;
+        BeeRef.IsControlled = false;
     }
 
     private void ToggleBeeControl()
@@ -23,15 +22,13 @@ public class BeeControlAbility : MonoBehaviour, IAbility
             Debug.LogError("Bee is not assigned");
             return;
         }
-        if (!controllingBee)
+        if (!BeeRef.IsControlled)
         {
-            PlayerController.Instance.StartControlling(BeeRef);
-            controllingBee = true;
+            BeeRef.ToggleControl(true);
         }
         else
         {
-            PlayerController.Instance.StartControlling(Player.ActivePlayer.Movement);
-            controllingBee = false;
+            BeeRef.ToggleControl(false);
         }
 
     }

@@ -34,6 +34,8 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
     private const float RADIUS_SLOWDOWN_BOUNDARY = 1f;  // how close to the max control radius to start slowing down
     private const float RESISTANCE_ADJUSTMENT = 0.3f;   // strength of the slowdown effect
 
+    private IBeeBehavior currentBehavior;    // Strategy, returns a vector for the bee to move towards in the next frame
+
     // Useful for when their dependent values are changed during runtime
     private void InitDerivedConsts()
     {
@@ -64,7 +66,19 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
 
     protected override void FixedUpdate()
     {
-        Move();
+        if (parent.IsControlled)
+        {
+            Move();
+        }
+        else
+        {
+            Velocity = Vector2.zero;
+            if (currentBehavior != null)
+            {
+                AutoMove();
+            }
+            
+        }
 
         base.FixedUpdate();
     }
@@ -83,6 +97,11 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
         if (dir == 1) vertMoveDir = Vector2.up;
         else if (dir == -1) vertMoveDir = Vector2.down;
         else vertMoveDir = Vector2.zero;
+    }
+
+    public void SetBehavior(IBeeBehavior behavior)
+    {
+        currentBehavior = behavior;
     }
 
     private void Move()
@@ -144,14 +163,8 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
             Vector2 clampedNormalComp = normalComp * Mathf.Max(0, Vector2.Dot(normalComp.normalized, r.normalized));
 
             float resistance = Mathf.Clamp01((distanceToPlayer - border) / (adjustedControlRadius - border));
-            Debug.Log(resistance);
             tempVelocity = tempVelocity - clampedNormalComp * resistance * RESISTANCE_ADJUSTMENT;
         }
-        
-        
-        
-
-
 
         Velocity = tempVelocity;
 
@@ -162,5 +175,9 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
         }
     }
 
+    private void AutoMove()
+    {
+        transform.position += (Vector3)currentBehavior.GetMoveStep(fdt);
+    }
 
 }
