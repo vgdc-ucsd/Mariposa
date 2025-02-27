@@ -7,6 +7,7 @@ using UnityEngine.Experimental.GlobalIllumination;
 public class BeeMovement : FreeBody, IInputListener, IControllable
 {
     public static PlayerMovement Instance;
+    private Bee parent;
 
     [Header("Horizontal Parameters")]
 
@@ -29,6 +30,10 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
     private float airDragDeceleration;
 
 
+    private const float RADIUS_THRESHOLD = 0.1f;  // distance to the max control radius that the bee is absolutely not allowed to pass
+    private const float RADIUS_SLOWDOWN_BOUNDARY = 1f;  // how close to the max control radius to start slowing down
+    private const float RESISTANCE_ADJUSTMENT = 0.3f;   // strength of the slowdown effect
+
     // Useful for when their dependent values are changed during runtime
     private void InitDerivedConsts()
     {
@@ -40,6 +45,7 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
     protected override void Awake()
     {
         base.Awake();
+        parent = GetComponent<Bee>();
         gravityEnabled = false;
         InitDerivedConsts();
 
@@ -67,9 +73,6 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
     // public method to send a move command
     public void HorzMoveTowards(int dir)
     {
-        // TurnTowards only changes "facing direction", which has no effect on movement
-        // if (dir != 0) Player.ActivePlayer.TurnTowards(dir);
-
         if (dir == 1) horzMoveDir = Vector2.right;
         else if (dir == -1) horzMoveDir = Vector2.left;
         else horzMoveDir = Vector2.zero;
@@ -84,6 +87,12 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
 
     private void Move()
     {
+        Vector2 r = transform.position - Player.ActivePlayer.transform.position;
+        float distanceToPlayer = r.magnitude;
+
+        if (distanceToPlayer > parent.MaxControlRadius) return;
+
+
         Vector2 controlDir = (horzMoveDir + vertMoveDir).normalized;
         bool neutral = Mathf.Approximately(controlDir.magnitude, 0);
 
@@ -95,16 +104,55 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
             : airMovementDeceleration;
         float acceleration = accelerationParam;
 
-        Vector2 tempVelocity = Velocity + acceleration * fdt * controlDir;
+        Vector2 dv = acceleration * fdt * controlDir; // applied force
+        
 
         // on no inputs, slow down by drag
-        if (neutral) tempVelocity = Velocity - Velocity * airDragDeceleration * fdt;
+        if (neutral) dv = -Velocity * airDragDeceleration * fdt;
+
+        Vector2 tempVelocity = Velocity + dv;
 
         // if max speed is exceeded, slow down
         if (tempVelocity.magnitude > MoveSpeed)
         {
             tempVelocity *= MoveSpeed / tempVelocity.magnitude;
         }
+
+
+        Vector2 normalComp = Vector2.Dot(tempVelocity, r) / r.sqrMagnitude * r;
+
+
+        Vector2 futurePos = (Vector2)transform.position + tempVelocity * fdt;
+        float adjustedControlRadius = parent.MaxControlRadius - RADIUS_THRESHOLD;
+        // if moving more will cause the bee to leave the control radius, force it to go back inside
+        if (Vector2.Distance(futurePos, Player.ActivePlayer.transform.position) > adjustedControlRadius)
+        {
+            // remove the component that would lead to crossing the boundary
+            float exceedsBy = Vector2.Distance(futurePos, Player.ActivePlayer.transform.position) - adjustedControlRadius;
+            float currDistToBorder = adjustedControlRadius - distanceToPlayer;
+
+            Vector2 exceedingComp = normalComp * exceedsBy / Mathf.Max((exceedsBy + currDistToBorder), 0.0001f);    // prevent div by 0
+            tempVelocity -= exceedingComp;
+        }
+
+       
+        // if moving more will cause the bee to come close to control radius, increase resistance in the normal direction
+        else if (distanceToPlayer > adjustedControlRadius - RADIUS_SLOWDOWN_BOUNDARY)
+        {
+            float border = adjustedControlRadius - RADIUS_SLOWDOWN_BOUNDARY;
+            // only count the normal component if it is pointing outwards
+            Vector2 clampedNormalComp = normalComp * Mathf.Max(0, Vector2.Dot(normalComp.normalized, r.normalized));
+
+            float resistance = Mathf.Clamp01((distanceToPlayer - border) / (adjustedControlRadius - border));
+            Debug.Log(resistance);
+            tempVelocity = tempVelocity - clampedNormalComp * resistance * RESISTANCE_ADJUSTMENT;
+        }
+        
+        
+        
+
+
+
         Velocity = tempVelocity;
 
         // remove all speed when close to at rest and not moving in any direction
