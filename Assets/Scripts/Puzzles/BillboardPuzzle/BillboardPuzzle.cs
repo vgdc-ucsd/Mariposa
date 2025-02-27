@@ -66,8 +66,8 @@ public class BillboardPuzzle : Puzzle
             for (int j = 0; j < width; j++)
             {
                 if (board[i, j].x != col) continue;
-                if (col % 2 == 0) board[i, j].rotation--;
-                else board[i, j].rotation++;
+                if (col % 2 == 0) board[i, j].rotation++;
+                else board[i, j].rotation--;
                 board[i, j].rotation %= 4;
             }
         }
@@ -106,6 +106,8 @@ public class BillboardPuzzle : Puzzle
                     rotSum -= 4;
                 }
             }
+            Debug.Log(rotRow.Sum());
+            Debug.Log(rotRow.ToCommaSeparatedString());
 
             foreach (int rot in rotRow)
             {
@@ -130,7 +132,7 @@ public class BillboardPuzzle : Puzzle
             {
                 int index = board[i, j].x + width * i;
                 boardDisplay[index].GetComponent<SpriteRenderer>().sprite = sprites[board[i, j].spriteIndex];
-                boardDisplay[index].transform.eulerAngles = Vector3.forward * board[i, j].rotation * 90;
+                boardDisplay[index].transform.eulerAngles = Vector3.forward * board[i, j].rotation * -90;
             }
         }
 
