@@ -75,16 +75,16 @@ public class DataPersistenceManager : Singleton<DataPersistenceManager>
     /// <summary>
     /// Delete the save data at the specified file location in the FileDataManager
     /// </summary>
-    public void DeleteGame()
+    public void DeleteGame(string saveName)
     {
-        dataManager.DeleteSave();
+        dataManager.DeleteSave(saveName);
     }
 
     // Save the game when the application closes
     // This can be changed later!!!!!!
     private void OnApplicationQuit()
     {
-        SaveGame();
+        SaveGame('debug');
     }
     private List<IDataPersistence> FindAllDataPersistenceObjects()
     {

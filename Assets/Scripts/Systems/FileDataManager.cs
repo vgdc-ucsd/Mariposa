@@ -89,9 +89,9 @@ public class FileDataManager : Singleton<FileDataManager>
         }
     }
 
-    public void DeleteSave()
+    public void DeleteSave(string saveName)
     {
-        string fullPath = Path.Combine(dataDirPath, dataFileName);
+        string fullPath = Path.Combine(dataDirPath, saveName);
         if (File.Exists(fullPath))
         {
             try
