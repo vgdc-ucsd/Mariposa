@@ -2,10 +2,11 @@ using UnityEngine;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine.UI;
+using System.Collections;
 
-// dialogue model
 public class DialogueManager : Singleton<DialogueManager>
 {
+    // object references
     public GameObject DialogueWindow;
     [SerializeField] TMP_Text SpeakerTarget;
     [SerializeField] TMP_Text LineTarget;
@@ -13,9 +14,13 @@ public class DialogueManager : Singleton<DialogueManager>
     [SerializeField] Image Mask;
     [SerializeField] Image Portrait;
 
+    // dialogue control
     List<DialogueElement> conversation;
     int dialogueIndex;
 
+    // typewriter control
+    const float DIALOGUE_SPEED = 0.025f;
+    bool finishedTypewriter;
 
     void Start()
     {
@@ -37,8 +42,6 @@ public class DialogueManager : Singleton<DialogueManager>
     {
         dialogueIndex++;
 
-        Debug.Log("dialogueIndex = " + dialogueIndex);
-
         // check if conversation ended
         if (dialogueIndex >= conversation.Count)
         {
@@ -47,8 +50,10 @@ public class DialogueManager : Singleton<DialogueManager>
         }
         else
         {
+            // start dialogue
             SpeakerTarget.text = conversation[dialogueIndex].Speaker;
             LineTarget.text = conversation[dialogueIndex].Line;
+            StartCoroutine(TypewriterEffect());
 
             // check if has sprite
             if (conversation[dialogueIndex].Sprite != null)
@@ -69,5 +74,44 @@ public class DialogueManager : Singleton<DialogueManager>
                 Frame.SetActive(false);
             }
         }
+    }
+
+    public void TryAdvanceDialogue()
+    {
+        // if typewriter effect not finished yet
+        if (!finishedTypewriter)
+            {
+                // finish typewriter effect
+                StopAllCoroutines();
+                finishedTypewriter = true;
+                LineTarget.maxVisibleCharacters = conversation[dialogueIndex].Line.Length;
+            }
+        else
+            {
+                AdvanceDialogue();
+            }
+    }
+
+    private IEnumerator TypewriterEffect()
+    {
+        finishedTypewriter = false;
+        int length = conversation[dialogueIndex].Line.Length;
+        float startTime = Time.time;
+
+        int i = 0;
+        LineTarget.maxVisibleCharacters = i;
+        while (i < length)
+        {
+            float elapsedTime = Time.time - startTime;
+            if (elapsedTime > DIALOGUE_SPEED)
+            {
+                i++;
+                LineTarget.maxVisibleCharacters = i;
+                startTime = Time.time;
+            }
+            else yield return null;
+        }
+
+        finishedTypewriter = true;
     }
 }
