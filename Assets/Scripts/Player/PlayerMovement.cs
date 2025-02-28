@@ -48,8 +48,9 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
 
     [Header("Vertical Parameters")]
 
-    [Tooltip("The vertical speed attained from a jump")]
-    [SerializeField] private float jumpVelocity = 13;
+    [Tooltip("The height in tiles/units of a jump")]
+    [SerializeField] private float jumpHeight = 2;
+    private float jumpVelocity;
 
     [Tooltip("Checks if Player can use Double Jump")]
     public bool CanDoubleJump;
@@ -85,6 +86,8 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
         airAcceleration = MoveSpeed / airAccelerationTime;
         airMovementDeceleration = MoveSpeed / airMovementDecelerationTime;
         airDragDeceleration = MoveSpeed / airDragDecelerationTime;
+
+        jumpVelocity = Mathf.Sqrt(2 * Gravity * jumpHeight);
     }
 
     protected override void Awake()
