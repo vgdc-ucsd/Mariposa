@@ -17,7 +17,6 @@ public class FruitScalePuzzle : Puzzle
         get => selectedFruit;
         set
         {
-            Debug.Log($"Set selected fruit to {value}");
             if(selectedFruit != null) selectedFruit.Deselect();
             selectedFruit = value;
             if(selectedFruit != null)
@@ -89,24 +88,6 @@ public class FruitScalePuzzle : Puzzle
             fruit.Scale = scale;
             fruits.Remove(fruit);
             scale.InitializeScale();
-        }
-    }
-
-    void Update()
-    {
-        if (Input.GetMouseButtonDown(0)) // Left-click
-        {
-            Vector2 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Collider2D hitCollider = Physics2D.OverlapPoint(worldPos);
-
-            if (hitCollider != null)
-            {
-                Debug.Log($"Clicked on: {hitCollider.gameObject.name}");
-            }
-            else
-            {
-                Debug.Log("Clicked on empty space.");
-            }
         }
     }
 

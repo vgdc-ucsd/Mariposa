@@ -42,7 +42,7 @@ public class BlockPuzzle : Puzzle
 
     private void CreateBlockAtPosition(Vector2Int position, Vector2Int size, Color color)
     {
-        GameObject blockGO = Instantiate(blockPrefab);
+        GameObject blockGO = Instantiate(blockPrefab, transform);
         blockGO.name = $"Block {blockCount++}";
         BlockPuzzleBlock block = blockGO.GetComponent<BlockPuzzleBlock>();
 

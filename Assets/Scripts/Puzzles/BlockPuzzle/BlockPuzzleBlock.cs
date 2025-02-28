@@ -21,7 +21,7 @@ public class BlockPuzzleBlock : MonoBehaviour
         boxCollider2D = GetComponent<BoxCollider2D>();
 
         // Create preview
-        GameObject previewObj = Instantiate(BlockPuzzle.Instance.previewPrefab);
+        GameObject previewObj = Instantiate(BlockPuzzle.Instance.previewPrefab, transform.parent);
         preview = previewObj.GetComponent<BlockPreview>();
         preview.SetSize(Size);
         preview.SetSprite(spriteRenderer.sprite, spriteRenderer.color);
