@@ -24,12 +24,6 @@ public class CameraController : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        if (Player.ActivePlayer == null) Debug.Log("bad");
-        StartFollowing(Player.ActivePlayer.transform);
-    }
-
     /// <summary>
     /// Makes the camera start following the target transform
     /// </summary>
@@ -47,6 +41,7 @@ public class CameraController : MonoBehaviour
     public void SetBounds(PolygonCollider2D newBounds)
     {
         if (newBounds == null) return;
+        confiner.InvalidateBoundingShapeCache();
         confiner.BoundingShape2D = newBounds;
     }
 }

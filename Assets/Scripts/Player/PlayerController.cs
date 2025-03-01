@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Interactions;
 
 public enum CharID
 {
@@ -29,18 +31,7 @@ public class PlayerController : MonoBehaviour
     public Player ControlledPlayer;
     public IControllable CurrentControllable;
 
-
-
-    private Dictionary<PlayerInput, bool> currentInputs = new()
-    {
-        { PlayerInput.MoveLeft, false },
-        { PlayerInput.MoveRight, false },
-        { PlayerInput.MoveUp, false },
-        { PlayerInput.MoveDown, false },
-        { PlayerInput.JumpPress, false },
-        { PlayerInput.AbilityPress, false },
-        { PlayerInput.AbilityRelease, false },
-    };
+    private InputSystem_Actions inputs;
 
     private void Awake()
     {
@@ -53,6 +44,23 @@ public class PlayerController : MonoBehaviour
         charIDMap.Add(CharID.Unnamed, UnnamedRef);
 
         InitializePlayers();
+        inputs = new();
+    }
+
+    private void OnEnable()
+    {
+        inputs.Enable();
+        inputs.Player.Ability.started += ctx => SendAbilityDown(ctx);
+        inputs.Player.Ability.canceled += ctx => SendAbilityUp(ctx);
+        inputs.Player.Jump.performed += ctx => SendJump(ctx);
+    }
+
+    private void OnDisable()
+    {
+        inputs.Player.Ability.started -= ctx => SendAbilityDown(ctx);
+        inputs.Player.Ability.canceled -= ctx => SendAbilityUp(ctx);
+        inputs.Player.Jump.performed -= ctx => SendJump(ctx);
+        inputs.Disable();
     }
 
     private void InitializePlayers()
@@ -70,9 +78,6 @@ public class PlayerController : MonoBehaviour
         if (ControlledPlayer.Character.Id == CharID.Mariposa) SwitchTo(CharID.Unnamed);
         else SwitchTo(CharID.Mariposa);  
     }
-
-
-
 
     public void SwitchTo(CharID character)
     {
@@ -119,69 +124,41 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        // temp input reading until entire input system gets set up
-        if (Input.GetKeyDown(KeyCode.Space)) SendInput(PlayerInput.JumpPress);
-        if (Input.GetKeyDown(KeyCode.LeftShift)) SendInput(PlayerInput.AbilityPress);
-        if (Input.GetKeyUp(KeyCode.LeftShift)) SendInput(PlayerInput.AbilityRelease);
-        if (Input.GetKey(KeyCode.A)) SendInput(PlayerInput.MoveLeft);
-        if (Input.GetKey(KeyCode.D)) SendInput(PlayerInput.MoveRight);
-        if (Input.GetKey(KeyCode.W)) SendInput(PlayerInput.MoveUp);
-        if (Input.GetKey(KeyCode.S)) SendInput(PlayerInput.MoveDown);
-
+        // TEMPORARY AND SHOULD BE REMOVED IN ANY NON-TEST BUILD
         if (Input.GetKeyDown(KeyCode.Tab)) SwitchCharacters();
     }
 
-    public void SendInput(PlayerInput input)
+    public void SendAbilityDown(InputAction.CallbackContext ctx)
     {
-        currentInputs[input] = true;
+        foreach (var listener in listeners)
+        {
+            listener.AbilityInputDown();
+        }
+    }
+
+    public void SendAbilityUp(InputAction.CallbackContext ctx)
+    {
+        foreach (var listener in listeners)
+        {
+            listener.AbilityInputUp();
+        }
+    }
+
+    public void SendJump(InputAction.CallbackContext ctx)
+    {
+        foreach (var listener in listeners)
+        {
+            listener.JumpInputDown();
+        }
     }
 
     private void FixedUpdate()
     {
+        Vector2 moveDir = inputs.Player.Move.ReadValue<Vector2>();
         foreach (var listener in new List<IInputListener>(listeners))
         {
-            // do actions based on the active inputs this frame
-
-            // not moving or moving two directions at once
-            if (currentInputs[PlayerInput.MoveLeft] == currentInputs[PlayerInput.MoveRight])
-            {
-                listener.HorzMoveTowards(0);
-            }
-            else
-            {
-                int dir = currentInputs[PlayerInput.MoveLeft] ? -1 : 1;
-                listener.HorzMoveTowards(dir);
-            }
-
-            if (currentInputs[PlayerInput.MoveUp] == currentInputs[PlayerInput.MoveDown])
-            {
-                listener.VertMoveTowards(0);
-            }
-            else
-            {
-                int dir = currentInputs[PlayerInput.MoveDown] ? -1 : 1;
-                listener.VertMoveTowards(dir);
-            }
-
-            if (currentInputs[PlayerInput.JumpPress])
-            {
-                listener.JumpInputDown();
-            }
-            if (currentInputs[PlayerInput.AbilityPress])
-            {
-                listener.AbilityInputDown();
-            }
-            if (currentInputs[PlayerInput.AbilityRelease])
-            {
-                listener.AbilityInputUp();
-            }
+            listener.GetMoveDir(moveDir);
         }
-        foreach (var key in new List<PlayerInput>(currentInputs.Keys))
-        {
-            // reset all inputs to false until next frame
-            currentInputs[key] = false;
-        }
-
     }
 
 }
