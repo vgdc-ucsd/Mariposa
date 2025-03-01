@@ -194,8 +194,8 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
         }
         else if (CanDoubleJump && airJumpAvailable)
         {
-            Velocity.y = JumpHeight * DoubleJumpFactor;
-            CanDoubleJump = false;
+            Velocity.y = jumpHeight * DoubleJumpFactor;
+            airJumpAvailable = false;
             coyoteTimeRemaining = 0f;
         }
         else if (State != BodyState.OnGround && coyoteTimeRemaining <= 0.0f)
