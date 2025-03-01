@@ -32,7 +32,7 @@ public class Room : MonoBehaviour
         {
             foreach (Transform child in roomContainer.transform)
             {
-                roomObjects.Add(child.gameObject);
+                //roomObjects.Add(child.gameObject);
             }
         }
     }
@@ -49,7 +49,7 @@ public class Room : MonoBehaviour
 
         if (!isPrefabRoom)
         {
-            StartCoroutine(LoadScene());
+            //StartCoroutine(LoadScene());
         }
         else
         {
@@ -66,7 +66,7 @@ public class Room : MonoBehaviour
     {
         if (!isPrefabRoom)
         {
-            StartCoroutine(UnloadScene());
+            //StartCoroutine(UnloadScene());
         }
         else
         {
