@@ -130,26 +130,17 @@ public class PlayerController : MonoBehaviour
 
     public void SendAbilityDown(InputAction.CallbackContext ctx)
     {
-        foreach (var listener in listeners)
-        {
-            listener.AbilityInputDown();
-        }
+        listeners.ForEachReverse(x => x.AbilityInputDown());
     }
 
     public void SendAbilityUp(InputAction.CallbackContext ctx)
     {
-        foreach (var listener in listeners)
-        {
-            listener.AbilityInputUp();
-        }
+        listeners.ForEachReverse(x => x.AbilityInputUp());
     }
 
     public void SendJump(InputAction.CallbackContext ctx)
     {
-        foreach (var listener in listeners)
-        {
-            listener.JumpInputDown();
-        }
+        listeners.ForEachReverse(x => x.JumpInputDown());
     }
 
     private void FixedUpdate()

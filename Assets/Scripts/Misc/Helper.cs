@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public static class Helper
@@ -74,4 +76,16 @@ public static class Helper
         Debug.DrawLine(new Vector2(rect.xMax, rect.yMin), rect.min, color, time);
         Debug.DrawLine(new Vector2(rect.xMax, rect.yMin), rect.max, color, time);
     }
+}
+
+public static class ExtensionMethods
+{
+    public static void ForEachReverse<T>(this List<T> list, Action<T> action)
+    {
+        for (int i = list.Count - 1; i >= 0; i--)
+        {
+            action(list[i]);
+        }
+    }
+
 }
