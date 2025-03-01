@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEditor.Rendering;
@@ -21,12 +22,15 @@ public abstract class FreeBody : Body
 {
     public BodyState State;
     public BoxCollider2D SurfaceCollider;
-    public List<ContactPoint2D> Contacts = new();
+    protected List<RaycastHit2D> collisionHits = new(); // All collision hits for the current frame
 
     protected float fdt; // Shorthand for fixed delta time
 
     [Tooltip("The downward vertical acceleration applied when in the air")]
     public float Gravity;
+
+    protected bool gravityEnabled = true;
+
     [Tooltip("The maximum fall velocity")]
     [SerializeField] protected float TerminalVelocity;
 
@@ -35,7 +39,6 @@ public abstract class FreeBody : Body
 
 
     protected const float CONTACT_OFFSET = 0.005f; // The gap between this body and a surface after a collision
-    protected const float COLLIDER_SHRINK_FACTOR = 0.995f; // The factor by which the collider is shrunk to make collision smoother
 
     protected const float LAND_SLOPE_FACTOR = 0.9f; // How horizontal a surface must be to be a ceiling or the ground
     protected const float COLLISION_CHECK_DISTANCE = 0.1f; // how far away you have to be from a ceiling or the ground to be considered "colliding" with it
@@ -58,9 +61,6 @@ public abstract class FreeBody : Body
 
         Fall();
         CheckGrounded();
-        CheckTouchingWalls();
-        CheckTouchingCeiling();
-        ApplyFriction();
 
         Vector2 movement = Velocity * fdt;
         ApplyMovement(movement);
@@ -69,7 +69,7 @@ public abstract class FreeBody : Body
 
     protected virtual void Fall()
     {
-        if (State != BodyState.InAir) return;
+        if (State != BodyState.InAir || !gravityEnabled) return;
         Velocity.y = Mathf.Max(Velocity.y - Gravity * fdt, -TerminalVelocity); // Cap the velocity 
     }
 
@@ -93,54 +93,44 @@ public abstract class FreeBody : Body
         if (Mathf.Approximately(move.magnitude, 0f)) return; // This avoids weird imprecision errors
 
         Bounds bounds = SurfaceCollider.bounds;
-        collisionHits.AddRange(Physics2D.BoxCastAll(bounds.center, bounds.size * COLLIDER_SHRINK_FACTOR, 0f, move.normalized, move.magnitude, collisionLayer));
+        collisionHits.AddRange(Physics2D.BoxCastAll(bounds.center, bounds.size, 0f, move.normalized, move.magnitude, collisionLayer));
 
-        if (collisionHits.Count == 0) // no collisions
+        // Find the minimum change in position that satisfies all contact constraints
+        Vector2 minDelta = move;
+        foreach (RaycastHit2D hit in collisionHits)
         {
-            transform.position += (Vector3)move;
-            return;
-        }
-
-        if (collisionHits.Count > 2) Debug.LogError("Can't handle more than 2 collisions at once");
-
-        if (collisionHits.Count == 1) // single collision
-        {
-            RaycastHit2D hit = collisionHits[0];
-
-            // Snap to the surface plus a small offset to avoid imprecision errors
-            transform.position = collisionHits[0].centroid + collisionHits[0].normal.normalized * CONTACT_OFFSET;
-
-            // Resolve the collision
-            if (Mathf.Abs(hit.normal.y) > Mathf.Abs(hit.normal.x)) // Vertical collision
+            Vector2 normal = hit.normal.normalized;
+            if (Mathf.Abs(normal.y) > Mathf.Abs(normal.x)) // Vertical collision
             {
+                float deltaY = Mathf.Abs(hit.centroid.y - bounds.center.y);
+                if (deltaY < Mathf.Abs(minDelta.y)) minDelta.y = deltaY * move.normalized.y + normal.y * CONTACT_OFFSET;
                 Velocity.y = 0;
-                transform.position += (1 - hit.fraction) * move.x * Vector3.right;
             }
             else // Horizontal collision
             {
+                float deltaX = Mathf.Abs(hit.centroid.x - bounds.center.x);
+                if (deltaX < Mathf.Abs(minDelta.x)) minDelta.x = deltaX * move.normalized.x + normal.x * CONTACT_OFFSET;
                 Velocity.x = 0;
-                transform.position += (1 - hit.fraction) * move.y * Vector3.up;
             }
         }
-        else // double collision
-        {
-            if (Mathf.Abs(collisionHits[0].normal.y) > Mathf.Abs(collisionHits[0].normal.x)) // hit 0 was the vertical collision
-            {
-                transform.position = new Vector2(collisionHits[1].centroid.x + CONTACT_OFFSET * collisionHits[1].normal.normalized.x,
-                                                collisionHits[0].centroid.y + CONTACT_OFFSET * collisionHits[0].normal.normalized.y);
-            }
-            else // hit 1 was the vertical collision
-            {
-                transform.position = new Vector2(collisionHits[0].centroid.x + CONTACT_OFFSET * collisionHits[0].normal.normalized.x,
-                                                collisionHits[1].centroid.y + CONTACT_OFFSET * collisionHits[1].normal.normalized.y);
-            }
-            Velocity = Vector2.zero;
-        }
+        
+        // Apply the movement
+        transform.position += (Vector3)minDelta;
     }
 
     // Drop players in the air at the start of a scene or after an interaction
     public virtual void Unlock()
     {
         State = BodyState.InAir;
+    }
+
+    public void ToggleGravity(bool toggle)
+    {
+        gravityEnabled = toggle;
+    }
+
+    public void Stop()
+    {
+        Velocity = Vector3.zero;
     }
 }

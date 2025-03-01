@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
 	public static Player ActivePlayer;
 	private bool playerDebug;
 	public PlayerMovement Movement;
+	public IAbility Ability;
 
 
     // which way the character is facing
@@ -15,7 +16,7 @@ public class Player : MonoBehaviour
 	// facing direction does not affect movement in most cases
     public int FacingDirection = 1;
 
-	private void Awake()
+    private void Awake()
 	{
 		if (ActivePlayer == null)
 		{
@@ -27,7 +28,7 @@ public class Player : MonoBehaviour
 
 	void Start()
 	{
-//		playerDebug = Settings.Instance.Debug.GetPlayerDebug();
+		playerDebug = Settings.Instance.Debug.GetPlayerDebug();
 	}
 
 
@@ -78,4 +79,9 @@ public class Player : MonoBehaviour
 			if (playerDebug) Debug.Log($"Player respawned to: {CurrentRespawnPoint.gameObject.name} @ {CurrentRespawnPoint.GetRespawnPosition().ToString()}");
 		}
 	}
+
+    public void TurnTowards(int dir)
+    {
+        FacingDirection = dir;
+    }
 }

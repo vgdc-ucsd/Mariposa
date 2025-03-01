@@ -89,5 +89,10 @@ public class InventoryManager : Singleton<InventoryManager>
             batteryCounterText.text = $"Batteries: {count}";
         }
     }
+    
+    public Dictionary<InventoryItemSO, int> GetAllItems()
+    {
+        return inventory;
+    }
 
 }
