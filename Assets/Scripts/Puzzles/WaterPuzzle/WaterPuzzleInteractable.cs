@@ -11,6 +11,8 @@ public class WaterPuzzleInteractable : Interactable
         yield return new WaitForSeconds(0.1f);
         OnInteract();
     }
+
+
     protected override void SetProximity()
     {
 
@@ -20,5 +22,6 @@ public class WaterPuzzleInteractable : Interactable
     public override void OnInteract()
     {
         waterPuzzle.gameObject.SetActive(true);
+        PuzzlePopupManager.Instance.ActivePuzzle = waterPuzzle.gameObject;
     }
 }
