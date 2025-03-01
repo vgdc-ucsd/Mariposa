@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -49,6 +50,18 @@ public abstract class FreeBody : Body
         base.Awake();
         Unlock();
         SurfaceCollider = GetComponent<BoxCollider2D>();
+
+        ResolveInitialCollisions();
+    }
+
+    private void ResolveInitialCollisions()
+    {
+        Collider2D[] initialContacts = Physics2D.OverlapBoxAll(SurfaceCollider.bounds.center, SurfaceCollider.bounds.size, 0, collisionLayer);
+        foreach (Collider2D collider in initialContacts)
+        {
+            ColliderDistance2D separation = SurfaceCollider.Distance(collider);
+            transform.position += (separation.distance + CONTACT_OFFSET) * (Vector3)separation.normal;
+        }
     }
 
     protected override void Update()
@@ -60,8 +73,8 @@ public abstract class FreeBody : Body
     {
         fdt = Time.deltaTime;
 
-        Fall();
         CheckGrounded();
+        Fall();
 
         Vector2 movement = Velocity * fdt;
         ApplyMovement(movement);
@@ -96,29 +109,40 @@ public abstract class FreeBody : Body
         if (Mathf.Approximately(move.magnitude, 0f)) return; // This avoids weird imprecision errors
 
         Bounds bounds = SurfaceCollider.bounds;
-        collisionHits.AddRange(Physics2D.BoxCastAll(bounds.center, bounds.size, 0f, move.normalized, move.magnitude, collisionLayer));
+        RaycastHit2D hit = Physics2D.BoxCast(bounds.center, bounds.size, 0f, move.normalized, move.magnitude, collisionLayer);
 
-        // Find the minimum change in position that satisfies all contact constraints
-        Vector2 minDelta = move;
-        foreach (RaycastHit2D hit in collisionHits)
+        int loops = 0; // This is to prevent infinite loops in case something goes wrong
+        while (hit)
         {
             Vector2 normal = hit.normal.normalized;
+            collisionHits.Add(hit);
+
             if (Mathf.Abs(normal.y) > Mathf.Abs(normal.x)) // Vertical collision
             {
                 float deltaY = Mathf.Abs(hit.centroid.y - bounds.center.y);
-                if (deltaY < Mathf.Abs(minDelta.y)) minDelta.y = deltaY * move.normalized.y + normal.y * CONTACT_OFFSET;
+                transform.position += (deltaY * move.normalized.y + normal.y * CONTACT_OFFSET) * Vector3.up;
+                move.y = 0;
                 Velocity.y = 0;
             }
             else // Horizontal collision
             {
                 float deltaX = Mathf.Abs(hit.centroid.x - bounds.center.x);
-                if (deltaX < Mathf.Abs(minDelta.x)) minDelta.x = deltaX * move.normalized.x + normal.x * CONTACT_OFFSET;
+                transform.position += (deltaX * move.normalized.x + normal.x * CONTACT_OFFSET) * Vector3.right;
+                move.x = 0;
                 Velocity.x = 0;
             }
+            hit = Physics2D.BoxCast(bounds.center, bounds.size, 0f, move.normalized, move.magnitude, collisionLayer);
+
+            loops++;
+            if (loops > 4)
+            {
+                Debug.LogError(gameObject.name + " had too many collision detection substeps");
+                break;
+            }
         }
-        
-        // Apply the movement
-        transform.position += (Vector3)minDelta;
+
+        // Apply the rest of the movement
+        transform.position += (Vector3)move;
     }
 
     // Drop players in the air at the start of a scene or after an interaction
