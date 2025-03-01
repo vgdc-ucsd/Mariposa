@@ -119,6 +119,37 @@ public class PlayerMovement : FreeBody
     // Move by player input: 1 = right, -1 = left, 0 = none
     private void Move(int dir)
     {
+        Bounds bounds = SurfaceCollider.bounds;
+        RaycastHit2D leftHit = Physics2D.BoxCast(bounds.center, bounds.size, 0f, Vector2.left, COLLISION_CHECK_DISTANCE, collisionLayer);
+        RaycastHit2D rightHit = Physics2D.BoxCast(bounds.center, bounds.size, 0f, Vector2.right, COLLISION_CHECK_DISTANCE, collisionLayer);
+        bool hitLeftWall = Mathf.Abs(leftHit.normal.normalized.x) > LAND_SLOPE_FACTOR;
+        bool hitRightWall = Mathf.Abs(rightHit.normal.normalized.x) > LAND_SLOPE_FACTOR;
+
+        if (hitLeftWall) wallNormal = 1;
+        else if (hitRightWall) wallNormal = -1;
+        else wallNormal = 0;
+    }
+
+    // public method to send a move command
+    public void MoveTowards(int dir)
+    {
+        // TurnTowards only changes "facing direction", which has no effect on movement
+        if (dir != 0) Player.ActivePlayer.TurnTowards(dir);
+
+        if (dir == 1) moveDir = Vector2.right;
+        else if (dir == -1) moveDir = Vector2.left;
+        else moveDir = Vector2.zero;
+    }
+
+    private void Move()
+    {
+        int dir = Mathf.RoundToInt(moveDir.x);
+
+        //if (dir != 0) Player.ActivePlayer.FacingDirection = dir;
+
+        // Lock the player's movement if they wall jumped recently
+        if (wallJumpMoveLockTimeRemaining > 0.0f) dir = 0;
+
         // Check which acceleration parameter to use
         float accelerationParam = (dir * Velocity.x > 0)
             ? (State == BodyState.InAir)
@@ -141,9 +172,19 @@ public class PlayerMovement : FreeBody
 
 
     // Directly set the player's y velocity
-    private void Jump()
+    public void Jump()
     {
         if (State == BodyState.OnGround || coyoteTimeRemaining > 0f)
+        CheckOnWall();
+        CheckGrounded();
+
+        if (wallNormal != 0 && State == BodyState.InAir)
+        {
+            Velocity.y = JumpHeight;
+            Velocity.x = wallJumpHorizontalSpeed * wallNormal;
+            wallJumpMoveLockTimeRemaining = wallJumpMoveLockTime;
+        }
+        else if (State == BodyState.OnGround || coyoteTimeRemaining > 0f)
         {
             Velocity.y = JumpSpeed;
             StartFalling();
@@ -155,6 +196,14 @@ public class PlayerMovement : FreeBody
             return;
         }
 
+
+    // This override makes the player fall slower/faster when falling
+    protected override void Fall()
+    {
+        if (State != BodyState.InAir || !gravityEnabled) return;
+
+        float currentGravity = Velocity.y > 0 ? Gravity : Gravity * fallingGravityMultiplier;
+        Velocity.y = Mathf.Max(Velocity.y - currentGravity * fdt, -TerminalVelocity);
     }
 
     protected override bool Land(RaycastHit2D hit)

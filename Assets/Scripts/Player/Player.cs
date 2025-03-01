@@ -7,6 +7,13 @@ public class Player : MonoBehaviour
 
 	public static Player ActivePlayer;
 	private bool playerDebug;
+	public PlayerMovement Movement;
+
+
+    // which way the character is facing
+    // 1 = right, -1 = left, can never be 0
+	// facing direction does not affect movement in most cases
+    public int FacingDirection = 1;
 
 	private void Awake()
 	{
@@ -14,6 +21,8 @@ public class Player : MonoBehaviour
 		{
 			ActivePlayer = this;
 		}
+		Movement = GetComponent<PlayerMovement>();
+		Ability = GetComponentInChildren<IAbility>();
 	}
 
 	void Start()
