@@ -3,10 +3,15 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+	
+
 	public RespawnPoint CurrentRespawnPoint = null;
 
-	public static Player ActivePlayer;
-	private bool playerDebug;
+	public static Player ActivePlayer => PlayerController.Instance.ControlledPlayer;
+
+
+    private bool playerDebug;
+	public PlayerCharacter Character;
 	public PlayerMovement Movement;
 	public IAbility Ability;
 
@@ -18,16 +23,14 @@ public class Player : MonoBehaviour
 
     private void Awake()
 	{
-		if (ActivePlayer == null)
-		{
-			ActivePlayer = this;
-		}
 		Movement = GetComponent<PlayerMovement>();
+		Character = GetComponent<PlayerCharacter>();
 		Ability = GetComponentInChildren<IAbility>();
-		if (Ability != null)
+		if (Movement == null || Character == null || Ability == null)
 		{
-			PlayerController.Instance.Subscribe(Ability);
-		}
+			Debug.LogError("Player object not fully set up with Movement, Character, and Ability classes");
+			return;
+		} 
 	}
 
 	void Start()

@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
 
-public class BeeMovement : FreeBody, IInputListener
+public class BeeMovement : FreeBody, IInputListener, IControllable
 {
     public static PlayerMovement Instance;
 
@@ -13,8 +13,7 @@ public class BeeMovement : FreeBody, IInputListener
     [Tooltip("The maximum horizontal movement speed")]
     public float MoveSpeed = 10;
 
-    private Vector2 horzMoveDir = Vector2.zero;
-    private Vector2 vertMoveDir = Vector2.zero;
+    private Vector2 moveDir = Vector2.zero;
 
     [Tooltip("The time it takes to accelerate to maximum horizontal speed from rest in the air")]
     [SerializeField] private float airAccelerationTime;
@@ -63,28 +62,14 @@ public class BeeMovement : FreeBody, IInputListener
         base.FixedUpdate();
     }
 
-
-    // public method to send a move command
-    public void HorzMoveTowards(int dir)
+    public void GetMoveDir(Vector2 dir)
     {
-        // TurnTowards only changes "facing direction", which has no effect on movement
-        // if (dir != 0) Player.ActivePlayer.TurnTowards(dir);
-
-        if (dir == 1) horzMoveDir = Vector2.right;
-        else if (dir == -1) horzMoveDir = Vector2.left;
-        else horzMoveDir = Vector2.zero;
-    }
-
-    public void VertMoveTowards(int dir)
-    {
-        if (dir == 1) vertMoveDir = Vector2.up;
-        else if (dir == -1) vertMoveDir = Vector2.down;
-        else vertMoveDir = Vector2.zero;
+        moveDir = dir;
     }
 
     private void Move()
     {
-        Vector2 dir = (horzMoveDir + vertMoveDir).normalized;
+        Vector2 dir = moveDir.normalized;
 
         //if (dir != 0) Player.ActivePlayer.FacingDirection = dir;
 

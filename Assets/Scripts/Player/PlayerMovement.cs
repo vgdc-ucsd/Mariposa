@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
 
-public class PlayerMovement : FreeBody, IInputListener
+public class PlayerMovement : FreeBody, IInputListener, IControllable
 {
     public static PlayerMovement Instance;
 
@@ -47,11 +47,16 @@ public class PlayerMovement : FreeBody, IInputListener
 
 
     [Header("Vertical Parameters")]
-    [Tooltip("Vertical speed is set to this value on jump")]
-    public float JumpHeight = 6;
+
+    [Tooltip("The height in tiles/units of a jump")]
+    [SerializeField] private float jumpHeight = 2;
+    private float jumpVelocity;
 
     [Tooltip("Checks if Player can use Double Jump")]
-    public bool CanDoubleJump = true;
+    public bool CanDoubleJump;
+
+    [Tooltip("Checks if Player can use Wall Jump")]
+    public bool CanWallJump;
 
     [Tooltip("The amount of extra time the player has to jump after leaving the ground")]
     [SerializeField] private float coyoteTime;
@@ -70,7 +75,8 @@ public class PlayerMovement : FreeBody, IInputListener
     [Tooltip("The minimum upward velocity required to corner correct")]
     [SerializeField] private float cornerCorrectMinVelocity;
 
-
+    // whether the player has a charge of double jump (whether player touched the ground since last double jump
+    private bool airJumpAvailable = false;
 
     // Useful for when their dependent values are changed during runtime
     private void InitDerivedConsts()
@@ -80,6 +86,8 @@ public class PlayerMovement : FreeBody, IInputListener
         airAcceleration = MoveSpeed / airAccelerationTime;
         airMovementDeceleration = MoveSpeed / airMovementDecelerationTime;
         airDragDeceleration = MoveSpeed / airDragDecelerationTime;
+
+        jumpVelocity = Mathf.Sqrt(2 * Gravity * jumpHeight);
     }
 
     protected override void Awake()
@@ -91,8 +99,6 @@ public class PlayerMovement : FreeBody, IInputListener
         {
             Instance = this;
         }
-
-        PlayerController.Instance.Subscribe(this);
 
     }
 
@@ -132,14 +138,10 @@ public class PlayerMovement : FreeBody, IInputListener
     }
 
     // public method to send a move command
-    public void HorzMoveTowards(int dir)
+    public void GetMoveDir(Vector2 dir)
     {
-        // TurnTowards only changes "facing direction", which has no effect on movement
-        if (dir != 0) Player.ActivePlayer.TurnTowards(dir);
-
-        if (dir == 1) moveDir = Vector2.right;
-        else if (dir == -1) moveDir = Vector2.left;
-        else moveDir = Vector2.zero;
+        moveDir = dir.x * Vector2.right;
+        if (!Mathf.Approximately(dir.x, 0f)) Player.ActivePlayer.TurnTowards((int)Mathf.Sign(dir.x));
     }
 
     private void Move()
@@ -171,29 +173,27 @@ public class PlayerMovement : FreeBody, IInputListener
         Velocity.x += acceleration * fdt * Mathf.Sign(deltaV);
     }
 
-    public void JumpInputDown() { Jump(); }
-
     // Directly set the player's y velocity
-    public void Jump()
+    public void JumpInputDown()
     {
         CheckOnWall();
         CheckGrounded();
 
-        if (wallNormal != 0 && State == BodyState.InAir)
+        if (CanWallJump && wallNormal != 0 && State == BodyState.InAir)
         {
-            Velocity.y = JumpHeight;
+            Velocity.y = jumpVelocity;
             Velocity.x = wallJumpHorizontalSpeed * wallNormal;
             wallJumpMoveLockTimeRemaining = wallJumpMoveLockTime;
         }
         else if (State == BodyState.OnGround || coyoteTimeRemaining > 0f)
         {
-            Velocity.y = JumpHeight;
+            Velocity.y = jumpVelocity;
             coyoteTimeRemaining = 0f;   // consume coyote time
         }
-        else if (CanDoubleJump)
+        else if (CanDoubleJump && airJumpAvailable)
         {
-            Velocity.y = 1.25f * JumpHeight;
-            CanDoubleJump = false;
+            Velocity.y = 1.25f * jumpVelocity;
+            airJumpAvailable = false;
             coyoteTimeRemaining = 0f;
         }
         else if (State != BodyState.OnGround && coyoteTimeRemaining <= 0.0f)
@@ -221,8 +221,8 @@ public class PlayerMovement : FreeBody, IInputListener
         if (State != BodyState.OnGround && groundHit && groundHit.normal.normalized.y > LAND_SLOPE_FACTOR)
         {
             State = BodyState.OnGround;
-            CanDoubleJump = true;
-            if (jumpBufferTimeRemaining > 0.0f) Jump();
+            if (CanDoubleJump) airJumpAvailable = true;
+            if (jumpBufferTimeRemaining > 0.0f) JumpInputDown();
         }
         else if (State == BodyState.OnGround && !groundHit)
         {
