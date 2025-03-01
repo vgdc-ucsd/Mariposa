@@ -11,14 +11,41 @@ public class FruitScalePuzzle : Puzzle
     public const int FRUIT_MIN_WEIGHT = 1;
     public const int FRUIT_MAX_WEIGHT = 5;
 
-    public Fruit SelectedFruit;
+    [SerializeField] private Fruit selectedFruit;
+    public Fruit SelectedFruit
+    {
+        get => selectedFruit;
+        set
+        {
+            if(selectedFruit != null) selectedFruit.Deselect();
+            selectedFruit = value;
+            if(selectedFruit != null)
+            {
+                selectedFruit.Select();
+                foreach(FruitScale scale in scales)
+                {
+                    scale.BoxCollider2D.enabled = true;
+                }
+            }
+            else
+            {
+                foreach(FruitScale scale in scales)
+                {
+                    scale.BoxCollider2D.enabled = false;
+                }
+            }
+        }
+    }
     public FruitScale OldScale;
     public bool IsComplete;
 
     [SerializeField] private List<FruitScale> scales;
+    [SerializeField] private List<Fruit> fruits;
+    private List<int> weights = new();
 
     /// <summary>
-    /// Ensure there is only one instance of the puzzle's singleton
+    /// Ensure there is only one instance of the puzzle's singleton.
+    /// Initialize random values, set initial placements for fruits and scales.
     /// </summary>
     void Awake()
     {
@@ -28,15 +55,39 @@ public class FruitScalePuzzle : Puzzle
             Debug.LogWarning("Tried to create more than one instance of the FruitScalePuzzle singleton!");
             Destroy(this);
         }
-    }
 
-    /// <summary>
-    /// When the puzzle is enabled, initialize all scales' initial positions
-    /// </summary>
-    void OnEnable()
-    {
-        foreach(FruitScale scale in scales) {
-            scale.SetPositionY();
+        if(scales.Count != fruits.Count)
+        {
+            Debug.LogWarning("Invalid number of fruits and scales");
+        }
+
+        // Create array of possible weights
+        int newWeight;
+        for(int i = 0; i < fruits.Count; ++i)
+        {
+            newWeight = Random.Range(FRUIT_MIN_WEIGHT, FRUIT_MAX_WEIGHT);
+            weights.Add(newWeight);
+            fruits[i].Weight = newWeight;
+            scales[i].ScaleValue = newWeight;
+        }
+
+        // TODO: debug print generated weights, remove later
+        string weightString = "{ ";
+        foreach(int i in weights)
+        {
+            weightString += i + " ";
+        }
+        Debug.Log("weights: " + weightString + "}");
+
+        // Randomize fruit starting scales
+        foreach(FruitScale scale in scales)
+        {
+            int index = Random.Range(0, fruits.Count);
+            Fruit fruit = fruits[index];
+            scale.Fruit = fruit;
+            fruit.Scale = scale;
+            fruits.Remove(fruit);
+            scale.InitializeScale();
         }
     }
 
@@ -50,36 +101,32 @@ public class FruitScalePuzzle : Puzzle
         // This theorietically should be unnecessary, but good for safety
         if(IsComplete) return;
 
-        SelectedFruit.SetScale(newScale);
-        newScale.SetFruit(SelectedFruit);
-        Instance.OldScale.SetFruit(null);
-
-        // Visually move fruit to new scale position
-        SelectedFruit.transform.position = newScale.transform.position;
-        SelectedFruit.Deselect();
+        // Update references for fruit and scales
+        Fruit otherFruit = newScale.Fruit; // For directly swapping
+        otherFruit.Scale = OldScale;
+        OldScale.Fruit = otherFruit;
+        SelectedFruit.Scale = newScale;
+        newScale.Fruit = SelectedFruit;
         SelectedFruit = null;
 
         // Update vertical positions for old and new scales
-        if(!newScale.IsStorage()) StartCoroutine(newScale.LerpPositionY());
-        if(!Instance.OldScale.IsStorage()) StartCoroutine(Instance.OldScale.LerpPositionY());
-
-        // Prepare scale colliders for next action
-        Instance.OldScale.GetComponent<BoxCollider2D>().enabled = true;
-        newScale.GetComponent<BoxCollider2D>().enabled = false;
+        if(!newScale.IsStorage) StartCoroutine(newScale.LerpPositionY());
+        if(!OldScale.IsStorage) StartCoroutine(OldScale.LerpPositionY());
 
         // Check if puzzle is solved after each action
         if(CheckScales())
         {
-            // TODO: this currently triggers instantly when the last fruit is placed on its scale
-            // Should trigger after final scale finishes moving into its balanced position place
+            // TODO: trigger after final scale finishes moving into its balanced position place?
+            // Currently triggers instantly when the last fruit is placed on its scale
             IsComplete = true;
             OnComplete();
         }
     }
-
+    
     /// <summary>
     /// Check if all scales are properly balanced
     /// </summary>
+    /// <returns>True if all scales are balanced, false otherwise</returns>
     private bool CheckScales()
     {
         foreach(FruitScale scale in scales)

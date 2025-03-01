@@ -50,7 +50,7 @@ public class WaterPuzzle : Puzzle
         }
 
         // move the puzzle object so that the center of the puzzle is at (0, 0, 0) 
-        PuzzleUI.transform.position = new Vector3(TileWidth * -GridWidth / 2, TileHeight * GridHeight / 2, 0);
+        PuzzleUI.transform.position = new Vector3(TileWidth * (-GridWidth + 1) / 2, TileHeight * (GridHeight - 1) / 2, 0);
 
         Tiles = new WaterPuzzleTile[GridWidth, GridHeight];
         for (int i = 0; i < GridWidth; i++)
