@@ -1,20 +1,46 @@
+using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.UI; // Import UI for Text
 
 public class Passcode : MonoBehaviour
 {
-    public string correctPasscode = "1234"; //temp passcode
+    [SerializeField] private string correctPasscode = "1111"; // Temp passcode
     private string enteredPasscode = "";
 
     public Door passcodeDoor;
+    public GameObject keypadPanel; // Reference to the keypad UI
+
+    private void Start()
+    {
+        if (keypadPanel != null)
+            keypadPanel.SetActive(false); // Ensure it's hidden initially
+    }
+
+    public void ShowKeypad()
+    {
+        if (keypadPanel != null)
+            keypadPanel.SetActive(true); // Show keypad
+    }
+
+    public void HideKeypad()
+    {
+        if (keypadPanel != null)
+            keypadPanel.SetActive(false); // Hide keypad
+    }
 
     /// <summary>
     /// Call this function when a button is pressed
     /// </summary>
-    public void EnterDigit(string digit)
+    public void EnterDigit(Text buttonText)
     {
-        if (enteredPasscode.Length < correctPasscode.Length)
+        if (buttonText != null)
         {
-            enteredPasscode += digit;
+            string digit = buttonText.text;
+            if (enteredPasscode.Length < correctPasscode.Length)
+            {
+                enteredPasscode += digit;
+                Debug.Log("Entered Passcode: " + enteredPasscode);
+            }
         }
     }
 
@@ -27,12 +53,14 @@ public class Passcode : MonoBehaviour
         {
             passcodeDoor.ToggleLock(); // Unlock door
             passcodeDoor.ChangeState(); // Open door
+            Debug.Log("Correct passcode!");
         }
         else
         {
             Debug.Log("Incorrect passcode!");
         }
         enteredPasscode = ""; // Reset after submission
+        HideKeypad();
     }
 
     /// <summary>
