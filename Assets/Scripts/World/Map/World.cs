@@ -77,7 +77,11 @@ public class WorldManager : MonoBehaviour
         // Activate the new world and character
         worldToActivate.SetActive(true);
         characterToActivate.SetActive(true);
+<<<<<<< Updated upstream
         PlayerController.Instance.SwitchCharacters();
+=======
+        // Player.ActivePlayer = characterToActivate.GetComponent<Player>();
+>>>>>>> Stashed changes
         // Update active world tracker
         isWorldAActive = (characterToActivate == unknown);
         isSwitching = false;
