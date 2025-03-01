@@ -2,80 +2,103 @@ using UnityEngine;
 using System.Collections.Generic;
 using TMPro;
 
+public enum InventoryType
+{
+    Mariposa,
+    Unknown,
+    Mementos
+}
+
 public class InventoryManager : Singleton<InventoryManager>
 {
     /// <summary>
     /// REWRITE THIS PART
     /// </summary>
-    private Dictionary<InventoryItemSO, int> inventory = new Dictionary<InventoryItemSO, int>();
+    private Dictionary<InventoryType, Dictionary<InventoryItemSO, int>> inventories = new Dictionary<InventoryType, Dictionary<InventoryItemSO, int>>();
     [SerializeField] private TextMeshProUGUI batteryCounterText;
 
-	/// <summary>
-	/// Adds item to inventory
-	/// </summary>
-	/// <param name="item">Item class</param>
-    public void AddItem(InventoryItemSO item)
+    public override void Awake()
     {
-        if (inventory.ContainsKey(item))
+        base.Awake();
+        // Initialize separate inventories for each type
+        inventories[InventoryType.Mariposa] = new Dictionary<InventoryItemSO, int>();
+        inventories[InventoryType.Unknown] = new Dictionary<InventoryItemSO, int>();
+        inventories[InventoryType.Mementos] = new Dictionary<InventoryItemSO, int>();
+    }
+
+    /// <summary>
+    /// Adds item to inventory
+    /// </summary>
+    /// <param name="type"></param>
+    /// <param name="item">Item class</param>
+    public void AddItem(InventoryType type, InventoryItemSO item)
+    {
+        var inv = inventories[type];
+        if (!inv.TryAdd(item, 1))
         {
-            inventory[item]++;
+            inv[item]++;
         }
-        else
+
+        UpdateBatteryUI();
+    }
+
+    /// <summary>
+    /// Deletes item from inventory
+    /// </summary>
+    /// <param name="type"></param>
+    /// <param name="item">Item class (reference)</param>
+    public void DeleteItem(InventoryType type, InventoryItemSO item)
+    {
+        var inv = inventories[type];
+        if (inv.ContainsKey(item) && inv[item] > 0)
         {
-            inventory[item] = 1;
+            inv[item]--;
+            if (inv[item] <= 0)
+                inv.Remove(item);
         }
         UpdateBatteryUI();
     }
 
-	/// <summary>
-	/// Deletes item from inventory
-	/// </summary>
-	/// <param name="item">Item class (reference)</param>
-    public void DeleteItem(InventoryItemSO item)
+    /// <summary>
+    /// Deletes item from inventory by name
+    /// </summary>
+    /// <param name="type"></param>
+    /// <param name="name">Item name</param>
+    public void DeleteItemByName(InventoryType type, string name)
     {
-        if (inventory.ContainsKey(item) && inventory[item] > 0)
-        {
-            inventory[item]--;
-            if (inventory[item] <= 0)
-            {
-                inventory.Remove(item);
-            }
-        }
-        UpdateBatteryUI();
-    }
-
-	/// <summary>
-	/// Deletes item from inventory by name
-	/// </summary>
-	/// <param name="name">Item name</param>
-    public void DeleteItemByName(string name)
-    {
-        foreach(InventoryItemSO item in new List<InventoryItemSO>(inventory.Keys))
+        var inv = inventories[type];
+        foreach (InventoryItemSO item in new List<InventoryItemSO>(inv.Keys))
         {
             if (item.Name == name)
             {
-                inventory.Remove(item);
+                inv.Remove(item);
                 return;
             }
         }
     }
 
-    public int GetItemCount(InventoryItemSO item)
+    /// <summary>
+    /// Returns all items in the specified inventory.
+    /// </summary>
+    public int GetItemCount(InventoryType type, InventoryItemSO item)
     {
-        return inventory.ContainsKey(item) ? inventory[item] : 0;
+        var inv = inventories[type];
+        return inv.GetValueOrDefault(item, 0);
     }
-    
-	/// <summary>
-	/// Deletes item from inventory by ID
-	/// </summary>
-	/// <param name="id">Item ID</param>
-    public void DeleteItemByID(uint id)
+
+    /// <summary>
+    /// Deletes item from inventory by ID
+    /// </summary>
+    /// <param name="type"></param>
+    /// <param name="id">Item ID</param>
+    public void DeleteItemByID(InventoryType type, uint id)
     {
-        foreach(InventoryItemSO item in new List<InventoryItemSO>(inventory.Keys))
+        var inv = inventories[type];
+        foreach (InventoryItemSO item in new List<InventoryItemSO>(inv.Keys))
         {
             if (item.ID == id)
             {
-                inventory.Remove(item);
+                inv.Remove(item);
                 return;
             }
         }
@@ -85,14 +108,13 @@ public class InventoryManager : Singleton<InventoryManager>
     {
         if (batteryCounterText != null)
         {
-            int count = GetItemCount(BatteryItem.Instance);
+            int count = GetItemCount(InventoryType.Mariposa, BatteryItem.Instance);
             batteryCounterText.text = $"Batteries: {count}";
         }
     }
     
-    public Dictionary<InventoryItemSO, int> GetAllItems()
+    public Dictionary<InventoryItemSO, int> GetAllItems(InventoryType type)
     {
-        return inventory;
+        return inventories[type];
     }
-
 }

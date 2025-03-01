@@ -109,9 +109,9 @@ public class PlayerMovement : FreeBody
         if (Input.GetKeyDown(KeyCode.V) && !isDashing)
         {
             // Consume a battery if available
-            if (InventoryManager.Instance.GetItemCount(BatteryItem.Instance) > 0)
+            if (InventoryManager.Instance.GetItemCount(InventoryType.Mariposa, BatteryItem.Instance) > 0)
             {
-                InventoryManager.Instance.DeleteItem(BatteryItem.Instance);
+                InventoryManager.Instance.DeleteItem(InventoryType.Mariposa, BatteryItem.Instance);
                 StartCoroutine(DashRoutine());
             }
         }

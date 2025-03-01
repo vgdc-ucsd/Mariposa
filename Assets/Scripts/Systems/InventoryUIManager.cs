@@ -6,22 +6,25 @@ using System.Collections.Generic;
 public class InventoryUIManager : MonoBehaviour
 {
     [Header("Panels & Buttons")]
-    [SerializeField] private GameObject inventoryPanel; 
+    [SerializeField] private GameObject inventoryPanel;
     [SerializeField] private UnityEngine.UI.Button closeButton;
     [SerializeField] private UnityEngine.UI.Button toolsTabButton;
     [SerializeField] private UnityEngine.UI.Button mementosTabButton;
 
     [Header("Panels for Each Tab")]
-    [SerializeField] private GameObject toolsPanel;     
-    [SerializeField] private GameObject mementosPanel;  
+    [SerializeField] private GameObject toolsPanel;
+    [SerializeField] private GameObject mementosPanel;
 
     [Header("Item Details UI")]
     [SerializeField] private Image centerItemIcon;
     [SerializeField] private TextMeshProUGUI centerItemDescription;
-
+    
     [Header("Slots")]
-    [SerializeField] private InventoryUISlot[] toolsSlots;   
+    [SerializeField] private InventoryUISlot[] toolsSlots;
     [SerializeField] private InventoryUISlot[] mementosSlots;
+    
+    [Header("Active Character Inventory")]
+    [SerializeField] private InventoryType activeCharacterInventory = InventoryType.Mariposa;
 
     private bool isOpen = false;
 
@@ -32,18 +35,19 @@ public class InventoryUIManager : MonoBehaviour
 
         if (toolsTabButton != null)
             toolsTabButton.onClick.AddListener(() => ShowTab(true));
-        
+
         if (mementosTabButton != null)
             mementosTabButton.onClick.AddListener(() => ShowTab(false));
         foreach (var slot in toolsSlots)
         {
             slot.OnSlotClicked = OnSlotClicked;
         }
+
         foreach (var slot in mementosSlots)
         {
             slot.OnSlotClicked = OnSlotClicked;
         }
-        
+
         inventoryPanel.SetActive(false);
     }
 
@@ -57,7 +61,7 @@ public class InventoryUIManager : MonoBehaviour
                 OpenInventory();
         }
     }
-    
+
     private void OnSlotClicked(InventoryItemSO item)
     {
         if (centerItemIcon != null)
@@ -65,60 +69,50 @@ public class InventoryUIManager : MonoBehaviour
             centerItemIcon.sprite = item.sprite;
             centerItemIcon.enabled = true;
         }
+
         if (centerItemDescription != null)
         {
             centerItemDescription.text = $"{item.Name}\n\n{item.FlavorText}";
         }
     }
-    
+
     public void PopulateInventory()
     {
         foreach (var slot in toolsSlots)
             slot.SetSlot(null, 0);
         foreach (var slot in mementosSlots)
             slot.SetSlot(null, 0);
-        
-        var inventoryDict = InventoryManager.Instance.GetAllItems(); 
-        List<KeyValuePair<InventoryItemSO, int>> toolItems = new List<KeyValuePair<InventoryItemSO, int>>();
-        List<KeyValuePair<InventoryItemSO, int>> mementoItems = new List<KeyValuePair<InventoryItemSO, int>>();
+        var toolInventoryDict = InventoryManager.Instance.GetAllItems(activeCharacterInventory);
+        var mementoInventoryDict = InventoryManager.Instance.GetAllItems(InventoryType.Mementos);
 
-        foreach (var kvp in inventoryDict)
+        int toolSlotIndex = 0;
+        foreach (var kvp in toolInventoryDict)
         {
-            var item = kvp.Key;
-            var count = kvp.Value;
-            switch (item.Type)
+            if (toolSlotIndex < toolsSlots.Length)
             {
-                case InventoryItemType.Single_Use:
-                    toolItems.Add(kvp);
-                    break;
-                case InventoryItemType.Permanent:
-                    toolItems.Add(kvp);
-                    break;
-                case InventoryItemType.Memento:
-                    mementoItems.Add(kvp);
-                    break;
+                toolsSlots[toolSlotIndex].SetSlot(kvp.Key, kvp.Value);
+                toolSlotIndex++;
             }
         }
-        
-        for (int i = 0; i < toolItems.Count && i < toolsSlots.Length; i++)
+
+        // Populate memento slots
+        int mementoSlotIndex = 0;
+        foreach (var kvp in mementoInventoryDict)
         {
-            var kvp = toolItems[i];
-            toolsSlots[i].SetSlot(kvp.Key, kvp.Value);
-        }
-        
-        for (int i = 0; i < mementoItems.Count && i < mementosSlots.Length; i++)
-        {
-            var kvp = mementoItems[i];
-            mementosSlots[i].SetSlot(kvp.Key, kvp.Value);
+            if (mementoSlotIndex < mementosSlots.Length)
+            {
+                mementosSlots[mementoSlotIndex].SetSlot(kvp.Key, kvp.Value);
+                mementoSlotIndex++;
+            }
         }
     }
-    
+
     public void OpenInventory()
     {
         isOpen = true;
         inventoryPanel.SetActive(true);
         PopulateInventory();
-        ShowTab(true); 
+        ShowTab(true);
     }
 
     private void CloseInventory()
@@ -129,10 +123,9 @@ public class InventoryUIManager : MonoBehaviour
 
     private void ShowTab(bool showTools)
     {
-        if (toolsPanel != null) 
+        if (toolsPanel != null)
             toolsPanel.SetActive(showTools);
-        if (mementosPanel != null) 
+        if (mementosPanel != null)
             mementosPanel.SetActive(!showTools);
     }
-    
 }

@@ -5,8 +5,9 @@ public class BatteryPickup : MonoBehaviour
 {
     [SerializeField] private BatteryItem batteryItem;
     [SerializeField] private float checkInterval = 1f;
-    private Vector3 spawnPosition;
+    [SerializeField] private InventoryType targetInventory = InventoryType.Mariposa;
     
+    private Vector3 spawnPosition;
     private SpriteRenderer sr;
     private Collider2D col;
     
@@ -23,7 +24,7 @@ public class BatteryPickup : MonoBehaviour
         {
             if(InventoryManager.Instance != null && batteryItem != null)
             {
-                InventoryManager.Instance.AddItem(batteryItem);
+                InventoryManager.Instance.AddItem(targetInventory, batteryItem);
             }
             else
             {
@@ -38,7 +39,7 @@ public class BatteryPickup : MonoBehaviour
     
     private IEnumerator RespawnWhenBatteryCountZero()
     {
-        while(InventoryManager.Instance.GetItemCount(batteryItem) > 0)
+        while(InventoryManager.Instance.GetItemCount(targetInventory, batteryItem) > 0)
         {
             yield return new WaitForSeconds(checkInterval);
         }
