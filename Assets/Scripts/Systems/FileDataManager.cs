@@ -55,7 +55,7 @@ public class FileDataManager : Singleton<FileDataManager>
         }
         else
         {
-            Debug.LogError("File doesn't exist")
+            Debug.LogError("File doesn't exist");
         }
         return loadedData;
     }
@@ -109,7 +109,7 @@ public class FileDataManager : Singleton<FileDataManager>
         }
     }
 
-    private void SetCurrentSaveSlot(string saveSlot)
+    public void SetCurrentSaveSlot(string saveSlot)
     {
         this.dataFileName = saveSlot;
     }

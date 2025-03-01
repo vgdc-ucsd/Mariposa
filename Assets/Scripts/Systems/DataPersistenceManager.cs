@@ -24,8 +24,6 @@ public class DataPersistenceManager : Singleton<DataPersistenceManager>
         this.dataManager = new FileDataManager(Application.persistentDataPath, fileName);
         this.dataPersistenceObjects = FindAllDataPersistenceObjects();
 
-        // For testing, load data on application startup
-        LoadGame();
     }
 
     /// <summary>
@@ -44,9 +42,9 @@ public class DataPersistenceManager : Singleton<DataPersistenceManager>
     /// </summary>
     public void LoadGame(string saveName)
     {
-        SetCurrentSave(saveName)
+        SetCurrentSave(saveName);
 
-        this.gameData = dataManager.Load();
+        gameData = dataManager.Load();
         if (this.gameData == null)
         {
             Debug.Log("No data was found, using default data values");
@@ -64,7 +62,7 @@ public class DataPersistenceManager : Singleton<DataPersistenceManager>
     /// </summary>
     public void SaveGame(string saveName)
     {
-        SetCurrentSave(saveName)
+        SetCurrentSave(saveName);
         foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)
         {
             dataPersistenceObj.SaveData(ref gameData);
@@ -84,7 +82,7 @@ public class DataPersistenceManager : Singleton<DataPersistenceManager>
     // This can be changed later!!!!!!
     private void OnApplicationQuit()
     {
-        SaveGame('debug');
+        SaveGame("debug");
     }
     private List<IDataPersistence> FindAllDataPersistenceObjects()
     {

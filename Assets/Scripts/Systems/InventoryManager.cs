@@ -69,7 +69,7 @@ public class InventoryManager : MonoBehaviour, IDataPersistence
 	/// <param name="data">GameData object</param>
     public void LoadData(GameData data)
     {
-        this.Inventory = data.Inventory  
+        this.Inventory = data.Inventory;
     }
 
     /// <summary>
@@ -78,6 +78,6 @@ public class InventoryManager : MonoBehaviour, IDataPersistence
 	/// <param name="data">GameData object</param>
     public void SaveData(ref GameData data)
     {
-        data.Inventory = this.Inventory  
+        data.Inventory = this.Inventory; 
     }
 }
