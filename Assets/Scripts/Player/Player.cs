@@ -3,17 +3,34 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+	
+
 	public RespawnPoint CurrentRespawnPoint = null;
 
-	public static Player ActivePlayer;
-	private bool playerDebug;
+	public static Player ActivePlayer => PlayerController.Instance.ControlledPlayer;
 
-	private void Awake()
+
+    private bool playerDebug;
+	public PlayerCharacter Character;
+	public PlayerMovement Movement;
+	public IAbility Ability;
+
+
+    // which way the character is facing
+    // 1 = right, -1 = left, can never be 0
+	// facing direction does not affect movement in most cases
+    public int FacingDirection = 1;
+
+    private void Awake()
 	{
-		if (ActivePlayer == null)
+		Movement = GetComponent<PlayerMovement>();
+		Character = GetComponent<PlayerCharacter>();
+		Ability = GetComponentInChildren<IAbility>();
+		if (Movement == null || Character == null || Ability == null)
 		{
-			ActivePlayer = this;
-		}
+			Debug.LogError("Player object not fully set up with Movement, Character, and Ability classes");
+			return;
+		} 
 	}
 
 	void Start()
@@ -69,4 +86,9 @@ public class Player : MonoBehaviour
 			if (playerDebug) Debug.Log($"Player respawned to: {CurrentRespawnPoint.gameObject.name} @ {CurrentRespawnPoint.GetRespawnPosition().ToString()}");
 		}
 	}
+
+    public void TurnTowards(int dir)
+    {
+        FacingDirection = dir;
+    }
 }
