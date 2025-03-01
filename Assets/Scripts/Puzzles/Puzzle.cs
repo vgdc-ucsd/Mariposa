@@ -13,6 +13,8 @@ public abstract class Puzzle : MonoBehaviour
     public void OnComplete()
     {
         Debug.Log("Puzzle Complete!");
+        if(PuzzlePopupManager.Instance != null) PuzzlePopupManager.Instance.CompletePuzzle();
+        else Debug.Log("No PuzzlePopupManager found");
     }
 
     /// <summary>

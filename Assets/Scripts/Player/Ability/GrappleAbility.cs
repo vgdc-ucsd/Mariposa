@@ -108,6 +108,8 @@ public class GrappleAbility : MonoBehaviour, IAbility
         }
     }
 
+    public void Initialize() { }
+
     private void FindGrapplePoint()
     {
         List<GrappleTarget> potentialTargets = new();

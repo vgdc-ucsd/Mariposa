@@ -8,32 +8,28 @@ public class Fruit : MonoBehaviour
     [SerializeField]
     [Range(FruitScalePuzzle.FRUIT_MIN_WEIGHT, FruitScalePuzzle.FRUIT_MAX_WEIGHT)]
     private int weight;
-    [SerializeField] private FruitScale Scale;
-    [SerializeField] private Color DebugColor; // TODO: for debug, remove later
+    public int Weight
+    {
+        get => weight;
+        set { weight = value; }
+    }
+    [SerializeField] private FruitScale scale;
+    public FruitScale Scale
+    {
+        get => scale;
+        set
+        {
+            scale = value;
+            transform.position = scale.transform.position;
+            transform.SetParent(scale.transform);
+        }
+    }
     private SpriteRenderer fruitSR;
 
     void Awake()
     {
-        if(Scale != null) Scale.GetComponent<BoxCollider2D>().enabled = false;
         fruitSR = GetComponent<SpriteRenderer>();
         if(fruitSR == null) Debug.LogWarning("Fruit sprite renderer not found!");
-    }
-
-    /// <summary>
-    /// Getter for the fruit's weight.
-    /// </summary>
-    /// <returns></returns>
-    public int GetWeight() { return weight; }
-
-    /// <summary>
-    /// Setter for the scale the fruit is on. Makes the scale the parent 
-    /// transform for the fruit to move with.
-    /// </summary>
-    /// <param name="scale"></param>
-    public void SetScale(FruitScale scale)
-    {
-        this.Scale = scale;
-        transform.SetParent(scale.transform);
     }
 
     /// <summary>
@@ -43,8 +39,8 @@ public class Fruit : MonoBehaviour
     {
         if(!FruitScalePuzzle.Instance.IsComplete)
         {
-            SelectThis();
-            FruitScalePuzzle.Instance.OldScale = Scale;
+            FruitScalePuzzle.Instance.SelectedFruit = this;
+            FruitScalePuzzle.Instance.OldScale = scale;
         }
     }
 
@@ -57,7 +53,7 @@ public class Fruit : MonoBehaviour
         {
             Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             transform.position = new Vector3(worldPos.x, worldPos.y, 0);
-            FruitScalePuzzle.Instance.OldScale = Scale;
+            FruitScalePuzzle.Instance.OldScale = scale;
         }
     }
 
@@ -70,6 +66,7 @@ public class Fruit : MonoBehaviour
         if(!FruitScalePuzzle.Instance.IsComplete)
         {
             Vector2 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            bool fruitPlaced = false;
 
             Collider2D[] colliders = Physics2D.OverlapCircleAll(worldPos, 0.01f);
             foreach(Collider2D collider in colliders)
@@ -78,28 +75,22 @@ public class Fruit : MonoBehaviour
                 if(Scale != null)
                 {
                     Scale.TryPlaceFruit();
+                    fruitPlaced = true;
                     break;
                 }
             }
 
-            if(Scale != null) transform.position = Scale.transform.position;
-            else transform.localPosition = Vector3.zero;
+            if(!fruitPlaced) FruitScalePuzzle.Instance.SelectedFruit = null;
+            transform.localPosition = Vector3.zero;
         }
     }
 
     /// <summary>
     /// Set this fruit as the selected fruit and update visuals
     /// </summary>
-    private void SelectThis()
+    public void Select()
     {
-        if(FruitScalePuzzle.Instance.SelectedFruit != null)
-        {
-            FruitScalePuzzle.Instance.SelectedFruit.Deselect();
-        }
-        FruitScalePuzzle.Instance.SelectedFruit = this;
-
-        // fruitSR.color = Color.white * 0.7f;
-        fruitSR.color = DebugColor * 0.7f; // TODO: for debug, remove later
+        fruitSR.color = Color.white * 0.7f;
     }
 
     /// <summary>
@@ -107,7 +98,6 @@ public class Fruit : MonoBehaviour
     /// </summary>
     public void Deselect()
     {
-        // fruitSR.color = Color.white;
-        fruitSR.color = DebugColor; // TODO: for debug, remove later
+        fruitSR.color = Color.white;
     }
 }
