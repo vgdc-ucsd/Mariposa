@@ -142,7 +142,7 @@ public abstract class FreeBody : Body
 
 
         // Apply the movement
-        transform.position += (Vector3)minDelta;
+        transform.position += (Vector3)move;
     }
 
     // Drop players in the air at the start of a scene or after an interaction
