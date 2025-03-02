@@ -11,12 +11,10 @@ public class BillboardPuzzleButton : Interactable
 
     public override void OnInteract()
     {
-        throw new System.NotImplementedException();
     }
 
     protected override void SetProximity()
     {
-        throw new System.NotImplementedException();
     }
 
     private new void Start()
@@ -32,14 +30,15 @@ public class BillboardPuzzleButton : Interactable
         }
     }
 
-    void Update()
+
+    /*void Update()
     {
         // Uncomment these next few lines if you want the bee to follow the mouse instead of moving how it normally does.
-        /*if (bee != null)
+        *//*if (bee != null)
         {
             bee.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             bee.transform.position -= Vector3.forward * bee.transform.position.z;
-        }*/
+        }*//*
         // temp input reading until entire input system is ready
         if (!Input.GetKeyDown(KeyCode.E)) return;
 
@@ -57,7 +56,28 @@ public class BillboardPuzzleButton : Interactable
                 BillboardPuzzle.Instance.RotateCol(col);
             }
         }
+    }*/
+
+    private void Update()
+    {
+        if (!Input.GetMouseButtonDown(0)) return;
+        if (myCollider.bounds.Contains((Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition)))
+        {
+            if (beeMode)
+            {
+
+                BillboardPuzzle.Instance.ShiftRow(row);
+
+            }
+            else
+            {
+                BillboardPuzzle.Instance.RotateCol(col);
+
+            }
+        }
     }
 
     
+
+
 }

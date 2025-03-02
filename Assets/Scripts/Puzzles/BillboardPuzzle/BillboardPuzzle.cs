@@ -9,11 +9,13 @@ public class BillboardPuzzle : Puzzle
     public static BillboardPuzzle Instance;
     public BillboardPuzzleTile[,] board;
     public GameObject[] boardDisplay;
+    public GameObject[] miniBoardDisplay;
     private int width = 5;
     private int height = 3;
     private List<int> endXValues = new List<int>();
     private List<int> endRotValues = new List<int>();
     [SerializeField] private Sprite[] sprites;
+    [SerializeField] private GameObject interactable;
 
     private void Awake()
     {
@@ -28,6 +30,26 @@ public class BillboardPuzzle : Puzzle
     }
 
     private void Start()
+    {
+        /*board = new BillboardPuzzleTile[height, width];
+        int index = 0;
+        GenerateSolution();
+        for (int i = 0; i < height; i++)
+        {
+            for (int j = 0; j < width; j++)
+            {
+
+                board[i, j].x = j;
+                board[i, j].endX = endXValues[index];
+                board[i, j].spriteIndex = board[i, j].endX;
+                board[i, j].rotation = endRotValues[index];
+                index++;
+            }
+        }
+        UpdatePuzzleDisplay();*/
+    }
+
+    public void Initialize()
     {
         board = new BillboardPuzzleTile[height, width];
         int index = 0;
@@ -69,6 +91,7 @@ public class BillboardPuzzle : Puzzle
 
     public void ShiftRow(int row)
     {
+        Debug.Log(row);
         for (int i = 0; i < width; i++)
         {
             board[row, i].x++;
@@ -80,6 +103,7 @@ public class BillboardPuzzle : Puzzle
 
     public void RotateCol(int col)
     {
+        Debug.Log(col);
         for (int i = 0; i < height; i++)
         {
             for (int j = 0; j < width; j++)
@@ -152,10 +176,19 @@ public class BillboardPuzzle : Puzzle
                 int index = board[i, j].x + width * i;
                 boardDisplay[index].GetComponent<SpriteRenderer>().sprite = sprites[board[i, j].spriteIndex];
                 boardDisplay[index].transform.eulerAngles = Vector3.forward * board[i, j].rotation * -90;
+                if (miniBoardDisplay.Length == 0) continue;
+                miniBoardDisplay[index].GetComponent<SpriteRenderer>().sprite = sprites[board[i, j].spriteIndex];
+                miniBoardDisplay[index].transform.eulerAngles = Vector3.forward * board[i, j].rotation * -90;
             }
         }
 
         if (IsPuzzleComplete()) OnComplete();
+    }
+
+    private void OnDisable()
+    {
+        interactable.SetActive(true);
+        UpdatePuzzleDisplay();
     }
 
     private bool IsPuzzleComplete()
