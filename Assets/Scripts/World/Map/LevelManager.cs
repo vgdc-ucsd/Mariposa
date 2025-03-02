@@ -41,6 +41,7 @@ public class LevelManager : MonoBehaviour
     {
         CurrentLevel.UnloadSublevel(SublevelIndex);
         SublevelIndex++;
+        SublevelIndex %= CurrentLevel.Sublevels.Length;
         CurrentLevel.LoadSublevel(SublevelIndex);
         InitSublevel();
         
@@ -50,7 +51,7 @@ public class LevelManager : MonoBehaviour
     {
         PlayerController.Instance.SwitchTo(GetCurrentSublevel().SublevelCharacter);
         CameraController.ActiveCamera.SetBounds(GetCurrentSublevel().CameraBounds);
-        Player.ActivePlayer.transform.position = GetCurrentSublevel().StartingSpawn.RespawnPosition;
+        Player.ActivePlayer.transform.position = GetCurrentSublevel().StartingSpawn.GetRespawnPosition();
         Debug.Assert(GetCurrentSublevel().SublevelCharacter == Player.ActivePlayer.Character.Id);
     }
 }
