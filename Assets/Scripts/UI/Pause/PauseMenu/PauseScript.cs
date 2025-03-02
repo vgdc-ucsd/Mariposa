@@ -14,7 +14,8 @@ public class PauseScript : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        pauseMenu.SetActive(false);
+        pauseMenu.gameObject.GetComponent<Renderer>().enabled = false;
+        // pauseMenu.SetActive(false);
         Time.timeScale = 1.0f;
         pauseAction.action.Enable();
     }
@@ -26,10 +27,12 @@ public class PauseScript : MonoBehaviour
         {
             if (paused) 
             {
+                Debug.Log("resume");
                 ResumeGame();
             }
             else
             {
+                Debug.Log("pause");
                 PauseGame();
             }
         }
@@ -38,15 +41,14 @@ public class PauseScript : MonoBehaviour
     public void PauseGame()
     {
         Time.timeScale = 0.0f;
-        paused = true;
-        pauseMenu.SetActive(true);
+        paused = true;   
     }
+
 
     public void ResumeGame()
     {
         Time.timeScale = 1.0f;
         paused = false;
-        pauseMenu.SetActive(false);
     }
 
     public void UpdateSFXSetting(GameObject sfxSlider)
