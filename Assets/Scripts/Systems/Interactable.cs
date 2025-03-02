@@ -10,8 +10,6 @@ public abstract class Interactable : MonoBehaviour
         SetProximity();
     }
 
-    // Check whether within proximity first
-    // Load the pop up
     public abstract void OnInteract();
     protected abstract void SetProximity();
 }

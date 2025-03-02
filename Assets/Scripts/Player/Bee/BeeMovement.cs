@@ -96,9 +96,13 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
     {
         Vector2 r = transform.position - Player.ActivePlayer.transform.position;
         float distanceToPlayer = r.magnitude;
-        
 
-        if (distanceToPlayer > parent.MaxControlRadius) return;
+
+        if (distanceToPlayer > parent.MaxControlRadius)
+        {
+            Velocity = Vector2.zero;
+            return;
+        }
 
 
         Vector2 controlDir = moveDir.normalized;
@@ -169,4 +173,8 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
         transform.position += (Vector3)currentBehavior.GetMoveStep(fdt);
     }
 
+    public void ToggleCollisions(bool toggle)
+    {
+        collisionsEnabled = toggle;
+    }
 }
