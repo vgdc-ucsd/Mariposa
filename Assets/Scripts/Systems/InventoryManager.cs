@@ -5,7 +5,7 @@ using TMPro;
 public enum InventoryType
 {
     Mariposa,
-    Unknown,
+    Unnamed,
     Mementos
 }
 
@@ -22,7 +22,7 @@ public class InventoryManager : Singleton<InventoryManager>
         base.Awake();
         // Initialize separate inventories for each type
         inventories[InventoryType.Mariposa] = new Dictionary<InventoryItemSO, int>();
-        inventories[InventoryType.Unknown] = new Dictionary<InventoryItemSO, int>();
+        inventories[InventoryType.Unnamed] = new Dictionary<InventoryItemSO, int>();
         inventories[InventoryType.Mementos] = new Dictionary<InventoryItemSO, int>();
     }
 

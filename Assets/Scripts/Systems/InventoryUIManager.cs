@@ -56,9 +56,15 @@ public class InventoryUIManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.I))
         {
             if (inventoryPanel.activeSelf)
+            {
+                Debug.Log("invevntory close");
                 CloseInventory();
+            }
             else
+            {
+                Debug.Log("invevntory open");
                 OpenInventory();
+            }
         }
     }
 
