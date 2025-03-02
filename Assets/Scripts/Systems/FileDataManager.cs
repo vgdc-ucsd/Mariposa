@@ -7,7 +7,7 @@ using System.IO;
 /// <summary>
 /// Handles the reading and writing to disk for the DataPersistanceManager
 /// </summary>
-public class FileDataManager : Singleton<FileDataManager>
+public class FileDataManager
 {
     private string dataDirPath = "";
     private string dataFileName= "";
@@ -17,10 +17,9 @@ public class FileDataManager : Singleton<FileDataManager>
     /// </summary>
     /// <param name="dataDirPath">Sets the directory where data is saved in</param>
     /// <param name="dataFileName">Sets the name of the save file</param>
-    public FileDataManager(string dataDirPath, string dataFileName)
+    public FileDataManager(string dataDirPath)
     {
         this.dataDirPath = dataDirPath;
-        this.dataFileName = dataFileName;
     }
 
     /// <summary>
