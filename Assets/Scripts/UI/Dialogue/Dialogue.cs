@@ -18,4 +18,7 @@ public class DialogueElement
 
     // character portrait sprite
     public Sprite Sprite;
+
+    // true if dialogue is coming from the radio
+    public bool FromRadio;
 }

@@ -3,16 +3,27 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine.UI;
 using System.Collections;
+using System;
 
 public class DialogueManager : Singleton<DialogueManager>
 {
     // object references
     public GameObject DialogueWindow;
-    [SerializeField] TMP_Text SpeakerTarget;
-    [SerializeField] TMP_Text LineTarget;
-    [SerializeField] GameObject Frame;
-    [SerializeField] Image Mask;
-    [SerializeField] Image Portrait;
+    [SerializeField] Image rect;
+    [SerializeField] Sprite mariRect;
+    [SerializeField] Sprite unnRect;
+    [SerializeField] Sprite mariRadio;
+    [SerializeField] Sprite unnRadio;
+
+    [SerializeField] TMP_Text speakerTarget;
+    [SerializeField] TMP_Text lineTarget;
+
+    [SerializeField] GameObject frame;
+    [SerializeField] Sprite mariFrame;
+    [SerializeField] Sprite unnFrame;
+
+    [SerializeField] Image mask;
+    [SerializeField] Image portrait;
 
     // dialogue control
     List<DialogueElement> conversation;
@@ -29,13 +40,13 @@ public class DialogueManager : Singleton<DialogueManager>
 
     public void PlayDialogue(Dialogue dialogue)
     {
+        Debug.Log("Started dialogue");
+        
         conversation = dialogue.Conversation;
         dialogueIndex = -1;
 
         DialogueWindow.SetActive(true);
         AdvanceDialogue();
-
-        Debug.Log("Started dialogue");
     }
 
     public void AdvanceDialogue()
@@ -51,27 +62,60 @@ public class DialogueManager : Singleton<DialogueManager>
         else
         {
             // start dialogue
-            SpeakerTarget.text = conversation[dialogueIndex].Speaker;
-            LineTarget.text = conversation[dialogueIndex].Line;
+            speakerTarget.text = conversation[dialogueIndex].Speaker;
+            lineTarget.text = conversation[dialogueIndex].Line;
             StartCoroutine(TypewriterEffect());
+
+            // check if Mariposa currently active
+            if (Player.ActivePlayer.Character.Id == CharID.Mariposa)
+            //if(true)    //placeholder for testing before merge
+            {
+                frame.GetComponent<Image>().sprite = mariFrame;
+
+                // check if from radio
+                if (conversation[dialogueIndex].FromRadio)
+                {
+                    rect.sprite = mariRadio;
+                }
+                else
+                {
+                    rect.sprite = mariRect;
+                }
+            }
+            else
+            {
+                frame.GetComponent<Image>().sprite = unnFrame;
+
+                // check if from radio
+                // check if from radio
+                if (conversation[dialogueIndex].FromRadio)
+                {
+                    rect.sprite = unnRadio;
+                }
+                else
+                {
+                    rect.sprite = unnRect;
+                }
+            }
 
             // check if has sprite
             if (conversation[dialogueIndex].Sprite != null)
             {
                 // resize text boxes
-                SpeakerTarget.GetComponent<RectTransform>().offsetMin = new Vector2(150, -60);
-                LineTarget.GetComponent<RectTransform>().offsetMin = new Vector2(150, -80);
+                speakerTarget.GetComponent<RectTransform>().offsetMin = new Vector2(150, -60);
+                lineTarget.GetComponent<RectTransform>().offsetMin = new Vector2(150, -80);
                 // show sprite
-                Portrait.sprite = conversation[dialogueIndex].Sprite;
-                Frame.SetActive(true);
+                portrait.sprite = conversation[dialogueIndex].Sprite;
+                Debug.Log("Set sprite to " +  conversation[dialogueIndex].Sprite);
+                frame.SetActive(true);
             }
             else
             {
                 // resize text boxes
-                SpeakerTarget.GetComponent<RectTransform>().offsetMin = new Vector2(45, -60);
-                LineTarget.GetComponent<RectTransform>().offsetMin = new Vector2(45, -80);
+                speakerTarget.GetComponent<RectTransform>().offsetMin = new Vector2(45, -60);
+                lineTarget.GetComponent<RectTransform>().offsetMin = new Vector2(45, -80);
                 // hide sprite
-                Frame.SetActive(false);
+                frame.SetActive(false);
             }
         }
     }
@@ -84,7 +128,7 @@ public class DialogueManager : Singleton<DialogueManager>
                 // finish typewriter effect
                 StopAllCoroutines();
                 finishedTypewriter = true;
-                LineTarget.maxVisibleCharacters = conversation[dialogueIndex].Line.Length;
+                lineTarget.maxVisibleCharacters = conversation[dialogueIndex].Line.Length;
             }
         else
             {
@@ -99,14 +143,14 @@ public class DialogueManager : Singleton<DialogueManager>
         float startTime = Time.time;
 
         int i = 0;
-        LineTarget.maxVisibleCharacters = i;
+        lineTarget.maxVisibleCharacters = i;
         while (i < length)
         {
             float elapsedTime = Time.time - startTime;
             if (elapsedTime > DIALOGUE_SPEED)
             {
                 i++;
-                LineTarget.maxVisibleCharacters = i;
+                lineTarget.maxVisibleCharacters = i;
                 startTime = Time.time;
             }
             else yield return null;
