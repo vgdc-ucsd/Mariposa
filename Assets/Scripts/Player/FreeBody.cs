@@ -2,10 +2,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using Unity.VisualScripting;
-using UnityEditor.Rendering;
 using UnityEngine;
 
-// The external forces this object can currently experience 
+// The external forces this object can currently experience
 public enum BodyState
 {
     OnGround, // Experiences sliding friction
@@ -71,7 +70,7 @@ public abstract class FreeBody : Body
     protected virtual void Fall()
     {
         if (State != BodyState.InAir || !gravityEnabled) return;
-        Velocity.y = Mathf.Max(Velocity.y - Gravity * fdt, -TerminalVelocity); // Cap the velocity 
+        Velocity.y = Mathf.Max(Velocity.y - Gravity * fdt, -TerminalVelocity); // Cap the velocity
     }
 
     protected virtual void CheckGrounded()
@@ -116,7 +115,7 @@ public abstract class FreeBody : Body
                 Velocity.x = 0;
             }
         }
-        
+
         // Apply the movement
         transform.position += (Vector3)minDelta;
     }
