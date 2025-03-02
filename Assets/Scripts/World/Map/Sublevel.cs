@@ -8,6 +8,15 @@ public class Sublevel : MonoBehaviour
         get => _subLevelCharacter; 
     }
 
+    public RespawnPoint StartingSpawn;
+    public PolygonCollider2D CameraBounds;
+
+    private void Awake()
+    {
+        if (StartingSpawn == null) Debug.LogError("Starting Spawn Points not assigned");
+        if (CameraBounds == null) Debug.LogError("Starting Camera Bounds not assigned");
+    }
+
     public void Load()
     {
         gameObject.SetActive(true);

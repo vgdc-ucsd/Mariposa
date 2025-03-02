@@ -18,11 +18,12 @@ public class LevelManager : MonoBehaviour
         }
         SublevelIndex = 0;
         CurrentLevel.LoadSublevel(SublevelIndex);
+        
     }
 
     private void Start()
     {
-
+        InitSublevel();
     }
 
     private void Update()
@@ -41,8 +42,15 @@ public class LevelManager : MonoBehaviour
         CurrentLevel.UnloadSublevel(SublevelIndex);
         SublevelIndex++;
         CurrentLevel.LoadSublevel(SublevelIndex);
-        PlayerController.Instance.SwitchCharacters();
-        Debug.Assert(GetCurrentSublevel().SublevelCharacter == Player.ActivePlayer.Character.Id);
+        InitSublevel();
         
+    }
+
+    private void InitSublevel()
+    {
+        PlayerController.Instance.SwitchTo(GetCurrentSublevel().SublevelCharacter);
+        CameraController.ActiveCamera.SetBounds(GetCurrentSublevel().CameraBounds);
+        Player.ActivePlayer.transform.position = GetCurrentSublevel().StartingSpawn.RespawnPosition;
+        Debug.Assert(GetCurrentSublevel().SublevelCharacter == Player.ActivePlayer.Character.Id);
     }
 }
