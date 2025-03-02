@@ -11,13 +11,32 @@ public class WirePuzzleDraggable : MonoBehaviour
         get => connectedTail;
         set
         {
+            if (connectedTail != null && value != null)
+            {
+                var oldTail = connectedTail;
+                connectedTail = null;
+                oldTail.ConnectedDraggable = null;
+            }
+            else if (value == null && connectedTail != null)
+            {
+                var oldTail = connectedTail;
+                connectedTail = null;
+                oldTail.ConnectedDraggable = null;
+            }
+            
             connectedTail = value;
+            
             if (connectedTail != null)
             {
+                connectedTail.ConnectedDraggable = this;
                 transform.position = connectedTail.GetConnectedPosition(index);
                 WirePuzzle.Instance.OnMoveWire();
             }
-            else transform.localPosition = defaultPosition;
+            else 
+            {
+                transform.localPosition = defaultPosition;
+            }
+            
             UpdateLineRenderer();
         }
     }
