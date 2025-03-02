@@ -14,6 +14,7 @@ public class PauseScript : MonoBehaviour
     public float sfxVolumeValue;
     public float musicVolumeValue;
     public float masterVolumeValue;
+    public float dialogueVolumeValue;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -54,20 +55,29 @@ public class PauseScript : MonoBehaviour
         paused = false;
     }
 
-    public void UpdateSFXSetting(GameObject sfxSlider)
+    public void UpdateSFXVolumeSetting(GameObject sfxSlider)
     {
+        Debug.Log("change detected");
         sfxVolumeValue = sfxSlider.GetComponent<Slider>().value;
     }
 
-    public void UpdateMusicSetting(GameObject musicSlider)
-    {
+    public void UpdateMusicVolumeSetting(GameObject musicSlider)
+    {            
+        Debug.Log("change detected");
         sfxVolumeValue = musicSlider.GetComponent<Slider>().value;
     }
 
     public void UpdateMasterVolumeSetting(GameObject masterVolumeSlider)
     {
+        Debug.Log("change detected");
         sfxVolumeValue = masterVolumeSlider.GetComponent<Slider>().value;
         AudioListener.volume = sfxVolumeValue;
+    }
+
+    public void UpdateDialogueVolumeSetting(GameObject dialogueVolumeSlider)
+    {
+        Debug.Log("change detected");
+        sfxVolumeValue = dialogueVolumeSlider.GetComponent<Slider>().value;
     }
 
     public void OpenVideoSettings(GameObject videoSettings)
