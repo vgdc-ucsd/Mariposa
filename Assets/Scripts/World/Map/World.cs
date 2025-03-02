@@ -77,12 +77,10 @@ public class WorldManager : MonoBehaviour
         // Activate the new world and character
         worldToActivate.SetActive(true);
         characterToActivate.SetActive(true);
-        Player.ActivePlayer = characterToActivate.GetComponent<Player>();
+        PlayerController.Instance.SwitchCharacters();
         // Update active world tracker
         isWorldAActive = (characterToActivate == unknown);
         isSwitching = false;
-
-        Camera.main.GetComponent<Camera_Follow>().SetTarget(characterToActivate.transform);
 
         Debug.Log($"Switched to {worldToActivate.name} and activated {characterToActivate.name}.");
     }
