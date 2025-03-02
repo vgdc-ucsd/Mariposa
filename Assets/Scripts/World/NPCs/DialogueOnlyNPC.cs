@@ -20,15 +20,23 @@ public class StillNPC : MonoBehaviour
 		if(Input.GetKeyDown(KeyCode.E) && (Player.ActivePlayer.transform.position - this.transform.position).sqrMagnitude < squareDistance)
 		{
 			Debug.Log("There was an interaction here!");
-			if(hasSpoken)
-				manager.AdvanceDialogue();
+			if(count >= dialogueNPC.Conversation.Count || count == 0)
+			{
+				count = 0;
+				manager.PlayDialogue(dialogueNPC);
+			}
 			else
 			{
-				manager.PlayDialogue(dialogueNPC);
-				hasSpoken = true;
+				manager.AdvanceDialogue();
 			}
+			/*if(hasSpoken)*/
+			/*	manager.AdvanceDialogue();*/
+			/*else*/
+			/*{*/
+			/*	manager.PlayDialogue(dialogueNPC);*/
+			/*	hasSpoken = true;*/
+			/*}*/
 			count++;
-
 		}
 	}
 }
