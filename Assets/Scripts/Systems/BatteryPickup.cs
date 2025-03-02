@@ -1,15 +1,12 @@
 using UnityEngine;
 using System.Collections;
 
-public class BatteryPickup : MonoBehaviour
+public class BatteryPickup : ItemPickup
 {
-    [SerializeField] private BatteryItem batteryItem;
-    [SerializeField] private float checkInterval = 1f;
-    [SerializeField] private InventoryType targetInventory = InventoryType.Mariposa;
-    
     private Vector3 spawnPosition;
     private SpriteRenderer sr;
     private Collider2D col;
+    private float pickupDelay = 1;
     
     private void Awake()
     {
@@ -22,13 +19,13 @@ public class BatteryPickup : MonoBehaviour
     {
         if(other.CompareTag("Player"))
         {
-            if(InventoryManager.Instance != null && batteryItem != null)
+            if (InventoryManager.Instance != null && item != null)
             {
-                InventoryManager.Instance.AddItem(targetInventory, batteryItem);
+                InventoryManager.Instance.AddItem(targetInventory, item);
             }
             else
             {
-                Debug.LogError("InventoryManager.Instance or batteryItem is null!");
+                Debug.LogError("InventoryManager.Instance or item is null!");
             }
             sr.enabled = false;
             col.enabled = false;
@@ -39,9 +36,9 @@ public class BatteryPickup : MonoBehaviour
     
     private IEnumerator RespawnWhenBatteryCountZero()
     {
-        while(InventoryManager.Instance.GetItemCount(targetInventory, batteryItem) > 0)
+        while (InventoryManager.Instance.GetItemCount(targetInventory, item) > 0)
         {
-            yield return new WaitForSeconds(checkInterval);
+            yield return new WaitForSeconds(pickupDelay > 0 ? pickupDelay : 1f);
         }
         transform.position = spawnPosition;
         sr.enabled = true;

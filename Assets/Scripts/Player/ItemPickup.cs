@@ -9,28 +9,32 @@ Currently the item is not added to any inventory but solely sets the object's ac
 public class ItemPickup : MonoBehaviour
 {
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [Header("Pickup Settings")]
+    [SerializeField] protected InventoryItemSO item;
+    [SerializeField] protected InventoryType targetInventory = InventoryType.Mariposa;
+    
+    /// <summary>
+    /// Called when this item is picked up.
+    /// Adds the item to the specified inventory and then destroys this pickup.
+    /// </summary>
+    public virtual void OnPickup(GameObject collector)
     {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    // Makes the object disappear and no longer have effects in game if the player collides with it
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        /*
-        if(collision.gameObject.name == Player.ActivePlayer.gameObject)
+        if (InventoryManager.Instance != null && item != null)
         {
-            Debug.Log(gameObject.name + " collected by Player");
-            gameObject.SetActive(false);
-
+            InventoryManager.Instance.AddItem(targetInventory, item);
         }
-        */
+        else
+        {
+            Debug.LogError("InventoryManager.Instance or item is null!");
+        }
+        Destroy(gameObject);
+    }
+    
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            OnPickup(other.gameObject);
+        }
     }
 }
