@@ -7,9 +7,9 @@ public class WirePuzzle : Puzzle
     public int MinWiresCount;
     [Tooltip("Maximum number of wires, exclusive")]
     public int MaxWiresCount;
-    [Range(1, 3)]
-    public float VerticalSpacing;
     [Range(1, 10)]
+    public float VerticalSpacing;
+    [Range(1, 6)]
     public float HorizontalSpacing;
     public GameObject wireHeadPrefab;
     public GameObject wireTailPrefab;
@@ -65,12 +65,12 @@ public class WirePuzzle : Puzzle
         wireHead.Wire = wire;
         wireTail.Wire = wire;
 
-        float posX = HorizontalSpacing / 2f;
-        float posY = CalcWirePositionY(wireIncrementer);
-        wireHeadGO.transform.position = new Vector2(posX * -1, posY);
-        wireTailGO.transform.position = new Vector3(posX, posY, -1);
+        float posX = CalcWirePositionX(wireIncrementer);
+        float posY = VerticalSpacing / 2f;
+        wireHeadGO.transform.position = new Vector3(posX, posY, 0);
+        wireTailGO.transform.position = new Vector3(posX, posY * -1, 1);
 
-        wireHead.InitializeWireHead();
+        wireHead.InitializeWireHead(wireIncrementer, wiresCount);
         wireTail.InitializeWireTail();
 
         wireHeads[wireIncrementer] = wireHead;
@@ -87,14 +87,14 @@ public class WirePuzzle : Puzzle
             int rand = Random.Range(i, wiresCount);
             wireTailObjects[i] = wireTailObjects[rand];
             wireTailObjects[rand] = temp;
-            wireTailObjects[i].transform.position = new Vector3(HorizontalSpacing / 2f, CalcWirePositionY(i), -1);
-            wireTailObjects[rand].transform.position = new Vector3(HorizontalSpacing / 2f, CalcWirePositionY(rand), -1);
+            wireTailObjects[i].transform.position = new Vector3(CalcWirePositionX(i), VerticalSpacing / 2f * -1, 1);
+            wireTailObjects[rand].transform.position = new Vector3(CalcWirePositionX(rand), VerticalSpacing / 2f * -1, 1);
         }
     }
 
-    private float CalcWirePositionY(int index)
+    private float CalcWirePositionX(int index)
     {
-        return ((wiresCount - 1) / 2f - index) * VerticalSpacing;
+        return ((wiresCount - 1) / 2f - index) * HorizontalSpacing;
     }
 
     public void OnMoveWire()

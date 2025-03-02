@@ -12,10 +12,10 @@ public class WirePuzzleDraggable : MonoBehaviour
             connectedTail = value;
             if (connectedTail != null)
             {
-                transform.position = connectedTail.transform.position;
+                transform.position = connectedTail.GetConnectedPosition(Wire.ID);
                 WirePuzzle.Instance.OnMoveWire();
             }
-            else transform.localPosition = new Vector3(1, 0, 0);
+            else transform.localPosition = defaultPosition;
             UpdateLineRenderer();
         }
     }
@@ -29,15 +29,19 @@ public class WirePuzzleDraggable : MonoBehaviour
     private Transform baseTransform;
     private LineRenderer lineRenderer;
     private Transform[] linePoints;
+    private Vector3 defaultPosition;
 
-    public void InitializeWireHead()
+    public void InitializeWireHead(int index, int wiresCount)
     {
+        defaultPosition = transform.localPosition;
+
         headSprite = GetComponentInChildren<SpriteRenderer>();
-        headSprite.color = Wire.Color;
+        headSprite.sortingOrder = index + wiresCount + 1;
 
         lineRenderer = transform.GetComponentInChildren<LineRenderer>();
         lineRenderer.startColor = Wire.Color;
         lineRenderer.endColor = Wire.Color;
+        lineRenderer.sortingOrder = index + 1;
 
         baseTransform = transform.parent.GetChild(0);
         baseTransform.GetComponent<SpriteRenderer>().color = Wire.Color;
@@ -56,8 +60,11 @@ public class WirePuzzleDraggable : MonoBehaviour
 
     private void OnMouseDown()
     {
-        isDragging = true;
-        mouseOffset = transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        if (!WirePuzzle.Instance.IsComplete)
+        {
+            isDragging = true;
+            mouseOffset = transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        }
     }
 
     private void OnMouseDrag()

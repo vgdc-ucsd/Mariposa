@@ -13,4 +13,9 @@ public class WirePuzzleTail : MonoBehaviour
         spriteRenderer.color = new(Wire.Color.r, Wire.Color.g, Wire.Color.b, 0.5f);
         boxCollider2D = GetComponent<BoxCollider2D>();
     }
+
+    public Vector3 GetConnectedPosition(int layer)
+    {
+        return new Vector3(transform.position.x, transform.position.y, -1 * layer);
+    }
 }
