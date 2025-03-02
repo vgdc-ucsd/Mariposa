@@ -41,6 +41,7 @@ public class PauseScript : MonoBehaviour
 
     public void PauseGame()
     {
+        pauseMenu.SetActive(true);
         Time.timeScale = 0.0f;
         paused = true;
     }
@@ -48,6 +49,7 @@ public class PauseScript : MonoBehaviour
 
     public void ResumeGame()
     {
+        pauseMenu.SetActive(false);
         Time.timeScale = 1.0f;
         paused = false;
     }
@@ -70,6 +72,6 @@ public class PauseScript : MonoBehaviour
 
     public void OpenVideoSettings(GameObject videoSettings)
     {
-        // set video settings gameobject to active
+       // enable/open video settings gameobject
     }
 }
