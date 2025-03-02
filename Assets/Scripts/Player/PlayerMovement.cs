@@ -140,7 +140,7 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
     }
 
     // public method to send a move command
-    public void GetMoveDir(Vector2 dir)
+    public void SetMoveDir(Vector2 dir)
     {
         moveDir = dir.x * Vector2.right;
         if (!Mathf.Approximately(dir.x, 0f)) Player.ActivePlayer.TurnTowards((int)Mathf.Sign(dir.x));
