@@ -35,6 +35,8 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
 
     private IBeeBehavior currentBehavior;    // Strategy, returns a vector for the bee to move towards in the next frame
 
+    SpriteRenderer beeSprite;
+
     // Useful for when their dependent values are changed during runtime
     private void InitDerivedConsts()
     {
@@ -49,12 +51,14 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
         parent = GetComponent<Bee>();
         gravityEnabled = false;
         InitDerivedConsts();
+        beeSprite = GetComponent<SpriteRenderer>();
 
     }
 
     protected override void Update()
     {
         base.Update();
+
     }
 
     private void OnValidate()
@@ -85,6 +89,14 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
     public void GetMoveDir(Vector2 dir)
     {
         moveDir = dir;
+
+        // change where the bee faces when in being controlled
+        if (dir.x > 0) {
+            beeSprite.flipX = false;
+        } 
+        else if (dir.x < 0) {
+            beeSprite.flipX = true;
+        }
     }
 
     public void SetBehavior(IBeeBehavior behavior)
@@ -161,11 +173,20 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
         {
             Velocity = Vector2.zero;
         }
+
     }
 
     private void AutoMove()
     {
         transform.position += (Vector3)currentBehavior.GetMoveStep(fdt);
+
+        // change where the bee faces when in AutoMove mode
+        if (currentBehavior.GetDir().x > 0) {
+            beeSprite.flipX = false;
+        } 
+        else if (currentBehavior.GetDir().x < 0) {
+            beeSprite.flipX = true;
+        }
     }
 
 }
