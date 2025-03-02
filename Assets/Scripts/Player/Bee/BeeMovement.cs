@@ -82,7 +82,7 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
         base.FixedUpdate();
     }
 
-    public void GetMoveDir(Vector2 dir)
+    public void SetMoveDir(Vector2 dir)
     {
         moveDir = dir;
     }
@@ -96,6 +96,7 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
     {
         Vector2 r = transform.position - Player.ActivePlayer.transform.position;
         float distanceToPlayer = r.magnitude;
+        
 
         if (distanceToPlayer > parent.MaxControlRadius) return;
 

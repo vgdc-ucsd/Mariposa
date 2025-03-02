@@ -78,7 +78,7 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
     [SerializeField] private float cornerCorrectMinVelocity;
 
     // whether the player has a charge of double jump (whether player touched the ground since last double jump
-    private bool airJumpAvailable = false;
+    public bool airJumpAvailable = false;
 
     // Useful for when their dependent values are changed during runtime
     private void InitDerivedConsts()
@@ -140,7 +140,7 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
     }
 
     // public method to send a move command
-    public void GetMoveDir(Vector2 dir)
+    public void SetMoveDir(Vector2 dir)
     {
         moveDir = dir.x * Vector2.right;
         if (!Mathf.Approximately(dir.x, 0f)) Player.ActivePlayer.TurnTowards((int)Mathf.Sign(dir.x));
@@ -194,7 +194,7 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
         }
         else if (CanDoubleJump && airJumpAvailable)
         {
-            Velocity.y = jumpHeight * DoubleJumpFactor;
+            Velocity.y = jumpVelocity * DoubleJumpFactor;
             airJumpAvailable = false;
             coyoteTimeRemaining = 0f;
         }

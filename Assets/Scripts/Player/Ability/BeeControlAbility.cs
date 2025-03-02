@@ -12,7 +12,7 @@ public class BeeControlAbility : MonoBehaviour, IAbility
 
     public void Initialize()
     {
-        BeeRef.IsControlled = false;
+        BeeRef.ToggleControl(false);
     }
 
     private void ToggleBeeControl()

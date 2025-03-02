@@ -101,4 +101,8 @@ public class Camera_Follow : MonoBehaviour
         return Rect.MinMaxRect(worldRect.xMin + cameraRect.width * 0.5f, worldRect.yMin + cameraRect.height * 0.5f,
                                 worldRect.xMax - cameraRect.width * 0.5f, worldRect.yMax - cameraRect.width * 0.5f);
     }
+    public void SetTarget(Transform newTarget)
+    {
+        target = newTarget;
+    }
 }

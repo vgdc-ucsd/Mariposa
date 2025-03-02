@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using Unity.VisualScripting;
-using UnityEditor.Rendering;
 using UnityEngine;
 
-// The external forces this object can currently experience 
+// The external forces this object can currently experience
 public enum BodyState
 {
     OnGround, // Experiences sliding friction
@@ -54,8 +53,9 @@ public abstract class FreeBody : Body
         ResolveInitialCollisions();
     }
 
-    private void ResolveInitialCollisions()
+    public void ResolveInitialCollisions()
     {
+        Physics2D.SyncTransforms();
         Collider2D[] initialContacts = Physics2D.OverlapBoxAll(SurfaceCollider.bounds.center, SurfaceCollider.bounds.size, 0, collisionLayer);
         foreach (Collider2D collider in initialContacts)
         {
@@ -84,7 +84,7 @@ public abstract class FreeBody : Body
     protected virtual void Fall()
     {
         if (State != BodyState.InAir || !gravityEnabled) return;
-        Velocity.y = Mathf.Max(Velocity.y - Gravity * fdt, -TerminalVelocity); // Cap the velocity 
+        Velocity.y = Mathf.Max(Velocity.y - Gravity * fdt, -TerminalVelocity); // Cap the velocity
     }
 
     protected virtual void CheckGrounded()
@@ -112,7 +112,7 @@ public abstract class FreeBody : Body
         RaycastHit2D hit = Physics2D.BoxCast(bounds.center, bounds.size, 0f, move.normalized, move.magnitude, collisionLayer);
 
         int loops = 0; // This is to prevent infinite loops in case something goes wrong
-        while (hit)
+        while (hit && !(Mathf.Approximately(move.x, 0f) && Mathf.Approximately(move.y, 0f)))
         {
             Vector2 normal = hit.normal.normalized;
             collisionHits.Add(hit);
@@ -132,16 +132,21 @@ public abstract class FreeBody : Body
                 Velocity.x = 0;
             }
             hit = Physics2D.BoxCast(bounds.center, bounds.size, 0f, move.normalized, move.magnitude, collisionLayer);
+            if (Mathf.Approximately(hit.distance, 0f))
+            {
+                ResolveInitialCollisions();
+                break;
+            }
 
             loops++;
             if (loops > 4)
             {
-                Debug.LogError(gameObject.name + " had too many collision detection substeps");
                 break;
             }
         }
 
-        // Apply the rest of the movement
+
+        // Apply the movement
         transform.position += (Vector3)move;
     }
 
