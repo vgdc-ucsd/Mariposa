@@ -8,10 +8,8 @@ public class InventoryUIManager : MonoBehaviour
     [Header("Panels & Buttons")]
     [SerializeField] private GameObject inventoryPanel;
     [SerializeField] private UnityEngine.UI.Button closeButton;
-    [SerializeField] private UnityEngine.UI.Button toolsTabButton;
-    [SerializeField] private UnityEngine.UI.Button mementosTabButton;
-
-    [Header("Panels for Each Tab")]
+    
+    [Header("Panels for Inventory Sections")]
     [SerializeField] private GameObject toolsPanel;
     [SerializeField] private GameObject mementosPanel;
 
@@ -33,21 +31,10 @@ public class InventoryUIManager : MonoBehaviour
         if (closeButton != null)
             closeButton.onClick.AddListener(CloseInventory);
 
-        if (toolsTabButton != null)
-            toolsTabButton.onClick.AddListener(() => ShowTab(true));
-
-        if (mementosTabButton != null)
-            mementosTabButton.onClick.AddListener(() => ShowTab(false));
         foreach (var slot in toolsSlots)
-        {
             slot.OnSlotClicked = OnSlotClicked;
-        }
-
         foreach (var slot in mementosSlots)
-        {
             slot.OnSlotClicked = OnSlotClicked;
-        }
-
         inventoryPanel.SetActive(false);
     }
 
@@ -117,21 +104,16 @@ public class InventoryUIManager : MonoBehaviour
     {
         isOpen = true;
         inventoryPanel.SetActive(true);
+        if (toolsPanel != null)
+            toolsPanel.SetActive(true);
+        if (mementosPanel != null)
+            mementosPanel.SetActive(true);
         PopulateInventory();
-        ShowTab(true);
     }
 
     private void CloseInventory()
     {
         isOpen = false;
         inventoryPanel.SetActive(false);
-    }
-
-    private void ShowTab(bool showTools)
-    {
-        if (toolsPanel != null)
-            toolsPanel.SetActive(showTools);
-        if (mementosPanel != null)
-            mementosPanel.SetActive(!showTools);
     }
 }

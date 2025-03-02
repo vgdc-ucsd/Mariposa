@@ -12,6 +12,7 @@ public class ItemPickup : MonoBehaviour
     [Header("Pickup Settings")]
     [SerializeField] protected InventoryItemSO item;
     [SerializeField] protected InventoryType targetInventory = InventoryType.Mariposa;
+    [SerializeField] protected SpriteRenderer spriteRenderer;
     
     /// <summary>
     /// Called when this item is picked up.
