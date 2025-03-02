@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class WirePuzzle : Puzzle
@@ -17,6 +16,7 @@ public class WirePuzzle : Puzzle
     public bool IsComplete;
     
     private WirePuzzleDraggable[] wireHeads;
+    private GameObject[] wireTailObjects;
     private int wiresCount;
     private int wireIncrementer;
 
@@ -36,6 +36,7 @@ public class WirePuzzle : Puzzle
 
         wiresCount = Random.Range(MinWiresCount, MaxWiresCount); // MaxWiresCount is exclusive
         wireHeads = new WirePuzzleDraggable[wiresCount];
+        wireTailObjects = new GameObject[wiresCount];
         InitializeWires();
     }
 
@@ -45,6 +46,8 @@ public class WirePuzzle : Puzzle
         CreateWire(Color.yellow);
         CreateWire(Color.green);
         CreateWire(Color.blue);
+
+        RandomizeTailPositions();
     }
 
     private void CreateWire(Color color)
@@ -61,20 +64,32 @@ public class WirePuzzle : Puzzle
 
         wireHead.Wire = wire;
         wireTail.Wire = wire;
-        
-        Debug.Log("Hello world");
 
         float posX = HorizontalSpacing / 2f;
         float posY = CalcWirePositionY(wireIncrementer);
         wireHeadGO.transform.position = new Vector2(posX * -1, posY);
-        wireTailGO.transform.position = new Vector2(posX, posY);
+        wireTailGO.transform.position = new Vector3(posX, posY, -1);
 
         wireHead.InitializeWireHead();
         wireTail.InitializeWireTail();
 
         wireHeads[wireIncrementer] = wireHead;
+        wireTailObjects[wireIncrementer] = wireTailGO;
 
         wireIncrementer++;
+    }
+
+    private void RandomizeTailPositions()
+    {
+        for (int i = 0; i < wiresCount; i++)
+        {
+            GameObject temp = wireTailObjects[i];
+            int rand = Random.Range(i, wiresCount);
+            wireTailObjects[i] = wireTailObjects[rand];
+            wireTailObjects[rand] = temp;
+            wireTailObjects[i].transform.position = new Vector3(HorizontalSpacing / 2f, CalcWirePositionY(i), -1);
+            wireTailObjects[rand].transform.position = new Vector3(HorizontalSpacing / 2f, CalcWirePositionY(rand), -1);
+        }
     }
 
     private float CalcWirePositionY(int index)
@@ -82,10 +97,8 @@ public class WirePuzzle : Puzzle
         return ((wiresCount - 1) / 2f - index) * VerticalSpacing;
     }
 
-    public void MoveWire()
+    public void OnMoveWire()
     {
-        // TODO: move wires
-
         if (CheckSolution())
         {
             IsComplete = true;
@@ -95,9 +108,9 @@ public class WirePuzzle : Puzzle
 
     private bool CheckSolution()
     {
-        foreach (WirePuzzleDraggable wph in wireHeads)
+        foreach (WirePuzzleDraggable wpd in wireHeads)
         {
-            if (!wph.IsMatched) return false;
+            if (!wpd.IsMatched) return false;
         }
         return true;
     }
