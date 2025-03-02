@@ -1,10 +1,13 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
 public class PauseScript : MonoBehaviour
 {
-    public GameObject pauseMenu;
+    public GameObject pauseMenu;   
+    public GameObject pauseMenuInstance;
+
     public InputActionReference pauseAction;
     public bool paused = false;
 
@@ -14,8 +17,6 @@ public class PauseScript : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        pauseMenu.gameObject.GetComponent<Renderer>().enabled = false;
-        // pauseMenu.SetActive(false);
         Time.timeScale = 1.0f;
         pauseAction.action.Enable();
     }
@@ -41,7 +42,7 @@ public class PauseScript : MonoBehaviour
     public void PauseGame()
     {
         Time.timeScale = 0.0f;
-        paused = true;   
+        paused = true;
     }
 
 
