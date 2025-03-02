@@ -2,7 +2,9 @@ using UnityEngine;
 
 public class WirePuzzleDraggable : MonoBehaviour
 {
-    public WirePuzzleWire Wire;
+    public Color Color;
+    public WirePuzzleTail MatchingTail;
+
     private WirePuzzleTail connectedTail;
     public WirePuzzleTail ConnectedTail
     {
@@ -12,7 +14,7 @@ public class WirePuzzleDraggable : MonoBehaviour
             connectedTail = value;
             if (connectedTail != null)
             {
-                transform.position = connectedTail.GetConnectedPosition(Wire.ID);
+                transform.position = connectedTail.GetConnectedPosition(index);
                 WirePuzzle.Instance.OnMoveWire();
             }
             else transform.localPosition = defaultPosition;
@@ -20,7 +22,7 @@ public class WirePuzzleDraggable : MonoBehaviour
         }
     }
     public bool IsMatched
-    { get => ConnectedTail != null && ConnectedTail.Wire == Wire; }
+    { get => ConnectedTail != null && ConnectedTail == MatchingTail; }
     
     private Vector3 mouseOffset;
     private bool isDragging = false;
@@ -30,21 +32,25 @@ public class WirePuzzleDraggable : MonoBehaviour
     private LineRenderer lineRenderer;
     private Transform[] linePoints;
     private Vector3 defaultPosition;
+    private int index;
 
-    public void InitializeWireHead(int index, int wiresCount)
+    public void InitializeWireDraggable(int index)
     {
+        if (MatchingTail == null) Debug.LogWarning($"{transform.parent.name} Draggable MatchingTail not set");
+
         defaultPosition = transform.localPosition;
+        this.index = index;
 
         headSprite = GetComponentInChildren<SpriteRenderer>();
-        headSprite.sortingOrder = index + wiresCount + 1;
+        headSprite.sortingOrder = index + 1;
 
         lineRenderer = transform.GetComponentInChildren<LineRenderer>();
-        lineRenderer.startColor = Wire.Color;
-        lineRenderer.endColor = Wire.Color;
+        lineRenderer.startColor = Color;
+        lineRenderer.endColor = Color;
         lineRenderer.sortingOrder = index + 1;
 
         baseTransform = transform.parent.GetChild(0);
-        baseTransform.GetComponent<SpriteRenderer>().color = Wire.Color;
+        baseTransform.GetComponent<SpriteRenderer>().color = Color;
 
         SetupLineRenderer(new Transform[]{baseTransform, transform});
 
