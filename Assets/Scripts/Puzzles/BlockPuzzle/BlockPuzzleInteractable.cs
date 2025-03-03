@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BlockPuzzleInteractable : GenericInteractable
 {
@@ -11,8 +12,9 @@ public class BlockPuzzleInteractable : GenericInteractable
 
     public override void OnInteract(IControllable controllable)
     {
-        PuzzlePopupManager.Instance.ActivePuzzle = puzzle.gameObject;
+        /* PuzzlePopupManager.Instance.ActivePuzzle = puzzle.gameObject; */
         base.OnInteract(controllable);
+        SceneManager.LoadScene(2); // TODO remove after EOQ social
     }
 
 

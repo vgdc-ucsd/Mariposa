@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BlockPuzzle : Puzzle
 {
@@ -58,6 +59,7 @@ public class BlockPuzzle : Puzzle
         {
             IsComplete = true;
             OnComplete();
+            SceneManager.LoadScene(0); // TODO remove after EOQ social
         }
     }
 
