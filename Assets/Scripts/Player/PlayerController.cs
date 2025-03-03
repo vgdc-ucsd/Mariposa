@@ -3,6 +3,8 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
+using FMOD.Studio;
+using FMODUnity;
 
 public enum CharID
 {
@@ -32,6 +34,7 @@ public class PlayerController : MonoBehaviour
     public IControllable CurrentControllable;
 
     private InputSystem_Actions inputs;
+    public bool IsLocked { get; private set; }
 
     private void Awake()
     {
@@ -76,7 +79,7 @@ public class PlayerController : MonoBehaviour
     public void SwitchCharacters()
     {
         if (ControlledPlayer.Character.Id == CharID.Mariposa) SwitchTo(CharID.Unnamed);
-        else SwitchTo(CharID.Mariposa);  
+        else SwitchTo(CharID.Mariposa);
     }
 
     public void SwitchTo(CharID character)
@@ -91,7 +94,6 @@ public class PlayerController : MonoBehaviour
                 listeners.Remove(listener);
             }
         }
-
 
         ControlledPlayer = charIDMap[character];
         ControlledPlayer.gameObject.SetActive(true);
@@ -123,15 +125,20 @@ public class PlayerController : MonoBehaviour
         listeners.Add(listener);
     }
 
-    public void Unsubscribe(IInputListener Listener) 
-    { 
-        listeners.Remove(Listener); 
+    public void Unsubscribe(IInputListener Listener)
+    {
+        listeners.Remove(Listener);
+    }
+
+    public void ToggleMovementLock() {
+        IsLocked = !IsLocked;
     }
 
     private void Update()
     {
-        // TEMPORARY AND SHOULD BE REMOVED IN ANY NON-TEST BUILD
+        // TODO: TEMPORARY AND SHOULD BE REMOVED IN ANY NON-TEST BUILD
         if (Input.GetKeyDown(KeyCode.Tab)) SwitchCharacters();
+        if (Input.GetKeyDown(KeyCode.E)) SendInteract();
     }
 
     public void SendAbilityDown(InputAction.CallbackContext ctx)
@@ -147,6 +154,12 @@ public class PlayerController : MonoBehaviour
     public void SendJump(InputAction.CallbackContext ctx)
     {
         listeners.ForEachReverse(x => x.JumpInputDown());
+        PlayJump();
+    }
+
+    public void SendInteract()
+    {
+        listeners.ForEachReverse(x => x.InteractInputDown());
     }
 
     private void FixedUpdate()
@@ -154,8 +167,16 @@ public class PlayerController : MonoBehaviour
         Vector2 moveDir = inputs.Player.Move.ReadValue<Vector2>();
         foreach (var listener in new List<IInputListener>(listeners))
         {
-            listener.SetMoveDir(moveDir);
+            if (IsLocked) listener.SetMoveDir(Vector2.zero);
+            else listener.SetMoveDir(moveDir);
         }
+    }
+
+    public void PlayJump()
+    {
+        EventInstance footstepInstance = RuntimeManager.CreateInstance("event:/sfx/player/jump");
+        footstepInstance.start();
+        footstepInstance.release();
     }
 
 }

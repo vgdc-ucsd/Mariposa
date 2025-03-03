@@ -3,7 +3,7 @@ using UnityEngine;
 /// <summary>
 /// Interactable object that toggles something on or off. Includes buttons and pressure plates.
 /// </summary>
-public abstract class Switch : MonoBehaviour
+public abstract class Switch : Interactable
 {
 
     /// <summary>
@@ -18,7 +18,11 @@ public abstract class Switch : MonoBehaviour
     /// </summary>
     public abstract void TriggerSwitch();
 
-    
+    public override void OnInteract(IControllable controllable)
+    {
+        TriggerSwitch();
+    }
+
 }
 
 

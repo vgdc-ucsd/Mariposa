@@ -8,6 +8,8 @@ using UnityEngine.Experimental.GlobalIllumination;
 public class PlayerMovement : FreeBody, IInputListener, IControllable
 {
     public static PlayerMovement Instance;
+    public Player Parent;
+    protected override bool activateTriggers => true;
 
     [Header("Horizontal Parameters")]
 
@@ -103,7 +105,7 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
     protected override void Awake()
     {
         base.Awake();
-
+        
         InitDerivedConsts();
         if (Instance == null)
         {

@@ -79,7 +79,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: 4662247780891268123, guid: 354ee2afe73b7f34f97048adefc575ce, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -178,6 +178,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Movement: {fileID: 0}
   MaxControlRadius: 10
+  FollowRadius: 2
   IsControlled: 0
 --- !u!114 &4232843858872310829
 MonoBehaviour:
@@ -193,13 +194,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Velocity: {x: 0, y: 0}
   Rb: {fileID: 0}
-  State: 1
   SurfaceCollider: {fileID: 0}
+  State: 1
   Gravity: 0
   TerminalVelocity: 0
   collisionLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   MoveSpeed: 5
   airAccelerationTime: 0.5
   airMovementDecelerationTime: 0.1

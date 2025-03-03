@@ -8,4 +8,6 @@ public interface IInputListener
     public void AbilityInputDown() { }
     public void AbilityInputUp() { }
 
+    public void InteractInputDown() { }
+
 }
