@@ -29,7 +29,7 @@ public abstract class Body : MonoBehaviour
         transform.position += (Vector3)Velocity * Time.fixedDeltaTime;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
         Trigger trigger = collision.GetComponent<Trigger>();
         if (activateTriggers && trigger != null)
@@ -38,7 +38,7 @@ public abstract class Body : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    protected virtual void OnTriggerExit2D(Collider2D collision)
     {
         Trigger trigger = collision.GetComponent<Trigger>();
         if (activateTriggers && trigger != null)

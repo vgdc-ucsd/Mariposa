@@ -204,16 +204,18 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
         collisionsEnabled = toggle;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected override void OnTriggerEnter2D(Collider2D collision)
     {
+        base.OnTriggerEnter2D(collision);
         if (collision.CompareTag("VelocityField"))
         {
             velocityFieldVelocity = collision.GetComponent<VelocityField>().velocity;
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    protected override void OnTriggerExit2D(Collider2D collision)
     {
+        base.OnTriggerEnter2D(collision);
         if (collision.CompareTag("VelocityField"))
         {
             velocityFieldVelocity = Vector2.zero;

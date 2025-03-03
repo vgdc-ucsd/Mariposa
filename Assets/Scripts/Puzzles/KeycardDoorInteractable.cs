@@ -8,7 +8,6 @@ public class KeycardDoorInteractable : Interactable
         if (door.CheckForKeycard())
         {
             door.UseKeycard();
-            
         }
     }
 }
