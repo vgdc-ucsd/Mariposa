@@ -112,7 +112,7 @@ public abstract class FreeBody : Body
         RaycastHit2D hit = Physics2D.BoxCast(bounds.center, bounds.size, 0f, move.normalized, move.magnitude, collisionLayer);
 
         int loops = 0; // This is to prevent infinite loops in case something goes wrong
-        while (hit && !(Mathf.Approximately(move.x, 0f) && Mathf.Approximately(move.y, 0f)))
+        while (hit && !hit.collider.isTrigger && !(Mathf.Approximately(move.x, 0f) && Mathf.Approximately(move.y, 0f)))
         {
             Vector2 normal = hit.normal.normalized;
             collisionHits.Add(hit);
