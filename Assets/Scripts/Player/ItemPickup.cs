@@ -14,6 +14,16 @@ public class ItemPickup : MonoBehaviour
     [SerializeField] protected InventoryType targetInventory = InventoryType.Mariposa;
     [SerializeField] protected SpriteRenderer spriteRenderer;
     
+    protected virtual void Awake()
+    {
+        if (spriteRenderer == null)
+            spriteRenderer = GetComponent<SpriteRenderer>();
+        if (item != null && spriteRenderer != null)
+        {
+            spriteRenderer.sprite = item.lowResSprite;
+        }
+    }
+    
     /// <summary>
     /// Called when this item is picked up.
     /// Adds the item to the specified inventory and then destroys this pickup.

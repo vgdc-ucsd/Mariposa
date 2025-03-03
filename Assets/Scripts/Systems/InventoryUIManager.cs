@@ -63,7 +63,7 @@ public class InventoryUIManager : MonoBehaviour
     {
         if (centerItemIcon != null)
         {
-            centerItemIcon.sprite = item.sprite;
+            centerItemIcon.sprite = item.highResSprite;
             centerItemIcon.enabled = true;
         }
 

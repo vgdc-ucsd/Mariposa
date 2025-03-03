@@ -699,6 +699,7 @@ GameObject:
   - component: {fileID: 226610899}
   - component: {fileID: 226610898}
   - component: {fileID: 226610901}
+  - component: {fileID: 226610902}
   m_Layer: 0
   m_Name: BatteryPickup
   m_TagString: Untagged
@@ -718,9 +719,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf6df2f3990b4a9289346fff9c3b0a9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: {fileID: 0}
+  item: {fileID: 11400000, guid: 194c81bab44d0c24781146deec1c2081, type: 2}
   targetInventory: 0
-  spriteRenderer: {fileID: 0}
+  spriteRenderer: {fileID: 226610899}
 --- !u!212 &226610899
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -765,7 +766,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -773,7 +774,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &226610900
@@ -786,7 +787,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.3823192, y: -4.254897, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -837,6 +838,21 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &226610902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 226610897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ea9d34a1fc44aa419748a1cb8505efd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  item: {fileID: 11400000, guid: 194c81bab44d0c24781146deec1c2081, type: 2}
+  targetInventory: 0
+  spriteRenderer: {fileID: 226610899}
 --- !u!1 &287182528
 GameObject:
   m_ObjectHideFlags: 0
@@ -2255,7 +2271,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ea9d34a1fc44aa419748a1cb8505efd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: {fileID: 11400000, guid: 59bde80d5bfa23340a2f768011d7970e, type: 2}
+  item: {fileID: 11400000, guid: c2d715c208e11f9488e710228facffaf, type: 2}
   targetInventory: 0
   spriteRenderer: {fileID: 854853909}
 --- !u!4 &854853908
@@ -2317,7 +2333,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -8070686850402279387, guid: 78b580136ced4b4459403bdac86362c4, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -2325,7 +2341,7 @@ SpriteRenderer:
   m_Size: {x: 6.41, y: 5.5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!61 &854853910

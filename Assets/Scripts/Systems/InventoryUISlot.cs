@@ -22,7 +22,7 @@ public class InventoryUISlot : MonoBehaviour
         if (item != null)
         {
             iconImage.enabled = true;
-            iconImage.sprite = item.sprite;
+            iconImage.sprite = item.lowResSprite;
             if (countText != null)
                 countText.text = count > 1 ? count.ToString() : "";
         }

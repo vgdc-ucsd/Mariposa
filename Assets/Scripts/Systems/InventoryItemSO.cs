@@ -14,5 +14,8 @@ public class InventoryItemSO : ScriptableObject
 	public string FlavorText;
 	public uint ID; 
 	public InventoryItemType Type;
-	public Sprite sprite;
+
+	[Header("UI Images")]
+	public Sprite lowResSprite;
+	public Sprite highResSprite; 
 }
