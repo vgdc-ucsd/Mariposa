@@ -5,6 +5,7 @@ public class BlockPuzzle : Puzzle
     public static BlockPuzzle Instance;
     public int GridWidth = 7;
     public int GridHeight = 7;
+    public float GridScale = 0.85f;
     public GameObject gridVisualizerPrefab;
     public bool IsComplete;
 
@@ -30,8 +31,8 @@ public class BlockPuzzle : Puzzle
         float offsetX = -GridWidth / 2f + 0.5f;
         float offsetY = -GridHeight / 2f + 0.5f;
         return new Vector3(
-            gridPosition.x + offsetX,
-            gridPosition.y + offsetY,
+            (gridPosition.x + offsetX) * GridScale,
+            (gridPosition.y + offsetY) * GridScale,
             0
         );
     }
@@ -72,8 +73,7 @@ public class BlockPuzzle : Puzzle
     {
         if (IsComplete) return false;
 
-        if (position.x < 0 || position.x + block.Size.x > GridWidth || 
-            position.y < 0 || position.y + block.Size.y > GridHeight)
+        if (!IsPositionInGridForBlock(position, block))
         {
             return false;
         }
@@ -86,6 +86,12 @@ public class BlockPuzzle : Puzzle
         }
 
         return true;
+    }
+
+    public bool IsPositionInGridForBlock(Vector2Int position, BlockPuzzleBlock block)
+    {
+        return position.x >= 0 && position.x + block.Size.x <= GridWidth && 
+            position.y >= 0 && position.y + block.Size.y <= GridHeight;
     }
 
     public void ClearBlockFromGrid(BlockPuzzleBlock block)

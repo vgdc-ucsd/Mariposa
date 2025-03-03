@@ -5,34 +5,38 @@ public class BlockPuzzleBlock : MonoBehaviour
     public Vector2Int Position;
     public Vector2Int Size;
     public Vector2Int[] Cells;
-    public Color Color;
     public GameObject PreviewPrefab;
     public bool IsFixed = false;
 
     private Vector3 mouseOffset;
     private bool isDragging = false;
     private Vector2Int originalPosition;
+    private Vector3 stagingPosition;
+    [SerializeField] private bool isInGrid = false;
 
     private SpriteRenderer spriteRenderer;
     private BlockPreview preview;
 
+    public bool IsDragging => isDragging;
+
     public void InitializeBlock()
     {
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        spriteRenderer.color = Color;
-
-        // For debug, remove later
-        SpriteRenderer[] sprites = GetComponentsInChildren<SpriteRenderer>();
-        foreach (SpriteRenderer sprite in sprites) sprite.color = Color;
-
-        if (PreviewPrefab != null)
+        if (IsFixed)
         {
-            GameObject previewObj = Instantiate(PreviewPrefab, transform.parent);
-            preview = previewObj.GetComponent<BlockPreview>();
-            preview.SetSprite(spriteRenderer.sprite, spriteRenderer.color);
+            BlockPuzzle.Instance.SetBlockInGrid(this, Position);
+            isInGrid = true;
         }
-
-        BlockPuzzle.Instance.SetBlockInGrid(this, Position);
+        else
+        {
+            if (PreviewPrefab != null)
+            {
+                GameObject previewObj = Instantiate(PreviewPrefab, transform.parent);
+                preview = previewObj.GetComponent<BlockPreview>();
+                preview.SetSprite(spriteRenderer.sprite, spriteRenderer.color);
+            }
+            stagingPosition = transform.position;
+        }
     }
 
     private void OnDestroy()
@@ -45,13 +49,16 @@ public class BlockPuzzleBlock : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (BlockPuzzle.Instance.CanMove(this, Vector2Int.zero) && !IsFixed)
+        if ((isInGrid && BlockPuzzle.Instance.CanMove(this, Vector2Int.zero) || !isInGrid) && !IsFixed)
         {
             isDragging = true;
             mouseOffset = transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            originalPosition = Position;
-
-            BlockPuzzle.Instance.ClearBlockFromGrid(this);
+            
+            if (isInGrid)
+            {
+                originalPosition = Position;
+                BlockPuzzle.Instance.ClearBlockFromGrid(this);
+            }
         }
     }
 
@@ -87,18 +94,21 @@ public class BlockPuzzleBlock : MonoBehaviour
                 Position = targetPosition;
                 transform.position = BlockPuzzle.Instance.GridToWorldPosition(Position);
                 BlockPuzzle.Instance.SetBlockInGrid(this, Position);
-                
-                if (BlockPuzzle.Instance.CheckSolution())
-                {
-                    BlockPuzzle.Instance.IsComplete = true;
-                    BlockPuzzle.Instance.OnComplete();
-                }
+                isInGrid = true;
             }
             else
             {
-                Position = originalPosition;
-                transform.position = BlockPuzzle.Instance.GridToWorldPosition(Position);
-                BlockPuzzle.Instance.SetBlockInGrid(this, Position);
+                if (BlockPuzzle.Instance.IsPositionInGridForBlock(targetPosition, this) && isInGrid)
+                {
+                    Position = originalPosition;
+                    transform.position = BlockPuzzle.Instance.GridToWorldPosition(Position);
+                    BlockPuzzle.Instance.SetBlockInGrid(this, Position);
+                }
+                else
+                {
+                    transform.position = stagingPosition;
+                    isInGrid = false;
+                }
             }
 
             HidePreview();
