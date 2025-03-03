@@ -72,10 +72,13 @@ public class PlayerAnimation : MonoBehaviour
 
     public void PlayFootstep()
     {
-        EventInstance footstepInstance = RuntimeManager.CreateInstance(FootstepSoundEvent);
-        footstepInstance.setParameterByNameWithLabel("Terrain", MaterialCheck());
-        footstepInstance.start();
-        footstepInstance.release();
+        if (Player.ActivePlayer.Movement.State == BodyState.OnGround)
+        {
+            EventInstance footstepInstance = RuntimeManager.CreateInstance(FootstepSoundEvent);
+            footstepInstance.setParameterByNameWithLabel("Terrain", MaterialCheck());
+            footstepInstance.start();
+            footstepInstance.release();
+        }
     }
 
     public void PlayLand()
