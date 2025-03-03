@@ -2,10 +2,11 @@ using UnityEngine;
 
 public class GenericTrigger : Trigger
 {
-    public override void OnEnter(Body body)
+    public override bool OnEnter(Body body)
     {
-        base.OnEnter(body);
+        if (!base.OnEnter(body)) return false;
         Debug.Log("Enter");
+        return true;
     }
 
     public override void OnExit(Body body)

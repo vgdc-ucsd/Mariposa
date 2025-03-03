@@ -25,6 +25,7 @@ public class Player : MonoBehaviour
 	private void Awake()
 	{
 		Movement = GetComponent<PlayerMovement>();
+		Movement.Parent = this;
 		Character = GetComponent<PlayerCharacter>();
 		Ability = GetComponentInChildren<IAbility>();
 		if (Movement == null || Character == null || Ability == null)
@@ -105,7 +106,7 @@ public class Player : MonoBehaviour
 
 	public void ObtainCheckpoint(GameObject checkpoint)
 	{
-		CurrentRespawnPoint = checkpoint.GetComponent<RespawnPoint>();
+		UpdateRespawn(checkpoint.GetComponent<RespawnPoint>());
 		checkpoint.GetComponent<Collider2D>().enabled = false;
 
 		switch (Player.ActivePlayer.Character.Name)

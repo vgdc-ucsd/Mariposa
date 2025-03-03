@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -6,29 +7,57 @@ Add this script as a component to an item to make the item's effect and visibili
 Enables the item to be "picked up"
 Currently the item is not added to any inventory but solely sets the object's active state to false
 */
-public class ItemPickup : MonoBehaviour
+public class ItemPickup : Interactable
 {
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [Header("Pickup Settings")]
+    [SerializeField] protected InventoryItemSO item;
+    [SerializeField] protected SpriteRenderer spriteRenderer;
+    
+    protected override void Awake()
     {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    // Makes the object disappear and no longer have effects in game if the player collides with it
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        if(collision.gameObject.name == Player.ActivePlayer.gameObject.name)
+        base.Awake();
+        if (spriteRenderer == null)
+            spriteRenderer = GetComponent<SpriteRenderer>();
+        if (item != null && spriteRenderer != null)
         {
-            Debug.Log(gameObject.name + " collected by Player");
-            gameObject.SetActive(false);
-
+            spriteRenderer.sprite = item.lowResSprite;
         }
+    }
+    
+    /// <summary>
+    /// Called when this item is picked up.
+    /// Adds the item to the specified inventory and then destroys this pickup.
+    /// </summary>
+    public override void OnInteract(IControllable controllable)
+    {
+        Debug.Log("picked up");
+        if (InventoryManager.Instance != null && item != null)
+        {
+            InventoryType type;
+            if (controllable is BeeMovement) type = InventoryType.Mariposa;
+            else if (controllable is PlayerMovement pm)
+            {
+                if (pm.Parent.Character.Id == CharID.Mariposa)
+                {
+                    type = InventoryType.Mariposa;
+                }
+                else
+                {
+                    type = InventoryType.Unnamed;
+                }
+            }
+            else
+            {
+                Debug.LogError("No suitable Inventory to add item to");
+                return;
+            }
+            InventoryManager.Instance.AddItem(type, item);
+        }
+        else
+        {
+            Debug.LogError("InventoryManager.Instance or item is null!");
+        }
+        Destroy(gameObject);
     }
 }

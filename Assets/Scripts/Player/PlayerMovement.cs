@@ -1,13 +1,15 @@
-using FMODUnity;
+using System.Collections;
 using NUnit.Framework.Internal.Commands;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
+using FMODUnity;
 
 public class PlayerMovement : FreeBody, IInputListener, IControllable
 {
     public static PlayerMovement Instance;
+    public Player Parent;
     protected override bool activateTriggers => true;
 
     [Header("Horizontal Parameters")]
@@ -81,6 +83,16 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
 
     // whether the player has a charge of double jump (whether player touched the ground since last double jump
     public bool airJumpAvailable = false;
+    [Header("Dash Parameters")]
+    [Tooltip("Force applied during dash")]
+    public float dashForce = 20f;
+    [Tooltip("Duration of the dash (seconds)")]
+    public float dashDuration = 0.2f;
+    private bool isDashing = false;
+
+
+    private MovingPlatform currentMovingPlatform = null;
+    private bool onControllableMovingPlatform = false;
 
     // Useful for when their dependent values are changed during runtime
     private void InitDerivedConsts()
@@ -109,6 +121,15 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
     protected override void Update()
     {
         base.Update();
+        if (Input.GetKeyDown(KeyCode.V) && !isDashing)
+        {
+            // Consume a battery if available
+            if (InventoryManager.Instance.GetItemCount(InventoryType.Mariposa, BatteryItem.Instance) > 0)
+            {
+                InventoryManager.Instance.DeleteItem(InventoryType.Mariposa, BatteryItem.Instance);
+                StartCoroutine(DashRoutine());
+            }
+        }
     }
 
     private void OnValidate()
@@ -116,9 +137,9 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
         InitDerivedConsts();
     }
 
-
     protected override void FixedUpdate()
     {
+        if (onControllableMovingPlatform) ControlPlatform();
         Move();
 
         base.FixedUpdate();
@@ -126,6 +147,12 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
         CheckOnWall();
 
         UpdateTimers(fdt);
+    }
+
+    private void ControlPlatform()
+    {
+        ControllableMovingPlatform platform = (ControllableMovingPlatform)currentMovingPlatform;
+        platform.MovePlatform(moveDir);
     }
 
     private void CheckOnWall()
@@ -144,7 +171,7 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
     // public method to send a move command
     public void SetMoveDir(Vector2 dir)
     {
-        moveDir = dir.x * Vector2.right;
+        moveDir = dir;
         if (!Mathf.Approximately(dir.x, 0f)) Player.ActivePlayer.TurnTowards((int)Mathf.Sign(dir.x));
     }
 
@@ -175,6 +202,14 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
 
         // Apply the acceleration
         Velocity.x += acceleration * fdt * Mathf.Sign(deltaV);
+
+        if (currentMovingPlatform != null)
+        {
+            Vector2 platformMovement = currentMovingPlatform.velocity * fdt;
+            if (currentMovingPlatform.velocity.y < -Gravity) platformMovement.y = -Gravity;
+            ApplyMovement(platformMovement);
+            ResolveInitialCollisions();
+        }
     }
 
     // Directly set the player's y velocity
@@ -182,6 +217,16 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
     {
         CheckOnWall();
         CheckGrounded();
+
+        Bounds bounds = SurfaceCollider.bounds;
+        Vector2 beeCastCenter = bounds.center + 0.375f * bounds.size.y * Vector3.down;
+        Vector2 beeCastSize = 0.25f * bounds.size;
+        RaycastHit2D[] beeHits = Physics2D.BoxCastAll(beeCastCenter, beeCastSize, 0f, Vector2.down, COLLISION_CHECK_DISTANCE);
+        bool onBee = false;
+        foreach (var hit in beeHits)
+        {
+            if (hit.collider.CompareTag("Bee")) onBee = true;
+        }
 
         if (CanWallJump && wallNormal != 0 && State == BodyState.InAir)
         {
@@ -196,7 +241,7 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
             coyoteTimeRemaining = 0f;   // consume coyote time
             RuntimeManager.PlayOneShot("event:/sfx/player/jump");
         }
-        else if (CanDoubleJump && airJumpAvailable)
+        else if (CanDoubleJump && airJumpAvailable && onBee)
         {
             Velocity.y = jumpVelocity * DoubleJumpFactor;
             airJumpAvailable = false;
@@ -228,13 +273,20 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
         if (State != BodyState.OnGround && groundHit && groundHit.normal.normalized.y > LAND_SLOPE_FACTOR)
         {
             State = BodyState.OnGround;
-            if (CanDoubleJump) airJumpAvailable = true;
+            airJumpAvailable = true;
             if (jumpBufferTimeRemaining > 0.0f) JumpInputDown();
+            if (groundHit.collider.CompareTag("MovingPlatform"))
+            {
+                currentMovingPlatform = groundHit.collider.GetComponentInParent<MovingPlatform>();
+                if (currentMovingPlatform is ControllableMovingPlatform) onControllableMovingPlatform = true;
+            }
         }
         else if (State == BodyState.OnGround && !groundHit)
         {
             State = BodyState.InAir;
             coyoteTimeRemaining = coyoteTime;
+            currentMovingPlatform = null;
+            onControllableMovingPlatform = false;
         }
     }
 
@@ -265,5 +317,18 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
         coyoteTimeRemaining = Mathf.Max(coyoteTimeRemaining - dt, 0.0f);
         jumpBufferTimeRemaining = Mathf.Max(jumpBufferTimeRemaining - dt, 0.0f);
         wallJumpMoveLockTimeRemaining = Mathf.Max(wallJumpMoveLockTimeRemaining - dt, 0.0f);
+    }
+
+
+    /// <summary>
+    /// Coroutine that handles the dash ability.
+    /// </summary>
+    private IEnumerator DashRoutine()
+    {
+        isDashing = true;
+        float dashDirection = Mathf.Sign(transform.localScale.x);
+        Velocity.x = dashForce * dashDirection;
+        yield return new WaitForSeconds(dashDuration);
+        isDashing = false;
     }
 }

@@ -38,7 +38,7 @@ public class CameraController : MonoBehaviour
     /// Sets the bounds for the camera
     /// </summary>
     /// <param name="newBounds">A polygon collider defining the bounds</param>
-    public void SetBounds(PolygonCollider2D newBounds)
+    public void SetBounds(Collider2D newBounds)
     {
         if (newBounds == null) return;
         confiner.InvalidateBoundingShapeCache();

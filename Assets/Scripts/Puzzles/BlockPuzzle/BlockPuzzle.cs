@@ -3,16 +3,13 @@ using UnityEngine;
 public class BlockPuzzle : Puzzle
 {
     public static BlockPuzzle Instance;
-    public int GridWidth = 5;
-    public int GridHeight = 4;
-    public int SolutionColumn = 2;
-    public GameObject blockPrefab;
-    public GameObject previewPrefab;
+    public int GridWidth = 7;
+    public int GridHeight = 7;
+    public float GridScale = 0.85f;
     public GameObject gridVisualizerPrefab;
     public bool IsComplete;
 
     private BlockPuzzleBlock[,] grid;
-    private int blockCount = 0;
 
     void Awake()
     {
@@ -25,55 +22,23 @@ public class BlockPuzzle : Puzzle
 
         grid = new BlockPuzzleBlock[GridWidth, GridHeight];
         Instantiate(gridVisualizerPrefab, transform);
-        InitializeGrid();
-    }
-
-    private void InitializeGrid()
-    {
-        // Example: Instantiate blocks
-        CreateBlockAtPosition(new Vector2Int(0, 1), new Vector2Int(2, 1), Color.cyan);
-        CreateBlockAtPosition(new Vector2Int(0, 2), new Vector2Int(1, 2), Color.green);
-        CreateBlockAtPosition(new Vector2Int(1, 2), new Vector2Int(2, 2), Color.yellow);
-        CreateBlockAtPosition(new Vector2Int(2, 0), new Vector2Int(2, 2), Color.yellow);
-        CreateBlockAtPosition(new Vector2Int(3, 2), new Vector2Int(2, 1), Color.cyan);
-        CreateBlockAtPosition(new Vector2Int(4, 0), new Vector2Int(1, 1), Color.magenta);
-        CreateBlockAtPosition(new Vector2Int(4, 1), new Vector2Int(1, 1), Color.magenta);
-    }
-
-    private void CreateBlockAtPosition(Vector2Int position, Vector2Int size, Color color)
-    {
-        GameObject blockGO = Instantiate(blockPrefab, transform);
-        blockGO.name = $"Block {blockCount++}";
-        BlockPuzzleBlock block = blockGO.GetComponent<BlockPuzzleBlock>();
-
-        block.Position = position;
-        block.Size = size;
-        block.Color = color;
-        
-        // Convert to world position
-        blockGO.transform.position = GridToWorldPosition(block.Position);
-
-        block.InitializeBlock();
-        SetBlockInGrid(block, block.Position);
+        BlockPuzzleBlock[] blocks = GetComponentsInChildren<BlockPuzzleBlock>();
+        foreach (BlockPuzzleBlock block in blocks) block.InitializeBlock();
     }
 
     public Vector3 GridToWorldPosition(Vector2Int gridPosition)
     {
-        // Convert from grid coordinates to world coordinates
-        // Add 0.5f to center within grid cells
         float offsetX = -GridWidth / 2f + 0.5f;
         float offsetY = -GridHeight / 2f + 0.5f;
         return new Vector3(
-            gridPosition.x + offsetX,
-            gridPosition.y + offsetY,
+            (gridPosition.x + offsetX) * GridScale,
+            (gridPosition.y + offsetY) * GridScale,
             0
         );
     }
 
     public Vector2Int WorldToGridPosition(Vector3 worldPosition)
     {
-        // Convert from world coordinates to grid coordinates
-        // Subtract 0.5f to account for cell centering
         float offsetX = GridWidth / 2f - 0.5f;
         float offsetY = GridHeight / 2f - 0.5f;
         return new Vector2Int(
@@ -84,12 +49,15 @@ public class BlockPuzzle : Puzzle
 
     public void SetBlockInGrid(BlockPuzzleBlock block, Vector2Int newPosition)
     {
-        for (int dx = 0; dx < block.Size.x; dx++)
+        foreach (Vector2Int offset in block.Cells)
         {
-            for (int dy = 0; dy < block.Size.y; dy++)
-            {
-                grid[newPosition.x + dx, newPosition.y + dy] = block;
-            }
+            grid[newPosition.x + offset.x, newPosition.y + offset.y] = block;
+        }
+
+        if (CheckSolution())
+        {
+            IsComplete = true;
+            OnComplete();
         }
     }
 
@@ -98,106 +66,50 @@ public class BlockPuzzle : Puzzle
         if (IsComplete) return false;
 
         Vector2Int newPosition = block.Position + direction;
-
-        // Ensure the new position is within bounds of the grid
-        if (newPosition.x < 0 || newPosition.x + block.Size.x > GridWidth || newPosition.y < 0 || newPosition.y + block.Size.y > GridHeight)
-        {
-            return false;  // Out of bounds
-        }
-
-        // Check if the new space is free (not occupied by other blocks)
-        for (int dx = 0; dx < block.Size.x; dx++)
-        {
-            for (int dy = 0; dy < block.Size.y; dy++)
-            {
-                int x = newPosition.x + dx;
-                int y = newPosition.y + dy;
-
-                if (grid[x, y] != null && grid[x, y] != block)
-                {
-                    return false;  // Space is occupied
-                }
-            }
-        }
-        return true;  // The block can move
+        return IsPositionValidForBlock(newPosition, block);
     }
 
-    public bool CanMoveInDirection(BlockPuzzleBlock block, Vector2Int direction, out int maxSteps)
+    public bool IsPositionValidForBlock(Vector2Int position, BlockPuzzleBlock block)
     {
-        maxSteps = 0;
-        if (direction == Vector2Int.zero) return true;
-        
-        while (true)
+        if (IsComplete) return false;
+
+        if (!IsPositionInGridForBlock(position, block))
         {
-            Vector2Int newPosition = block.Position + (direction * (maxSteps + 1));
-
-            if (newPosition.x < 0 || newPosition.x + block.Size.x > GridWidth || 
-                newPosition.y < 0 || newPosition.y + block.Size.y > GridHeight)
-            {
-                break;
-            }
-
-            bool positionClear = true;
-            for (int dx = 0; dx < block.Size.x; dx++)
-            {
-                for (int dy = 0; dy < block.Size.y; dy++)
-                {
-                    int x = newPosition.x + dx;
-                    int y = newPosition.y + dy;
-                    
-                    if (grid[x, y] != null && grid[x, y] != block)
-                    {
-                        positionClear = false;
-                        break;
-                    }
-                }
-                if (!positionClear) break;
-            }
-            
-            if (!positionClear) break;
-            maxSteps++;
+            return false;
         }
-        
-        return maxSteps > 0;
+
+        foreach (Vector2Int offset in block.Cells)
+        {
+            int x = position.x + offset.x;
+            int y = position.y + offset.y;
+            if (grid[x, y] != null && grid[x, y] != block) return false;
+        }
+
+        return true;
     }
 
-    public void MoveBlock(BlockPuzzleBlock block, Vector2Int direction, int steps = 1)
+    public bool IsPositionInGridForBlock(Vector2Int position, BlockPuzzleBlock block)
     {
-        // Clear block from old position
-        ClearBlockFromGrid(block);
-        
-        // Move the block to the new position
-        block.Position += direction * steps;
-        block.transform.position = GridToWorldPosition(block.Position);
-        
-        // Update grid with new position
-        SetBlockInGrid(block, block.Position);
-
-        // Check if puzzle is solved after each move
-        if (CheckSolution())
-        {
-            IsComplete = true;
-            OnComplete();
-        }
+        return position.x >= 0 && position.x + block.Size.x <= GridWidth && 
+            position.y >= 0 && position.y + block.Size.y <= GridHeight;
     }
 
     public void ClearBlockFromGrid(BlockPuzzleBlock block)
     {
-        // Reset all positions occupied by the block to null
-        for (int dx = 0; dx < block.Size.x; dx++)
+        foreach (Vector2Int offset in block.Cells)
         {
-            for (int dy = 0; dy < block.Size.y; dy++)
-            {
-                grid[block.Position.x + dx, block.Position.y + dy] = null;
-            }
+            grid[block.Position.x + offset.x, block.Position.y + offset.y] = null;
         }
     }
 
-    private bool CheckSolution()
+    public bool CheckSolution()
     {
-        for (int i = 0; i < GridHeight; ++i)
+        for (int i = 0; i < GridWidth; ++i)
         {
-            if(grid[SolutionColumn, i] != null) return false;
+            for (int j = 0; j < GridHeight; ++j)
+            {
+                if (grid[i,j] == null) return false;
+            }
         }
         return true;
     }

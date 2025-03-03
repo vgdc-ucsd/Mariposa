@@ -13,10 +13,11 @@ public class InteractionTrigger : Trigger
         }
     }
 
-    public override void OnEnter(Body body)
+    public override bool OnEnter(Body body)
     {
-        base.OnEnter(body);
+        if (!base.OnEnter(body)) return false;
         InGameUI.Instance.InteractPrompt(true);
+        return true;
     }
 
     public override void OnExit(Body body)

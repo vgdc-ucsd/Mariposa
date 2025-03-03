@@ -9,6 +9,8 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
     public static PlayerMovement Instance;
     private Bee parent;
 
+    private Vector2 velocityFieldVelocity = Vector2.zero;
+
     [Header("Horizontal Parameters")]
 
     [Tooltip("The maximum horizontal movement speed")]
@@ -40,6 +42,8 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
     // only activate triggers when it is being controlled
     protected override bool activateTriggers => parent.IsControlled;
 
+    SpriteRenderer beeSprite;
+
     private void InitDerivedConsts()
     {
         airAcceleration = MoveSpeed / airAccelerationTime;
@@ -53,6 +57,7 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
         parent = GetComponent<Bee>();
         gravityEnabled = false;
         InitDerivedConsts();
+        beeSprite = GetComponent<SpriteRenderer>();
 
     }
 
@@ -89,6 +94,14 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
     public void SetMoveDir(Vector2 dir)
     {
         moveDir = dir;
+
+        // change where the bee faces when in being controlled
+        if (dir.x > 0) {
+            beeSprite.flipX = false;
+        } 
+        else if (dir.x < 0) {
+            beeSprite.flipX = true;
+        }
     }
 
     public void SetBehavior(IBeeBehavior behavior)
@@ -134,6 +147,7 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
             tempVelocity *= MoveSpeed / tempVelocity.magnitude;
         }
 
+        tempVelocity += velocityFieldVelocity;
 
         Vector2 normalComp = Vector2.Dot(tempVelocity, r) / r.sqrMagnitude * r;
 
@@ -175,10 +189,36 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
     private void AutoMove()
     {
         transform.position += (Vector3)currentBehavior.GetMoveStep(fdt);
+
+        // change where the bee faces when in AutoMove mode
+        if (currentBehavior.GetDir().x > 0) {
+            beeSprite.flipX = false;
+        } 
+        else if (currentBehavior.GetDir().x < 0) {
+            beeSprite.flipX = true;
+        }
     }
 
     public void ToggleCollisions(bool toggle)
     {
         collisionsEnabled = toggle;
+    }
+
+    protected override void OnTriggerEnter2D(Collider2D collision)
+    {
+        base.OnTriggerEnter2D(collision);
+        if (collision.CompareTag("VelocityField"))
+        {
+            velocityFieldVelocity = collision.GetComponent<VelocityField>().velocity;
+        }
+    }
+
+    protected override void OnTriggerExit2D(Collider2D collision)
+    {
+        base.OnTriggerEnter2D(collision);
+        if (collision.CompareTag("VelocityField"))
+        {
+            velocityFieldVelocity = Vector2.zero;
+        }
     }
 }

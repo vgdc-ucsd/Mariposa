@@ -32,6 +32,7 @@ public class PlayerController : MonoBehaviour
     public IControllable CurrentControllable;
 
     private InputSystem_Actions inputs;
+    public bool IsLocked { get; private set; }
 
     private void Awake()
     {
@@ -77,6 +78,7 @@ public class PlayerController : MonoBehaviour
     {
         if (ControlledPlayer.Character.Id == CharID.Mariposa) SwitchTo(CharID.Unnamed);
         else SwitchTo(CharID.Mariposa);
+        
     }
 
     public void SwitchTo(CharID character)
@@ -92,12 +94,12 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-
         ControlledPlayer = charIDMap[character];
         ControlledPlayer.gameObject.SetActive(true);
         StartControlling(ControlledPlayer.Movement);
         Subscribe(ControlledPlayer.Ability);
         ControlledPlayer.Ability.Initialize();
+
 
     }
 
@@ -109,6 +111,7 @@ public class PlayerController : MonoBehaviour
         Subscribe(controllable);
         CurrentControllable = controllable;
         CameraController.ActiveCamera.StartFollowing(controllable.transform);
+        GameEvents.Instance.Trigger<UpdateTriggers>();
     }
 
     /* INPUT HANDLING */
@@ -123,9 +126,13 @@ public class PlayerController : MonoBehaviour
         listeners.Remove(Listener);
     }
 
+    public void ToggleMovementLock() {
+        IsLocked = !IsLocked;
+    }
+
     private void Update()
     {
-        // TEMPORARY AND SHOULD BE REMOVED IN ANY NON-TEST BUILD
+        // TODO: TEMPORARY AND SHOULD BE REMOVED IN ANY NON-TEST BUILD
         if (Input.GetKeyDown(KeyCode.Tab)) SwitchCharacters();
         if (Input.GetKeyDown(KeyCode.E)) SendInteract();
     }
@@ -155,7 +162,8 @@ public class PlayerController : MonoBehaviour
         Vector2 moveDir = inputs.Player.Move.ReadValue<Vector2>();
         foreach (var listener in new List<IInputListener>(listeners))
         {
-            listener.SetMoveDir(moveDir);
+            if (IsLocked) listener.SetMoveDir(Vector2.zero);
+            else listener.SetMoveDir(moveDir);
         }
     }
 }
