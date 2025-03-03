@@ -6,24 +6,28 @@ public interface IControllable : IInputListener
 {
     public Transform transform { get; }
 
-    protected void OnTriggerEnter(Collider other)
+    public Body body
     {
-        Trigger trigger = other.GetComponent<Trigger>();
-        if (trigger != null)
+        get
         {
-            trigger.OnEnter(this);
+            if (transform.GetComponent<Body>() == null)
+            {
+                Debug.LogError("Controller is not associated with a body");
+            }
+            return transform.GetComponent<Body>();
         }
     }
 
-    protected void OnTriggerExit(Collider other)
+    void IInputListener.InteractInputDown()
     {
-        Trigger trigger = other.GetComponent<Trigger>();
-        if (trigger != null)
+        foreach (var trigger in body.InsideTriggers)
         {
-            trigger.OnExit(this);
+            if (trigger is InteractionTrigger it)
+            {
+                it.InteractTrigger(this);
+            }
         }
     }
-
     /*
     public void StartControlling()
     {

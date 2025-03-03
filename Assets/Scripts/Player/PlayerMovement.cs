@@ -7,6 +7,7 @@ using UnityEngine.Experimental.GlobalIllumination;
 public class PlayerMovement : FreeBody, IInputListener, IControllable
 {
     public static PlayerMovement Instance;
+    protected override bool activateTriggers => true;
 
     [Header("Horizontal Parameters")]
 

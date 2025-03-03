@@ -31,7 +31,7 @@ public class RespawnPoint : Interactable
 
     // Sets the player's current respawn point to the RespawnPoint object
     [ContextMenu("Set Respawn Here")]
-    public override void OnInteract()
+    public override void OnInteract(IControllable controllable)
     {
         if (respawnDebug) Debug.Log($"{gameObject.name} was interacted");
 
@@ -47,8 +47,4 @@ public class RespawnPoint : Interactable
         }
     }
 
-    protected override void SetProximity()
-    {
-        Proximity = 1f;
-    }
 }

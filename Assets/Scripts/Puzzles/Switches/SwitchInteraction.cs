@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/* NO LONGER NEEDED */
 public class SwitchInteraction : Interactable
 {
     public List<GameObject> playerInteractions;
@@ -9,7 +11,7 @@ public class SwitchInteraction : Interactable
     /// Finds every interactable object, such as buttons and levers.
     /// Items found are put into the playerInteractions list.
     /// </summary>
-    void Awake()
+    protected override void Awake()
     {
         playerInteractions = new List<GameObject>();
         playerInteractions.AddRange(GameObject.FindGameObjectsWithTag("Interactable"));
@@ -33,7 +35,7 @@ public class SwitchInteraction : Interactable
                 
             closestDistance = dist;
                 
-            if (closestDistance <= Proximity) closestInteractable = playerInteractions[i];
+            // if (closestDistance <= Proximity) closestInteractable = playerInteractions[i];
         }
         
         return closestInteractable;
@@ -42,7 +44,7 @@ public class SwitchInteraction : Interactable
     /// <summary>
     /// If the player is next to an interactable, trigger the interactable.
     /// </summary>
-    public override void OnInteract()
+    public override void OnInteract(IControllable controllable)
     {
         GameObject closestInteractable = FindClosestInteractable();
         
@@ -51,8 +53,4 @@ public class SwitchInteraction : Interactable
         if (closestInteractable != null) closestInteractable.GetComponent<Switch>().TriggerSwitch();
     }
     
-    protected override void SetProximity()
-    {
-        Proximity = 1f;
-    }
 }

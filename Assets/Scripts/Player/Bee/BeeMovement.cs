@@ -36,6 +36,10 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
     private IBeeBehavior currentBehavior;    // Strategy, returns a vector for the bee to move towards in the next frame
 
     // Useful for when their dependent values are changed during runtime
+
+    // only activate triggers when it is being controlled
+    protected override bool activateTriggers => parent.IsControlled;
+
     private void InitDerivedConsts()
     {
         airAcceleration = MoveSpeed / airAccelerationTime;
