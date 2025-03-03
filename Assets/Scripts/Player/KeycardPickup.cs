@@ -1,15 +1,15 @@
 using UnityEngine;
 
-public class KeycardPickup : ItemPickupMVP
+public class KeycardPickup : ItemPickup
 {
     public GameObject TurnstileCollision;
     public Sprite UnlockedSprite;
     public SpriteRenderer TurnstileSR;
 
 
-    protected override void Pickup()
+    public override void OnInteract(IControllable controllable)
     {
-        base.Pickup();
+        base.OnInteract(controllable);
         TurnstileCollision.SetActive(false);
         TurnstileSR.sprite = UnlockedSprite;
     }

@@ -49,6 +49,12 @@ public class LevelManager : MonoBehaviour
 
     private void InitSublevel()
     {
+        // teleport previous player (and bee, if applicable) off screen
+        Player.ActivePlayer.transform.position = new Vector3(-1000, -1000, 0);
+        if (Player.ActivePlayer.Ability is BeeControlAbility b)
+        {
+            b.BeeRef.transform.position = new Vector3(-1000, -1000, 0);
+        }
         PlayerController.Instance.SwitchTo(GetCurrentSublevel().SublevelCharacter);
         CameraController.ActiveCamera.SetBounds(GetCurrentSublevel().CameraBounds);
         Player.ActivePlayer.transform.position = GetCurrentSublevel().StartingSpawn.GetRespawnPosition();

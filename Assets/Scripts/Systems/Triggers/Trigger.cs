@@ -38,8 +38,9 @@ public abstract class Trigger : MonoBehaviour
         if (MustBePlayer && body is not PlayerMovement) return false;
         if (!OnlyOnce && !GetIsInside(body))
             Add(body);
+        bool success = Enabled;
         if (OnlyOnce) SetEnabled(false);
-        return Enabled;
+        return success;
     }
     public virtual void OnExit(Body body)
     {
