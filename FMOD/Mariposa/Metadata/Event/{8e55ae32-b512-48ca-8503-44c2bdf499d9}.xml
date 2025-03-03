@@ -92,15 +92,23 @@
 		<property name="length">
 			<value>3.5587291666666667</value>
 		</property>
+		<property name="playlistMode">
+			<value>1</value>
+		</property>
 		<relationship name="sounds">
 			<destination>{703f1d52-95cb-4ef4-9919-34d376ec70b3}</destination>
 			<destination>{8a6995e3-6429-4aaf-959a-459e0f9ebc64}</destination>
+			<destination>{e6c93ad5-26d3-4241-b72a-a706a9acf2de}</destination>
+			<destination>{f5cef65d-b55a-45de-9e86-e614d5ba3068}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{ebc3065d-256d-4d6e-8de5-ee81f67ce7c2}">
 		<property name="name">
 			<value>Audio 1</value>
 		</property>
+		<relationship name="modulators">
+			<destination>{37c0ab02-f125-4f20-b7cf-09dad9e5e8fa}</destination>
+		</relationship>
 		<relationship name="effectChain">
 			<destination>{63a4da78-ee57-4f1c-a592-91f88b155eb0}</destination>
 		</relationship>
@@ -128,6 +136,30 @@
 			<destination>{47d64b25-1a09-4faf-b756-59c4f8d8cc5b}</destination>
 		</relationship>
 	</object>
+	<object class="SingleSound" id="{e6c93ad5-26d3-4241-b72a-a706a9acf2de}">
+		<relationship name="modulators">
+			<destination>{f63c1669-8020-4cf8-a46a-785209d280d2}</destination>
+		</relationship>
+		<relationship name="audioFile">
+			<destination>{0df44c28-109a-4561-8a47-8ad797ff61b5}</destination>
+		</relationship>
+	</object>
+	<object class="SingleSound" id="{f5cef65d-b55a-45de-9e86-e614d5ba3068}">
+		<relationship name="modulators">
+			<destination>{3a400f5e-b906-4198-afc2-157b4366a952}</destination>
+		</relationship>
+		<relationship name="audioFile">
+			<destination>{2a570038-971f-4b9a-bf62-c0da3e461317}</destination>
+		</relationship>
+	</object>
+	<object class="RandomizerModulator" id="{37c0ab02-f125-4f20-b7cf-09dad9e5e8fa}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>volume</value>
+		</property>
+		<property name="amount">
+			<value>6</value>
+		</property>
+	</object>
 	<object class="MixerBusEffectChain" id="{63a4da78-ee57-4f1c-a592-91f88b155eb0}">
 		<relationship name="effects">
 			<destination>{346beeee-1c62-4e9c-a047-c9b77f93fe7c}</destination>
@@ -136,6 +168,34 @@
 	</object>
 	<object class="MixerBusPanner" id="{eb16b870-0620-4845-966f-ee5721745121}" />
 	<object class="MixerBusFader" id="{4646ff60-fe0a-4cc8-aa3e-13dee9a0a3fa}" />
+	<object class="ADSRModulator" id="{f63c1669-8020-4cf8-a46a-785209d280d2}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>volume</value>
+		</property>
+		<property name="initialValue">
+			<value>-80</value>
+		</property>
+		<property name="attackTime">
+			<value>0</value>
+		</property>
+		<property name="finalValue">
+			<value>-80</value>
+		</property>
+	</object>
+	<object class="ADSRModulator" id="{3a400f5e-b906-4198-afc2-157b4366a952}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>volume</value>
+		</property>
+		<property name="initialValue">
+			<value>-80</value>
+		</property>
+		<property name="attackTime">
+			<value>0</value>
+		</property>
+		<property name="finalValue">
+			<value>-80</value>
+		</property>
+	</object>
 	<object class="MixerBusFader" id="{346beeee-1c62-4e9c-a047-c9b77f93fe7c}" />
 	<object class="SpatialiserEffect" id="{f4d1d747-5337-48ea-8e85-1d84a706b95d}" />
 </objects>

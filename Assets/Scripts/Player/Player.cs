@@ -112,10 +112,10 @@ public class Player : MonoBehaviour
 		switch (Player.ActivePlayer.Character.Name)
 		{
 			case "Mariposa":
-				RuntimeManager.PlayOneShot("event:/sfx/puzzle/spawnpoint_activate/mariposa");
+				RuntimeManager.PlayOneShot("event:/sfx/world/spawnpoint_activate/mariposa");
 				break;
 			case "Unnamed":
-				RuntimeManager.PlayOneShot("event:/sfx/puzzle/spawnpoint_activate/unnamed");
+				RuntimeManager.PlayOneShot("event:/sfx/world/spawnpoint_activate/unnamed");
 				break;
 		}
 	}

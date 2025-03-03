@@ -1,4 +1,6 @@
 using System.Collections;
+using FMOD.Studio;
+using FMODUnity;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -11,12 +13,17 @@ public class RadioPickup : ItemPickup
 {
 
     private DialogueManager manager;
+    private EventInstance RadioPickupEvent;
+    private bool playerDebug;
 
     [SerializeField] private Dialogue dialogue;
 
-    protected override void Start() {
+    protected override void Start()
+    {
         base.Start();
         manager = DialogueManager.Instance;
+        RadioPickupEvent = RuntimeManager.CreateInstance("event:/sfx/item/pickup");
+        playerDebug = Settings.Instance.Debug.GetPlayerDebug();
     }
 
     /// <summary>
@@ -27,5 +34,9 @@ public class RadioPickup : ItemPickup
     {
         base.OnInteract(controllable);
         manager.PlayDialogue(dialogue);
+
+        RadioPickupEvent.setParameterByNameWithLabel("ItemType", "Default");
+        RadioPickupEvent.start();
+        RadioPickupEvent.release();
     }
 }

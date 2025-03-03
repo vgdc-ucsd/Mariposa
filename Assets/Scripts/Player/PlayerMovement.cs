@@ -247,6 +247,7 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
             airJumpAvailable = false;
             coyoteTimeRemaining = 0f;
             RuntimeManager.PlayOneShot("event:/sfx/player/jump");
+            RuntimeManager.PlayOneShot("event:/sfx/player/bee/double_jump");
         }
         else if (State != BodyState.OnGround && coyoteTimeRemaining <= 0.0f)
         {
