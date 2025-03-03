@@ -3,8 +3,6 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
-using FMOD.Studio;
-using FMODUnity;
 
 public enum CharID
 {
@@ -152,7 +150,6 @@ public class PlayerController : MonoBehaviour
     public void SendJump(InputAction.CallbackContext ctx)
     {
         listeners.ForEachReverse(x => x.JumpInputDown());
-        PlayJump();
     }
 
     public void SendInteract()
@@ -169,12 +166,4 @@ public class PlayerController : MonoBehaviour
             else listener.SetMoveDir(moveDir);
         }
     }
-
-    public void PlayJump()
-    {
-        EventInstance footstepInstance = RuntimeManager.CreateInstance("event:/sfx/player/jump");
-        footstepInstance.start();
-        footstepInstance.release();
-    }
-
 }

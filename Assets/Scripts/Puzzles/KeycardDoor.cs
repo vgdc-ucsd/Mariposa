@@ -1,3 +1,4 @@
+using FMODUnity;
 using UnityEngine;
 
 public class KeycardDoor : Door
@@ -12,7 +13,7 @@ public class KeycardDoor : Door
         if (keycard == null) return false;
         if (!InventoryManager.Instance.GetAllItems(inventoryType).ContainsKey(keycard)) return false;
         return (InventoryManager.Instance.GetAllItems(inventoryType)[keycard] > 0);
-        
+
     }
 
     public void UseKeycard()
@@ -20,5 +21,6 @@ public class KeycardDoor : Door
         ToggleLock();
         ChangeState();
         InventoryManager.Instance.DeleteItem(inventoryType, keycard);
+        RuntimeManager.PlayOneShot("event:/sfx/item/keycard/tap");
     }
 }
