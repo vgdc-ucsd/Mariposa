@@ -104,6 +104,7 @@ public class PlayerController : MonoBehaviour
     // map inputs to this controllable and make it the camera target
     public void StartControlling(IControllable controllable)
     {
+        if (CurrentControllable != null) CurrentControllable.SetMoveDir(Vector2.zero);
         Unsubscribe(CurrentControllable);
         Subscribe(controllable);
         CurrentControllable = controllable;
@@ -126,6 +127,7 @@ public class PlayerController : MonoBehaviour
     {
         // TEMPORARY AND SHOULD BE REMOVED IN ANY NON-TEST BUILD
         if (Input.GetKeyDown(KeyCode.Tab)) SwitchCharacters();
+        if (Input.GetKeyDown(KeyCode.E)) SendInteract();
     }
 
     public void SendAbilityDown(InputAction.CallbackContext ctx)
@@ -143,12 +145,17 @@ public class PlayerController : MonoBehaviour
         listeners.ForEachReverse(x => x.JumpInputDown());
     }
 
+    public void SendInteract()
+    {
+        listeners.ForEachReverse(x => x.InteractInputDown());
+    }
+
     private void FixedUpdate()
     {
         Vector2 moveDir = inputs.Player.Move.ReadValue<Vector2>();
         foreach (var listener in new List<IInputListener>(listeners))
         {
-            listener.GetMoveDir(moveDir);
+            listener.SetMoveDir(moveDir);
         }
     }
 
