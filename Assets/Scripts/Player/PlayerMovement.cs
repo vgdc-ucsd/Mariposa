@@ -90,6 +90,9 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
     private bool isDashing = false;
 
 
+    private MovingPlatform currentMovingPlatform = null;
+    private bool onControllableMovingPlatform = false;
+
     // Useful for when their dependent values are changed during runtime
     private void InitDerivedConsts()
     {
@@ -133,9 +136,9 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
         InitDerivedConsts();
     }
 
-
     protected override void FixedUpdate()
     {
+        if (onControllableMovingPlatform) ControlPlatform();
         Move();
 
         base.FixedUpdate();
@@ -143,6 +146,12 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
         CheckOnWall();
 
         UpdateTimers(fdt);
+    }
+
+    private void ControlPlatform()
+    {
+        ControllableMovingPlatform platform = (ControllableMovingPlatform)currentMovingPlatform;
+        platform.MovePlatform(moveDir);
     }
 
     private void CheckOnWall()
@@ -161,7 +170,7 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
     // public method to send a move command
     public void SetMoveDir(Vector2 dir)
     {
-        moveDir = dir.x * Vector2.right;
+        moveDir = dir;
         if (!Mathf.Approximately(dir.x, 0f)) Player.ActivePlayer.TurnTowards((int)Mathf.Sign(dir.x));
     }
 
@@ -192,6 +201,13 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
 
         // Apply the acceleration
         Velocity.x += acceleration * fdt * Mathf.Sign(deltaV);
+
+        if (currentMovingPlatform != null)
+        {
+            Vector2 platformMovement = currentMovingPlatform.velocity * fdt;
+            if (currentMovingPlatform.velocity.y < -Gravity) platformMovement.y = -Gravity;
+            ApplyMovement(platformMovement);
+        }
     }
 
     // Directly set the player's y velocity
@@ -244,11 +260,18 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
             State = BodyState.OnGround;
             if (CanDoubleJump) airJumpAvailable = true;
             if (jumpBufferTimeRemaining > 0.0f) JumpInputDown();
+            if (groundHit.collider.CompareTag("MovingPlatform"))
+            {
+                currentMovingPlatform = groundHit.collider.GetComponentInParent<MovingPlatform>();
+                if (currentMovingPlatform is ControllableMovingPlatform) onControllableMovingPlatform = true;
+            }
         }
         else if (State == BodyState.OnGround && !groundHit)
         {
             State = BodyState.InAir;
             coyoteTimeRemaining = coyoteTime;
+            currentMovingPlatform = null;
+            onControllableMovingPlatform = false;
         }
     }
 

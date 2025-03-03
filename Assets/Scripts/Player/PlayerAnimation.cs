@@ -20,6 +20,15 @@ public class PlayerAnimation : MonoBehaviour
         // playerSprite = GetComponent<SpriteRenderer>();
     }
 
+    void Update()
+    {
+        if(Player.ActivePlayer.Movement.State == BodyState.InAir) {
+            animator.SetBool("isJumping", true);
+        } else {
+            animator.SetBool("isJumping", false);
+        }
+    }
+
     void FixedUpdate()
     {
         // at rest
@@ -30,6 +39,7 @@ public class PlayerAnimation : MonoBehaviour
                 PlayFootstep();
                 WasRunning = false;
             }
+            animator.SetBool("isJumping", false);
             animator.SetFloat("xVelocity", 0);
             return;
         }
@@ -38,12 +48,14 @@ public class PlayerAnimation : MonoBehaviour
         if (dir == -1)
         {
             animator.SetFloat("xVelocity", 1);
+            animator.SetFloat("yVelocity", Player.ActivePlayer.Movement.Velocity.y);
             animator.SetFloat("faceLeft", 1);
             WasRunning = true;
         }
         else
         {
             animator.SetFloat("xVelocity", 1);
+            animator.SetFloat("yVelocity", Player.ActivePlayer.Movement.Velocity.y);
             animator.SetFloat("faceLeft", 0);
             WasRunning = true;
         }

@@ -36,6 +36,7 @@ public class InventoryManager : Singleton<InventoryManager>
         {
             inv[item]++;
         }
+        GameEvents.Instance.Trigger<UpdateTriggers>();
     }
 
     /// <summary>

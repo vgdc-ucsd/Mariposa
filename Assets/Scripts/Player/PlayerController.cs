@@ -80,6 +80,7 @@ public class PlayerController : MonoBehaviour
     {
         if (ControlledPlayer.Character.Id == CharID.Mariposa) SwitchTo(CharID.Unnamed);
         else SwitchTo(CharID.Mariposa);
+        
     }
 
     public void SwitchTo(CharID character)
@@ -112,6 +113,7 @@ public class PlayerController : MonoBehaviour
         Subscribe(controllable);
         CurrentControllable = controllable;
         CameraController.ActiveCamera.StartFollowing(controllable.transform);
+        GameEvents.Instance.Trigger<UpdateTriggers>();
     }
 
     /* INPUT HANDLING */
