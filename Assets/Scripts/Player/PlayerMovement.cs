@@ -1,3 +1,4 @@
+using System.Collections;
 using NUnit.Framework.Internal.Commands;
 using System.Linq;
 using Unity.VisualScripting;
@@ -80,6 +81,13 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
 
     // whether the player has a charge of double jump (whether player touched the ground since last double jump
     public bool airJumpAvailable = false;
+    [Header("Dash Parameters")]
+    [Tooltip("Force applied during dash")]
+    public float dashForce = 20f;
+    [Tooltip("Duration of the dash (seconds)")]
+    public float dashDuration = 0.2f;
+    private bool isDashing = false;
+
 
     // Useful for when their dependent values are changed during runtime
     private void InitDerivedConsts()
@@ -108,6 +116,15 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
     protected override void Update()
     {
         base.Update();
+        if (Input.GetKeyDown(KeyCode.V) && !isDashing)
+        {
+            // Consume a battery if available
+            if (InventoryManager.Instance.GetItemCount(InventoryType.Mariposa, BatteryItem.Instance) > 0)
+            {
+                InventoryManager.Instance.DeleteItem(InventoryType.Mariposa, BatteryItem.Instance);
+                StartCoroutine(DashRoutine());
+            }
+        }
     }
 
     private void OnValidate()
@@ -261,5 +278,18 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
         coyoteTimeRemaining = Mathf.Max(coyoteTimeRemaining - dt, 0.0f);
         jumpBufferTimeRemaining = Mathf.Max(jumpBufferTimeRemaining - dt, 0.0f);
         wallJumpMoveLockTimeRemaining = Mathf.Max(wallJumpMoveLockTimeRemaining - dt, 0.0f);
+    }
+    
+    
+    /// <summary>
+    /// Coroutine that handles the dash ability.
+    /// </summary>
+    private IEnumerator DashRoutine()
+    {
+        isDashing = true;
+        float dashDirection = Mathf.Sign(transform.localScale.x);
+        Velocity.x = dashForce * dashDirection;
+        yield return new WaitForSeconds(dashDuration);
+        isDashing = false;
     }
 }

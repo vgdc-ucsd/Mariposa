@@ -2,30 +2,24 @@ using UnityEngine;
 
 public class Door : MonoBehaviour
 {
-    private SpriteRenderer sprite; //Temp to indicate visually the state of the door
-    
-    private Rigidbody2D rb;
+    private BoxCollider2D boxCollider;
     [SerializeField] private bool isOpen;
     [SerializeField] private bool isLocked;
 
     /// <summary>
-    /// Finds the current rigid body and sets it to rb.
+    /// Finds the current collider and sets it to boxCollider.
+    /// Box collider subject to change depending on how doors will open and close.
+    /// (i.e. if it moves up and down or trigger is enabled and disabled) 
     /// </summary>
     void Awake()
     {
-        if (GetComponent<Rigidbody2D>() == null)
+        if (GetComponent<Collider2D>() == null)
         {
-            Debug.Log("No Rigid Body was found!");
-            return;
-        }
-        if (GetComponent<SpriteRenderer>() == null)
-        {
-            Debug.Log("No Sprite Renderer was found!");
+            Debug.Log("No Collider was found!");
             return;
         }
         
-        rb = GetComponent<Rigidbody2D>();
-        sprite = GetComponent<SpriteRenderer>();
+        boxCollider = GetComponent<BoxCollider2D>();
     }
     /// <summary>
     /// Function to call when something external wants to open or
@@ -65,31 +59,27 @@ public class Door : MonoBehaviour
     
     /// <summary>
     /// Opens the door allowing the player to pass through.
+    /// Currently, the door opens by changing the collider to a trigger.
     /// </summary>
     private void Open()
     {
         Debug.Log("Open");
         
-        if (rb == null) return;
+        if (boxCollider == null) return;
         
-        if (sprite == null) return;
-
-        rb.simulated = false;
-        sprite.color = new Color(0.5f, 0.5f, 0.5f, 1f);
+        boxCollider.isTrigger = true;
     }
 
     /// <summary>
     /// Closes the door disabling the player the ability to pass through.
+    /// Currently, the door closes by changing the collider to not be a trigger.
     /// </summary>
     private void Close()
     {
         Debug.Log("Close");
         
-        if (rb == null) return;
+        if (boxCollider == null) return;
         
-        if (sprite == null) return;
-
-        rb.simulated = true;
-        sprite.color = new Color(1f, 1f, 1f, 1f);
+        boxCollider.isTrigger = false;
     }
 }
