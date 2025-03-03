@@ -23,8 +23,8 @@ public class BlockGridVisualizer : MonoBehaviour
         {
             horizontalLines[y] = CreateLine($"HorizontalLine_{y}");
             SetLinePositions(horizontalLines[y], 
-                new Vector3(startX, startY + y, 0), 
-                new Vector3(startX + puzzle.GridWidth, startY + y, 0));
+                new Vector3(startX * BlockPuzzle.Instance.GridScale, (startY + y) * BlockPuzzle.Instance.GridScale, 0), 
+                new Vector3((startX + puzzle.GridWidth) * BlockPuzzle.Instance.GridScale, (startY + y) * BlockPuzzle.Instance.GridScale, 0));
         }
 
         // Create vertical lines
@@ -33,8 +33,8 @@ public class BlockGridVisualizer : MonoBehaviour
         {
             verticalLines[x] = CreateLine($"VerticalLine_{x}");
             SetLinePositions(verticalLines[x], 
-                new Vector3(startX + x, startY, 0), 
-                new Vector3(startX + x, startY + puzzle.GridHeight, 0));
+                new Vector3((startX + x) * BlockPuzzle.Instance.GridScale, startY * BlockPuzzle.Instance.GridScale, 0), 
+                new Vector3((startX + x) * BlockPuzzle.Instance.GridScale, (startY + puzzle.GridHeight) * BlockPuzzle.Instance.GridScale, 0));
         }
     }
 
@@ -45,10 +45,10 @@ public class BlockGridVisualizer : MonoBehaviour
         
         LineRenderer line = lineObj.AddComponent<LineRenderer>();
         line.material = new Material(Shader.Find("Sprites/Default"));
-        line.startColor = line.endColor = new Color(0.7f, 0.7f, 0.7f, 0.3f);
+        line.startColor = line.endColor = new Color(1f, 1f, 1f, 0.5f);
         line.startWidth = line.endWidth = 0.05f;
         line.positionCount = 2;
-        line.sortingOrder = -1; // Ensure grid is behind blocks
+        line.sortingOrder = -1;
         
         return line;
     }
