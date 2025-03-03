@@ -216,6 +216,16 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
         CheckOnWall();
         CheckGrounded();
 
+        Bounds bounds = SurfaceCollider.bounds;
+        Vector2 beeCastCenter = bounds.center + 0.375f * bounds.size.y * Vector3.down;
+        Vector2 beeCastSize = 0.25f * bounds.size;
+        RaycastHit2D[] beeHits = Physics2D.BoxCastAll(beeCastCenter, beeCastSize, 0f, Vector2.down, COLLISION_CHECK_DISTANCE);
+        bool onBee = false;
+        foreach (var hit in beeHits)
+        {
+            if (hit.collider.CompareTag("Bee")) onBee = true;
+        }
+
         if (CanWallJump && wallNormal != 0 && State == BodyState.InAir)
         {
             Velocity.y = jumpVelocity;
@@ -227,7 +237,7 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
             Velocity.y = jumpVelocity;
             coyoteTimeRemaining = 0f;   // consume coyote time
         }
-        else if (CanDoubleJump && airJumpAvailable)
+        else if (CanDoubleJump && airJumpAvailable && onBee)
         {
             Velocity.y = jumpVelocity * DoubleJumpFactor;
             airJumpAvailable = false;
@@ -258,7 +268,7 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
         if (State != BodyState.OnGround && groundHit && groundHit.normal.normalized.y > LAND_SLOPE_FACTOR)
         {
             State = BodyState.OnGround;
-            if (CanDoubleJump) airJumpAvailable = true;
+            airJumpAvailable = true;
             if (jumpBufferTimeRemaining > 0.0f) JumpInputDown();
             if (groundHit.collider.CompareTag("MovingPlatform"))
             {
