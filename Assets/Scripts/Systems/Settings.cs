@@ -36,10 +36,11 @@ public class Settings : Singleton<Settings>
         DialogueVolume.Initialize(DialogueSlider, "bus:/Dialogue");
         DialogueVolume.StartControl();
 
-        MasterSlider.onValueChanged.AddListener(OnMasterSliderChanged);
-        MusicSlider.onValueChanged.AddListener(OnMusicSliderChanged);
-        SFXSlider.onValueChanged.AddListener(OnSFXSliderChanged);
-        DialogueSlider.onValueChanged.AddListener(OnDialogueSliderChanged);
+        // TODO: Null ref, uncomment when slider added
+        // MasterSlider.onValueChanged.AddListener(OnMasterSliderChanged);
+        // MusicSlider.onValueChanged.AddListener(OnMusicSliderChanged);
+        // SFXSlider.onValueChanged.AddListener(OnSFXSliderChanged);
+        // DialogueSlider.onValueChanged.AddListener(OnDialogueSliderChanged);
     }
 
     public void OnMasterSliderChanged(float value)
@@ -65,9 +66,10 @@ public class Settings : Singleton<Settings>
     private void OnDestroy()
     {
         // Remove listener to prevent memory leaks or unexpected behavior
-        MasterSlider.onValueChanged.RemoveListener(OnMasterSliderChanged);
-        MusicSlider.onValueChanged.RemoveListener(OnMusicSliderChanged);
-        SFXSlider.onValueChanged.RemoveListener(OnSFXSliderChanged);
-        DialogueSlider.onValueChanged.RemoveListener(OnDialogueSliderChanged);
+        // TODO: Null ref, uncomment when slider added
+        // MasterSlider.onValueChanged.RemoveListener(OnMasterSliderChanged);
+        // MusicSlider.onValueChanged.RemoveListener(OnMusicSliderChanged);
+        // SFXSlider.onValueChanged.RemoveListener(OnSFXSliderChanged);
+        // DialogueSlider.onValueChanged.RemoveListener(OnDialogueSliderChanged);
     }
 }
