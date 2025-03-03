@@ -4,6 +4,8 @@ using UnityEngine;
 public class GameManager : Singleton<GameManager>
 {
     public InteractionTrigger DefaultInteractionTrigger;
+    public int TargetSublevel = 0; // TODO remove after EOQ social
+
     public override void Awake()
     {
         base.Awake();

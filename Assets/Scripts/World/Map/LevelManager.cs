@@ -16,7 +16,7 @@ public class LevelManager : MonoBehaviour
         {
             sublevel.Unload();
         }
-        SublevelIndex = 0;
+        SublevelIndex = GameManager.Instance.TargetSublevel;
         CurrentLevel.LoadSublevel(SublevelIndex);
         
     }

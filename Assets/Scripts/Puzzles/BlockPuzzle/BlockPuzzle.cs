@@ -27,6 +27,12 @@ public class BlockPuzzle : Puzzle
         foreach (BlockPuzzleBlock block in blocks) block.InitializeBlock();
     }
 
+    // Debug
+    void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Space)) FinishPuzzle();
+    }
+
     public Vector3 GridToWorldPosition(Vector2Int gridPosition)
     {
         float offsetX = -GridWidth / 2f + 0.5f;
@@ -55,12 +61,7 @@ public class BlockPuzzle : Puzzle
             grid[newPosition.x + offset.x, newPosition.y + offset.y] = block;
         }
 
-        if (CheckSolution())
-        {
-            IsComplete = true;
-            OnComplete();
-            SceneManager.LoadScene(0); // TODO remove after EOQ social
-        }
+        if (CheckSolution()) FinishPuzzle();
     }
 
     public bool CanMove(BlockPuzzleBlock block, Vector2Int direction)
@@ -114,5 +115,14 @@ public class BlockPuzzle : Puzzle
             }
         }
         return true;
+    }
+
+    private void FinishPuzzle()
+    {
+    
+        IsComplete = true;
+        GameManager.Instance.TargetSublevel = 2;
+        SceneManager.LoadScene(1); // TODO remove after EOQ social
+        //OnComplete();
     }
 }
