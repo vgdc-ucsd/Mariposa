@@ -1,6 +1,8 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerInteraction
+public class PlayerInteraction: MonoBehaviour
 {
     
 }
