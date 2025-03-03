@@ -48,7 +48,7 @@ public class BillboardPuzzle : Puzzle
 
                 board[i, j].x = j;
                 board[i, j].endX = endXValues[index];
-                board[i, j].spriteIndex = board[i, j].endX;
+                board[i, j].spriteIndex = board[i, j].endX + i * width;
                 board[i, j].rotation = endRotValues[index];
                 index++;
             }
