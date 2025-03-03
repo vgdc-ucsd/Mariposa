@@ -31,7 +31,7 @@ public class DialogueManager : Singleton<DialogueManager>
 
     // typewriter control
     [SerializeField] float DIALOGUE_SPEED = 0.025f;
-    bool finishedTypewriter;
+    public bool finishedTypewriter;
 
     void Start()
     {
