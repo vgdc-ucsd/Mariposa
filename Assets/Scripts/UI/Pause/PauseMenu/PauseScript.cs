@@ -5,11 +5,13 @@ using UnityEngine.UI;
 
 public class PauseScript : MonoBehaviour
 {
-    public GameObject pauseMenu;   
-    public Slider sfxSlider;
-    public Slider musicSlider;
-    public Slider dialogueSlider;
-    public Slider masterSlider;
+    public GameObject PauseMenu;   
+    public Slider SfxSlider;
+    public Slider MusicSlider;
+    public Slider DialogueSlider;
+    public Slider MasterSlider;
+
+    public GameObject VideoSettingsMenu;
 
 
     public InputActionReference pauseAction;
@@ -22,6 +24,8 @@ public class PauseScript : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        VideoSettingsMenu.SetActive(false);
+        PauseMenu.SetActive(false);
         Time.timeScale = 1.0f;
         pauseAction.action.Enable();
     }
@@ -29,7 +33,7 @@ public class PauseScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (pauseAction.action.triggered)
+        if (pauseAction.action.triggered && !VideoSettingsMenu.activeSelf)
         {
             if (paused) 
             {
@@ -46,7 +50,7 @@ public class PauseScript : MonoBehaviour
 
     public void PauseGame()
     {
-        pauseMenu.SetActive(true);
+        PauseMenu.SetActive(true);
         Time.timeScale = 0.0f;
         paused = true;
     }
@@ -54,7 +58,7 @@ public class PauseScript : MonoBehaviour
 
     public void ResumeGame()
     {
-        pauseMenu.SetActive(false);
+        PauseMenu.SetActive(false);
         Time.timeScale = 1.0f;
         paused = false;
     }
@@ -62,30 +66,32 @@ public class PauseScript : MonoBehaviour
     public void UpdateSFXVolumeSetting()
     {
         Debug.Log("change detected");
-        sfxVolumeValue = sfxSlider.value;
+        sfxVolumeValue = SfxSlider.value;
     }
 
     public void UpdateMusicVolumeSetting()
     {            
         Debug.Log("change detected");
-        musicVolumeValue = musicSlider.value;
+        musicVolumeValue = MusicSlider.value;
     }
 
     public void UpdateMasterVolumeSetting()
     {
         Debug.Log("change detected");
-        masterVolumeValue = masterSlider.value;
+        masterVolumeValue = MasterSlider.value;
         AudioListener.volume = sfxVolumeValue;
     }
 
     public void UpdateDialogueVolumeSetting()
     {
         Debug.Log("change detected");
-        dialogueVolumeValue = dialogueSlider.value;
+        dialogueVolumeValue = DialogueSlider.value;
     }
 
-    public void OpenVideoSettings(GameObject videoSettings)
+    public void OpenVideoSettings()
     {
-       // enable/open video settings gameobject
+        Debug.Log("setting video settings");
+        PauseMenu.SetActive(false);
+        VideoSettingsMenu.SetActive(true);
     }
 }

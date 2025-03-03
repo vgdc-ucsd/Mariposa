@@ -169,7 +169,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.3921569, g: 0.3921569, b: 0.3921569, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -307,13 +307,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c8f56463cdabfd4a9da8fdcb2221467, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pauseMenu: {fileID: 1510203002073385707}
-  pauseMenuInstance: {fileID: 0}
+  PauseMenu: {fileID: 1510203002073385707}
+  SfxSlider: {fileID: 3478064592802562029}
+  MusicSlider: {fileID: 2045826274260849836}
+  DialogueSlider: {fileID: 2900625421105510909}
+  MasterSlider: {fileID: 648109737737521155}
+  VideoSettingsMenu: {fileID: 0}
   pauseAction: {fileID: 888421444987232350, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   paused: 0
   sfxVolumeValue: 0
   musicVolumeValue: 0
   masterVolumeValue: 0
+  dialogueVolumeValue: 0
 --- !u!1 &2701518833993203707
 GameObject:
   m_ObjectHideFlags: 0
@@ -372,7 +377,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.3921569, g: 0.3921569, b: 0.3921569, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -628,7 +633,19 @@ MonoBehaviour:
   m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2364558836468133087}
+        m_TargetAssemblyTypeName: PauseScript, Assembly-CSharp
+        m_MethodName: UpdateMusicVolumeSetting
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &3768532714429855747
 GameObject:
   m_ObjectHideFlags: 0
@@ -825,7 +842,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.3921569, g: 0.3921569, b: 0.3921569, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -931,7 +948,19 @@ MonoBehaviour:
   m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2364558836468133087}
+        m_TargetAssemblyTypeName: PauseScript, Assembly-CSharp
+        m_MethodName: UpdateDialogueVolumeSetting
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &4103997579429851193
 GameObject:
   m_ObjectHideFlags: 0
@@ -1126,10 +1155,22 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 1
+  m_Value: 0.478
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2364558836468133087}
+        m_TargetAssemblyTypeName: PauseScript, Assembly-CSharp
+        m_MethodName: UpdateSFXVolumeSetting
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5485693038064012963
 GameObject:
   m_ObjectHideFlags: 0
@@ -1519,7 +1560,19 @@ MonoBehaviour:
   m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2364558836468133087}
+        m_TargetAssemblyTypeName: PauseScript, Assembly-CSharp
+        m_MethodName: UpdateMasterVolumeSetting
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7320271260118080208
 GameObject:
   m_ObjectHideFlags: 0
@@ -1689,7 +1742,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.3921569, g: 0.3921569, b: 0.3921569, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1862,7 +1915,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1791992707205938638}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2364558836468133087}
+        m_TargetAssemblyTypeName: PauseScript, Assembly-CSharp
+        m_MethodName: OpenVideoSettings
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1001 &6028524790036302785
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2079,6 +2144,34 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4613407078904619257, guid: cd1cde333f61c48069e4071fa662904d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4613407078904619257, guid: cd1cde333f61c48069e4071fa662904d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4613407078904619257, guid: cd1cde333f61c48069e4071fa662904d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2364558836468133087}
+    - target: {fileID: 4613407078904619257, guid: cd1cde333f61c48069e4071fa662904d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4613407078904619257, guid: cd1cde333f61c48069e4071fa662904d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ResumeGame
+      objectReference: {fileID: 0}
+    - target: {fileID: 4613407078904619257, guid: cd1cde333f61c48069e4071fa662904d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PauseScript, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4613407078904619257, guid: cd1cde333f61c48069e4071fa662904d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 4614163132464234417, guid: cd1cde333f61c48069e4071fa662904d, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
@@ -2129,7 +2222,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4878055553399170054, guid: cd1cde333f61c48069e4071fa662904d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -232
+      value: -260
       objectReference: {fileID: 0}
     - target: {fileID: 5108217507204969375, guid: cd1cde333f61c48069e4071fa662904d, type: 3}
       propertyPath: m_AnchorMax.y
@@ -2277,7 +2370,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6950955675784435452, guid: cd1cde333f61c48069e4071fa662904d, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 320
+      value: 600
       objectReference: {fileID: 0}
     - target: {fileID: 6950955675784435452, guid: cd1cde333f61c48069e4071fa662904d, type: 3}
       propertyPath: m_SizeDelta.y
@@ -2285,7 +2378,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6950955675784435452, guid: cd1cde333f61c48069e4071fa662904d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -480
+      value: -550
       objectReference: {fileID: 0}
     - target: {fileID: 7345094090336847444, guid: cd1cde333f61c48069e4071fa662904d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -2369,12 +2462,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9218353116838071306, guid: cd1cde333f61c48069e4071fa662904d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -253
+      value: -280
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3300770007770751730, guid: cd1cde333f61c48069e4071fa662904d, type: 3}
     - {fileID: 4418794726130455959, guid: cd1cde333f61c48069e4071fa662904d, type: 3}
     - {fileID: 1311697268744384509, guid: cd1cde333f61c48069e4071fa662904d, type: 3}
+    - {fileID: 8427384294806204716, guid: cd1cde333f61c48069e4071fa662904d, type: 3}
     m_RemovedGameObjects:
     - {fileID: 643100097216612262, guid: cd1cde333f61c48069e4071fa662904d, type: 3}
     m_AddedGameObjects:
@@ -2394,6 +2488,9 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 8629808554301593634}
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 139258010349268553, guid: cd1cde333f61c48069e4071fa662904d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4201778587264240161}
     - targetCorrespondingSourceObject: {fileID: 4078125411601508784, guid: cd1cde333f61c48069e4071fa662904d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7020721927641686274}
@@ -2421,6 +2518,35 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6950955675784435452, guid: cd1cde333f61c48069e4071fa662904d, type: 3}
   m_PrefabInstance: {fileID: 6028524790036302785}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &5928743954752136584 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 139258010349268553, guid: cd1cde333f61c48069e4071fa662904d, type: 3}
+  m_PrefabInstance: {fileID: 6028524790036302785}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4201778587264240161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5928743954752136584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 4
+  m_StartCorner: 0
+  m_StartAxis: 0
+  m_CellSize: {x: 250, y: 80}
+  m_Spacing: {x: 30, y: 30}
+  m_Constraint: 0
+  m_ConstraintCount: 2
 --- !u!1 &7724225519146787441 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4078125411601508784, guid: cd1cde333f61c48069e4071fa662904d, type: 3}
