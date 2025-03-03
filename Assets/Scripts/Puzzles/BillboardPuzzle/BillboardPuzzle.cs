@@ -16,6 +16,7 @@ public class BillboardPuzzle : Puzzle
     private List<int> endRotValues = new List<int>();
     [SerializeField] private Sprite[] sprites;
     [SerializeField] private GameObject interactable;
+    [HideInInspector] public bool Initialized;
 
     private void Awake()
     {
@@ -27,26 +28,12 @@ public class BillboardPuzzle : Puzzle
         {
             Debug.Log("Tried to create more than one instance of the BillboardPuzzle singleton!");
         }
+        Initialize();
     }
 
-    private void Start()
+    private void Update()
     {
-        /*board = new BillboardPuzzleTile[height, width];
-        int index = 0;
-        GenerateSolution();
-        for (int i = 0; i < height; i++)
-        {
-            for (int j = 0; j < width; j++)
-            {
-
-                board[i, j].x = j;
-                board[i, j].endX = endXValues[index];
-                board[i, j].spriteIndex = board[i, j].endX;
-                board[i, j].rotation = endRotValues[index];
-                index++;
-            }
-        }
-        UpdatePuzzleDisplay();*/
+        if (Input.GetMouseButtonDown(0)) PuzzlePopupManager.Instance.TryHidePuzzle();
     }
 
     public void Initialize()
@@ -67,6 +54,7 @@ public class BillboardPuzzle : Puzzle
             }
         }
         UpdatePuzzleDisplay();
+        Initialized = true;
     }
 
     [ContextMenu("Reset Puzzle")]
@@ -91,7 +79,6 @@ public class BillboardPuzzle : Puzzle
 
     public void ShiftRow(int row)
     {
-        Debug.Log(row);
         for (int i = 0; i < width; i++)
         {
             board[row, i].x++;
@@ -103,7 +90,6 @@ public class BillboardPuzzle : Puzzle
 
     public void RotateCol(int col)
     {
-        Debug.Log(col);
         for (int i = 0; i < height; i++)
         {
             for (int j = 0; j < width; j++)
@@ -187,8 +173,11 @@ public class BillboardPuzzle : Puzzle
 
     private void OnDisable()
     {
-        interactable.SetActive(true);
-        UpdatePuzzleDisplay();
+        if (interactable)
+        {
+            interactable.SetActive(true);
+            UpdatePuzzleDisplay();
+        }
     }
 
     private bool IsPuzzleComplete()

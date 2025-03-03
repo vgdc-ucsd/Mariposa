@@ -5,32 +5,25 @@ using Unity.VisualScripting;
 using System.Linq;
 using Unity.Properties;
 
-public class BillboardPuzzleInteractable : Interactable
+public class BillboardPuzzleInteractable : GenericInteractable
 {
     [SerializeField] private BillboardPuzzle puzzle;
-    private BoxCollider2D playerCollider;
-    private BoxCollider2D myCollider;
-    public override void OnInteract()
-    {
-    }
-
-    protected override void SetProximity()
-    {
-    }
 
     private void Start()
     {
-        if (Player.ActivePlayer) playerCollider = Player.ActivePlayer.GetComponent<BoxCollider2D>();
-        myCollider = GetComponent<BoxCollider2D>();
+        if (!puzzle.Initialized) puzzle.Initialize();
     }
 
+    public override void OnInteract(IControllable controllable)
+    {
+        Debug.Log("let him cook");
+        PuzzlePopupManager.Instance.ActivePuzzle = puzzle.gameObject;
+        base.OnInteract(controllable);
+    }
+
+    
     private void Update()
     {
         if (isActiveAndEnabled == puzzle.isActiveAndEnabled) gameObject.SetActive(!puzzle.isActiveAndEnabled);
-        if (!Input.GetKeyDown(KeyCode.E)) return;
-        if (playerCollider && myCollider.bounds.Contains(playerCollider.bounds.center))
-        {
-            PuzzlePopupManager.Instance.ActivePuzzle = puzzle.gameObject;
-        }
     }
 }

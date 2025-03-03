@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BillboardPuzzleButton : Interactable
+public class BillboardPuzzleButton : MonoBehaviour
 {
     [SerializeField] private bool beeMode;
     private GameObject bee;
@@ -9,13 +9,6 @@ public class BillboardPuzzleButton : Interactable
     private BoxCollider2D myCollider, beeCollider, playerCollider;
     [SerializeField] private int row, col;
 
-    public override void OnInteract()
-    {
-    }
-
-    protected override void SetProximity()
-    {
-    }
 
     private new void Start()
     {
