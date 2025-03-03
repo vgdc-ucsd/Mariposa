@@ -38,6 +38,16 @@ public class BackgroundSound : MonoBehaviour
 
     void OnDestroy()
     {
-        backgroundSoundInstance.release();
+        StopSound();
+    }
+
+    void OnDisable()
+    {
+        StopSound();
+    }
+
+    void OnEnable()
+    {
+        StartSound();
     }
 }
