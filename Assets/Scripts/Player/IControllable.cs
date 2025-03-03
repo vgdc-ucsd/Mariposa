@@ -20,13 +20,13 @@ public interface IControllable : IInputListener
 
     void IInputListener.InteractInputDown()
     {
-        foreach (var trigger in body.InsideTriggers)
+        body.InsideTriggers.ForEachReverse(trigger =>
         {
             if (trigger is InteractionTrigger it)
             {
                 it.InteractTrigger(this);
             }
-        }
+        });
     }
     /*
     public void StartControlling()
