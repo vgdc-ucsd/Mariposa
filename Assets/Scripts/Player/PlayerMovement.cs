@@ -1,3 +1,4 @@
+using FMODUnity;
 using NUnit.Framework.Internal.Commands;
 using System.Linq;
 using Unity.VisualScripting;
@@ -187,17 +188,20 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
             Velocity.y = jumpVelocity;
             Velocity.x = wallJumpHorizontalSpeed * wallNormal;
             wallJumpMoveLockTimeRemaining = wallJumpMoveLockTime;
+            RuntimeManager.PlayOneShot("event:/sfx/player/jump");
         }
         else if (State == BodyState.OnGround || coyoteTimeRemaining > 0f)
         {
             Velocity.y = jumpVelocity;
             coyoteTimeRemaining = 0f;   // consume coyote time
+            RuntimeManager.PlayOneShot("event:/sfx/player/jump");
         }
         else if (CanDoubleJump && airJumpAvailable)
         {
             Velocity.y = jumpVelocity * DoubleJumpFactor;
             airJumpAvailable = false;
             coyoteTimeRemaining = 0f;
+            RuntimeManager.PlayOneShot("event:/sfx/player/jump");
         }
         else if (State != BodyState.OnGround && coyoteTimeRemaining <= 0.0f)
         {

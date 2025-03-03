@@ -66,9 +66,9 @@
 	<object class="MarkerTrack" id="{0dd480b5-388e-41e3-a402-9b46b07a1612}" />
 	<object class="GroupTrack" id="{7ed70748-2c56-4c81-bea3-c8860e4cf3f4}">
 		<relationship name="modules">
-			<destination>{f389675f-50ef-4db2-8e5d-c471a2beae1c}</destination>
 			<destination>{70c1c9d0-e4bf-42d5-a061-465dd99bca53}</destination>
 			<destination>{1154a885-39ec-4efd-b45c-0b555479ff24}</destination>
+			<destination>{35cd459c-056f-45f1-b2ac-52441504c7f0}</destination>
 		</relationship>
 		<relationship name="mixerGroup">
 			<destination>{47a4a19a-92bc-460e-8b1b-dca77707a870}</destination>
@@ -76,7 +76,7 @@
 	</object>
 	<object class="Timeline" id="{7363c14a-c821-4a08-a63d-5e5b2b8bc11e}">
 		<relationship name="modules">
-			<destination>{f389675f-50ef-4db2-8e5d-c471a2beae1c}</destination>
+			<destination>{35cd459c-056f-45f1-b2ac-52441504c7f0}</destination>
 		</relationship>
 		<relationship name="markers">
 			<destination>{1f584be4-cd66-4d7a-817c-d11768434033}</destination>
@@ -119,14 +119,6 @@
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{d2fbbb1a-83ef-4172-9dab-0edbb0cd4978}" />
-	<object class="SingleSound" id="{f389675f-50ef-4db2-8e5d-c471a2beae1c}">
-		<property name="length">
-			<value>126.875</value>
-		</property>
-		<relationship name="audioFile">
-			<destination>{93b689fa-5830-4faf-bd00-16a2f40cf290}</destination>
-		</relationship>
-	</object>
 	<object class="TransitionSourceSound" id="{70c1c9d0-e4bf-42d5-a061-465dd99bca53}">
 		<property name="length">
 			<value>1.935483870967742</value>
@@ -143,9 +135,17 @@
 			<destination>{bd651b65-9cec-4f76-a93d-12d870198b6a}</destination>
 		</relationship>
 	</object>
+	<object class="SingleSound" id="{35cd459c-056f-45f1-b2ac-52441504c7f0}">
+		<property name="length">
+			<value>127.26378684807256</value>
+		</property>
+		<relationship name="audioFile">
+			<destination>{a84ab030-e910-44a5-a628-16f3104a7680}</destination>
+		</relationship>
+	</object>
 	<object class="EventMixerGroup" id="{47a4a19a-92bc-460e-8b1b-dca77707a870}">
 		<property name="volume">
-			<value>-4.5</value>
+			<value>-6</value>
 		</property>
 		<property name="name">
 			<value>1 - BGM Mariposa</value>
