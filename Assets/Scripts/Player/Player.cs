@@ -25,6 +25,7 @@ public class Player : MonoBehaviour
 	private void Awake()
 	{
 		Movement = GetComponent<PlayerMovement>();
+		Movement.Parent = this;
 		Character = GetComponent<PlayerCharacter>();
 		Ability = GetComponentInChildren<IAbility>();
 		if (Movement == null || Character == null || Ability == null)

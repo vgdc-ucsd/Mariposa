@@ -8,13 +8,14 @@ public class BatteryPickup : ItemPickup
     private Collider2D col;
     private float pickupDelay = 1;
     
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         spawnPosition = transform.position;
         sr = GetComponent<SpriteRenderer>();
         col = GetComponent<Collider2D>();
     }
-    
+    /*
     private void OnTriggerEnter2D(Collider2D other)
     {
         if(other.CompareTag("Player"))
@@ -44,4 +45,5 @@ public class BatteryPickup : ItemPickup
         sr.enabled = true;
         col.enabled = true;
     }
+    */
 }
