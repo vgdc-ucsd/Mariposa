@@ -9,6 +9,7 @@ public class BlockPuzzleBlock : MonoBehaviour
 
     private Vector3 mouseOffset;
     private bool isDragging = false;
+    private Vector2Int originalPosition;
 
     private SpriteRenderer spriteRenderer;
     private BoxCollider2D boxCollider2D;
@@ -20,7 +21,6 @@ public class BlockPuzzleBlock : MonoBehaviour
         spriteRenderer.color = Color;
         boxCollider2D = GetComponent<BoxCollider2D>();
 
-        // Create preview
         GameObject previewObj = Instantiate(BlockPuzzle.Instance.previewPrefab, transform.parent);
         preview = previewObj.GetComponent<BlockPreview>();
         preview.SetSize(Size);
@@ -44,6 +44,9 @@ public class BlockPuzzleBlock : MonoBehaviour
         {
             isDragging = true;
             mouseOffset = transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            originalPosition = Position;
+            
+            BlockPuzzle.Instance.ClearBlockFromGrid(this);
         }
     }
 
@@ -54,11 +57,14 @@ public class BlockPuzzleBlock : MonoBehaviour
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition) + mouseOffset;
             mousePosition.z = 0;
             
-            Vector2Int validPos = GetValidPosition(mousePosition);
-            Vector3 constrainedPos = BlockPuzzle.Instance.GridToWorldPosition(validPos);
+            Vector2Int nearestGridPos = SnapToGrid(mousePosition);
+            Vector3 previewPos = BlockPuzzle.Instance.GridToWorldPosition(nearestGridPos);
             
             transform.position = mousePosition;
-            ShowPreview(constrainedPos);
+            
+            bool isValidPosition = BlockPuzzle.Instance.IsPositionValidForBlock(nearestGridPos, Size, this);
+            if (isValidPosition) ShowPreview(previewPos);
+            else ShowPreview(previewPos, false);
         }
     }
 
@@ -68,45 +74,41 @@ public class BlockPuzzleBlock : MonoBehaviour
         {
             isDragging = false;
             
-            // Get the closest valid position based on where the player dragged
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition) + mouseOffset;
-            Vector2Int newPosition = GetValidPosition(mousePosition);
+            Vector2Int targetPosition = SnapToGrid(mousePosition);
             
-            if (newPosition != Position)
+            if (BlockPuzzle.Instance.IsPositionValidForBlock(targetPosition, Size, this))
             {
-                Vector2Int movement = newPosition - Position;
-                Vector2Int direction;
-                int steps;
+                Position = targetPosition;
+                transform.position = BlockPuzzle.Instance.GridToWorldPosition(Position);
+                BlockPuzzle.Instance.SetBlockInGrid(this, Position);
                 
-                if (movement.x != 0)
+                if (BlockPuzzle.Instance.CheckSolution())
                 {
-                    direction = new Vector2Int(movement.x > 0 ? 1 : -1, 0);
-                    steps = Mathf.Abs(movement.x);
+                    BlockPuzzle.Instance.IsComplete = true;
+                    BlockPuzzle.Instance.OnComplete();
                 }
-                else
-                {
-                    direction = new Vector2Int(0, movement.y > 0 ? 1 : -1);
-                    steps = Mathf.Abs(movement.y);
-                }
-                
-                BlockPuzzle.Instance.MoveBlock(this, direction, steps);
             }
             else
             {
+                Position = originalPosition;
                 transform.position = BlockPuzzle.Instance.GridToWorldPosition(Position);
+                BlockPuzzle.Instance.SetBlockInGrid(this, Position);
             }
             
-            // Hide the preview when dragging ends
             HidePreview();
         }
     }
 
-    private void ShowPreview(Vector3 position)
+    private void ShowPreview(Vector3 position, bool isValid = true)
     {
         if (preview != null)
         {
-            // Adjust preview position for centered blocks
             preview.SetPosition(position + new Vector3((Size.x - 1f) / 2f, (Size.y - 1f) / 2f, 0));
+            
+            if (!isValid) preview.SetSprite(spriteRenderer.sprite, new Color(1f, 0.3f, 0.3f));
+            else preview.SetSprite(spriteRenderer.sprite, spriteRenderer.color);
+            
             preview.Show();
         }
     }
@@ -119,49 +121,11 @@ public class BlockPuzzleBlock : MonoBehaviour
         }
     }
 
-    private Vector2Int GetValidPosition(Vector3 worldPosition)
-    {
-        Vector2Int targetPos = SnapToGrid(worldPosition);
-        Vector2Int movement = targetPos - Position;
-        
-        // If movement is purely horizontal or vertical
-        if (movement.x != 0 && movement.y == 0)
-        {
-            // Horizontal movement
-            Vector2Int direction = new Vector2Int(movement.x > 0 ? 1 : -1, 0);
-            int maxSteps;
-            if (BlockPuzzle.Instance.CanMoveInDirection(this, direction, out maxSteps))
-            {
-                int desiredSteps = Mathf.Abs(movement.x);
-                // Allow any number of steps up to the maximum
-                int actualSteps = Mathf.Min(desiredSteps, maxSteps);
-                return Position + (direction * actualSteps);
-            }
-        }
-        else if (movement.x == 0 && movement.y != 0)
-        {
-            // Vertical movement
-            Vector2Int direction = new Vector2Int(0, movement.y > 0 ? 1 : -1);
-            int maxSteps;
-            if (BlockPuzzle.Instance.CanMoveInDirection(this, direction, out maxSteps))
-            {
-                int desiredSteps = Mathf.Abs(movement.y);
-                // Allow any number of steps up to the maximum
-                int actualSteps = Mathf.Min(desiredSteps, maxSteps);
-                return Position + (direction * actualSteps);
-            }
-        }
-        
-        return Position;
-    }
-
-    // Snap block's world position to the nearest grid position
     private Vector2Int SnapToGrid(Vector3 worldPosition)
     {
         return BlockPuzzle.Instance.WorldToGridPosition(worldPosition);
     }
 
-    // Adjust the visual size of the block based on its size
     private void AdjustVisualSize()
     {
         if (spriteRenderer != null && boxCollider2D != null)

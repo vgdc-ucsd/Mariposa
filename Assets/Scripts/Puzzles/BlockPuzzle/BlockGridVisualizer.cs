@@ -48,7 +48,7 @@ public class BlockGridVisualizer : MonoBehaviour
         line.startColor = line.endColor = new Color(0.7f, 0.7f, 0.7f, 0.3f);
         line.startWidth = line.endWidth = 0.05f;
         line.positionCount = 2;
-        line.sortingOrder = -1; // Ensure grid is behind blocks
+        line.sortingOrder = -1;
         
         return line;
     }

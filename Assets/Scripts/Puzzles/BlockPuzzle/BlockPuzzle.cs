@@ -30,7 +30,6 @@ public class BlockPuzzle : Puzzle
 
     private void InitializeGrid()
     {
-        // Example: Instantiate blocks
         CreateBlockAtPosition(new Vector2Int(0, 1), new Vector2Int(2, 1), Color.cyan);
         CreateBlockAtPosition(new Vector2Int(0, 2), new Vector2Int(1, 2), Color.green);
         CreateBlockAtPosition(new Vector2Int(1, 2), new Vector2Int(2, 2), Color.yellow);
@@ -49,8 +48,7 @@ public class BlockPuzzle : Puzzle
         block.Position = position;
         block.Size = size;
         block.Color = color;
-        
-        // Convert to world position
+
         blockGO.transform.position = GridToWorldPosition(block.Position);
 
         block.InitializeBlock();
@@ -59,8 +57,6 @@ public class BlockPuzzle : Puzzle
 
     public Vector3 GridToWorldPosition(Vector2Int gridPosition)
     {
-        // Convert from grid coordinates to world coordinates
-        // Add 0.5f to center within grid cells
         float offsetX = -GridWidth / 2f + 0.5f;
         float offsetY = -GridHeight / 2f + 0.5f;
         return new Vector3(
@@ -72,8 +68,6 @@ public class BlockPuzzle : Puzzle
 
     public Vector2Int WorldToGridPosition(Vector3 worldPosition)
     {
-        // Convert from world coordinates to grid coordinates
-        // Subtract 0.5f to account for cell centering
         float offsetX = GridWidth / 2f - 0.5f;
         float offsetY = GridHeight / 2f - 0.5f;
         return new Vector2Int(
@@ -99,13 +93,11 @@ public class BlockPuzzle : Puzzle
 
         Vector2Int newPosition = block.Position + direction;
 
-        // Ensure the new position is within bounds of the grid
         if (newPosition.x < 0 || newPosition.x + block.Size.x > GridWidth || newPosition.y < 0 || newPosition.y + block.Size.y > GridHeight)
         {
-            return false;  // Out of bounds
+            return false;
         }
 
-        // Check if the new space is free (not occupied by other blocks)
         for (int dx = 0; dx < block.Size.x; dx++)
         {
             for (int dy = 0; dy < block.Size.y; dy++)
@@ -115,11 +107,38 @@ public class BlockPuzzle : Puzzle
 
                 if (grid[x, y] != null && grid[x, y] != block)
                 {
-                    return false;  // Space is occupied
+                    return false;
                 }
             }
         }
-        return true;  // The block can move
+        return true;
+    }
+
+    public bool IsPositionValidForBlock(Vector2Int position, Vector2Int size, BlockPuzzleBlock block)
+    {
+        if (IsComplete) return false;
+
+        if (position.x < 0 || position.x + size.x > GridWidth || 
+            position.y < 0 || position.y + size.y > GridHeight)
+        {
+            return false;
+        }
+
+        for (int dx = 0; dx < size.x; dx++)
+        {
+            for (int dy = 0; dy < size.y; dy++)
+            {
+                int x = position.x + dx;
+                int y = position.y + dy;
+
+                if (grid[x, y] != null && grid[x, y] != block)
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     public bool CanMoveInDirection(BlockPuzzleBlock block, Vector2Int direction, out int maxSteps)
@@ -163,17 +182,13 @@ public class BlockPuzzle : Puzzle
 
     public void MoveBlock(BlockPuzzleBlock block, Vector2Int direction, int steps = 1)
     {
-        // Clear block from old position
         ClearBlockFromGrid(block);
         
-        // Move the block to the new position
         block.Position += direction * steps;
         block.transform.position = GridToWorldPosition(block.Position);
         
-        // Update grid with new position
         SetBlockInGrid(block, block.Position);
 
-        // Check if puzzle is solved after each move
         if (CheckSolution())
         {
             IsComplete = true;
@@ -183,7 +198,6 @@ public class BlockPuzzle : Puzzle
 
     public void ClearBlockFromGrid(BlockPuzzleBlock block)
     {
-        // Reset all positions occupied by the block to null
         for (int dx = 0; dx < block.Size.x; dx++)
         {
             for (int dy = 0; dy < block.Size.y; dy++)
@@ -193,11 +207,14 @@ public class BlockPuzzle : Puzzle
         }
     }
 
-    private bool CheckSolution()
+    public bool CheckSolution()
     {
-        for (int i = 0; i < GridHeight; ++i)
+        for (int i = 0; i < GridWidth; ++i)
         {
-            if(grid[SolutionColumn, i] != null) return false;
+            for (int j = 0; j < GridHeight; ++j)
+            {
+                if (grid[i,j] == null) return false;
+            }
         }
         return true;
     }
