@@ -76,6 +76,17 @@ public static class Helper
         Debug.DrawLine(new Vector2(rect.xMax, rect.yMin), rect.min, color, time);
         Debug.DrawLine(new Vector2(rect.xMax, rect.yMin), rect.max, color, time);
     }
+
+    /// <summary>
+    /// Projects a Vector2 a onto another Vector2 b
+    /// </summary>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <returns>a proj b</returns>
+    public static Vector2 Vec2Proj(Vector2 a, Vector2 b)
+    {
+        return Vector2.Dot(a, b) / b.magnitude * b;
+    }
 }
 
 public static class ExtensionMethods
