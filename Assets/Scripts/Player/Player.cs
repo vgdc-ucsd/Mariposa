@@ -106,7 +106,7 @@ public class Player : MonoBehaviour
 
 	public void ObtainCheckpoint(GameObject checkpoint)
 	{
-		CurrentRespawnPoint = checkpoint.GetComponent<RespawnPoint>();
+		UpdateRespawn(checkpoint.GetComponent<RespawnPoint>());
 		checkpoint.GetComponent<Collider2D>().enabled = false;
 
 		switch (Player.ActivePlayer.Character.Name)
