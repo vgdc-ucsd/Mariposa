@@ -28,12 +28,10 @@ public class PauseScript : MonoBehaviour
         {
             if (paused) 
             {
-                Debug.Log("resume");
                 ResumeGame();
             }
             else
             {
-                Debug.Log("pause");
                 PauseGame();
             }
         }
