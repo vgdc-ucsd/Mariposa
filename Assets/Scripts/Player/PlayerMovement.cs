@@ -15,7 +15,6 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
 
     private Vector2 moveDir = Vector2.zero;
 
-
     [Tooltip("The amount of time that wall jumping locks the player out of movement")]
     [SerializeField] private float wallJumpMoveLockTime;
     private float wallJumpMoveLockTimeRemaining = 0.0f;
@@ -52,6 +51,9 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
     [SerializeField] private float jumpHeight = 2;
     private float jumpVelocity;
 
+    [Tooltip("The factor by which the velocity of a normal jump is scaled by for a double jump")]
+    [SerializeField] private float DoubleJumpFactor = 0.5f;
+
     [Tooltip("Checks if Player can use Double Jump")]
     public bool CanDoubleJump;
 
@@ -76,7 +78,7 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
     [SerializeField] private float cornerCorrectMinVelocity;
 
     // whether the player has a charge of double jump (whether player touched the ground since last double jump
-    private bool airJumpAvailable = false;
+    public bool airJumpAvailable = false;
 
     // Useful for when their dependent values are changed during runtime
     private void InitDerivedConsts()
@@ -138,7 +140,7 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
     }
 
     // public method to send a move command
-    public void GetMoveDir(Vector2 dir)
+    public void SetMoveDir(Vector2 dir)
     {
         moveDir = dir.x * Vector2.right;
         if (!Mathf.Approximately(dir.x, 0f)) Player.ActivePlayer.TurnTowards((int)Mathf.Sign(dir.x));
@@ -192,7 +194,7 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
         }
         else if (CanDoubleJump && airJumpAvailable)
         {
-            Velocity.y = 1.25f * jumpVelocity;
+            Velocity.y = jumpVelocity * DoubleJumpFactor;
             airJumpAvailable = false;
             coyoteTimeRemaining = 0f;
         }
@@ -234,7 +236,7 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
     // Shift the player horizontally when they barely bump a ceiling
     private void CeilingCornerCorrect()
     {
-        RaycastHit2D ceilingHit = collisionHits.Where(hit => hit.normal.normalized.y > -LAND_SLOPE_FACTOR).FirstOrDefault();
+        RaycastHit2D ceilingHit = collisionHits.Where(hit => hit.normal.normalized.y < -LAND_SLOPE_FACTOR).FirstOrDefault();
 
         if (!ceilingHit) return;
         if (Velocity.y < cornerCorrectMinVelocity) return;

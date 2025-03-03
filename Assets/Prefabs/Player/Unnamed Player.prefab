@@ -78,12 +78,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 9fa05a2b3dc3e9440801c5721dc69f25, type: 3}
-  m_Color: {r: 0.119199276, g: 1, b: 0, a: 1}
+  m_Sprite: {fileID: 21300000, guid: da7feed84effcfe4ba6f7c51b05ec76a, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.85365856, y: 1.2195122}
+  m_Size: {x: 0.7032258, y: 1.2354839}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -99,7 +99,7 @@ Animator:
   m_GameObject: {fileID: 4874708557998587922}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: fa08b54b1a669a946a98685778546df4, type: 2}
+  m_Controller: {fileID: 9100000, guid: ad93d9a40ebc1ff4b9f26c36200a522c, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -137,6 +137,7 @@ GameObject:
   - component: {fileID: 4759830076982678282}
   - component: {fileID: 407862669245769329}
   - component: {fileID: 476828147665577477}
+  - component: {fileID: 2366443956971805421}
   m_Layer: 8
   m_Name: Unnamed Player
   m_TagString: Untagged
@@ -266,12 +267,12 @@ MonoBehaviour:
   Rb: {fileID: 0}
   State: 0
   SurfaceCollider: {fileID: 0}
-  Gravity: 40
+  Gravity: 50
   TerminalVelocity: 40
   collisionLayer:
     serializedVersion: 2
     m_Bits: 64
-  MoveSpeed: 6
+  MoveSpeed: 6.5
   wallJumpMoveLockTime: 0.3
   wallJumpHorizontalSpeed: 10
   groundAccelerationTime: 0.15
@@ -279,14 +280,16 @@ MonoBehaviour:
   airAccelerationTime: 0.4
   airMovementDecelerationTime: 0.2
   airDragDecelerationTime: 0.5
-  jumpVelocity: 13
+  jumpHeight: 2.5
+  DoubleJumpFactor: 0.85
   CanDoubleJump: 0
   CanWallJump: 1
   coyoteTime: 0.1
   jumpBufferTime: 0.15
-  fallingGravityMultiplier: 0.8
+  fallingGravityMultiplier: 0.9
   cornerCorrectMaxInsetDistance: 0
   cornerCorrectMinVelocity: 0
+  airJumpAvailable: 0
 --- !u!114 &476828147665577477
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -301,6 +304,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: The Unnamed
   Id: 1
+--- !u!95 &2366443956971805421
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4875991570046858898}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 45f242faecf572841a6c96071fa7e7d7, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &8204701539167780829
 PrefabInstance:
   m_ObjectHideFlags: 0

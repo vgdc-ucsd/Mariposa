@@ -1,0 +1,54 @@
+using System;
+using UnityEngine;
+using UnityEngine.Jobs;
+
+public class RespawnPoint : Interactable
+{
+    // creates an action handler that will eventually pass this object to the player when Interact() is called
+    public static event Action<RespawnPoint> OnRespawnPointInteract;
+
+    // Toggles debug messages
+    private bool respawnDebug = false;
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    override protected void Start()
+    {
+        base.Start();
+        respawnDebug = Settings.Instance.Debug.GetRespawnDebug();
+    }
+
+    // insures no memory leaks occur when scene unloads or objects are disabled / destroyed
+    private void OnDisable()
+    {
+        OnRespawnPointInteract = null;
+        if (respawnDebug) Debug.Log($"{this.gameObject.name} was cleaned up");
+    }
+
+    public Vector3 GetRespawnPosition()
+    {
+        return transform.position;
+    }
+
+    // Sets the player's current respawn point to the RespawnPoint object
+    [ContextMenu("Set Respawn Here")]
+    public override void OnInteract()
+    {
+        if (respawnDebug) Debug.Log($"{gameObject.name} was interacted");
+
+        // check to see if any object is currently listening to the action
+        if (OnRespawnPointInteract != null)
+        {
+            // trigger action which will affects all listening objects (hopefully the player object)
+            OnRespawnPointInteract?.Invoke(this);
+        }
+        else
+        {
+            if (respawnDebug) Debug.Log($"{gameObject.name} had no one to listen to (Player was not subscribed to Action)");
+        }
+    }
+
+    protected override void SetProximity()
+    {
+        Proximity = 1f;
+    }
+}

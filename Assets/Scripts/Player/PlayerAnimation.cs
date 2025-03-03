@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class PlayerAnimation : MonoBehaviour
 {
-    SpriteRenderer playerSprite;
+    // SpriteRenderer playerSprite;
     Animator animator;
     void Start()
     {
         animator = GetComponent<Animator>();
-        playerSprite = GetComponent<SpriteRenderer>();
+        // playerSprite = GetComponent<SpriteRenderer>();
     }
 
     void FixedUpdate()
@@ -23,12 +23,12 @@ public class PlayerAnimation : MonoBehaviour
         if (dir == -1)
         {
             animator.SetFloat("xVelocity", 1);
-            playerSprite.flipX = true;
+            animator.SetFloat("faceLeft", 1);
         }
         else
         {
             animator.SetFloat("xVelocity", 1);
-            playerSprite.flipX = false;
+            animator.SetFloat("faceLeft", 0);
         }
     }
 }
