@@ -82,7 +82,9 @@ public class Player : MonoBehaviour
 		}
 		else
 		{
+			Movement.Velocity = Vector2.zero;
 			transform.position = CurrentRespawnPoint.GetComponent<RespawnPoint>().GetRespawnPosition();
+			Movement.ResolveInitialCollisions();
 			if (playerDebug) Debug.Log($"Player respawned to: {CurrentRespawnPoint.gameObject.name} @ {CurrentRespawnPoint.GetRespawnPosition().ToString()}");
 		}
 	}
@@ -90,5 +92,25 @@ public class Player : MonoBehaviour
     public void TurnTowards(int dir)
     {
         FacingDirection = dir;
+    }
+
+	public void Die()
+	{
+		Respawn();
+	}
+
+	public void ObtainCheckpoint(GameObject checkpoint)
+	{
+		CurrentRespawnPoint = checkpoint.GetComponent<RespawnPoint>();
+		checkpoint.GetComponent<Collider2D>().enabled = false;
+	}
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+		switch (collision.gameObject.tag)
+		{
+			case "Death": Die(); break;
+			case "Checkpoint": ObtainCheckpoint(collision.gameObject); break;
+		}
     }
 }
