@@ -5,12 +5,10 @@ using UnityEngine.Events;
 public class NPC : Interactable
 {
 
-	[SerializeField] private float squareDistance;
 	[SerializeField] private Dialogue dialogueNPC;
 	private DialogueManager manager;
 	private bool isSpeaking = false;
 	private int count;
-	[SerializeField] private InRangeDetector interactionRange;
 
 	protected override void Start()
 	{
