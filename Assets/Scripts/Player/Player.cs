@@ -1,36 +1,38 @@
+using FMODUnity;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-	
+
 
 	public RespawnPoint CurrentRespawnPoint = null;
 
 	public static Player ActivePlayer => PlayerController.Instance.ControlledPlayer;
 
 
-    private bool playerDebug;
+	private bool playerDebug;
 	public PlayerCharacter Character;
 	public PlayerMovement Movement;
 	public IAbility Ability;
 
 
-    // which way the character is facing
-    // 1 = right, -1 = left, can never be 0
+	// which way the character is facing
+	// 1 = right, -1 = left, can never be 0
 	// facing direction does not affect movement in most cases
-    public int FacingDirection = 1;
+	public int FacingDirection = 1;
 
-    private void Awake()
+	private void Awake()
 	{
 		Movement = GetComponent<PlayerMovement>();
+		Movement.Parent = this;
 		Character = GetComponent<PlayerCharacter>();
 		Ability = GetComponentInChildren<IAbility>();
 		if (Movement == null || Character == null || Ability == null)
 		{
 			Debug.LogError("Player object not fully set up with Movement, Character, and Ability classes");
 			return;
-		} 
+		}
 	}
 
 	void Start()
@@ -86,16 +88,19 @@ public class Player : MonoBehaviour
 			transform.position = CurrentRespawnPoint.GetComponent<RespawnPoint>().GetRespawnPosition();
 			Movement.ResolveInitialCollisions();
 			if (playerDebug) Debug.Log($"Player respawned to: {CurrentRespawnPoint.gameObject.name} @ {CurrentRespawnPoint.GetRespawnPosition().ToString()}");
+			RuntimeManager.PlayOneShot("event:/sfx/player/respawn");
 		}
 	}
 
-    public void TurnTowards(int dir)
-    {
-        FacingDirection = dir;
-    }
+	public void TurnTowards(int dir)
+	{
+		FacingDirection = dir;
+	}
 
 	public void Die()
 	{
+		// TODO: there may be not that much delay between death and respawn, so remove the below line or add a delay after this line to prevent it overlapping with respawn sfx
+		RuntimeManager.PlayOneShot("event:/sfx/player/death");
 		Respawn();
 	}
 
@@ -103,14 +108,24 @@ public class Player : MonoBehaviour
 	{
 		CurrentRespawnPoint = checkpoint.GetComponent<RespawnPoint>();
 		checkpoint.GetComponent<Collider2D>().enabled = false;
+
+		switch (Player.ActivePlayer.Character.Name)
+		{
+			case "Mariposa":
+				RuntimeManager.PlayOneShot("event:/sfx/puzzle/spawnpoint_activate/mariposa");
+				break;
+			case "Unnamed":
+				RuntimeManager.PlayOneShot("event:/sfx/puzzle/spawnpoint_activate/unnamed");
+				break;
+		}
 	}
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
+	private void OnTriggerEnter2D(Collider2D collision)
+	{
 		switch (collision.gameObject.tag)
 		{
 			case "Death": Die(); break;
 			case "Checkpoint": ObtainCheckpoint(collision.gameObject); break;
 		}
-    }
+	}
 }

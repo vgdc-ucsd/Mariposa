@@ -3,6 +3,8 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
+using FMOD.Studio;
+using FMODUnity;
 
 public enum CharID
 {
@@ -32,6 +34,7 @@ public class PlayerController : MonoBehaviour
     public IControllable CurrentControllable;
 
     private InputSystem_Actions inputs;
+    public bool IsLocked { get; private set; }
 
     private void Awake()
     {
@@ -76,7 +79,8 @@ public class PlayerController : MonoBehaviour
     public void SwitchCharacters()
     {
         if (ControlledPlayer.Character.Id == CharID.Mariposa) SwitchTo(CharID.Unnamed);
-        else SwitchTo(CharID.Mariposa);  
+        else SwitchTo(CharID.Mariposa);
+        
     }
 
     public void SwitchTo(CharID character)
@@ -92,13 +96,13 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-
         ControlledPlayer = charIDMap[character];
         ControlledPlayer.gameObject.SetActive(true);
         StartControlling(ControlledPlayer.Movement);
         Subscribe(ControlledPlayer.Ability);
         ControlledPlayer.Ability.Initialize();
-        
+
+
     }
 
     // map inputs to this controllable and make it the camera target
@@ -109,6 +113,7 @@ public class PlayerController : MonoBehaviour
         Subscribe(controllable);
         CurrentControllable = controllable;
         CameraController.ActiveCamera.StartFollowing(controllable.transform);
+        GameEvents.Instance.Trigger<UpdateTriggers>();
     }
 
     /* INPUT HANDLING */
@@ -118,14 +123,18 @@ public class PlayerController : MonoBehaviour
         listeners.Add(listener);
     }
 
-    public void Unsubscribe(IInputListener Listener) 
-    { 
-        listeners.Remove(Listener); 
+    public void Unsubscribe(IInputListener Listener)
+    {
+        listeners.Remove(Listener);
+    }
+
+    public void ToggleMovementLock() {
+        IsLocked = !IsLocked;
     }
 
     private void Update()
     {
-        // TEMPORARY AND SHOULD BE REMOVED IN ANY NON-TEST BUILD
+        // TODO: TEMPORARY AND SHOULD BE REMOVED IN ANY NON-TEST BUILD
         if (Input.GetKeyDown(KeyCode.Tab)) SwitchCharacters();
         if (Input.GetKeyDown(KeyCode.E)) SendInteract();
     }
@@ -143,6 +152,7 @@ public class PlayerController : MonoBehaviour
     public void SendJump(InputAction.CallbackContext ctx)
     {
         listeners.ForEachReverse(x => x.JumpInputDown());
+        PlayJump();
     }
 
     public void SendInteract()
@@ -155,8 +165,16 @@ public class PlayerController : MonoBehaviour
         Vector2 moveDir = inputs.Player.Move.ReadValue<Vector2>();
         foreach (var listener in new List<IInputListener>(listeners))
         {
-            listener.SetMoveDir(moveDir);
+            if (IsLocked) listener.SetMoveDir(Vector2.zero);
+            else listener.SetMoveDir(moveDir);
         }
+    }
+
+    public void PlayJump()
+    {
+        EventInstance footstepInstance = RuntimeManager.CreateInstance("event:/sfx/player/jump");
+        footstepInstance.start();
+        footstepInstance.release();
     }
 
 }

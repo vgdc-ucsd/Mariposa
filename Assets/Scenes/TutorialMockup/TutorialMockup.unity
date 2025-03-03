@@ -746,6 +746,7 @@ MonoBehaviour:
   mask: {fileID: 2088076051}
   portrait: {fileID: 122614146}
   DIALOGUE_SPEED: 0.025
+  finishedTypewriter: 0
 --- !u!114 &1142881597
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1066,6 +1067,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: 0-1-M1
       objectReference: {fileID: 0}
+    - target: {fileID: 774169905530092198, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3529839200492878378, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
       propertyPath: CameraBounds
       value: 
@@ -1175,9 +1180,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f3b5c43171ea9e49b23cdf6dde84576, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  squareDistance: 10
   dialogueNPC: {fileID: 11400000, guid: bdf826ac9d2e114488901cfd2c701b41, type: 2}
-  interactionRange: {fileID: 0}
+  finishDialogue: {fileID: 11400000, guid: 42371dfc69bd25d4ab36e4ac6f763f37, type: 2}
 --- !u!1 &2003302496
 GameObject:
   m_ObjectHideFlags: 0
@@ -1377,6 +1381,10 @@ PrefabInstance:
     - target: {fileID: 8581982111406700234, guid: 1ab7bc7f443708b46ae44f7ad95f4288, type: 3}
       propertyPath: m_Name
       value: 0-1-U1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8581982111406700234, guid: 1ab7bc7f443708b46ae44f7ad95f4288, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

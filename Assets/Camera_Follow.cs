@@ -43,7 +43,7 @@ public class Camera_Follow : MonoBehaviour
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         targetPosition = (Vector2)target.position + offset;
         Debug.DrawLine(targetPosition, targetPosition + GetMinSeparation(targetPosition, boundingRects));
