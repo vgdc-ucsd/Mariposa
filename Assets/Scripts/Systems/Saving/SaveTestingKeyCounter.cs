@@ -1,4 +1,3 @@
-using UnityEditor.Overlays;
 using UnityEngine;
 
 /// <summary>
@@ -10,7 +9,7 @@ public class SaveTestingKeyCounter : MonoBehaviour, IDataPersistence
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -25,8 +24,8 @@ public class SaveTestingKeyCounter : MonoBehaviour, IDataPersistence
     public void SaveData(ref GameData gameData)
     {
         gameData.TEST_keyStrokeCount = this.keyCount;
-    } 
-    
+    }
+
     public void LoadData(GameData gameData)
     {
         this.keyCount = gameData.TEST_keyStrokeCount;

@@ -3,10 +3,15 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+	
+
 	public RespawnPoint CurrentRespawnPoint = null;
 
-	public static Player ActivePlayer;
-	private bool playerDebug;
+	public static Player ActivePlayer => PlayerController.Instance.ControlledPlayer;
+
+
+    private bool playerDebug;
+	public PlayerCharacter Character;
 	public PlayerMovement Movement;
 	public IAbility Ability;
 
@@ -18,12 +23,14 @@ public class Player : MonoBehaviour
 
     private void Awake()
 	{
-		if (ActivePlayer == null)
-		{
-			ActivePlayer = this;
-		}
 		Movement = GetComponent<PlayerMovement>();
+		Character = GetComponent<PlayerCharacter>();
 		Ability = GetComponentInChildren<IAbility>();
+		if (Movement == null || Character == null || Ability == null)
+		{
+			Debug.LogError("Player object not fully set up with Movement, Character, and Ability classes");
+			return;
+		} 
 	}
 
 	void Start()
@@ -75,7 +82,9 @@ public class Player : MonoBehaviour
 		}
 		else
 		{
+			Movement.Velocity = Vector2.zero;
 			transform.position = CurrentRespawnPoint.GetComponent<RespawnPoint>().GetRespawnPosition();
+			Movement.ResolveInitialCollisions();
 			if (playerDebug) Debug.Log($"Player respawned to: {CurrentRespawnPoint.gameObject.name} @ {CurrentRespawnPoint.GetRespawnPosition().ToString()}");
 		}
 	}
@@ -83,5 +92,25 @@ public class Player : MonoBehaviour
     public void TurnTowards(int dir)
     {
         FacingDirection = dir;
+    }
+
+	public void Die()
+	{
+		Respawn();
+	}
+
+	public void ObtainCheckpoint(GameObject checkpoint)
+	{
+		CurrentRespawnPoint = checkpoint.GetComponent<RespawnPoint>();
+		checkpoint.GetComponent<Collider2D>().enabled = false;
+	}
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+		switch (collision.gameObject.tag)
+		{
+			case "Death": Die(); break;
+			case "Checkpoint": ObtainCheckpoint(collision.gameObject); break;
+		}
     }
 }

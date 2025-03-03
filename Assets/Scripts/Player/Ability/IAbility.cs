@@ -1,6 +1,4 @@
-public interface IAbility
+public interface IAbility : IInputListener
 {
-    public void AbilityInputDown();
-    public void AbilityInputUp();
-    public void JumpInputDown();
+    public void Initialize();
 }

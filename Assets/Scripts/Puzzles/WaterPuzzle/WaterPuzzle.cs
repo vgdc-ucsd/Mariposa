@@ -2,7 +2,6 @@ using JetBrains.Annotations;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.InputSystem.Editor;
 using UnityEngine.Timeline;
 
 public class WaterPuzzle : Puzzle
@@ -49,8 +48,8 @@ public class WaterPuzzle : Puzzle
             Debug.Log("Tried to create more than one instance of the WaterPuzzle singleton!");
         }
 
-        // move the puzzle object so that the center of the puzzle is at (0, 0, 0) 
-        PuzzleUI.transform.position = new Vector3(TileWidth * -GridWidth / 2, TileHeight * GridHeight / 2, 0);
+        // move the puzzle object so that the center of the puzzle is at (0, 0, 0)
+        PuzzleUI.transform.position = new Vector3(TileWidth * (-GridWidth + 1) / 2, TileHeight * (GridHeight - 1) / 2, 0);
 
         Tiles = new WaterPuzzleTile[GridWidth, GridHeight];
         for (int i = 0; i < GridWidth; i++)
@@ -67,7 +66,7 @@ public class WaterPuzzle : Puzzle
         }
         StartTile = Tiles[0, GridHeight / 2];
         EndTile = Tiles[GridWidth - 1, GridHeight / 2];
-        
+
 
         GenerateSolution();
     }
@@ -90,7 +89,7 @@ public class WaterPuzzle : Puzzle
             if (tile == null) continue;
             tile.EmptyTile();
         }
-        
+
         StartTile.FillTile(true);
     }
 
@@ -99,7 +98,7 @@ public class WaterPuzzle : Puzzle
         OnComplete();
         PuzzleComplete = true;
     }
-    
+
     /// <summary>
     /// Procedurally generates a solution for the puzzle.
     /// Set RandomTurnChance to a value close to 1 for more turns in the solution path,
@@ -165,7 +164,7 @@ public class WaterPuzzle : Puzzle
             }
             else if (Random.Range(0f, 1f) < RandomTurnChance)
             {
-                
+
                 TurnDirection(direction).CopyTo(direction, 0);
                 if (Random.Range(0f, 1f) < 0.5f)
                 {
@@ -183,7 +182,7 @@ public class WaterPuzzle : Puzzle
             // if there's no free direction to go, attempt to turn right
             // also try to avoid making 180 degree turns if possible
             int turnsMade = 0;
-            while (!IsTileFree(x + direction[0], y + direction[1]) 
+            while (!IsTileFree(x + direction[0], y + direction[1])
                 || (direction[0] == 1 && prevDirection[0] == -1)
                 || (direction[0] == -1 && prevDirection[0] == 1)
                 || (direction[1] == -1 && prevDirection[1] == 1)
@@ -208,12 +207,12 @@ public class WaterPuzzle : Puzzle
                 y += direction[1];
                 if (turned) Tiles[x - direction[0], y - direction[1]].MustBeTurn = true;
                 else Tiles[x - direction[0], y - direction[1]].MustBeStraight = true;
-                
-                
+
+
                 if (!tilesInSolution.Contains(Tiles[x, y])) tilesInSolution.Add(Tiles[x, y]);
                 else Tiles[x, y].MustBeCross = true;
-                
-                    
+
+
             }
 
 
@@ -245,8 +244,8 @@ public class WaterPuzzle : Puzzle
         else if (direction[0] == -1 && direction[1] == 0) return new int[] { 0, 1 };
         else if (direction[0] == 0 && direction[1] == 1) return new int[] { 1, 0 };
         else return new int[] { 0, 0 };
-        
+
     }
 
-    
+
 }
