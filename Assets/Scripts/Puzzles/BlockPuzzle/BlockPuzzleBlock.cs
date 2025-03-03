@@ -2,32 +2,37 @@ using UnityEngine;
 
 public class BlockPuzzleBlock : MonoBehaviour
 {
-    private const float BLOCK_SIZE_PADDING = 0.05f;
-    public Vector2Int Size;
     public Vector2Int Position;
+    public Vector2Int Size;
+    public Vector2Int[] Cells;
     public Color Color;
+    public GameObject PreviewPrefab;
+    public bool IsFixed = false;
 
     private Vector3 mouseOffset;
     private bool isDragging = false;
     private Vector2Int originalPosition;
 
     private SpriteRenderer spriteRenderer;
-    private BoxCollider2D boxCollider2D;
     private BlockPreview preview;
 
     public void InitializeBlock()
     {
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         spriteRenderer.color = Color;
-        boxCollider2D = GetComponent<BoxCollider2D>();
 
-        GameObject previewObj = Instantiate(BlockPuzzle.Instance.previewPrefab, transform.parent);
-        preview = previewObj.GetComponent<BlockPreview>();
-        preview.SetSize(Size);
-        preview.SetSprite(spriteRenderer.sprite, spriteRenderer.color);
+        // For debug, remove later
+        SpriteRenderer[] sprites = GetComponentsInChildren<SpriteRenderer>();
+        foreach (SpriteRenderer sprite in sprites) sprite.color = Color;
 
-        if (spriteRenderer != null && boxCollider2D != null) AdjustVisualSize();
-        else Debug.LogWarning("SpriteRenderer not found on child object or BoxCollider2D not found on object.");
+        if (PreviewPrefab != null)
+        {
+            GameObject previewObj = Instantiate(PreviewPrefab, transform.parent);
+            preview = previewObj.GetComponent<BlockPreview>();
+            preview.SetSprite(spriteRenderer.sprite, spriteRenderer.color);
+        }
+
+        BlockPuzzle.Instance.SetBlockInGrid(this, Position);
     }
 
     private void OnDestroy()
@@ -40,12 +45,12 @@ public class BlockPuzzleBlock : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (BlockPuzzle.Instance.CanMove(this, Vector2Int.zero))
+        if (BlockPuzzle.Instance.CanMove(this, Vector2Int.zero) && !IsFixed)
         {
             isDragging = true;
             mouseOffset = transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition);
             originalPosition = Position;
-            
+
             BlockPuzzle.Instance.ClearBlockFromGrid(this);
         }
     }
@@ -56,13 +61,13 @@ public class BlockPuzzleBlock : MonoBehaviour
         {
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition) + mouseOffset;
             mousePosition.z = 0;
-            
+
             Vector2Int nearestGridPos = SnapToGrid(mousePosition);
             Vector3 previewPos = BlockPuzzle.Instance.GridToWorldPosition(nearestGridPos);
-            
+
             transform.position = mousePosition;
-            
-            bool isValidPosition = BlockPuzzle.Instance.IsPositionValidForBlock(nearestGridPos, Size, this);
+
+            bool isValidPosition = BlockPuzzle.Instance.IsPositionValidForBlock(nearestGridPos, this);
             if (isValidPosition) ShowPreview(previewPos);
             else ShowPreview(previewPos, false);
         }
@@ -73,11 +78,11 @@ public class BlockPuzzleBlock : MonoBehaviour
         if (isDragging)
         {
             isDragging = false;
-            
+
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition) + mouseOffset;
             Vector2Int targetPosition = SnapToGrid(mousePosition);
-            
-            if (BlockPuzzle.Instance.IsPositionValidForBlock(targetPosition, Size, this))
+
+            if (BlockPuzzle.Instance.IsPositionValidForBlock(targetPosition, this))
             {
                 Position = targetPosition;
                 transform.position = BlockPuzzle.Instance.GridToWorldPosition(Position);
@@ -95,7 +100,7 @@ public class BlockPuzzleBlock : MonoBehaviour
                 transform.position = BlockPuzzle.Instance.GridToWorldPosition(Position);
                 BlockPuzzle.Instance.SetBlockInGrid(this, Position);
             }
-            
+
             HidePreview();
         }
     }
@@ -105,10 +110,10 @@ public class BlockPuzzleBlock : MonoBehaviour
         if (preview != null)
         {
             preview.SetPosition(position + new Vector3((Size.x - 1f) / 2f, (Size.y - 1f) / 2f, 0));
-            
+
             if (!isValid) preview.SetSprite(spriteRenderer.sprite, new Color(1f, 0.3f, 0.3f));
             else preview.SetSprite(spriteRenderer.sprite, spriteRenderer.color);
-            
+
             preview.Show();
         }
     }
@@ -124,18 +129,5 @@ public class BlockPuzzleBlock : MonoBehaviour
     private Vector2Int SnapToGrid(Vector3 worldPosition)
     {
         return BlockPuzzle.Instance.WorldToGridPosition(worldPosition);
-    }
-
-    private void AdjustVisualSize()
-    {
-        if (spriteRenderer != null && boxCollider2D != null)
-        {
-            spriteRenderer.transform.localScale = new Vector3(Size.x - BLOCK_SIZE_PADDING, Size.y - BLOCK_SIZE_PADDING, 1);
-            Vector3 adjustedPosition = new Vector3((Size.x - 1f) / 2f, (Size.y - 1f) / 2f, 0);
-            spriteRenderer.transform.localPosition = adjustedPosition;
-            
-            boxCollider2D.size = new Vector2(Size.x, Size.y);
-            boxCollider2D.offset = new Vector2((Size.x - 1f) / 2f, (Size.y - 1f) / 2f);
-        }
     }
 }
