@@ -6,6 +6,28 @@ public interface IControllable : IInputListener
 {
     public Transform transform { get; }
 
+    public Body body
+    {
+        get
+        {
+            if (transform.GetComponent<Body>() == null)
+            {
+                Debug.LogError("Controller is not associated with a body");
+            }
+            return transform.GetComponent<Body>();
+        }
+    }
+
+    void IInputListener.InteractInputDown()
+    {
+        body.InsideTriggers.ForEachReverse(trigger =>
+        {
+            if (trigger is InteractionTrigger it)
+            {
+                it.InteractTrigger(this);
+            }
+        });
+    }
     /*
     public void StartControlling()
     {

@@ -21,7 +21,7 @@ public enum BodyState
 public abstract class FreeBody : Body
 {
     public BodyState State;
-    public BoxCollider2D SurfaceCollider;
+    
     protected List<RaycastHit2D> collisionHits = new(); // All collision hits for the current frame
 
     protected float fdt; // Shorthand for fixed delta time
@@ -48,7 +48,7 @@ public abstract class FreeBody : Body
     {
         base.Awake();
         Unlock();
-        SurfaceCollider = GetComponent<BoxCollider2D>();
+        
 
         ResolveInitialCollisions();
     }
