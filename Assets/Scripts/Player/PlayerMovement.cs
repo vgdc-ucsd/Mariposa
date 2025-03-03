@@ -9,7 +9,7 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
 {
     public static PlayerMovement Instance;
     public Player Parent;
-    protected override bool activateTriggers => true;
+    public override bool ActivateTriggers => (IControllable)this == PlayerController.Instance.CurrentControllable;
 
     [Header("Horizontal Parameters")]
 

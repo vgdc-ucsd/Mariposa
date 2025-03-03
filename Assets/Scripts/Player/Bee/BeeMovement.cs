@@ -40,7 +40,7 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
     // Useful for when their dependent values are changed during runtime
 
     // only activate triggers when it is being controlled
-    protected override bool activateTriggers => parent.IsControlled;
+    public override bool ActivateTriggers => parent.IsControlled;
 
     SpriteRenderer beeSprite;
 
@@ -215,7 +215,7 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
 
     protected override void OnTriggerExit2D(Collider2D collision)
     {
-        base.OnTriggerEnter2D(collision);
+        base.OnTriggerExit2D(collision);
         if (collision.CompareTag("VelocityField"))
         {
             velocityFieldVelocity = Vector2.zero;

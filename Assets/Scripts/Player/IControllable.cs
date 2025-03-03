@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 // A physical entity in the world that responds to player controls (player, bee, etc)
@@ -20,13 +21,13 @@ public interface IControllable : IInputListener
 
     void IInputListener.InteractInputDown()
     {
-        body.InsideTriggers.ForEachReverse(trigger =>
+        foreach (Trigger trigger in new List<Trigger>(body.InsideTriggers))
         {
             if (trigger is InteractionTrigger it)
             {
                 it.InteractTrigger(this);
             }
-        });
+        }
     }
     /*
     public void StartControlling()

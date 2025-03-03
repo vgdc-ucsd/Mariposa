@@ -13,7 +13,9 @@ public class ItemPickup : Interactable
     [Header("Pickup Settings")]
     [SerializeField] protected InventoryItemSO item;
     [SerializeField] protected SpriteRenderer spriteRenderer;
-    
+
+    public override bool DestroyOnInteract => true;
+
     protected override void Awake()
     {
         base.Awake();
@@ -58,6 +60,6 @@ public class ItemPickup : Interactable
         {
             Debug.LogError("InventoryManager.Instance or item is null!");
         }
-        Destroy(gameObject);
+        //Destroy(gameObject);
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 public class InteractionTrigger : Trigger
 {
     public Interactable LinkedInteractable = null;
+    
     public void Start()
     {
         if (LinkedInteractable == null)
@@ -31,6 +32,11 @@ public class InteractionTrigger : Trigger
         if (GetIsInside(controllable.body))
         {
             LinkedInteractable.OnInteract(controllable);
+            if (LinkedInteractable.DestroyOnInteract)
+            {
+                Destroy(LinkedInteractable.gameObject);
+            }
+
         }
     }
 }

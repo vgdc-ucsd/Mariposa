@@ -9,8 +9,8 @@ public abstract class Body : MonoBehaviour
     public Vector2 Velocity;
     public Rigidbody2D Rb;
     public BoxCollider2D SurfaceCollider; // by default the collider is disabled 
-    public List<Trigger> InsideTriggers; 
-    protected virtual bool activateTriggers => false;
+    public HashSet<Trigger> InsideTriggers = new(); 
+    public virtual bool ActivateTriggers => false;
 
 
     protected virtual void Awake()
@@ -32,7 +32,7 @@ public abstract class Body : MonoBehaviour
     protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
         Trigger trigger = collision.GetComponent<Trigger>();
-        if (activateTriggers && trigger != null)
+        if (ActivateTriggers && trigger != null)
         {
             trigger.OnEnter(this);
         }
@@ -41,7 +41,7 @@ public abstract class Body : MonoBehaviour
     protected virtual void OnTriggerExit2D(Collider2D collision)
     {
         Trigger trigger = collision.GetComponent<Trigger>();
-        if (activateTriggers && trigger != null)
+        if (ActivateTriggers && trigger != null)
         {
             trigger.OnExit(this);
         }

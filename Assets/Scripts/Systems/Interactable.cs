@@ -5,6 +5,8 @@ public abstract class Interactable : MonoBehaviour
 {
     // Interactables must have an associated trigger that links to it as a child.
     // If no trigger is found, create a default one.
+    public virtual bool DestroyOnInteract => false;
+
     protected virtual void Awake() { 
         if (GetComponentInChildren<InteractionTrigger>() == null) 
         {
