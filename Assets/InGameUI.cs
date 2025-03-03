@@ -8,6 +8,7 @@ public class InGameUI : Singleton<InGameUI>
     {
         base.Awake();
         canvas = GetComponent<Canvas>();
+        InteractPrompt(false);
     }
 
     public void InteractPrompt(bool toggle)
