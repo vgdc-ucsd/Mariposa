@@ -129,6 +129,7 @@ public class PlayerController : MonoBehaviour
     {
         // TEMPORARY AND SHOULD BE REMOVED IN ANY NON-TEST BUILD
         if (Input.GetKeyDown(KeyCode.Tab)) SwitchCharacters();
+        if (Input.GetKeyDown(KeyCode.E)) SendInteract();
     }
 
     public void SendAbilityDown(InputAction.CallbackContext ctx)
@@ -145,6 +146,11 @@ public class PlayerController : MonoBehaviour
     {
         listeners.ForEachReverse(x => x.JumpInputDown());
         PlayJump();
+    }
+
+    public void SendInteract()
+    {
+        listeners.ForEachReverse(x => x.InteractInputDown());
     }
 
     private void FixedUpdate()

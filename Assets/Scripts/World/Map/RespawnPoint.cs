@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Jobs;
 
-public class RespawnPoint : Interactable
+public class RespawnPoint : MonoBehaviour
 {
     // creates an action handler that will eventually pass this object to the player when Interact() is called
     public static event Action<RespawnPoint> OnRespawnPointInteract;
@@ -11,9 +11,8 @@ public class RespawnPoint : Interactable
     private bool respawnDebug = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    override protected void Start()
+    protected void Start()
     {
-        base.Start();
         respawnDebug = Settings.Instance.Debug.GetRespawnDebug();
     }
 
@@ -31,7 +30,7 @@ public class RespawnPoint : Interactable
 
     // Sets the player's current respawn point to the RespawnPoint object
     [ContextMenu("Set Respawn Here")]
-    public override void OnInteract()
+    public void SetRespawn()
     {
         if (respawnDebug) Debug.Log($"{gameObject.name} was interacted");
 
@@ -47,8 +46,4 @@ public class RespawnPoint : Interactable
         }
     }
 
-    protected override void SetProximity()
-    {
-        Proximity = 1f;
-    }
 }

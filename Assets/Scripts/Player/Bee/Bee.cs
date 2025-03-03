@@ -9,6 +9,7 @@ public class Bee : MonoBehaviour
 {
     public BeeMovement Movement;
     public float MaxControlRadius;
+    public float FollowRadius = 2f;
     public bool IsControlled = false;
 
 
@@ -20,6 +21,7 @@ public class Bee : MonoBehaviour
     public void ToggleControl(bool toggle)
     {
         IsControlled = toggle;
+        Movement.ToggleCollisions(toggle);
         if (toggle)
         {
             PlayerController.Instance.StartControlling(Movement);
@@ -27,7 +29,7 @@ public class Bee : MonoBehaviour
         else
         {
             PlayerController.Instance.StartControlling(Player.ActivePlayer.Movement);
-            Movement.SetBehavior(new Follow(transform, Player.ActivePlayer.transform));
+            Movement.SetBehavior(new Follow(transform, Player.ActivePlayer.transform, 2f, FollowRadius));
         }
     }
 

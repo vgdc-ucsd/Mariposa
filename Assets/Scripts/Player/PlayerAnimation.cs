@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerAnimation : MonoBehaviour
 {
-    SpriteRenderer playerSprite;
+    // SpriteRenderer playerSprite;
     Animator animator;
     [SerializeField] String TerrainTag = "Default";
     [SerializeField] String FootstepSoundEvent = "event:/sfx/player/footstep";
@@ -17,7 +17,7 @@ public class PlayerAnimation : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
-        playerSprite = GetComponent<SpriteRenderer>();
+        // playerSprite = GetComponent<SpriteRenderer>();
     }
 
     void FixedUpdate()
@@ -38,13 +38,13 @@ public class PlayerAnimation : MonoBehaviour
         if (dir == -1)
         {
             animator.SetFloat("xVelocity", 1);
-            playerSprite.flipX = true;
+            animator.SetFloat("faceLeft", 1);
             WasRunning = true;
         }
         else
         {
             animator.SetFloat("xVelocity", 1);
-            playerSprite.flipX = false;
+            animator.SetFloat("faceLeft", 0);
             WasRunning = true;
         }
 
