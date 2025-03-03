@@ -1,12 +1,16 @@
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 
 public class PauseScript : MonoBehaviour
 {
     public GameObject pauseMenu;   
-    public GameObject pauseMenuInstance;
+    public Slider sfxSlider;
+    public Slider musicSlider;
+    public Slider dialogueSlider;
+    public Slider masterSlider;
+
 
     public InputActionReference pauseAction;
     public bool paused = false;
@@ -55,29 +59,29 @@ public class PauseScript : MonoBehaviour
         paused = false;
     }
 
-    public void UpdateSFXVolumeSetting(GameObject sfxSlider)
+    public void UpdateSFXVolumeSetting()
     {
         Debug.Log("change detected");
-        sfxVolumeValue = sfxSlider.GetComponent<Slider>().value;
+        sfxVolumeValue = sfxSlider.value;
     }
 
-    public void UpdateMusicVolumeSetting(GameObject musicSlider)
+    public void UpdateMusicVolumeSetting()
     {            
         Debug.Log("change detected");
-        sfxVolumeValue = musicSlider.GetComponent<Slider>().value;
+        musicVolumeValue = musicSlider.value;
     }
 
-    public void UpdateMasterVolumeSetting(GameObject masterVolumeSlider)
+    public void UpdateMasterVolumeSetting()
     {
         Debug.Log("change detected");
-        sfxVolumeValue = masterVolumeSlider.GetComponent<Slider>().value;
+        masterVolumeValue = masterSlider.value;
         AudioListener.volume = sfxVolumeValue;
     }
 
-    public void UpdateDialogueVolumeSetting(GameObject dialogueVolumeSlider)
+    public void UpdateDialogueVolumeSetting()
     {
         Debug.Log("change detected");
-        sfxVolumeValue = dialogueVolumeSlider.GetComponent<Slider>().value;
+        dialogueVolumeValue = dialogueSlider.value;
     }
 
     public void OpenVideoSettings(GameObject videoSettings)
