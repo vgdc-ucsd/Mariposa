@@ -31,6 +31,7 @@ public class ItemPickup : Interactable
     /// </summary>
     public override void OnInteract(IControllable controllable)
     {
+        Debug.Log("picked up");
         if (InventoryManager.Instance != null && item != null)
         {
             InventoryType type;
