@@ -2250,6 +2250,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   squareDistance: 4
   dialogueNPC: {fileID: 11400000, guid: 185360f6aef22ab189cb5ff38f11b877, type: 2}
+  interactionRange: {fileID: 0}
 --- !u!4 &804955732 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5209794864453266103, guid: 56b1677deb459f240aceaed0bc2666e2, type: 3}
@@ -3439,17 +3440,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DialogueWindow: {fileID: 1491894786}
   rect: {fileID: 1919972567}
-  mariRect: {fileID: 0}
-  unnRect: {fileID: 0}
-  mariRadio: {fileID: 0}
-  unnRadio: {fileID: 0}
+  mariRect: {fileID: 8088097820553177828, guid: e98854153251a124e89d2666e921b4a0, type: 3}
+  unnRect: {fileID: -1207560325795574624, guid: df74879661a354e43bbfe531a95251df, type: 3}
+  mariRadio: {fileID: 4233357771194665771, guid: 4db3d42c00360974e906e05e7b5af25d, type: 3}
+  unnRadio: {fileID: -6075865628540360912, guid: 03374d6fa2d8bff49ac14ac382b3dc1a, type: 3}
   speakerTarget: {fileID: 1000353351}
   lineTarget: {fileID: 1537926364}
   frame: {fileID: 2087456909}
-  mariFrame: {fileID: 0}
-  unnFrame: {fileID: 0}
-  mask: {fileID: 0}
-  portrait: {fileID: 0}
+  mariFrame: {fileID: -6082742533581839185, guid: 646fbe2d453245d41b379dd427ad9db9, type: 3}
+  unnFrame: {fileID: 6586461156150141773, guid: 1158fcba1896f4e46a01e615fe278927, type: 3}
+  mask: {fileID: 302920744}
+  portrait: {fileID: 1634739028}
+  DIALOGUE_SPEED: 0.025
 --- !u!114 &1491894788
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4677,6 +4679,10 @@ PrefabInstance:
       propertyPath: MariposaRef
       value: 
       objectReference: {fileID: 296957982}
+    - target: {fileID: 9113933502358429025, guid: 186d15b5fc42ba84ca10b181a4d2120e, type: 3}
+      propertyPath: StartingPlayer
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
