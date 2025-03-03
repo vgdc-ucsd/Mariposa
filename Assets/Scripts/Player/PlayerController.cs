@@ -98,7 +98,12 @@ public class PlayerController : MonoBehaviour
         StartControlling(ControlledPlayer.Movement);
         Subscribe(ControlledPlayer.Ability);
         ControlledPlayer.Ability.Initialize();
-        
+        InventoryUIManager inventoryUI = FindObjectOfType<InventoryUIManager>();
+        if(inventoryUI != null)
+        {
+            InventoryType newActiveInventory = (character == CharID.Mariposa) ? InventoryType.Mariposa : InventoryType.Unnamed;
+            inventoryUI.SetActiveCharacterInventory(newActiveInventory);
+        }
     }
 
     // map inputs to this controllable and make it the camera target

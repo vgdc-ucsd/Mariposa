@@ -128,6 +128,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1336198}
+  - component: {fileID: 1336200}
+  - component: {fileID: 1336199}
   m_Layer: 5
   m_Name: Center Panel
   m_TagString: Untagged
@@ -155,8 +157,46 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 600, y: 0}
+  m_SizeDelta: {x: 721.97, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1336199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1336197}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.7176471}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 4762584615858637958, guid: 92bafdefb2050164995f0256c45a29fd, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 1
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1336200
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1336197}
+  m_CullTransparentMesh: 1
 --- !u!1 &15592661
 GameObject:
   m_ObjectHideFlags: 0
@@ -294,6 +334,7 @@ MonoBehaviour:
   iconImage: {fileID: 862316024}
   slotButton: {fileID: 15592665}
   countText: {fileID: 0}
+  slotBackgroundImage: {fileID: 15592663}
 --- !u!1 &101784307
 GameObject:
   m_ObjectHideFlags: 0
@@ -349,7 +390,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.9433962, g: 0.16464934, b: 0.16464934, a: 1}
+  m_Color: {r: 0.9433962, g: 0.16464934, b: 0.16464934, a: 0.39607844}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1356,6 +1397,7 @@ MonoBehaviour:
   iconImage: {fileID: 1762958322}
   slotButton: {fileID: 397254543}
   countText: {fileID: 1986126680}
+  slotBackgroundImage: {fileID: 397254541}
 --- !u!1 &410105090
 GameObject:
   m_ObjectHideFlags: 0
@@ -1507,7 +1549,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &500690576
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2215,7 +2257,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.6039216}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2672,6 +2714,7 @@ MonoBehaviour:
   iconImage: {fileID: 1389071906}
   slotButton: {fileID: 928734481}
   countText: {fileID: 1132543066}
+  slotBackgroundImage: {fileID: 928734479}
 --- !u!1 &946459852
 GameObject:
   m_ObjectHideFlags: 0
@@ -2978,6 +3021,7 @@ MonoBehaviour:
   iconImage: {fileID: 1975683821}
   slotButton: {fileID: 1024493138}
   countText: {fileID: 1901670389}
+  slotBackgroundImage: {fileID: 1024493136}
 --- !u!1 &1030627888
 GameObject:
   m_ObjectHideFlags: 0
@@ -3034,7 +3078,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.21960786, g: 0.21960786, b: 0.21960786, a: 1}
+  m_Color: {r: 0.21960786, g: 0.21960786, b: 0.21960786, a: 0.39607844}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -3485,7 +3529,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -6082742533581839185, guid: 6680416060c55df4e917120f9fef01f4, type: 3}
+  m_Sprite: {fileID: 7554722028945834149, guid: 1dc7e36dc40fb9d408dfa07a492999e3, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -3562,6 +3606,7 @@ MonoBehaviour:
   iconImage: {fileID: 818385952}
   slotButton: {fileID: 1353760290}
   countText: {fileID: 777771800}
+  slotBackgroundImage: {fileID: 1353760288}
 --- !u!1 &1389071904
 GameObject:
   m_ObjectHideFlags: 0
@@ -3911,6 +3956,7 @@ MonoBehaviour:
   iconImage: {fileID: 1389071906}
   slotButton: {fileID: 1448222989}
   countText: {fileID: 2093257946}
+  slotBackgroundImage: {fileID: 1448222987}
 --- !u!1 &1472589906
 GameObject:
   m_ObjectHideFlags: 0
@@ -4182,7 +4228,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -6082742533581839185, guid: 6680416060c55df4e917120f9fef01f4, type: 3}
+  m_Sprite: {fileID: 3285886813759836063, guid: 842b128666cae1c428a3300a0d7adc22, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -4259,6 +4305,7 @@ MonoBehaviour:
   iconImage: {fileID: 1342961061}
   slotButton: {fileID: 1532736571}
   countText: {fileID: 0}
+  slotBackgroundImage: {fileID: 0}
 --- !u!1 &1534696540
 GameObject:
   m_ObjectHideFlags: 0
@@ -4396,6 +4443,7 @@ MonoBehaviour:
   iconImage: {fileID: 761815079}
   slotButton: {fileID: 1534696544}
   countText: {fileID: 0}
+  slotBackgroundImage: {fileID: 1534696542}
 --- !u!1 &1610157724 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4875991570046858898, guid: 9c69fd4b7512ae441aba7847b155d9f1, type: 3}
@@ -4978,6 +5026,7 @@ MonoBehaviour:
   iconImage: {fileID: 1521459236}
   slotButton: {fileID: 2027078913}
   countText: {fileID: 0}
+  slotBackgroundImage: {fileID: 2027078911}
 --- !u!1 &2057705689
 GameObject:
   m_ObjectHideFlags: 0
@@ -5204,6 +5253,11 @@ MonoBehaviour:
   - {fileID: 1534696545}
   - {fileID: 1532736572}
   activeCharacterInventory: 0
+  mariposaCenterImage: {fileID: 4762584615858637958, guid: 92bafdefb2050164995f0256c45a29fd, type: 3}
+  unnamedCenterImage: {fileID: 1190224077358865831, guid: ccb5ad97ea126d744af0093e6cd8601b, type: 3}
+  mariposaSlotBackground: {fileID: -5552505558227925893, guid: 9935979d2eb238c49b4f5904846eb7d6, type: 3}
+  unnamedSlotBackground: {fileID: 6063878169012002460, guid: a1279e27bd241ef4082cbcc8c2669337, type: 3}
+  centerPanelImage: {fileID: 1336199}
 --- !u!1 &2093257944
 GameObject:
   m_ObjectHideFlags: 0
