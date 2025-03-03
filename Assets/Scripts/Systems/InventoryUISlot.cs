@@ -31,7 +31,7 @@ public class InventoryUISlot : MonoBehaviour
             iconImage.enabled = false;
             if (countText != null)
                 countText.text = "";
-        }
+        }   
     }
 
     private void Awake()

@@ -36,6 +36,10 @@ public class InventoryUIManager : MonoBehaviour
         foreach (var slot in mementosSlots)
             slot.OnSlotClicked = OnSlotClicked;
         inventoryPanel.SetActive(false);
+        if (centerItemIcon != null)
+            centerItemIcon.enabled = false;
+        if (centerItemDescription != null)
+            centerItemDescription.text = "";    
     }
 
     private void Update()
@@ -75,27 +79,32 @@ public class InventoryUIManager : MonoBehaviour
             slot.SetSlot(null, 0);
         foreach (var slot in mementosSlots)
             slot.SetSlot(null, 0);
-        var toolInventoryDict = InventoryManager.Instance.GetAllItems(activeCharacterInventory);
-        var mementoInventoryDict = InventoryManager.Instance.GetAllItems(InventoryType.Mementos);
-
-        int toolSlotIndex = 0;
-        foreach (var kvp in toolInventoryDict)
+        var activeInv = InventoryManager.Instance.GetAllItems(activeCharacterInventory);
+        List<KeyValuePair<InventoryItemSO, int>> leftItems = new List<KeyValuePair<InventoryItemSO, int>>();
+        List<KeyValuePair<InventoryItemSO, int>> rightItems = new List<KeyValuePair<InventoryItemSO, int>>();
+        foreach (var kvp in activeInv)
         {
-            if (toolSlotIndex < toolsSlots.Length)
+            if (kvp.Key.Type == InventoryItemType.Single_Use)
+                leftItems.Add(kvp);
+            else if (kvp.Key.Type == InventoryItemType.Permanent || kvp.Key.Type == InventoryItemType.Memento)
+                rightItems.Add(kvp);
+        }
+        int leftSlotIndex = 0;
+        foreach (var kvp in leftItems)
+        {
+            if (leftSlotIndex < toolsSlots.Length)
             {
-                toolsSlots[toolSlotIndex].SetSlot(kvp.Key, kvp.Value);
-                toolSlotIndex++;
+                toolsSlots[leftSlotIndex].SetSlot(kvp.Key, kvp.Value);
+                leftSlotIndex++;
             }
         }
-
-        // Populate memento slots
-        int mementoSlotIndex = 0;
-        foreach (var kvp in mementoInventoryDict)
+        int rightSlotIndex = 0;
+        foreach (var kvp in rightItems)
         {
-            if (mementoSlotIndex < mementosSlots.Length)
+            if (rightSlotIndex < mementosSlots.Length)
             {
-                mementosSlots[mementoSlotIndex].SetSlot(kvp.Key, kvp.Value);
-                mementoSlotIndex++;
+                mementosSlots[rightSlotIndex].SetSlot(kvp.Key, kvp.Value);
+                rightSlotIndex++;
             }
         }
     }

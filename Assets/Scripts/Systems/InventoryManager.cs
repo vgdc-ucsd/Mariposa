@@ -6,7 +6,6 @@ public enum InventoryType
 {
     Mariposa,
     Unnamed,
-    Mementos
 }
 
 public class InventoryManager : Singleton<InventoryManager>
@@ -23,7 +22,6 @@ public class InventoryManager : Singleton<InventoryManager>
         // Initialize separate inventories for each type
         inventories[InventoryType.Mariposa] = new Dictionary<InventoryItemSO, int>();
         inventories[InventoryType.Unnamed] = new Dictionary<InventoryItemSO, int>();
-        inventories[InventoryType.Mementos] = new Dictionary<InventoryItemSO, int>();
     }
 
     /// <summary>
@@ -38,8 +36,6 @@ public class InventoryManager : Singleton<InventoryManager>
         {
             inv[item]++;
         }
-
-        UpdateBatteryUI();
     }
 
     /// <summary>
@@ -56,7 +52,6 @@ public class InventoryManager : Singleton<InventoryManager>
             if (inv[item] <= 0)
                 inv.Remove(item);
         }
-        UpdateBatteryUI();
     }
 
     /// <summary>
@@ -104,6 +99,7 @@ public class InventoryManager : Singleton<InventoryManager>
         }
     }
     
+    /*
     private void UpdateBatteryUI()
     {
         if (batteryCounterText != null)
@@ -112,6 +108,7 @@ public class InventoryManager : Singleton<InventoryManager>
             batteryCounterText.text = $"Batteries: {count}";
         }
     }
+    */
     
     public Dictionary<InventoryItemSO, int> GetAllItems(InventoryType type)
     {
