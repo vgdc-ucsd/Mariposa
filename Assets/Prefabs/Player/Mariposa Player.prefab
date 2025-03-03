@@ -171,7 +171,7 @@ GameObject:
   - component: {fileID: 8504754870049651859}
   m_Layer: 8
   m_Name: Mariposa Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -296,13 +296,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Velocity: {x: 0, y: 0}
   Rb: {fileID: 0}
-  State: 0
   SurfaceCollider: {fileID: 0}
+  InsideTriggers: []
+  State: 0
   Gravity: 50
   TerminalVelocity: 40
   collisionLayer:
     serializedVersion: 2
     m_Bits: 64
+  Parent: {fileID: 0}
   MoveSpeed: 6.5
   wallJumpMoveLockTime: 0.3
   wallJumpHorizontalSpeed: 10
@@ -321,6 +323,8 @@ MonoBehaviour:
   cornerCorrectMaxInsetDistance: 0
   cornerCorrectMinVelocity: 0
   airJumpAvailable: 0
+  dashForce: 20
+  dashDuration: 0.2
 --- !u!114 &8504754870049651859
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -20,6 +20,5 @@ public class KeycardDoor : Door
         ToggleLock();
         ChangeState();
         InventoryManager.Instance.DeleteItem(inventoryType, keycard);
-        Debug.Log("used keycard");
     }
 }
