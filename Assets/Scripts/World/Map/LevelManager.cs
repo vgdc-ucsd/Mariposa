@@ -37,7 +37,7 @@ public class LevelManager : MonoBehaviour
 
     private Sublevel GetCurrentSublevel() => CurrentLevel.Sublevels[SublevelIndex];
 
-    private void GoToNextSublevel()
+    public void GoToNextSublevel()
     {
         CurrentLevel.UnloadSublevel(SublevelIndex);
         SublevelIndex++;
