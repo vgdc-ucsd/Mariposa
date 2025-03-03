@@ -15,7 +15,6 @@ public class Door : MonoBehaviour
     /// </summary>
     void Awake()
     {
-        Debug.Log("gimme");
         if (GetComponent<Collider2D>() == null)
         {
             Debug.Log("No Collider was found!");
