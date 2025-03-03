@@ -207,6 +207,7 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
             Vector2 platformMovement = currentMovingPlatform.velocity * fdt;
             if (currentMovingPlatform.velocity.y < -Gravity) platformMovement.y = -Gravity;
             ApplyMovement(platformMovement);
+            ResolveInitialCollisions();
         }
     }
 
