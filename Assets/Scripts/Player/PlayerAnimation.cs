@@ -22,9 +22,12 @@ public class PlayerAnimation : MonoBehaviour
 
     void Update()
     {
-        if(Player.ActivePlayer.Movement.State == BodyState.InAir) {
+        if (Player.ActivePlayer.Movement.State == BodyState.InAir)
+        {
             animator.SetBool("isJumping", true);
-        } else {
+        }
+        else
+        {
             animator.SetBool("isJumping", false);
         }
     }
@@ -40,7 +43,8 @@ public class PlayerAnimation : MonoBehaviour
                 WasRunning = false;
             }
             animator.SetBool("isJumping", false);
-            animator.SetFloat("xVelocity", 0);
+            animator.SetFloat("xVelocity", 0f);
+            animator.SetFloat("yVelocity", 0f);
             return;
         }
 
