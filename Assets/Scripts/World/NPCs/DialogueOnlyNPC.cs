@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 public class DialogueOnlyNPC : MonoBehaviour
-{ 
+{
 
 	[SerializeField] private float squareDistance;
 	[SerializeField] private Dialogue dialogueNPC;
@@ -16,7 +16,7 @@ public class DialogueOnlyNPC : MonoBehaviour
 		manager = DialogueManager.Instance;
 
 		// TODO: add method to DialogueManager that says when dialogue is over.
-		count = 0; 
+		count = 0;
 		/*interactionRange.SetTarget(Player.ActivePlayer);*/
 	}
 	private void Update()
@@ -41,7 +41,7 @@ public class DialogueOnlyNPC : MonoBehaviour
 			}
 			else
 			{
-				manager.AdvanceDialogue();
+				manager.TryAdvanceDialogue();
 				count++;
 			}
 		}
