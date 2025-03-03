@@ -24,7 +24,9 @@ public class VolumeControl : MonoBehaviour
             // if does not exist, initialize slider based on parameter in FMOD
             VolumeBus.getVolume(out volume);
         }
-        VolumeSlider.value = volume;
+
+        // TODO: Null ref, uncomment when slider added
+        // VolumeSlider.value = volume;
     }
 
     public void ChangeVolume(float value)
