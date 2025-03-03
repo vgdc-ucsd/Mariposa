@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 1505351650081540595}
   - component: {fileID: 6874427532847912192}
   - component: {fileID: 1002615751801337577}
-  - component: {fileID: 4404650794279099582}
+  - component: {fileID: 7407088014761688251}
   m_Layer: 6
-  m_Name: KeycardDoor
+  m_Name: Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -164,7 +164,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.57104635, y: 3.3324397}
   m_EdgeRadius: 0
---- !u!114 &4404650794279099582
+--- !u!114 &7407088014761688251
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -173,15 +173,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1572483259149497325}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3bf291a968d867e45b0fd848b720cc86, type: 3}
+  m_Script: {fileID: 11500000, guid: c17dd38ef15339044918b6f2fede3037, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isOpen: 0
-  isLocked: 1
+  isOpen: 1
+  isLocked: 0
   openSprite: {fileID: -2750678463497565672, guid: 9ee2c1eca7b4b554ebe44e49328bab0d, type: 3}
   closedSprite: {fileID: -5762710749327013647, guid: 6101cd68385314847a042544e73cecae, type: 3}
-  keycard: {fileID: 11400000, guid: baa233cac22a91e439f70b37f26cbf03, type: 2}
-  inventoryType: 0
 --- !u!1 &6710252040486608089
 GameObject:
   m_ObjectHideFlags: 0
@@ -227,7 +225,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f3abcb0b96d5394cb27d110c7677f04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  door: {fileID: 4404650794279099582}
+  door: {fileID: 0}
 --- !u!61 &8185951845952957356
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -5,16 +5,12 @@ public class KeycardDoor : Door
     [SerializeField] private InventoryItemSO keycard;
     [SerializeField] private InventoryType inventoryType;
 
-    private new void Awake()
-    {
-        
-
-    }
 
 
     public bool CheckForKeycard()
     {
         if (keycard == null) return false;
+        if (!InventoryManager.Instance.GetAllItems(inventoryType).ContainsKey(keycard)) return false;
         return (InventoryManager.Instance.GetAllItems(inventoryType)[keycard] > 0);
         
     }
