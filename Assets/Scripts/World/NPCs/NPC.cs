@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -11,7 +12,7 @@ public class NPC : Interactable
 	private int count;
 	[SerializeField] private InRangeDetector interactionRange;
 
-	private void Start()
+	protected override void Start()
 	{
 		manager = DialogueManager.Instance;
 		count = 0;
