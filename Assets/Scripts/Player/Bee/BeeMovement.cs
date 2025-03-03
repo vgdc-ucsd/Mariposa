@@ -42,6 +42,8 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
     // only activate triggers when it is being controlled
     protected override bool activateTriggers => parent.IsControlled;
 
+    SpriteRenderer beeSprite;
+
     private void InitDerivedConsts()
     {
         airAcceleration = MoveSpeed / airAccelerationTime;
@@ -55,6 +57,7 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
         parent = GetComponent<Bee>();
         gravityEnabled = false;
         InitDerivedConsts();
+        beeSprite = GetComponent<SpriteRenderer>();
 
     }
 
@@ -91,6 +94,14 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
     public void SetMoveDir(Vector2 dir)
     {
         moveDir = dir;
+
+        // change where the bee faces when in being controlled
+        if (dir.x > 0) {
+            beeSprite.flipX = false;
+        } 
+        else if (dir.x < 0) {
+            beeSprite.flipX = true;
+        }
     }
 
     public void SetBehavior(IBeeBehavior behavior)
@@ -178,6 +189,14 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
     private void AutoMove()
     {
         transform.position += (Vector3)currentBehavior.GetMoveStep(fdt);
+
+        // change where the bee faces when in AutoMove mode
+        if (currentBehavior.GetDir().x > 0) {
+            beeSprite.flipX = false;
+        } 
+        else if (currentBehavior.GetDir().x < 0) {
+            beeSprite.flipX = true;
+        }
     }
 
     public void ToggleCollisions(bool toggle)
