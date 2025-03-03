@@ -1,4 +1,5 @@
 using UnityEngine;
+using FMODUnity;
 
 /// <summary>
 /// Abstract class that executes general code whenever a puzzle is completed or 
@@ -13,8 +14,17 @@ public abstract class Puzzle : MonoBehaviour
     public void OnComplete()
     {
         Debug.Log("Puzzle Complete!");
-        if(PuzzlePopupManager.Instance != null) PuzzlePopupManager.Instance.CompletePuzzle();
+        if (PuzzlePopupManager.Instance != null) PuzzlePopupManager.Instance.CompletePuzzle();
         else Debug.Log("No PuzzlePopupManager found");
+
+        if (Player.ActivePlayer.Character.Name == "Mariposa")
+        {
+            RuntimeManager.PlayOneShot("event:/sfx/puzzle/puzzle_complete/mariposa");
+        }
+        else if (Player.ActivePlayer.Character.Name == "Mariposa")
+        {
+            RuntimeManager.PlayOneShot("event:/sfx/puzzle/puzzle_complete/unnamed");
+        }
     }
 
     /// <summary>

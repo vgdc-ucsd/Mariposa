@@ -3,6 +3,8 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
+using FMOD.Studio;
+using FMODUnity;
 
 public enum CharID
 {
@@ -76,7 +78,7 @@ public class PlayerController : MonoBehaviour
     public void SwitchCharacters()
     {
         if (ControlledPlayer.Character.Id == CharID.Mariposa) SwitchTo(CharID.Unnamed);
-        else SwitchTo(CharID.Mariposa);  
+        else SwitchTo(CharID.Mariposa);
     }
 
     public void SwitchTo(CharID character)
@@ -98,7 +100,7 @@ public class PlayerController : MonoBehaviour
         StartControlling(ControlledPlayer.Movement);
         Subscribe(ControlledPlayer.Ability);
         ControlledPlayer.Ability.Initialize();
-        
+
     }
 
     // map inputs to this controllable and make it the camera target
@@ -118,15 +120,16 @@ public class PlayerController : MonoBehaviour
         listeners.Add(listener);
     }
 
-    public void Unsubscribe(IInputListener Listener) 
-    { 
-        listeners.Remove(Listener); 
+    public void Unsubscribe(IInputListener Listener)
+    {
+        listeners.Remove(Listener);
     }
 
     private void Update()
     {
         // TEMPORARY AND SHOULD BE REMOVED IN ANY NON-TEST BUILD
         if (Input.GetKeyDown(KeyCode.Tab)) SwitchCharacters();
+        if (Input.GetKeyDown(KeyCode.E)) SendInteract();
     }
 
     public void SendAbilityDown(InputAction.CallbackContext ctx)
@@ -142,6 +145,12 @@ public class PlayerController : MonoBehaviour
     public void SendJump(InputAction.CallbackContext ctx)
     {
         listeners.ForEachReverse(x => x.JumpInputDown());
+        PlayJump();
+    }
+
+    public void SendInteract()
+    {
+        listeners.ForEachReverse(x => x.InteractInputDown());
     }
 
     private void FixedUpdate()
@@ -151,6 +160,13 @@ public class PlayerController : MonoBehaviour
         {
             listener.SetMoveDir(moveDir);
         }
+    }
+
+    public void PlayJump()
+    {
+        EventInstance footstepInstance = RuntimeManager.CreateInstance("event:/sfx/player/jump");
+        footstepInstance.start();
+        footstepInstance.release();
     }
 
 }

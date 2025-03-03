@@ -25,10 +25,12 @@ public class BeeControlAbility : MonoBehaviour, IAbility
         if (!BeeRef.IsControlled)
         {
             BeeRef.ToggleControl(true);
+            FMODUnity.RuntimeManager.PlayOneShot("event:/sfx/player/bee/deploy");
         }
         else
         {
             BeeRef.ToggleControl(false);
+            FMODUnity.RuntimeManager.PlayOneShot("event:/sfx/player/bee/recall");
         }
 
     }
