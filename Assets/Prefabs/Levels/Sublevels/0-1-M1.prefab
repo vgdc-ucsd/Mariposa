@@ -1063,6 +1063,112 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &7416488192904547015
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2862710892510951224}
+  - component: {fileID: 237454443667430522}
+  - component: {fileID: 4752141593312551043}
+  m_Layer: 6
+  m_Name: TurnstileCollision
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2862710892510951224
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7416488192904547015}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5188424589276336374}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!50 &237454443667430522
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7416488192904547015}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!61 &4752141593312551043
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7416488192904547015}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 1.0305023, y: -0.00916028}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2.25, y: 5.701159}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 0.20567322, y: 5.7024293}
+  m_EdgeRadius: 0
 --- !u!1 &7502392591819435420
 GameObject:
   m_ObjectHideFlags: 0
@@ -1392,7 +1498,7 @@ PrefabInstance:
     - target: {fileID: 1505351650081540595, guid: ffec0ee1d0a671a499e1c230593a407b, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -6870570806584609458, guid: 62c1fdf807e148443923e7e1a13e586e, type: 3}
+      objectReference: {fileID: 5213622977022888369, guid: 62c1fdf807e148443923e7e1a13e586e, type: 3}
     - target: {fileID: 1505351650081540595, guid: ffec0ee1d0a671a499e1c230593a407b, type: 3}
       propertyPath: m_SortingOrder
       value: 3
@@ -1400,6 +1506,10 @@ PrefabInstance:
     - target: {fileID: 1572483259149497325, guid: ffec0ee1d0a671a499e1c230593a407b, type: 3}
       propertyPath: m_Name
       value: Turnstile
+      objectReference: {fileID: 0}
+    - target: {fileID: 1572483259149497325, guid: ffec0ee1d0a671a499e1c230593a407b, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4404650794279099582, guid: ffec0ee1d0a671a499e1c230593a407b, type: 3}
       propertyPath: keycard
@@ -1469,11 +1579,21 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6874427532847912192, guid: ffec0ee1d0a671a499e1c230593a407b, type: 3}
+    - {fileID: 1002615751801337577, guid: ffec0ee1d0a671a499e1c230593a407b, type: 3}
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 9027440662875632070, guid: ffec0ee1d0a671a499e1c230593a407b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2862710892510951224}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ffec0ee1d0a671a499e1c230593a407b, type: 3}
+--- !u!212 &2423781579093518531 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 1505351650081540595, guid: ffec0ee1d0a671a499e1c230593a407b, type: 3}
+  m_PrefabInstance: {fileID: 3839061228004155696}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5188424589276336374 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9027440662875632070, guid: ffec0ee1d0a671a499e1c230593a407b, type: 3}
@@ -1693,6 +1813,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Keycard
       objectReference: {fileID: 0}
+    - target: {fileID: 4272534482237219656, guid: 14845b7f1c24c1a44974d7ef4f4d9ed2, type: 3}
+      propertyPath: TurnstileSR
+      value: 
+      objectReference: {fileID: 2423781579093518531}
+    - target: {fileID: 4272534482237219656, guid: 14845b7f1c24c1a44974d7ef4f4d9ed2, type: 3}
+      propertyPath: UnlockedSprite
+      value: 
+      objectReference: {fileID: 2965997025286732880, guid: 62c1fdf807e148443923e7e1a13e586e, type: 3}
+    - target: {fileID: 4272534482237219656, guid: 14845b7f1c24c1a44974d7ef4f4d9ed2, type: 3}
+      propertyPath: TurnstileCollision
+      value: 
+      objectReference: {fileID: 7416488192904547015}
     - target: {fileID: 4632109457320295427, guid: 14845b7f1c24c1a44974d7ef4f4d9ed2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 27.08

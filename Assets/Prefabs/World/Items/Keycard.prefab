@@ -78,30 +78,16 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 750458167370174346, guid: 0fadf19179990ed479df63cf2d6876ea, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3240882395194834848}
+      addedObject: {fileID: 2724977779345946791}
     - targetCorrespondingSourceObject: {fileID: 750458167370174346, guid: 0fadf19179990ed479df63cf2d6876ea, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2724977779345946791}
+      addedObject: {fileID: 4272534482237219656}
   m_SourcePrefab: {fileID: 100100000, guid: 0fadf19179990ed479df63cf2d6876ea, type: 3}
 --- !u!1 &226451626682968270 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 750458167370174346, guid: 0fadf19179990ed479df63cf2d6876ea, type: 3}
   m_PrefabInstance: {fileID: 670663849948260164}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &3240882395194834848
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 226451626682968270}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ea9d34a1fc44aa419748a1cb8505efd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  item: {fileID: 11400000, guid: d1f0d802ab113464b804d2d077b1b628, type: 2}
-  spriteRenderer: {fileID: 9154476484575075419}
 --- !u!58 &2724977779345946791
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -138,8 +124,20 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.5
---- !u!212 &9154476484575075419 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 8522383809891482399, guid: 0fadf19179990ed479df63cf2d6876ea, type: 3}
-  m_PrefabInstance: {fileID: 670663849948260164}
+--- !u!114 &4272534482237219656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 226451626682968270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e01593a15d7f184fb0b50b3e73b3b9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Item: {fileID: 11400000, guid: 7bcd7c2c49e5cc749ba231ca565c69a5, type: 2}
+  Type: 0
+  TurnstileCollision: {fileID: 0}
+  UnlockedSprite: {fileID: 0}
+  TurnstileSR: {fileID: 0}
