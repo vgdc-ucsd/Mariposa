@@ -4,6 +4,7 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
+using FMODUnity;
 
 public class PlayerMovement : FreeBody, IInputListener, IControllable
 {
@@ -108,7 +109,7 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
     protected override void Awake()
     {
         base.Awake();
-        
+
         InitDerivedConsts();
         if (Instance == null)
         {
@@ -232,17 +233,21 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
             Velocity.y = jumpVelocity;
             Velocity.x = wallJumpHorizontalSpeed * wallNormal;
             wallJumpMoveLockTimeRemaining = wallJumpMoveLockTime;
+            RuntimeManager.PlayOneShot("event:/sfx/player/jump");
         }
         else if (State == BodyState.OnGround || coyoteTimeRemaining > 0f)
         {
             Velocity.y = jumpVelocity;
             coyoteTimeRemaining = 0f;   // consume coyote time
+            RuntimeManager.PlayOneShot("event:/sfx/player/jump");
         }
         else if (CanDoubleJump && airJumpAvailable && onBee)
         {
             Velocity.y = jumpVelocity * DoubleJumpFactor;
             airJumpAvailable = false;
             coyoteTimeRemaining = 0f;
+            RuntimeManager.PlayOneShot("event:/sfx/player/jump");
+            RuntimeManager.PlayOneShot("event:/sfx/player/bee/double_jump");
         }
         else if (State != BodyState.OnGround && coyoteTimeRemaining <= 0.0f)
         {
@@ -314,8 +319,8 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
         jumpBufferTimeRemaining = Mathf.Max(jumpBufferTimeRemaining - dt, 0.0f);
         wallJumpMoveLockTimeRemaining = Mathf.Max(wallJumpMoveLockTimeRemaining - dt, 0.0f);
     }
-    
-    
+
+
     /// <summary>
     /// Coroutine that handles the dash ability.
     /// </summary>

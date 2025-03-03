@@ -1,4 +1,5 @@
 using System;
+using FMODUnity;
 using UnityEngine;
 using UnityEngine.Jobs;
 
@@ -39,6 +40,16 @@ public class RespawnPoint : MonoBehaviour
         {
             // trigger action which will affects all listening objects (hopefully the player object)
             OnRespawnPointInteract?.Invoke(this);
+
+            switch (Player.ActivePlayer.Character.Name)
+            {
+                case "Mariposa":
+                    RuntimeManager.PlayOneShot("event:/sfx/world/spawnpoint_activate/mariposa");
+                    break;
+                case "Unnamed":
+                    RuntimeManager.PlayOneShot("event:/sfx/world/spawnpoint_activate/unnamed");
+                    break;
+            }
         }
         else
         {
