@@ -6,7 +6,7 @@ public class ItemPickupMVP : MonoBehaviour
     public InventoryType Type;
 
 
-    private void Pickup()
+    protected virtual void Pickup()
     {
         InventoryManager.Instance.AddItem(Type, Item);
         Destroy(this.gameObject);
