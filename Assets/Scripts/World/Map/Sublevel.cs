@@ -9,7 +9,7 @@ public class Sublevel : MonoBehaviour
     }
 
     public RespawnPoint StartingSpawn;
-    public PolygonCollider2D CameraBounds;
+    public Collider2D CameraBounds;
 
     private void Awake()
     {
