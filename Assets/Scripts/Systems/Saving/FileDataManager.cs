@@ -84,24 +84,4 @@ public class FileDataManager : Singleton<FileDataManager>
             Debug.LogError("Error when trying to save data to file: " + fullPath + "\n" + e);
         }
     }
-
-    public void DeleteSave()
-    {
-        string fullPath = Path.Combine(dataDirPath, dataFileName);
-        if (File.Exists(fullPath))
-        {
-            try
-            {
-                File.Delete(fullPath);
-            }
-            catch (Exception e)
-            {
-                Debug.LogError("Error when trying to delete save data at: " + fullPath + "\n" + e);
-            }
-        }
-        else
-        {
-            Debug.Log("Tried to delete save data that doesn't exist at " + fullPath);
-        }
-    }
 }
