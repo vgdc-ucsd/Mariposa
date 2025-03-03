@@ -2,21 +2,22 @@ using UnityEngine;
 /// <summary>
 /// Interactable object. Lever that turns on when approached or touched and then off when touched again.
 /// </summary>
-public class Lever  : Switch
+public class TutorialLever  : Switch
 {
    
+   public SpriteRenderer spriteRenderer;
+
    /// <summary>
    /// Override of TriggerSwitch from switch class which switchs lever to opposite value
    /// calls public ChangeState method to open a door or close a door
    /// </summary>
    
-   public Door myDoor;
    public override void TriggerSwitch() 
    {
-      //door = new Door();
-      SwitchToggled=!SwitchToggled;
-      if (myDoor != null) myDoor.ChangeState();
-    
+      if (!SwitchToggled) {
+         SwitchToggled = true;
+         spriteRenderer.flipX = true;
+      }
    }
 
 
