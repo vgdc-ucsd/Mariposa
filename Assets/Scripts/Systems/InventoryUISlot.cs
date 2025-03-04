@@ -8,6 +8,9 @@ public class InventoryUISlot : MonoBehaviour
     [SerializeField] private Image iconImage;       
     [SerializeField] private UnityEngine.UI.Button slotButton;    
     [SerializeField] private TextMeshProUGUI countText; 
+    
+    [Header("Slot UI")]
+    [SerializeField] private Image slotBackgroundImage;
 
     private InventoryItemSO currentItem;            
     private int currentCount;                       
@@ -45,6 +48,14 @@ public class InventoryUISlot : MonoBehaviour
         if (currentItem != null && OnSlotClicked != null)
         {
             OnSlotClicked.Invoke(currentItem);
+        }
+    }
+    
+    public void SetSlotBackground(Sprite newBackground)
+    {
+        if (slotBackgroundImage != null)
+        {
+            slotBackgroundImage.sprite = newBackground;
         }
     }
 }
