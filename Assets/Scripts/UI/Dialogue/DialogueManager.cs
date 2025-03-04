@@ -43,7 +43,7 @@ public class DialogueManager : Singleton<DialogueManager>//, IInputListener
     public void PlayDialogue(Dialogue dialogue, System.Action callback = null)
     {
         Debug.Log("Started dialogue");
-        
+
         conversation = dialogue.Conversation;
         dialogueIndex = -1;
         this.callback = callback;
