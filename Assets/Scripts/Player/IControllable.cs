@@ -21,6 +21,7 @@ public interface IControllable : IInputListener
 
     void IInputListener.InteractInputDown()
     {
+        if(DialogueManager.Instance.IsPlayingDialogue) DialogueManager.Instance.AdvanceDialogue();
         foreach (Trigger trigger in new List<Trigger>(body.InsideTriggers))
         {
             if (trigger is InteractionTrigger it)

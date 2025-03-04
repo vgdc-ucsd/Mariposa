@@ -41,13 +41,13 @@ public class NPC : Interactable
 			manager.PlayDialogue(usedDialogue);
 			isSpeaking = true;
 			count++;
-			PlayerController.Instance.ToggleMovementLock();
+			//PlayerController.Instance.ToggleMovementLock();
 		}
 		else
 		{
-			if(manager.finishedTypewriter)
-				count++;
-			manager.TryAdvanceDialogue();
+			//if(manager.finishedTypewriter)
+			//	count++;
+			//manager.TryAdvanceDialogue();
 		}
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using System.Collections;
 using System;
 
-public class DialogueManager : Singleton<DialogueManager>
+public class DialogueManager : Singleton<DialogueManager>//, IInputListener
 {
     // object references
     public GameObject DialogueWindow;
@@ -32,20 +32,30 @@ public class DialogueManager : Singleton<DialogueManager>
     // typewriter control
     [SerializeField] float DIALOGUE_SPEED = 0.025f;
     public bool finishedTypewriter;
+    private System.Action callback;
+    public bool IsPlayingDialogue = false;
 
     void Start()
     {
         DialogueWindow.SetActive(false);
     }
 
-    public void PlayDialogue(Dialogue dialogue)
+    public void PlayDialogue(Dialogue dialogue, System.Action callback = null)
     {
         Debug.Log("Started dialogue");
         
         conversation = dialogue.Conversation;
         dialogueIndex = -1;
+        this.callback = callback;
 
         DialogueWindow.SetActive(true);
+        IsPlayingDialogue = true;
+        PlayerController.Instance.ToggleMovementLock();
+        //PlayerController.Instance.Subscribe(this);
+        AdvanceDialogue();
+    }
+
+    public void InteractInputDown() {
         AdvanceDialogue();
     }
 
@@ -57,7 +67,10 @@ public class DialogueManager : Singleton<DialogueManager>
         if (dialogueIndex >= conversation.Count)
         {
             DialogueWindow.SetActive(false);
-            Debug.Log("Ended Dialogue");
+            //PlayerController.Instance.Unsubscribe(this);
+            IsPlayingDialogue = false;
+            PlayerController.Instance.ToggleMovementLock();
+            if(callback != null) callback.Invoke();
         }
         else
         {
