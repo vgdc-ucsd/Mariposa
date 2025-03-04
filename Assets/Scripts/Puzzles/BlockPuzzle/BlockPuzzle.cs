@@ -121,7 +121,7 @@ public class BlockPuzzle : Puzzle
     {
     
         IsComplete = true;
-        GameManager.Instance.TargetSublevel = 2;
+        GameManager.Instance.TargetSublevel = 3; // TODO change to 2 after EOQ social
         SceneManager.LoadScene(1); // TODO remove after EOQ social
         //OnComplete();
     }
