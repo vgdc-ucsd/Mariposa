@@ -23,6 +23,14 @@ public class InventoryUIManager : MonoBehaviour
     
     [Header("Active Character Inventory")]
     [SerializeField] private InventoryType activeCharacterInventory = InventoryType.Mariposa;
+    
+    [Header("UI Themes")]
+    [SerializeField] private Sprite mariposaCenterImage;
+    [SerializeField] private Sprite unnamedCenterImage;
+    [SerializeField] private Sprite mariposaSlotBackground;
+    [SerializeField] private Sprite unnamedSlotBackground;
+    
+    [SerializeField] private Image centerPanelImage;
 
     private bool isOpen = false;
 
@@ -117,6 +125,7 @@ public class InventoryUIManager : MonoBehaviour
             toolsPanel.SetActive(true);
         if (mementosPanel != null)
             mementosPanel.SetActive(true);
+        UpdateUITheme();
         PopulateInventory();
     }
 
@@ -124,5 +133,31 @@ public class InventoryUIManager : MonoBehaviour
     {
         isOpen = false;
         inventoryPanel.SetActive(false);
+    }
+    
+    public void SetActiveCharacterInventory(InventoryType newActive)
+    {
+        activeCharacterInventory = newActive;
+        PopulateInventory();
+    }
+    
+    private void UpdateUITheme()
+    {
+        if (centerPanelImage != null)
+        {
+            if (activeCharacterInventory == InventoryType.Mariposa)
+                centerPanelImage.sprite = mariposaCenterImage;
+            else if (activeCharacterInventory == InventoryType.Unnamed)
+                centerPanelImage.sprite = unnamedCenterImage;
+        }
+        Sprite slotBg = (activeCharacterInventory == InventoryType.Mariposa) ? mariposaSlotBackground : unnamedSlotBackground;
+        foreach (var slot in toolsSlots)
+        {
+            slot.SetSlotBackground(slotBg);
+        }
+        foreach (var slot in mementosSlots)
+        {
+            slot.SetSlotBackground(slotBg);
+        }
     }
 }
