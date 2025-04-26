@@ -32,6 +32,7 @@ public class PlayerController : MonoBehaviour
     public IControllable CurrentControllable;
 
     private InputSystem_Actions inputs;
+    public bool IsLocked { get; private set; }
 
     private void Awake()
     {
@@ -76,7 +77,8 @@ public class PlayerController : MonoBehaviour
     public void SwitchCharacters()
     {
         if (ControlledPlayer.Character.Id == CharID.Mariposa) SwitchTo(CharID.Unnamed);
-        else SwitchTo(CharID.Mariposa);  
+        else SwitchTo(CharID.Mariposa);
+        
     }
 
     public void SwitchTo(CharID character)
@@ -92,22 +94,28 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-
         ControlledPlayer = charIDMap[character];
         ControlledPlayer.gameObject.SetActive(true);
         StartControlling(ControlledPlayer.Movement);
         Subscribe(ControlledPlayer.Ability);
         ControlledPlayer.Ability.Initialize();
-        
+        InventoryUIManager inventoryUI = FindObjectOfType<InventoryUIManager>();
+        if(inventoryUI != null)
+        {
+            InventoryType newActiveInventory = (character == CharID.Mariposa) ? InventoryType.Mariposa : InventoryType.Unnamed;
+            inventoryUI.SetActiveCharacterInventory(newActiveInventory);
+        }
     }
 
     // map inputs to this controllable and make it the camera target
     public void StartControlling(IControllable controllable)
     {
+        if (CurrentControllable != null) CurrentControllable.SetMoveDir(Vector2.zero);
         Unsubscribe(CurrentControllable);
         Subscribe(controllable);
         CurrentControllable = controllable;
         CameraController.ActiveCamera.StartFollowing(controllable.transform);
+        GameEvents.Instance.Trigger<UpdateTriggers>();
     }
 
     /* INPUT HANDLING */
@@ -117,15 +125,20 @@ public class PlayerController : MonoBehaviour
         listeners.Add(listener);
     }
 
-    public void Unsubscribe(IInputListener Listener) 
-    { 
-        listeners.Remove(Listener); 
+    public void Unsubscribe(IInputListener Listener)
+    {
+        listeners.Remove(Listener);
+    }
+
+    public void ToggleMovementLock() {
+        IsLocked = !IsLocked;
     }
 
     private void Update()
     {
-        // TEMPORARY AND SHOULD BE REMOVED IN ANY NON-TEST BUILD
+        // TODO: TEMPORARY AND SHOULD BE REMOVED IN ANY NON-TEST BUILD
         if (Input.GetKeyDown(KeyCode.Tab)) SwitchCharacters();
+        if (Input.GetKeyDown(KeyCode.E)) SendInteract();
     }
 
     public void SendAbilityDown(InputAction.CallbackContext ctx)
@@ -143,13 +156,18 @@ public class PlayerController : MonoBehaviour
         listeners.ForEachReverse(x => x.JumpInputDown());
     }
 
+    public void SendInteract()
+    {
+        listeners.ForEachReverse(x => x.InteractInputDown());
+    }
+
     private void FixedUpdate()
     {
         Vector2 moveDir = inputs.Player.Move.ReadValue<Vector2>();
         foreach (var listener in new List<IInputListener>(listeners))
         {
-            listener.GetMoveDir(moveDir);
+            if (IsLocked) listener.SetMoveDir(Vector2.zero);
+            else listener.SetMoveDir(moveDir);
         }
     }
-
 }

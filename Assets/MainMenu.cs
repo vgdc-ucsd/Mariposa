@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 //To assign a method to the onclick for a button...
-//Drag and drop the menuManager object into the button onclick on unity 
+//Drag and drop the menuManager object into the button onclick on unity
 //Drop down of methods in this script should show up and you can then choose
 
 public class MainMenu : MonoBehaviour
@@ -17,11 +17,12 @@ public class MainMenu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void NewGameBtn()
     {
+        SceneManager.LoadScene(1);
         Debug.Log("New Game button clicked");
     }
 
@@ -37,7 +38,7 @@ public class MainMenu : MonoBehaviour
 
     }
 
-    public void ExitBtn() 
+    public void ExitBtn()
     {
         Debug.Log("Exit button clicked");
         Application.Quit();

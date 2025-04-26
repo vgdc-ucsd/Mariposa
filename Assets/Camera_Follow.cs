@@ -43,7 +43,7 @@ public class Camera_Follow : MonoBehaviour
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         targetPosition = (Vector2)target.position + offset;
         Debug.DrawLine(targetPosition, targetPosition + GetMinSeparation(targetPosition, boundingRects));
@@ -100,5 +100,9 @@ public class Camera_Follow : MonoBehaviour
         // Shrink the bounding rect by the camera's rect (Minkowski difference)
         return Rect.MinMaxRect(worldRect.xMin + cameraRect.width * 0.5f, worldRect.yMin + cameraRect.height * 0.5f,
                                 worldRect.xMax - cameraRect.width * 0.5f, worldRect.yMax - cameraRect.width * 0.5f);
+    }
+    public void SetTarget(Transform newTarget)
+    {
+        target = newTarget;
     }
 }

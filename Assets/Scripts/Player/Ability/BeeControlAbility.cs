@@ -1,9 +1,11 @@
 using UnityEngine;
+using FMODUnity;
+using FMOD.Studio;
 
 public class BeeControlAbility : MonoBehaviour, IAbility
 {
-    public BeeMovement BeeRef;
-    public bool controllingBee = false;
+    public Bee BeeRef;
+    EventInstance BeeFlap;
 
 
     public void AbilityInputDown()
@@ -13,7 +15,7 @@ public class BeeControlAbility : MonoBehaviour, IAbility
 
     public void Initialize()
     {
-        controllingBee = false;
+        BeeRef.ToggleControl(false);
     }
 
     private void ToggleBeeControl()
@@ -23,16 +25,22 @@ public class BeeControlAbility : MonoBehaviour, IAbility
             Debug.LogError("Bee is not assigned");
             return;
         }
-        if (!controllingBee)
+        if (!BeeRef.IsControlled)
         {
-            PlayerController.Instance.StartControlling(BeeRef);
-            controllingBee = true;
+            BeeRef.ToggleControl(true);
+            RuntimeManager.PlayOneShot("event:/sfx/player/bee/deploy");
+            BeeFlap.start();
         }
         else
         {
-            PlayerController.Instance.StartControlling(Player.ActivePlayer.Movement);
-            controllingBee = false;
+            BeeRef.ToggleControl(false);
+            RuntimeManager.PlayOneShot("event:/sfx/player/bee/recall");
+            BeeFlap.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         }
+    }
 
+    private void Start()
+    {
+        BeeFlap = RuntimeManager.CreateInstance("event:/sfx/player/bee/flap");
     }
 }
