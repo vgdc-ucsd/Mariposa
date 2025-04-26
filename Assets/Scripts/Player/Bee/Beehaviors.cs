@@ -5,6 +5,7 @@ public interface IBeeBehavior
     // Specifies a vector to add to the position in the next frame
     public Vector2 GetMoveStep(float fdt);
 
+    // used to determine which direction the bee should face while auto moving
     public Vector2 GetDir();
 }
 

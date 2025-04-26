@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 // The external forces this object can currently experience
 public enum BodyState
@@ -36,9 +35,6 @@ public abstract class FreeBody : Body
     [Tooltip("The maximum fall velocity")]
     [SerializeField] protected float TerminalVelocity;
 
-    [Tooltip("The minimum angle in degrees a slope must make to the ground to cause slipping")]
-    [SerializeField] protected float slipAngle = 45f;
-
     // Layers that this object receives forces from
     [SerializeField] protected LayerMask collisionLayer;
 
@@ -47,7 +43,6 @@ public abstract class FreeBody : Body
 
     protected const float LAND_SLOPE_FACTOR = 0.9f; // How horizontal a surface must be to be a ceiling or the ground
     protected const float COLLISION_CHECK_DISTANCE = 0.1f; // how far away you have to be from a ceiling or the ground to be considered "colliding" with it
-    private const float MAX_SUBSTEPS = 5; // The maximum number of movement substeps ApplyMovement can take;
 
     protected override void Awake()
     {
@@ -74,8 +69,6 @@ public abstract class FreeBody : Body
         base.Update();
     }
 
-    private Vector2 moveVec = Vector2.zero;
-
     protected override void FixedUpdate()
     {
         fdt = Time.deltaTime;
@@ -84,7 +77,6 @@ public abstract class FreeBody : Body
         Fall();
 
         Vector2 movement = Velocity * fdt;
-        moveVec = movement;
         ApplyMovement(movement);
     }
 
@@ -98,78 +90,63 @@ public abstract class FreeBody : Body
     protected virtual void CheckGrounded()
     {
         if (!collisionsEnabled) return;
-
         Bounds bounds = SurfaceCollider.bounds;
-        Vector2 origin = (Vector2)transform.position + SurfaceCollider.offset;
-        RaycastHit2D groundHit = Physics2D.BoxCast(origin, bounds.size, 0f, Vector2.down, COLLISION_CHECK_DISTANCE, collisionLayer);
-
-        bool isSlipSlope = groundHit && Mathf.Abs(Mathf.Atan(groundHit.normal.y / groundHit.normal.x) * Mathf.Rad2Deg) <= slipAngle;
-
-        if (groundHit && !isSlipSlope) OnGrounded(groundHit);
-        else if (!groundHit || isSlipSlope) OnAirborne();
+        RaycastHit2D groundHit = Physics2D.BoxCast(bounds.center, bounds.size, 0f, Vector2.down, COLLISION_CHECK_DISTANCE, collisionLayer);
+        if (State != BodyState.OnGround && groundHit && groundHit.normal.normalized.y > LAND_SLOPE_FACTOR)
+        {
+            State = BodyState.OnGround;
+        }
+        else if (State == BodyState.OnGround && !groundHit)
+        {
+            State = BodyState.InAir;
+        }
     }
 
-    protected virtual void OnGrounded(RaycastHit2D groundHit)
-    {
-        if (State != BodyState.OnGround) State = BodyState.OnGround;
-    }
-
-    // 
-    protected virtual void OnAirborne()
-    {
-        if (State == BodyState.OnGround) State = BodyState.InAir;
-    }
-
-    /// <summary>
-    /// Applies a movement vector to this freebody and respects collision
-    /// </summary>
-    /// <param name="move">The movement vector</param>
-    public virtual void ApplyMovement(Vector2 move)
+    protected virtual void ApplyMovement(Vector2 move)
     {
         if (!collisionsEnabled) return;
         collisionHits.Clear();
         if (Mathf.Approximately(move.magnitude, 0f)) return; // This avoids weird imprecision errors
 
         Bounds bounds = SurfaceCollider.bounds;
-        Vector2 origin = (Vector2)transform.position + SurfaceCollider.offset;
-        RaycastHit2D hit = Physics2D.BoxCast(origin, bounds.size, 0f, move.normalized, move.magnitude, collisionLayer);
+        RaycastHit2D hit = Physics2D.BoxCast(bounds.center, bounds.size, 0f, move.normalized, move.magnitude, collisionLayer);
 
-        if (hit && Mathf.Approximately(hit.distance, 0f)) ResolveInitialCollisions();
-
-        int substeps = 0; // This is to prevent infinite loops in case something goes wrong
-        while (hit && !hit.collider.isTrigger)
+        int loops = 0; // This is to prevent infinite loops in case something goes wrong
+        while (hit && !hit.collider.isTrigger && !(Mathf.Approximately(move.x, 0f) && Mathf.Approximately(move.y, 0f)))
         {
-            collisionHits.Add(hit);
             Vector2 normal = hit.normal.normalized;
-            Vector2 delta = hit.centroid - origin + CONTACT_OFFSET * normal;
-            move -= delta;
+            collisionHits.Add(hit);
 
-            transform.position += (Vector3)delta;
-            origin = (Vector2)transform.position + SurfaceCollider.offset;
-            move -= Helper.Vec2Proj(move, normal);
-            Velocity -= Helper.Vec2Proj(Velocity, normal);
-            // Prevent slowly slipping when on a walkable slope
-            //if (gravityEnabled && State == BodyState.OnGround) Velocity.y = Mathf.Max(Velocity.y, 0f);
-
-            // These conditionals sidestep floating point imprecisions
-            if (Mathf.Approximately(Velocity.sqrMagnitude, 0f)) 
-            { 
-                Velocity = Vector2.zero;
-                break; 
-            }
-            if (Mathf.Approximately(move.sqrMagnitude, 0f))
+            if (Mathf.Abs(normal.y) > Mathf.Abs(normal.x)) // Vertical collision
             {
-                move = Vector2.zero;
+                float deltaY = Mathf.Abs(hit.centroid.y - bounds.center.y);
+                transform.position += (deltaY * move.normalized.y + normal.y * CONTACT_OFFSET) * Vector3.up;
+                move.y = 0;
+                Velocity.y = 0;
+            }
+            else // Horizontal collision
+            {
+                float deltaX = Mathf.Abs(hit.centroid.x - bounds.center.x);
+                transform.position += (deltaX * move.normalized.x + normal.x * CONTACT_OFFSET) * Vector3.right;
+                move.x = 0;
+                Velocity.x = 0;
+            }
+            hit = Physics2D.BoxCast(bounds.center, bounds.size, 0f, move.normalized, move.magnitude, collisionLayer);
+            if (Mathf.Approximately(hit.distance, 0f))
+            {
+                ResolveInitialCollisions();
                 break;
             }
 
-            hit = Physics2D.BoxCast(origin, bounds.size, 0f, move.normalized, move.magnitude, collisionLayer);
-
-            substeps++;
-            if (substeps > MAX_SUBSTEPS) break;
+            loops++;
+            if (loops > 4)
+            {
+                break;
+            }
         }
 
-        // Apply lingering movement
+
+        // Apply the movement
         transform.position += (Vector3)move;
     }
 

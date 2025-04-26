@@ -37,8 +37,6 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
 
     private IBeeBehavior currentBehavior;    // Strategy, returns a vector for the bee to move towards in the next frame
 
-    SpriteRenderer beeSprite;
-
     // Useful for when their dependent values are changed during runtime
 
     // only activate triggers when it is being controlled
@@ -66,7 +64,6 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
     protected override void Update()
     {
         base.Update();
-
     }
 
     private void OnValidate()
@@ -187,7 +184,6 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
         {
             Velocity = Vector2.zero;
         }
-
     }
 
     private void AutoMove()
