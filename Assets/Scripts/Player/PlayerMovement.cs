@@ -18,6 +18,8 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
     public float MoveSpeed = 10;
 
     private Vector2 moveDir = Vector2.zero;
+    private bool onWalkableSlope = false;
+    private Vector2 slopeDir = Vector2.zero;
 
     [Tooltip("The amount of time that wall jumping locks the player out of movement")]
     [SerializeField] private float wallJumpMoveLockTime;
@@ -200,8 +202,10 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
         // use enough acceleration to reach maximum speed. Otherwise, use the acceleration parameter
         float acceleration = Mathf.Min(Mathf.Abs(deltaV / fdt), accelerationParam);
 
+        Vector2 axis = onWalkableSlope ? slopeDir : Vector2.right;
+
         // Apply the acceleration
-        Velocity.x += acceleration * fdt * Mathf.Sign(deltaV);
+        Velocity += acceleration * fdt * Mathf.Sign(deltaV) * axis;
 
         if (currentMovingPlatform != null)
         {
@@ -215,9 +219,7 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
     // Directly set the player's y velocity
     public void JumpInputDown()
     {
-        CheckOnWall();
-        CheckGrounded();
-
+        Physics2D.SyncTransforms();
         Bounds bounds = SurfaceCollider.bounds;
         Vector2 beeCastCenter = bounds.center + 0.375f * bounds.size.y * Vector3.down;
         Vector2 beeCastSize = 0.25f * bounds.size;
@@ -265,30 +267,37 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
         Velocity.y = Mathf.Max(Velocity.y - currentGravity * fdt, -TerminalVelocity);
     }
 
-    // If the player was in the air and has a barrier below it, they must now be on the ground
-    // Otherwise, if the player was grounded and has no barrier below it, they must now be in the air
-    protected override void CheckGrounded()
+    protected override void OnGrounded(RaycastHit2D groundHit)
     {
-        Bounds bounds = SurfaceCollider.bounds;
-        RaycastHit2D groundHit = Physics2D.BoxCast(bounds.center, bounds.size, 0f, Vector2.down, COLLISION_CHECK_DISTANCE, collisionLayer);
-        if (State != BodyState.OnGround && groundHit && groundHit.normal.normalized.y > LAND_SLOPE_FACTOR)
+        if (State != BodyState.OnGround)
         {
-            State = BodyState.OnGround;
-            airJumpAvailable = true;
-            if (jumpBufferTimeRemaining > 0.0f) JumpInputDown();
             if (groundHit.collider.CompareTag("MovingPlatform"))
             {
                 currentMovingPlatform = groundHit.collider.GetComponentInParent<MovingPlatform>();
                 if (currentMovingPlatform is ControllableMovingPlatform) onControllableMovingPlatform = true;
             }
+            airJumpAvailable = true;
         }
-        else if (State == BodyState.OnGround && !groundHit)
+        base.OnGrounded(groundHit);
+        if (jumpBufferTimeRemaining > 0.0f) JumpInputDown();
+        if (Mathf.Abs(Mathf.Atan(groundHit.normal.y / groundHit.normal.x) * Mathf.Rad2Deg) > slipAngle)
         {
-            State = BodyState.InAir;
-            coyoteTimeRemaining = coyoteTime;
-            currentMovingPlatform = null;
-            onControllableMovingPlatform = false;
+            onWalkableSlope = true;
+            slopeDir = new Vector2(groundHit.normal.normalized.y, -groundHit.normal.normalized.x);
         }
+    }
+
+    protected override void OnAirborne()
+    {
+        if (State == BodyState.OnGround)
+        {
+            coyoteTimeRemaining = coyoteTime;
+        }
+        base.OnAirborne();
+        onWalkableSlope = false;
+        slopeDir = Vector2.zero;
+        currentMovingPlatform = null;
+        onControllableMovingPlatform = false;
     }
 
     // Shift the player horizontally when they barely bump a ceiling
