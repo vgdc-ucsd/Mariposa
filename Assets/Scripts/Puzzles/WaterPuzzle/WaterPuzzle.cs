@@ -2,7 +2,6 @@ using JetBrains.Annotations;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.InputSystem.Editor;
 using UnityEngine.Timeline;
 
 public class WaterPuzzle : Puzzle
@@ -53,7 +52,7 @@ public class WaterPuzzle : Puzzle
             Debug.Log("Tried to create more than one instance of the WaterPuzzle singleton!");
         }
 
-        // move the puzzle object so that the center of the puzzle is at (0, 0, 0) 
+        // move the puzzle object so that the center of the puzzle is at (0, 0, 0)
         PuzzleUI.transform.position = new Vector3(TileWidth * (-GridWidth + 1) / 2, TileHeight * (GridHeight - 1) / 2, 0);
 
         Tiles = new WaterPuzzleTile[GridWidth, GridHeight];
@@ -288,8 +287,8 @@ public class WaterPuzzle : Puzzle
         else if (direction[0] == -1 && direction[1] == 0) return new int[] { 0, 1 };
         else if (direction[0] == 0 && direction[1] == 1) return new int[] { 1, 0 };
         else return new int[] { 0, 0 };
-        
+
     }
 
-    
+
 }

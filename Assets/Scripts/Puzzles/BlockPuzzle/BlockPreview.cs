@@ -11,10 +11,10 @@ public class BlockPreview : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void SetSize(Vector2Int size)
-    {
-        transform.localScale = new Vector3(size.x, size.y, 1);
-    }
+    // public void SetSize(Vector2Int size)
+    // {
+    //     transform.localScale = new Vector3(size.x, size.y, 1);
+    // }
 
     public void SetSprite(Sprite sprite, Color color)
     {
