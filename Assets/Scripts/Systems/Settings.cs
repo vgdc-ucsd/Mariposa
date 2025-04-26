@@ -1,3 +1,4 @@
+using FMOD.Studio;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,6 +17,20 @@ public class Settings : Singleton<Settings>
     void Start()
     {
         initializeVolumeSettings();
+
+        // play test audio if audio debug is on to test volume slider functionality
+        if (Debug.GetAudioDebug())
+        {
+            // test music (using mariposa's tutorial music)
+            EventInstance audioEvent = FMODUnity.RuntimeManager.CreateInstance("event:/music/1_tutorial/mariposa");
+            audioEvent.start();
+
+            // test sfx (using bee flap sfx)
+            audioEvent = FMODUnity.RuntimeManager.CreateInstance("event:/sfx/player/bee/flap");
+            audioEvent.start();
+
+            // no dialogue exists yet so will add when it gets imported
+        }
     }
 
     private void initializeVolumeSettings()

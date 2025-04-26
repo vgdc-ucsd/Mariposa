@@ -7,7 +7,17 @@ public class VolumeControl : MonoBehaviour
 {
     [SerializeField] private Slider VolumeSlider;
     [SerializeField] private string VolumeBusPath;
+
+    [Header("For Value display only. If slider null, allow adjustment.")]
+    [SerializeField][Range(0f, 1f)] private float volume = 1f;
+    private float previousVolume = 1f;
     private FMOD.Studio.Bus VolumeBus;
+
+    private void Update()
+    {
+        // allow for inspector adjustments if volume slider does not exist
+        if (VolumeSlider == null) { updateVolumeFromInspector(); }
+    }
 
     public void StartControl()
     {
@@ -33,10 +43,26 @@ public class VolumeControl : MonoBehaviour
         VolumeBusPath = busPath;
     }
 
+    private void updateVolumeFromInspector()
+    {
+        if (volume != previousVolume)
+        {
+            OnSliderChanged(volume);
+            previousVolume = volume;
+        }
+    }
+
     private void OnSliderChanged(float value)
     {
-        VolumeBus.setVolume(value);
-        VolumeBus.getVolume(out float volume);
-        Debug.Log(VolumeBusPath + " new volume: " + Math.Round(volume, 5) * 100 + "%");
+        if (VolumeBus.isValid())
+        {
+            VolumeBus.setVolume(value);
+            VolumeBus.getVolume(out volume);
+        }
+        else
+        {
+            Debug.LogError("Bus is not initialized!");
+        }
+        if (Settings.Instance.Debug.GetAudioDebug()) { Debug.Log(VolumeBusPath + " new volume: " + Math.Round(volume, 5) * 100 + "%"); }
     }
 }
