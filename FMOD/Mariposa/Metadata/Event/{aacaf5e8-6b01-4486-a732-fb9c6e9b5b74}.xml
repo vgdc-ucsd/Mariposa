@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<objects serializationModel="Studio.02.02.00">
+<objects serializationModel="Studio.02.03.00">
 	<object class="Event" id="{aacaf5e8-6b01-4486-a732-fb9c6e9b5b74}">
 		<property name="name">
 			<value>unnamed</value>
@@ -77,8 +77,8 @@
 			<destination>{7aa98e86-10fb-4989-be13-7a034158057a}</destination>
 		</relationship>
 		<relationship name="markers">
-			<destination>{2470f4d7-b8dc-4964-a384-473f560b6d28}</destination>
 			<destination>{a47f796c-024c-4d8b-ad62-76b76a0258d9}</destination>
+			<destination>{2470f4d7-b8dc-4964-a384-473f560b6d28}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{10d6bc9f-2b5c-4e1d-bdcc-6f0f0a22ffdd}">
@@ -155,20 +155,6 @@
 			<destination>{10d6bc9f-2b5c-4e1d-bdcc-6f0f0a22ffdd}</destination>
 		</relationship>
 	</object>
-	<object class="NamedMarker" id="{2470f4d7-b8dc-4964-a384-473f560b6d28}">
-		<property name="position">
-			<value>0</value>
-		</property>
-		<property name="name">
-			<value>Marker A</value>
-		</property>
-		<relationship name="timeline">
-			<destination>{f93c9359-ca88-4237-afff-f6d4472588b8}</destination>
-		</relationship>
-		<relationship name="markerTrack">
-			<destination>{b17a4ea1-ac68-4bae-8143-48dc4b81edd6}</destination>
-		</relationship>
-	</object>
 	<object class="TransitionMarker" id="{a47f796c-024c-4d8b-ad62-76b76a0258d9}">
 		<property name="position">
 			<value>126</value>
@@ -184,6 +170,20 @@
 		</relationship>
 		<relationship name="destination">
 			<destination>{2470f4d7-b8dc-4964-a384-473f560b6d28}</destination>
+		</relationship>
+	</object>
+	<object class="NamedMarker" id="{2470f4d7-b8dc-4964-a384-473f560b6d28}">
+		<property name="position">
+			<value>0</value>
+		</property>
+		<property name="name">
+			<value>Marker A</value>
+		</property>
+		<relationship name="timeline">
+			<destination>{f93c9359-ca88-4237-afff-f6d4472588b8}</destination>
+		</relationship>
+		<relationship name="markerTrack">
+			<destination>{b17a4ea1-ac68-4bae-8143-48dc4b81edd6}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusEffectChain" id="{452a5108-bf07-4935-ba79-05fc4b6e1cdc}">
@@ -240,8 +240,8 @@
 			<value>2</value>
 		</property>
 		<relationship name="modules">
-			<destination>{19fe4451-3887-47f3-a8ad-5cf2e9af5900}</destination>
 			<destination>{f974ad80-7e03-4dd5-aa00-3b72efa52610}</destination>
+			<destination>{19fe4451-3887-47f3-a8ad-5cf2e9af5900}</destination>
 			<destination>{57165035-c3d6-4e18-9c6b-d1d7163072fe}</destination>
 			<destination>{2dcf5e4a-867d-4e3d-bbdf-ac01f91841a1}</destination>
 		</relationship>

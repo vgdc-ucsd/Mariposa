@@ -5,8 +5,8 @@ using System;
 
 public class VolumeControl : MonoBehaviour
 {
-    public Slider VolumeSlider;
-    public String VolumeBusPath;
+    [SerializeField] private Slider VolumeSlider;
+    [SerializeField] private string VolumeBusPath;
     private FMOD.Studio.Bus VolumeBus;
 
     public void StartControl()
@@ -14,37 +14,29 @@ public class VolumeControl : MonoBehaviour
         // grab FMOD bus
         VolumeBus = RuntimeManager.GetBus(VolumeBusPath);
 
-        float volume;
         if (false) // check if player preference exists
         {
             // TODO: Load Player Preferences into variables
         }
         else
         {
-            // if does not exist, initialize slider based on parameter in FMOD
-            VolumeBus.getVolume(out volume);
+            // if no player pref found, set volume to 100%
+            VolumeBus.setVolume(1.0f);
         }
 
-        // TODO: Null ref, uncomment when slider added
-        // VolumeSlider.value = volume;
+        // calls OnSliderChanged with new value whenever the slider changes
+        VolumeSlider?.onValueChanged.AddListener(OnSliderChanged);
     }
-
-    public void ChangeVolume(float value)
-    {
-        if (VolumeBusPath.Substring(5) == "")
-        {
-            RuntimeManager.StudioSystem.setParameterByName("GlobalVolume", value);
-        }
-        else
-        {
-            RuntimeManager.StudioSystem.setParameterByName(VolumeBusPath.Substring(5) + "Volume", value);
-        }
-
-    }
-
-    public void Initialize(Slider slider, String busPath)
+    public void Initialize(Slider slider, string busPath)
     {
         VolumeSlider = slider;
         VolumeBusPath = busPath;
+    }
+
+    private void OnSliderChanged(float value)
+    {
+        VolumeBus.setVolume(value);
+        VolumeBus.getVolume(out float volume);
+        Debug.Log(VolumeBusPath + " new volume: " + Math.Round(volume, 5) * 100 + "%");
     }
 }
