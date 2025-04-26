@@ -100,8 +100,8 @@ public class InventoryManager : Singleton<InventoryManager>
         }
     }
 
-    /** 
-     * Saving and loading from game data 
+    /**
+     * Saving and loading from game data
      */
 
     /// <summary>
@@ -110,7 +110,7 @@ public class InventoryManager : Singleton<InventoryManager>
 	/// <param name="data">GameData object</param>
     public void LoadData(GameData data)
     {
-        this.Inventory = data.Inventory;
+
     }
 
     /// <summary>
@@ -119,9 +119,9 @@ public class InventoryManager : Singleton<InventoryManager>
 	/// <param name="data">GameData object</param>
     public void SaveData(ref GameData data)
     {
-        data.Inventory = this.Inventory; 
+
     }
-    
+
     /*
     private void UpdateBatteryUI()
     {
@@ -132,7 +132,7 @@ public class InventoryManager : Singleton<InventoryManager>
         }
     }
     */
-    
+
     public Dictionary<InventoryItemSO, int> GetAllItems(InventoryType type)
     {
         return inventories[type];

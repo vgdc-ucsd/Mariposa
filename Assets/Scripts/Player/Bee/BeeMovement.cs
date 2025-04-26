@@ -44,8 +44,6 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
     // only activate triggers when it is being controlled
     public override bool ActivateTriggers => parent.IsControlled;
 
-    SpriteRenderer beeSprite;
-
     private void InitDerivedConsts()
     {
         airAcceleration = MoveSpeed / airAccelerationTime;
@@ -88,7 +86,7 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
             {
                 AutoMove();
             }
-            
+
         }
 
         base.FixedUpdate();
@@ -101,7 +99,7 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
         // change where the bee faces when in being controlled
         if (dir.x > 0) {
             beeSprite.flipX = false;
-        } 
+        }
         else if (dir.x < 0) {
             beeSprite.flipX = true;
         }
@@ -137,7 +135,7 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
         float acceleration = accelerationParam;
 
         Vector2 dv = acceleration * fdt * controlDir; // applied force
-        
+
 
         // on no inputs, slow down by drag
         if (neutral) dv = -Velocity * airDragDeceleration * fdt;
@@ -168,7 +166,7 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
             tempVelocity -= exceedingComp;
         }
 
-       
+
         // if moving more will cause the bee to come close to control radius, increase resistance in the normal direction
         else if (distanceToPlayer > adjustedControlRadius - RADIUS_SLOWDOWN_BOUNDARY)
         {
@@ -197,7 +195,7 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
         // change where the bee faces when in AutoMove mode
         if (currentBehavior.GetDir().x > 0) {
             beeSprite.flipX = false;
-        } 
+        }
         else if (currentBehavior.GetDir().x < 0) {
             beeSprite.flipX = true;
         }
