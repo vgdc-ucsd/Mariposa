@@ -1,62 +1,140 @@
 using UnityEngine;
 using System.Collections.Generic;
+using TMPro;
 
-public class InventoryManager : MonoBehaviour
+public enum InventoryType
+{
+    Mariposa,
+    Unnamed,
+}
+
+public class InventoryManager : Singleton<InventoryManager>
 {
     /// <summary>
-    /// list that acts as the inventory of the player
-    /// depending on the design of the game, list can be a static-size array
+    /// REWRITE THIS PART
     /// </summary>
-    List<InventoryItemSO> Inventory = new List<InventoryItemSO>();
+    private Dictionary<InventoryType, Dictionary<InventoryItemSO, int>> inventories = new Dictionary<InventoryType, Dictionary<InventoryItemSO, int>>();
+    [SerializeField] private TextMeshProUGUI batteryCounterText;
 
-	/// <summary>
-	/// Adds item to inventory
-	/// </summary>
-	/// <param name="item">Item class</param>
-    public void AddItem(InventoryItemSO item)
+    public override void Awake()
     {
-        Inventory.Add(item);
+        base.Awake();
+        // Initialize separate inventories for each type
+        inventories[InventoryType.Mariposa] = new Dictionary<InventoryItemSO, int>();
+        inventories[InventoryType.Unnamed] = new Dictionary<InventoryItemSO, int>();
     }
 
-	/// <summary>
-	/// Deletes item from inventory
-	/// </summary>
-	/// <param name="item">Item class (reference)</param>
-    public void DeleteItem(ref InventoryItemSO item)
+    /// <summary>
+    /// Adds item to inventory
+    /// </summary>
+    /// <param name="type"></param>
+    /// <param name="item">Item class</param>
+    public void AddItem(InventoryType type, InventoryItemSO item)
     {
-        Inventory.Remove(item);
+        var inv = inventories[type];
+        if (!inv.TryAdd(item, 1))
+        {
+            inv[item]++;
+        }
+        GameEvents.Instance.Trigger<UpdateTriggers>();
     }
 
-	/// <summary>
-	/// Deletes item from inventory by name
-	/// </summary>
-	/// <param name="name">Item name</param>
-    public void DeleteItemByName(string name)
+    /// <summary>
+    /// Deletes item from inventory
+    /// </summary>
+    /// <param name="type"></param>
+    /// <param name="item">Item class (reference)</param>
+    public void DeleteItem(InventoryType type, InventoryItemSO item)
     {
-        foreach(InventoryItemSO item in Inventory)
+        var inv = inventories[type];
+        if (inv.ContainsKey(item) && inv[item] > 0)
+        {
+            inv[item]--;
+            if (inv[item] <= 0)
+                inv.Remove(item);
+        }
+    }
+
+    /// <summary>
+    /// Deletes item from inventory by name
+    /// </summary>
+    /// <param name="type"></param>
+    /// <param name="name">Item name</param>
+    public void DeleteItemByName(InventoryType type, string name)
+    {
+        var inv = inventories[type];
+        foreach (InventoryItemSO item in new List<InventoryItemSO>(inv.Keys))
         {
             if (item.Name == name)
             {
-                Inventory.Remove(item);
+                inv.Remove(item);
                 return;
             }
         }
     }
 
-	/// <summary>
-	/// Deletes item from inventory by ID
-	/// </summary>
-	/// <param name="id">Item ID</param>
-    public void DeleteItemByID(uint id)
+    /// <summary>
+    /// Returns all items in the specified inventory.
+    /// </summary>
+    public int GetItemCount(InventoryType type, InventoryItemSO item)
     {
-        foreach(InventoryItemSO item in Inventory)
+        var inv = inventories[type];
+        return inv.GetValueOrDefault(item, 0);
+    }
+
+    /// <summary>
+    /// Deletes item from inventory by ID
+    /// </summary>
+    /// <param name="type"></param>
+    /// <param name="id">Item ID</param>
+    public void DeleteItemByID(InventoryType type, uint id)
+    {
+        var inv = inventories[type];
+        foreach (InventoryItemSO item in new List<InventoryItemSO>(inv.Keys))
         {
             if (item.ID == id)
             {
-                Inventory.Remove(item);
+                inv.Remove(item);
                 return;
             }
         }
     }
 
+    /** 
+     * Saving and loading from game data 
+     */
+
+    /// <summary>
+	/// Loads the last saved game data from the GameData object
+	/// </summary>
+	/// <param name="data">GameData object</param>
+    public void LoadData(GameData data)
+    {
+        this.Inventory = data.Inventory;
+    }
+
+    /// <summary>
+	/// Writes the current inventory to the GameData object
+	/// </summary>
+	/// <param name="data">GameData object</param>
+    public void SaveData(ref GameData data)
+    {
+        data.Inventory = this.Inventory; 
+    }
+    
+    /*
+    private void UpdateBatteryUI()
+    {
+        if (batteryCounterText != null)
+        {
+            int count = GetItemCount(InventoryType.Mariposa, BatteryItem.Instance);
+            batteryCounterText.text = $"Batteries: {count}";
+        }
+    }
+    */
+    
+    public Dictionary<InventoryItemSO, int> GetAllItems(InventoryType type)
+    {
+        return inventories[type];
+    }
 }

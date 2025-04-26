@@ -1,16 +1,24 @@
 using UnityEngine;
 
-public class Button : MonoBehaviour
+public class Button : Switch
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] private Door door;
+    [SerializeField] private bool isPressed;
+    
+    /// <summary>
+    /// Function to call when pressing the button.
+    /// Button is designed to be pressed only once.
+    /// </summary>
+    public override void TriggerSwitch()
     {
-        
-    }
+        Debug.Log("Button was Pressed");
 
-    // Update is called once per frame
-    void Update()
-    {
+        if (isPressed) return;
         
+        SwitchToggled = !SwitchToggled;
+        
+        if (door != null) door.ChangeState();
+        
+        isPressed = true;
     }
 }
