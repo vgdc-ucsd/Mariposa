@@ -1,13 +1,15 @@
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
-public class WaterPuzzleTile : MonoBehaviour
+public class WaterPuzzleTile : MonoBehaviour, IPointerClickHandler
 {
     [HideInInspector] public bool PipeRight, PipeUp, PipeLeft, PipeDown;
     [HideInInspector] public bool HasWater;
     [HideInInspector] public int PosX, PosY;
     [HideInInspector] public BoxCollider2D MyCollider;
-    [HideInInspector] public SpriteRenderer SpriteRenderer;
+    [HideInInspector] public Image Image;
     [HideInInspector] public bool MustBeTurn;
     [HideInInspector] public bool MustBeStraight;
     [HideInInspector] public bool MustBeCross;
@@ -20,7 +22,7 @@ public class WaterPuzzleTile : MonoBehaviour
         if (WaterPuzzle.Instance.StartTile == this) FillTile(true);
         else EmptyTile();
 
-        if (WaterPuzzle.Instance.EndTile == this || WaterPuzzle.Instance.EndTile2 == this) SpriteRenderer.material.color = Color.red;
+        if (WaterPuzzle.Instance.EndTile == this || WaterPuzzle.Instance.EndTile2 == this) Image.material.color = Color.red;
 
         SetPipes();
         SetSprite();
@@ -32,7 +34,7 @@ public class WaterPuzzleTile : MonoBehaviour
     public void InitializeTile()
     {
         MyCollider = GetComponent<BoxCollider2D>();
-        SpriteRenderer = GetComponent<SpriteRenderer>();
+        Image = GetComponent<Image>();
     }
 
     /// <summary>
@@ -109,18 +111,6 @@ public class WaterPuzzleTile : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        mousePos.z = 0;
-        if (Input.GetMouseButtonDown(0) && !WaterPuzzle.Instance.PuzzleComplete && MyCollider.bounds.Contains(mousePos))
-        {
-            if (Input.GetKey(KeyCode.LeftControl) && !WaterPuzzle.Instance.UsedPipeSplitter) UsePipeSplitterOnTile();
-            RotateThisTile();
-            WaterPuzzle.Instance.ResetPuzzle();
-        }
-    }
 
     /// <summary>
     /// Sets this tile's sprite and rotation based on which pipes the tile has active to start
@@ -164,7 +154,7 @@ public class WaterPuzzleTile : MonoBehaviour
                 break;
         }
 
-        SpriteRenderer.sprite = WaterPuzzle.Instance.TileSprites[spriteIndex];
+        Image.sprite = WaterPuzzle.Instance.TileSprites[spriteIndex];
         transform.eulerAngles += Vector3.forward * (transform.eulerAngles.z + rotation);
     }
 
@@ -245,7 +235,7 @@ public class WaterPuzzleTile : MonoBehaviour
                 WaterPuzzle.Instance.CompletePuzzle();
             }*/
 
-            SpriteRenderer.material.color = Color.blue;
+            Image.color = Color.blue;
             HasWater = true;
             FillAdjacentTiles();
         }
@@ -256,7 +246,7 @@ public class WaterPuzzleTile : MonoBehaviour
     /// </summary>
     public void EmptyTile()
     {
-        if (WaterPuzzle.Instance.EndTile != this && WaterPuzzle.Instance.EndTile2 != this) SpriteRenderer.material.color = Color.white;
+        if (WaterPuzzle.Instance.EndTile != this && WaterPuzzle.Instance.EndTile2 != this) Image.material.color = Color.white;
         HasWater = false;
     }
 
@@ -266,5 +256,15 @@ public class WaterPuzzleTile : MonoBehaviour
         PipeRight = PipeUp = PipeLeft = PipeDown = true;
         SetSprite();
         WaterPuzzle.Instance.UsedPipeSplitter = true;
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (!WaterPuzzle.Instance.PuzzleComplete)
+        {
+            if (Input.GetKey(KeyCode.LeftControl) && !WaterPuzzle.Instance.UsedPipeSplitter) UsePipeSplitterOnTile();
+            RotateThisTile();
+            WaterPuzzle.Instance.ResetPuzzle();
+        }
     }
 }

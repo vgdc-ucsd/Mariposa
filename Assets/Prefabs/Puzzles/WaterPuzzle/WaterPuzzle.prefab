@@ -17,22 +17,26 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!4 &4834160962878555924
-Transform:
+--- !u!224 &4834160962878555924
+RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8028898788871020002}
-  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 100.18553, y: 100.18553, z: 100.18553}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6075996274781628768}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &-7894364359328211101
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45,11 +49,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a812288e96fc54040a6b5ee6c44eedad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  twoEndings: 1
   PuzzleUI: {fileID: 775152224476311031}
   StartTile: {fileID: 0}
   EndTile: {fileID: 0}
-  GridWidth: 13
-  GridHeight: 13
+  EndTile2: {fileID: 0}
+  GridWidth: 17
+  GridHeight: 7
   PuzzleComplete: 0
   tilePrefab: {fileID: 167192345093911540, guid: 31272c9e4c1162f4f84695da2f6321cb, type: 3}
   RandomTurnChance: 0.2
@@ -62,6 +68,7 @@ MonoBehaviour:
   - {fileID: -8363144008919072003, guid: 36b3871520f9aa84e97c7e50fc2fb6d2, type: 3}
   - {fileID: -7174583451156371245, guid: f71e7bdd2484ec94f96676be1ec7fd9a, type: 3}
   - {fileID: 6165875374574306269, guid: cdd13e9d75db7e04da37f13557fb2ac6, type: 3}
+  UsedPipeSplitter: 0
 --- !u!1001 &8636138109692184422
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -276,8 +283,8 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 9014056967176006289, guid: feffb9f4de9b4f2419d97d5439e35602, type: 3}
   m_PrefabInstance: {fileID: 8636138109692184422}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &6075996274781628768 stripped
-Transform:
+--- !u!224 &6075996274781628768 stripped
+RectTransform:
   m_CorrespondingSourceObject: {fileID: 2561421951945813510, guid: feffb9f4de9b4f2419d97d5439e35602, type: 3}
   m_PrefabInstance: {fileID: 8636138109692184422}
   m_PrefabAsset: {fileID: 0}
