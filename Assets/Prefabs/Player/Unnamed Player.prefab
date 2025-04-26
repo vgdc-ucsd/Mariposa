@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 1173765404548273236}
   - component: {fileID: 8376647658677142028}
   - component: {fileID: 1201332389400477736}
+  - component: {fileID: 6330882372751253626}
+  - component: {fileID: 5752417757072126004}
   m_Layer: 8
   m_Name: Sprite
   m_TagString: Untagged
@@ -86,7 +88,7 @@ SpriteRenderer:
   m_Size: {x: 0.7032258, y: 1.2354839}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!95 &8376647658677142028
@@ -123,6 +125,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5238931793b377a41b3a12b23d477c24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TerrainTag: Default
+  FootstepSoundEvent: event:/sfx/player/footstep
+  JumpSoundEvent: event:/sfx/player/jump
+  LandSoundEvent: event:/sfx/player/land
+--- !u!114 &6330882372751253626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4874708557998587922}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a54f3e43aa76aa44da0b02dd712bebf8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BackgroundSoundEvent: event:/music/1_tutorial/unnamed
+--- !u!114 &5752417757072126004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4874708557998587922}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a54f3e43aa76aa44da0b02dd712bebf8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BackgroundSoundEvent: event:/ambience/1_tutorial/unnamed
 --- !u!1 &4875991570046858898
 GameObject:
   m_ObjectHideFlags: 0
@@ -140,7 +172,7 @@ GameObject:
   - component: {fileID: 2366443956971805421}
   m_Layer: 8
   m_Name: Unnamed Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -265,14 +297,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Velocity: {x: 0, y: 0}
   Rb: {fileID: 0}
-  State: 0
   SurfaceCollider: {fileID: 0}
-  Gravity: 40
+  InsideTriggers: []
+  State: 0
+  Gravity: 50
   TerminalVelocity: 40
   collisionLayer:
     serializedVersion: 2
     m_Bits: 64
-  MoveSpeed: 6
+  Parent: {fileID: 0}
+  MoveSpeed: 6.5
   wallJumpMoveLockTime: 0.3
   wallJumpHorizontalSpeed: 10
   groundAccelerationTime: 0.15
@@ -280,14 +314,18 @@ MonoBehaviour:
   airAccelerationTime: 0.4
   airMovementDecelerationTime: 0.2
   airDragDecelerationTime: 0.5
-  jumpVelocity: 13
+  jumpHeight: 2.5
+  DoubleJumpFactor: 0.85
   CanDoubleJump: 0
   CanWallJump: 1
   coyoteTime: 0.1
   jumpBufferTime: 0.15
-  fallingGravityMultiplier: 0.8
+  fallingGravityMultiplier: 0.9
   cornerCorrectMaxInsetDistance: 0
   cornerCorrectMinVelocity: 0
+  airJumpAvailable: 0
+  dashForce: 20
+  dashDuration: 0.2
 --- !u!114 &476828147665577477
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -29,7 +29,7 @@ public class DataPersistenceManager : Singleton<DataPersistenceManager>
 
     /// <summary>
     /// Makes a new GameData object with default data values, as defined
-    /// in the GameData constructor. Doesn't overwrite the save data on file.
+    /// in the GameData constructor
     /// </summary>
     public void NewGame()
     {
@@ -66,14 +66,6 @@ public class DataPersistenceManager : Singleton<DataPersistenceManager>
             dataPersistenceObj.SaveData(ref gameData);
         }
         dataManager.Save(gameData);
-    }
-
-    /// <summary>
-    /// Delete the save data at the specified file location in the FileDataManager
-    /// </summary>
-    public void DeleteGame()
-    {
-        dataManager.DeleteSave();
     }
 
     // Save the game when the application closes

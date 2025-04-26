@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 1173765404548273236}
   - component: {fileID: 8376647658677142028}
   - component: {fileID: 1201332389400477736}
+  - component: {fileID: 1008673077814559217}
+  - component: {fileID: 4744011882697002218}
   m_Layer: 8
   m_Name: Sprite
   m_TagString: Untagged
@@ -77,7 +79,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 9fa05a2b3dc3e9440801c5721dc69f25, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -123,6 +125,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5238931793b377a41b3a12b23d477c24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TerrainTag: Default
+  FootstepSoundEvent: event:/sfx/player/footstep
+  JumpSoundEvent: event:/sfx/player/jump
+  LandSoundEvent: event:/sfx/player/land
+--- !u!114 &1008673077814559217
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4874708557998587922}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a54f3e43aa76aa44da0b02dd712bebf8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BackgroundSoundEvent: event:/music/1_tutorial/mariposa
+--- !u!114 &4744011882697002218
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4874708557998587922}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a54f3e43aa76aa44da0b02dd712bebf8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BackgroundSoundEvent: event:/ambience/1_tutorial/mariposa
 --- !u!1 &4875991570046858898
 GameObject:
   m_ObjectHideFlags: 0
@@ -139,7 +171,7 @@ GameObject:
   - component: {fileID: 8504754870049651859}
   m_Layer: 8
   m_Name: Mariposa Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -264,14 +296,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Velocity: {x: 0, y: 0}
   Rb: {fileID: 0}
-  State: 0
   SurfaceCollider: {fileID: 0}
-  Gravity: 40
+  State: 0
+  Gravity: 50
   TerminalVelocity: 40
   collisionLayer:
     serializedVersion: 2
     m_Bits: 64
-  MoveSpeed: 6
+  Parent: {fileID: 0}
+  MoveSpeed: 6.5
   wallJumpMoveLockTime: 0.3
   wallJumpHorizontalSpeed: 10
   groundAccelerationTime: 0.15
@@ -279,14 +312,18 @@ MonoBehaviour:
   airAccelerationTime: 0.4
   airMovementDecelerationTime: 0.2
   airDragDecelerationTime: 0.5
-  jumpVelocity: 13
+  jumpHeight: 2.5
+  DoubleJumpFactor: 1
   CanDoubleJump: 1
   CanWallJump: 0
   coyoteTime: 0.1
   jumpBufferTime: 0.15
-  fallingGravityMultiplier: 0.8
+  fallingGravityMultiplier: 0.9
   cornerCorrectMaxInsetDistance: 0
   cornerCorrectMinVelocity: 0
+  airJumpAvailable: 0
+  dashForce: 20
+  dashDuration: 0.2
 --- !u!114 &8504754870049651859
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -346,4 +383,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BeeRef: {fileID: 0}
-  controllingBee: 0

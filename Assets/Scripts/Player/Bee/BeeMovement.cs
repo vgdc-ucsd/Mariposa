@@ -9,6 +9,8 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
     public static PlayerMovement Instance;
     private Bee parent;
 
+    private Vector2 velocityFieldVelocity = Vector2.zero;
+
     [Header("Horizontal Parameters")]
 
     [Tooltip("The maximum horizontal movement speed")]
@@ -38,6 +40,12 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
     SpriteRenderer beeSprite;
 
     // Useful for when their dependent values are changed during runtime
+
+    // only activate triggers when it is being controlled
+    public override bool ActivateTriggers => parent.IsControlled;
+
+    SpriteRenderer beeSprite;
+
     private void InitDerivedConsts()
     {
         airAcceleration = MoveSpeed / airAccelerationTime;
@@ -86,7 +94,7 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
         base.FixedUpdate();
     }
 
-    public void GetMoveDir(Vector2 dir)
+    public void SetMoveDir(Vector2 dir)
     {
         moveDir = dir;
 
@@ -109,7 +117,12 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
         Vector2 r = transform.position - Player.ActivePlayer.transform.position;
         float distanceToPlayer = r.magnitude;
 
-        if (distanceToPlayer > parent.MaxControlRadius) return;
+
+        if (distanceToPlayer > parent.MaxControlRadius)
+        {
+            Velocity = Vector2.zero;
+            return;
+        }
 
 
         Vector2 controlDir = moveDir.normalized;
@@ -137,6 +150,7 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
             tempVelocity *= MoveSpeed / tempVelocity.magnitude;
         }
 
+        tempVelocity += velocityFieldVelocity;
 
         Vector2 normalComp = Vector2.Dot(tempVelocity, r) / r.sqrMagnitude * r;
 
@@ -189,4 +203,26 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
         }
     }
 
+    public void ToggleCollisions(bool toggle)
+    {
+        collisionsEnabled = toggle;
+    }
+
+    protected override void OnTriggerEnter2D(Collider2D collision)
+    {
+        base.OnTriggerEnter2D(collision);
+        if (collision.CompareTag("VelocityField"))
+        {
+            velocityFieldVelocity = collision.GetComponent<VelocityField>().velocity;
+        }
+    }
+
+    protected override void OnTriggerExit2D(Collider2D collision)
+    {
+        base.OnTriggerExit2D(collision);
+        if (collision.CompareTag("VelocityField"))
+        {
+            velocityFieldVelocity = Vector2.zero;
+        }
+    }
 }

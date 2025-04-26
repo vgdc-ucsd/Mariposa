@@ -1,4 +1,3 @@
-using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -14,7 +13,7 @@ public class BoxPassThrough : MonoBehaviour
     private Transform rayPointLeftOfBox;
     [SerializeField]
     private Transform rayPointRightOfBox;
-    [SerializeField] 
+    [SerializeField]
     private Transform rayPointTopOfBox;
     [SerializeField]
     private Transform grabPoint;
@@ -32,7 +31,7 @@ public class BoxPassThrough : MonoBehaviour
     private int layerToIgnore;
 
 
-        
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -47,7 +46,7 @@ public class BoxPassThrough : MonoBehaviour
             return;
         }
     }
-   
+
     // Update is called once per frame
     void Update()
     {
@@ -56,7 +55,7 @@ public class BoxPassThrough : MonoBehaviour
         Debug.DrawRay(rayPointTopOfBox.position, transform.up * rayDistanceOutsideBox, Color.green);
         Debug.DrawRay(rayPointInsideBox.position, transform.right * rayDistanceInsideBox, Color.red);
 
-        
+
         pushAndPull();
         dropBox();
         leaveBox();
