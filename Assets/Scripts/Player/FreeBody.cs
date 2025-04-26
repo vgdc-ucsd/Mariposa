@@ -1,11 +1,11 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using Unity.VisualScripting;
-using UnityEditor.Rendering;
 using UnityEngine;
 
-// The external forces this object can currently experience 
+// The external forces this object can currently experience
 public enum BodyState
 {
     OnGround, // Experiences sliding friction
@@ -21,7 +21,7 @@ public enum BodyState
 public abstract class FreeBody : Body
 {
     public BodyState State;
-    public BoxCollider2D SurfaceCollider;
+    
     protected List<RaycastHit2D> collisionHits = new(); // All collision hits for the current frame
 
     protected float fdt; // Shorthand for fixed delta time
@@ -30,6 +30,7 @@ public abstract class FreeBody : Body
     public float Gravity;
 
     protected bool gravityEnabled = true;
+    protected bool collisionsEnabled = true;
 
     [Tooltip("The maximum fall velocity")]
     [SerializeField] protected float TerminalVelocity;
@@ -47,7 +48,20 @@ public abstract class FreeBody : Body
     {
         base.Awake();
         Unlock();
-        SurfaceCollider = GetComponent<BoxCollider2D>();
+        
+
+        ResolveInitialCollisions();
+    }
+
+    public void ResolveInitialCollisions()
+    {
+        Physics2D.SyncTransforms();
+        Collider2D[] initialContacts = Physics2D.OverlapBoxAll(SurfaceCollider.bounds.center, SurfaceCollider.bounds.size, 0, collisionLayer);
+        foreach (Collider2D collider in initialContacts)
+        {
+            ColliderDistance2D separation = SurfaceCollider.Distance(collider);
+            transform.position += (separation.distance + CONTACT_OFFSET) * (Vector3)separation.normal;
+        }
     }
 
     protected override void Update()
@@ -59,8 +73,8 @@ public abstract class FreeBody : Body
     {
         fdt = Time.deltaTime;
 
-        Fall();
         CheckGrounded();
+        Fall();
 
         Vector2 movement = Velocity * fdt;
         ApplyMovement(movement);
@@ -70,11 +84,12 @@ public abstract class FreeBody : Body
     protected virtual void Fall()
     {
         if (State != BodyState.InAir || !gravityEnabled) return;
-        Velocity.y = Mathf.Max(Velocity.y - Gravity * fdt, -TerminalVelocity); // Cap the velocity 
+        Velocity.y = Mathf.Max(Velocity.y - Gravity * fdt, -TerminalVelocity); // Cap the velocity
     }
 
     protected virtual void CheckGrounded()
     {
+        if (!collisionsEnabled) return;
         Bounds bounds = SurfaceCollider.bounds;
         RaycastHit2D groundHit = Physics2D.BoxCast(bounds.center, bounds.size, 0f, Vector2.down, COLLISION_CHECK_DISTANCE, collisionLayer);
         if (State != BodyState.OnGround && groundHit && groundHit.normal.normalized.y > LAND_SLOPE_FACTOR)
@@ -89,33 +104,50 @@ public abstract class FreeBody : Body
 
     protected virtual void ApplyMovement(Vector2 move)
     {
+        if (!collisionsEnabled) return;
         collisionHits.Clear();
         if (Mathf.Approximately(move.magnitude, 0f)) return; // This avoids weird imprecision errors
 
         Bounds bounds = SurfaceCollider.bounds;
-        collisionHits.AddRange(Physics2D.BoxCastAll(bounds.center, bounds.size, 0f, move.normalized, move.magnitude, collisionLayer));
+        RaycastHit2D hit = Physics2D.BoxCast(bounds.center, bounds.size, 0f, move.normalized, move.magnitude, collisionLayer);
 
-        // Find the minimum change in position that satisfies all contact constraints
-        Vector2 minDelta = move;
-        foreach (RaycastHit2D hit in collisionHits)
+        int loops = 0; // This is to prevent infinite loops in case something goes wrong
+        while (hit && !hit.collider.isTrigger && !(Mathf.Approximately(move.x, 0f) && Mathf.Approximately(move.y, 0f)))
         {
             Vector2 normal = hit.normal.normalized;
+            collisionHits.Add(hit);
+
             if (Mathf.Abs(normal.y) > Mathf.Abs(normal.x)) // Vertical collision
             {
                 float deltaY = Mathf.Abs(hit.centroid.y - bounds.center.y);
-                if (deltaY < Mathf.Abs(minDelta.y)) minDelta.y = deltaY * move.normalized.y + normal.y * CONTACT_OFFSET;
+                transform.position += (deltaY * move.normalized.y + normal.y * CONTACT_OFFSET) * Vector3.up;
+                move.y = 0;
                 Velocity.y = 0;
             }
             else // Horizontal collision
             {
                 float deltaX = Mathf.Abs(hit.centroid.x - bounds.center.x);
-                if (deltaX < Mathf.Abs(minDelta.x)) minDelta.x = deltaX * move.normalized.x + normal.x * CONTACT_OFFSET;
+                transform.position += (deltaX * move.normalized.x + normal.x * CONTACT_OFFSET) * Vector3.right;
+                move.x = 0;
                 Velocity.x = 0;
             }
+            hit = Physics2D.BoxCast(bounds.center, bounds.size, 0f, move.normalized, move.magnitude, collisionLayer);
+            if (Mathf.Approximately(hit.distance, 0f))
+            {
+                ResolveInitialCollisions();
+                break;
+            }
+
+            loops++;
+            if (loops > 4)
+            {
+                break;
+            }
         }
-        
+
+
         // Apply the movement
-        transform.position += (Vector3)minDelta;
+        transform.position += (Vector3)move;
     }
 
     // Drop players in the air at the start of a scene or after an interaction

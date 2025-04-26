@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using FMODUnity;
+using FMOD.Studio;
 
 public enum GrappleState
 {
@@ -108,6 +110,8 @@ public class GrappleAbility : MonoBehaviour, IAbility
         }
     }
 
+    public void Initialize() { }
+
     private void FindGrapplePoint()
     {
         List<GrappleTarget> potentialTargets = new();
@@ -142,7 +146,7 @@ public class GrappleAbility : MonoBehaviour, IAbility
         {
             currentTarget.ToggleHighlight(true);
         }
-        
+
     }
 
     // fire the hook towards the target
@@ -153,17 +157,16 @@ public class GrappleAbility : MonoBehaviour, IAbility
         player.TurnTowards((int)Mathf.Sign(target.x - player.transform.position.x));
         player.Movement.Stop();
         player.Movement.ToggleGravity(false);
-        state = GrappleState.Firing;
+        ChangeGrappleState(GrappleState.Firing);
     }
 
     // hook is travelling towards the target
     private void GrappleFire()
     {
         // todo line firing animation
-        state = GrappleState.Pulling;
-        
+        ChangeGrappleState(GrappleState.Pulling);
     }
-    
+
     // Acceelrating towards the grapple point
     private void GrapplePull()
     {
@@ -198,7 +201,7 @@ public class GrappleAbility : MonoBehaviour, IAbility
         {
             storedMomentum = 0;
         }
-        
+
     }
 
     // Launch in a slightly upward arc with stored momentum
@@ -241,5 +244,24 @@ public class GrappleAbility : MonoBehaviour, IAbility
 
     }
 
+    private void PlayGrappleThrow()
+    {
+        EventInstance footstepInstance = RuntimeManager.CreateInstance("event:/sfx/player/grapple/impact");
+        footstepInstance.start();
+        footstepInstance.release();
+    }
 
+    private void ChangeGrappleState(GrappleState newState)
+    {
+        GrappleState previous = state;
+        state = newState;
+
+        if (previous != newState)
+        {
+            if (newState == GrappleState.Firing)
+            {
+                PlayGrappleThrow();
+            }
+        }
+    }
 }
