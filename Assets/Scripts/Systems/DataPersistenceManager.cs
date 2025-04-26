@@ -27,7 +27,7 @@ public class DataPersistenceManager : Singleton<DataPersistenceManager>
 
     /// <summary>
     /// Makes a new GameData object with default data values, as defined
-    /// in the GameData constructor. Doesn't overwrite the save data on file.
+    /// in the GameData constructor
     /// </summary>
     public void NewGame()
     {

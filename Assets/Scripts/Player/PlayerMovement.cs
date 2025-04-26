@@ -1,12 +1,16 @@
+using System.Collections;
 using NUnit.Framework.Internal.Commands;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
+using FMODUnity;
 
-public class PlayerMovement : FreeBody
+public class PlayerMovement : FreeBody, IInputListener, IControllable
 {
     public static PlayerMovement Instance;
+    public Player Parent;
+    public override bool ActivateTriggers => (IControllable)this == PlayerController.Instance.CurrentControllable;
 
     [Header("Horizontal Parameters")]
 
@@ -14,7 +18,6 @@ public class PlayerMovement : FreeBody
     public float MoveSpeed = 10;
 
     private Vector2 moveDir = Vector2.zero;
-
 
     [Tooltip("The amount of time that wall jumping locks the player out of movement")]
     [SerializeField] private float wallJumpMoveLockTime;
@@ -47,11 +50,19 @@ public class PlayerMovement : FreeBody
 
 
     [Header("Vertical Parameters")]
-    [Tooltip("Vertical speed is set to this value on jump")]
-    public float JumpHeight = 6;
+
+    [Tooltip("The height in tiles/units of a jump")]
+    [SerializeField] private float jumpHeight = 2;
+    private float jumpVelocity;
+
+    [Tooltip("The factor by which the velocity of a normal jump is scaled by for a double jump")]
+    [SerializeField] private float DoubleJumpFactor = 0.5f;
 
     [Tooltip("Checks if Player can use Double Jump")]
-    public bool CanDoubleJump = true;
+    public bool CanDoubleJump;
+
+    [Tooltip("Checks if Player can use Wall Jump")]
+    public bool CanWallJump;
 
     [Tooltip("The amount of extra time the player has to jump after leaving the ground")]
     [SerializeField] private float coyoteTime;
@@ -70,7 +81,18 @@ public class PlayerMovement : FreeBody
     [Tooltip("The minimum upward velocity required to corner correct")]
     [SerializeField] private float cornerCorrectMinVelocity;
 
+    // whether the player has a charge of double jump (whether player touched the ground since last double jump
+    public bool airJumpAvailable = false;
+    [Header("Dash Parameters")]
+    [Tooltip("Force applied during dash")]
+    public float dashForce = 20f;
+    [Tooltip("Duration of the dash (seconds)")]
+    public float dashDuration = 0.2f;
+    private bool isDashing = false;
 
+
+    private MovingPlatform currentMovingPlatform = null;
+    private bool onControllableMovingPlatform = false;
 
     // Useful for when their dependent values are changed during runtime
     private void InitDerivedConsts()
@@ -80,6 +102,8 @@ public class PlayerMovement : FreeBody
         airAcceleration = MoveSpeed / airAccelerationTime;
         airMovementDeceleration = MoveSpeed / airMovementDecelerationTime;
         airDragDeceleration = MoveSpeed / airDragDecelerationTime;
+
+        jumpVelocity = Mathf.Sqrt(2 * Gravity * jumpHeight);
     }
 
     protected override void Awake()
@@ -97,6 +121,15 @@ public class PlayerMovement : FreeBody
     protected override void Update()
     {
         base.Update();
+        if (Input.GetKeyDown(KeyCode.V) && !isDashing)
+        {
+            // Consume a battery if available
+            if (InventoryManager.Instance.GetItemCount(InventoryType.Mariposa, BatteryItem.Instance) > 0)
+            {
+                InventoryManager.Instance.DeleteItem(InventoryType.Mariposa, BatteryItem.Instance);
+                StartCoroutine(DashRoutine());
+            }
+        }
     }
 
     private void OnValidate()
@@ -104,9 +137,9 @@ public class PlayerMovement : FreeBody
         InitDerivedConsts();
     }
 
-
     protected override void FixedUpdate()
     {
+        if (onControllableMovingPlatform) ControlPlatform();
         Move();
 
         base.FixedUpdate();
@@ -114,6 +147,12 @@ public class PlayerMovement : FreeBody
         CheckOnWall();
 
         UpdateTimers(fdt);
+    }
+
+    private void ControlPlatform()
+    {
+        ControllableMovingPlatform platform = (ControllableMovingPlatform)currentMovingPlatform;
+        platform.MovePlatform(moveDir);
     }
 
     private void CheckOnWall()
@@ -130,14 +169,10 @@ public class PlayerMovement : FreeBody
     }
 
     // public method to send a move command
-    public void MoveTowards(int dir)
+    public void SetMoveDir(Vector2 dir)
     {
-        // TurnTowards only changes "facing direction", which has no effect on movement
-        if (dir != 0) Player.ActivePlayer.TurnTowards(dir);
-
-        if (dir == 1) moveDir = Vector2.right;
-        else if (dir == -1) moveDir = Vector2.left;
-        else moveDir = Vector2.zero;
+        moveDir = dir;
+        if (!Mathf.Approximately(dir.x, 0f)) Player.ActivePlayer.TurnTowards((int)Mathf.Sign(dir.x));
     }
 
     private void Move()
@@ -167,30 +202,52 @@ public class PlayerMovement : FreeBody
 
         // Apply the acceleration
         Velocity.x += acceleration * fdt * Mathf.Sign(deltaV);
+
+        if (currentMovingPlatform != null)
+        {
+            Vector2 platformMovement = currentMovingPlatform.velocity * fdt;
+            if (currentMovingPlatform.velocity.y < -Gravity) platformMovement.y = -Gravity;
+            ApplyMovement(platformMovement);
+            ResolveInitialCollisions();
+        }
     }
 
     // Directly set the player's y velocity
-    public void Jump()
+    public void JumpInputDown()
     {
         CheckOnWall();
         CheckGrounded();
 
-        if (wallNormal != 0 && State == BodyState.InAir)
+        Bounds bounds = SurfaceCollider.bounds;
+        Vector2 beeCastCenter = bounds.center + 0.375f * bounds.size.y * Vector3.down;
+        Vector2 beeCastSize = 0.25f * bounds.size;
+        RaycastHit2D[] beeHits = Physics2D.BoxCastAll(beeCastCenter, beeCastSize, 0f, Vector2.down, COLLISION_CHECK_DISTANCE);
+        bool onBee = false;
+        foreach (var hit in beeHits)
         {
-            Velocity.y = JumpHeight;
+            if (hit.collider.CompareTag("Bee")) onBee = true;
+        }
+
+        if (CanWallJump && wallNormal != 0 && State == BodyState.InAir)
+        {
+            Velocity.y = jumpVelocity;
             Velocity.x = wallJumpHorizontalSpeed * wallNormal;
             wallJumpMoveLockTimeRemaining = wallJumpMoveLockTime;
+            RuntimeManager.PlayOneShot("event:/sfx/player/jump");
         }
         else if (State == BodyState.OnGround || coyoteTimeRemaining > 0f)
         {
-            Velocity.y = JumpHeight;
+            Velocity.y = jumpVelocity;
             coyoteTimeRemaining = 0f;   // consume coyote time
+            RuntimeManager.PlayOneShot("event:/sfx/player/jump");
         }
-        else if (CanDoubleJump)
+        else if (CanDoubleJump && airJumpAvailable && onBee)
         {
-            Velocity.y = 1.25f * JumpHeight;
-            CanDoubleJump = false;
+            Velocity.y = jumpVelocity * DoubleJumpFactor;
+            airJumpAvailable = false;
             coyoteTimeRemaining = 0f;
+            RuntimeManager.PlayOneShot("event:/sfx/player/jump");
+            RuntimeManager.PlayOneShot("event:/sfx/player/bee/double_jump");
         }
         else if (State != BodyState.OnGround && coyoteTimeRemaining <= 0.0f)
         {
@@ -217,20 +274,27 @@ public class PlayerMovement : FreeBody
         if (State != BodyState.OnGround && groundHit && groundHit.normal.normalized.y > LAND_SLOPE_FACTOR)
         {
             State = BodyState.OnGround;
-            CanDoubleJump = true;
-            if (jumpBufferTimeRemaining > 0.0f) Jump();
+            airJumpAvailable = true;
+            if (jumpBufferTimeRemaining > 0.0f) JumpInputDown();
+            if (groundHit.collider.CompareTag("MovingPlatform"))
+            {
+                currentMovingPlatform = groundHit.collider.GetComponentInParent<MovingPlatform>();
+                if (currentMovingPlatform is ControllableMovingPlatform) onControllableMovingPlatform = true;
+            }
         }
         else if (State == BodyState.OnGround && !groundHit)
         {
             State = BodyState.InAir;
             coyoteTimeRemaining = coyoteTime;
+            currentMovingPlatform = null;
+            onControllableMovingPlatform = false;
         }
     }
 
     // Shift the player horizontally when they barely bump a ceiling
     private void CeilingCornerCorrect()
     {
-        RaycastHit2D ceilingHit = collisionHits.Where(hit => hit.normal.normalized.y > -LAND_SLOPE_FACTOR).FirstOrDefault();
+        RaycastHit2D ceilingHit = collisionHits.Where(hit => hit.normal.normalized.y < -LAND_SLOPE_FACTOR).FirstOrDefault();
 
         if (!ceilingHit) return;
         if (Velocity.y < cornerCorrectMinVelocity) return;
@@ -254,5 +318,18 @@ public class PlayerMovement : FreeBody
         coyoteTimeRemaining = Mathf.Max(coyoteTimeRemaining - dt, 0.0f);
         jumpBufferTimeRemaining = Mathf.Max(jumpBufferTimeRemaining - dt, 0.0f);
         wallJumpMoveLockTimeRemaining = Mathf.Max(wallJumpMoveLockTimeRemaining - dt, 0.0f);
+    }
+
+
+    /// <summary>
+    /// Coroutine that handles the dash ability.
+    /// </summary>
+    private IEnumerator DashRoutine()
+    {
+        isDashing = true;
+        float dashDirection = Mathf.Sign(transform.localScale.x);
+        Velocity.x = dashForce * dashDirection;
+        yield return new WaitForSeconds(dashDuration);
+        isDashing = false;
     }
 }
