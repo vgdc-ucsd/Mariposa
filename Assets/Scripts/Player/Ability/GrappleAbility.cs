@@ -13,6 +13,11 @@ public enum GrappleState
 public class GrappleAbility : MonoBehaviour, IAbility
 {
     [SerializeField]
+    private GameObject hookProjectile;
+
+    [SerializeField] private float hookSpeed = 50f;
+
+    [SerializeField]
     private GrappleTarget currentTarget;
     private List<GrappleTarget> grappleTargets;
 
@@ -58,6 +63,7 @@ public class GrappleAbility : MonoBehaviour, IAbility
     private void Start()
     {
         grappleTargets = FindObjectsByType<GrappleTarget>(FindObjectsSortMode.None).ToList();
+        hookProjectile.transform.SetParent(transform.parent);
     }
 
     private void Update()
@@ -124,11 +130,14 @@ public class GrappleAbility : MonoBehaviour, IAbility
             float dist = Vector2.Distance(target.transform.position, Player.ActivePlayer.transform.position);
             if (dist <= grappleRange)
             {
-                if (dir == targetDir)
+                if (HasLineOfSightToTarget(target))
                 {
-                    potentialTargets.Add(target);
+                    if (dir == targetDir)
+                    {
+                        potentialTargets.Add(target);
+                    }
+                    else behindTargets.Add(target);
                 }
-                else behindTargets.Add(target);
             }
         }
 
@@ -149,6 +158,20 @@ public class GrappleAbility : MonoBehaviour, IAbility
 
     }
 
+    private bool HasLineOfSightToTarget(GrappleTarget target)
+    {
+        ContactFilter2D filter = new ContactFilter2D();
+        filter.SetLayerMask(LayerMask.GetMask("Barrier"));
+        RaycastHit2D[] hit = new RaycastHit2D[10];
+        Physics2D.Raycast(Player.ActivePlayer.transform.position, target.transform.position - Player.ActivePlayer.transform.position, filter, hit);
+        Debug.DrawLine(Player.ActivePlayer.transform.position, hit[0].point);
+        if (hit[0].distance < Vector2.Distance(Player.ActivePlayer.transform.position, target.transform.position))
+        {
+            return false;
+        }
+        return true;
+    }
+
     // fire the hook towards the target
     private void GrappleTowards(Vector2 target)
     {
@@ -163,8 +186,12 @@ public class GrappleAbility : MonoBehaviour, IAbility
     // hook is travelling towards the target
     private void GrappleFire()
     {
-        // todo line firing animation
-        ChangeGrappleState(GrappleState.Pulling);
+        hookProjectile.transform.position = Vector2.MoveTowards(hookProjectile.transform.position, currentTarget.transform.position, hookSpeed * fdt);
+        if (Vector2.Distance(hookProjectile.transform.position, currentTarget.transform.position) < 1f)
+        {
+            ChangeGrappleState(GrappleState.Pulling);
+        }
+
     }
 
     // Acceelrating towards the grapple point
@@ -230,11 +257,20 @@ public class GrappleAbility : MonoBehaviour, IAbility
     {
         if (new GrappleState[] { GrappleState.Pulling, GrappleState.Firing }.Contains(state))
         {
+            Vector2 pos2;
+            if (state == GrappleState.Firing)
+            {
+                pos2 = hookProjectile.transform.position;
+            }
+            else
+            {
+                pos2 = lockedTarget;
+            }
             lineRenderer.enabled = true;
             lineRenderer.SetPositions(new Vector3[]
             {
                 gameObject.transform.position,
-                lockedTarget
+                pos2
             });
         }
         else
@@ -260,7 +296,13 @@ public class GrappleAbility : MonoBehaviour, IAbility
         {
             if (newState == GrappleState.Firing)
             {
+                hookProjectile.SetActive(true);
+                hookProjectile.transform.position = Player.ActivePlayer.transform.position;
                 PlayGrappleThrow();
+            }
+            else
+            {
+                hookProjectile.SetActive(false);
             }
         }
     }
