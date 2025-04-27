@@ -206,14 +206,6 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
 
         // Apply the acceleration
         Velocity += acceleration * fdt * Mathf.Sign(deltaV) * axis;
-
-        if (currentMovingPlatform != null)
-        {
-            Vector2 platformMovement = currentMovingPlatform.velocity * fdt;
-            if (currentMovingPlatform.velocity.y < -Gravity) platformMovement.y = -Gravity;
-            ApplyMovement(platformMovement);
-            ResolveInitialCollisions();
-        }
     }
 
     // Directly set the player's y velocity
@@ -274,6 +266,8 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
             if (groundHit.collider.CompareTag("MovingPlatform"))
             {
                 currentMovingPlatform = groundHit.collider.GetComponentInParent<MovingPlatform>();
+                if (currentMovingPlatform.currMovement.y < 0) transform.position += currentMovingPlatform.currMovement.y * Vector3.up;
+                currentMovingPlatform.adjacentFreeBody = this;
                 if (currentMovingPlatform is ControllableMovingPlatform) onControllableMovingPlatform = true;
             }
             airJumpAvailable = true;
@@ -296,6 +290,12 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
         base.OnAirborne();
         onWalkableSlope = false;
         slopeDir = Vector2.zero;
+        if (onControllableMovingPlatform)
+        {
+            currentMovingPlatform.currMovement = Vector2.zero;
+            ((ControllableMovingPlatform)currentMovingPlatform).MovePlatform(Vector2.zero);
+        }
+        if (currentMovingPlatform != null) currentMovingPlatform.adjacentFreeBody = null;
         currentMovingPlatform = null;
         onControllableMovingPlatform = false;
     }

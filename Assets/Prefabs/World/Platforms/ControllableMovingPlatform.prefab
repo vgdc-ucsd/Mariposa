@@ -29,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 4, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 9095002206373774890}
@@ -78,7 +78,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: 6356408545858548044, guid: a64d933071d733147b4053cdc5489733, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -123,17 +123,17 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.35}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
+    oldSize: {x: 2.73, y: 1.07}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 2.7, y: 0.35}
   m_EdgeRadius: 0
 --- !u!50 &7615752347829696092
 Rigidbody2D:
@@ -174,7 +174,7 @@ GameObject:
   m_Layer: 6
   m_Name: End
   m_TagString: Untagged
-  m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -205,7 +205,7 @@ GameObject:
   m_Layer: 6
   m_Name: Start
   m_TagString: Untagged
-  m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -270,9 +270,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f0d1b8659089f247b9a21e5bbab87a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  velocity: {x: 0, y: 0}
+  platformRb: {fileID: 7615752347829696092}
+  platformCol: {fileID: 8607244970517432523}
+  pathNodeContainer: {fileID: 3593348823172164934}
+  playerLayerMask:
+    serializedVersion: 2
+    m_Bits: 256
+  adjacentFreeBody: {fileID: 0}
+  currMovement: {x: 0, y: 0}
   platformMoveSpeed: 4
   isLooping: 0
+  showPath: 1
+  nodeVisual: {fileID: 0}
 --- !u!1 &7114872513623025046
 GameObject:
   m_ObjectHideFlags: 0
