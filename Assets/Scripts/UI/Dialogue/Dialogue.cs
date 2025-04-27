@@ -1,6 +1,19 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+public enum DialogueImpactSize
+{
+	ImpactLarge,
+	ImpactMedium,
+	ImpactSmall,
+}
+
+public enum DialogueImpactType 
+{
+	ImpactPositive,
+	ImpactNegative,
+}
+
 [System.Serializable]
 [CreateAssetMenu(fileName="Dialogue", menuName="Dialogue")]
 public class Dialogue : ScriptableObject
@@ -21,4 +34,17 @@ public class DialogueElement
 
     // true if dialogue is coming from the radio
     public bool FromRadio;
+}
+
+[System.Serializable]
+public class DialogueOption
+{
+	public string Speaker;
+
+	[TextAreaAttribute(1, 3)] public string OptionName;
+
+	public DialogueImpactSize RelationImpactSignificance;
+	public DialogueImpactType RelationImpactDirection;
+
+    [SerializeField] public List<DialogueElement> Conversation;
 }
