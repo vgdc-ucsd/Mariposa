@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class PauseScript : MonoBehaviour
 {
-    public GameObject PauseMenu;   
+    public GameObject PauseMenu;
     public Slider SfxSlider;
     public Slider MusicSlider;
     public Slider DialogueSlider;
@@ -35,7 +35,7 @@ public class PauseScript : MonoBehaviour
     {
         if (pauseAction.action.triggered && !VideoSettingsMenu.activeSelf)
         {
-            if (paused) 
+            if (paused)
             {
                 ResumeGame();
             }
@@ -61,28 +61,29 @@ public class PauseScript : MonoBehaviour
         paused = false;
     }
 
+    // Note: The gameObject "Settings" is directly grabbing the slider values to update volume
+    // the update methods below were kept here in-case the developer wants to still have access to the values
     public void UpdateSFXVolumeSetting()
     {
-        Debug.Log("change detected");
+        if (Settings.Instance.Debug.GetAudioDebug()) { Debug.Log("change detected"); }
         sfxVolumeValue = SfxSlider.value;
     }
-
     public void UpdateMusicVolumeSetting()
-    {            
-        Debug.Log("change detected");
+    {
+        if (Settings.Instance.Debug.GetAudioDebug()) { Debug.Log("change detected"); }
         musicVolumeValue = MusicSlider.value;
     }
 
     public void UpdateMasterVolumeSetting()
     {
-        Debug.Log("change detected");
+        if (Settings.Instance.Debug.GetAudioDebug()) { Debug.Log("change detected"); }
         masterVolumeValue = MasterSlider.value;
         AudioListener.volume = sfxVolumeValue;
     }
 
     public void UpdateDialogueVolumeSetting()
     {
-        Debug.Log("change detected");
+        if (Settings.Instance.Debug.GetAudioDebug()) { Debug.Log("change detected"); }
         dialogueVolumeValue = DialogueSlider.value;
     }
 
