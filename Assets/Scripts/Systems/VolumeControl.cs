@@ -5,46 +5,64 @@ using System;
 
 public class VolumeControl : MonoBehaviour
 {
-    public Slider VolumeSlider;
-    public String VolumeBusPath;
+    [SerializeField] private Slider VolumeSlider;
+    [SerializeField] private string VolumeBusPath;
+
+    [Header("For Value display only. If slider null, allow adjustment.")]
+    [SerializeField][Range(0f, 1f)] private float volume = 1f;
+    private float previousVolume = 1f;
     private FMOD.Studio.Bus VolumeBus;
+
+    private void Update()
+    {
+        // allow for inspector adjustments if volume slider does not exist
+        if (VolumeSlider == null) { updateVolumeFromInspector(); }
+    }
 
     public void StartControl()
     {
         // grab FMOD bus
         VolumeBus = RuntimeManager.GetBus(VolumeBusPath);
 
-        float volume;
         if (false) // check if player preference exists
         {
             // TODO: Load Player Preferences into variables
         }
         else
         {
-            // if does not exist, initialize slider based on parameter in FMOD
-            VolumeBus.getVolume(out volume);
+            // if no player pref found, set volume to 100%
+            VolumeBus.setVolume(1.0f);
         }
 
-        // TODO: Null ref, uncomment when slider added
-        // VolumeSlider.value = volume;
+        // calls OnSliderChanged with new value whenever the slider changes
+        VolumeSlider?.onValueChanged.AddListener(OnSliderChanged);
     }
-
-    public void ChangeVolume(float value)
-    {
-        if (VolumeBusPath.Substring(5) == "")
-        {
-            RuntimeManager.StudioSystem.setParameterByName("GlobalVolume", value);
-        }
-        else
-        {
-            RuntimeManager.StudioSystem.setParameterByName(VolumeBusPath.Substring(5) + "Volume", value);
-        }
-
-    }
-
-    public void Initialize(Slider slider, String busPath)
+    public void Initialize(Slider slider, string busPath)
     {
         VolumeSlider = slider;
         VolumeBusPath = busPath;
+    }
+
+    private void updateVolumeFromInspector()
+    {
+        if (volume != previousVolume)
+        {
+            OnSliderChanged(volume);
+            previousVolume = volume;
+        }
+    }
+
+    private void OnSliderChanged(float value)
+    {
+        if (VolumeBus.isValid())
+        {
+            VolumeBus.setVolume(value);
+            VolumeBus.getVolume(out volume);
+        }
+        else
+        {
+            Debug.LogError("Bus is not initialized!");
+        }
+        if (Settings.Instance.Debug.GetAudioDebug()) { Debug.Log(VolumeBusPath + " new volume: " + Math.Round(volume, 5) * 100 + "%"); }
     }
 }
