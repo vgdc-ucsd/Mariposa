@@ -17,11 +17,11 @@ public abstract class Puzzle : MonoBehaviour
         if (PuzzlePopupManager.Instance != null) PuzzlePopupManager.Instance.CompletePuzzle();
         else Debug.Log("No PuzzlePopupManager found");
 
-        if (Player.ActivePlayer.Character.Name == "Mariposa")
+        if (Player.ActivePlayer.Character.Id == CharID.Mariposa)
         {
             RuntimeManager.PlayOneShot("event:/sfx/puzzle/puzzle_complete/mariposa");
         }
-        else if (Player.ActivePlayer.Character.Name == "Mariposa")
+        else
         {
             RuntimeManager.PlayOneShot("event:/sfx/puzzle/puzzle_complete/unnamed");
         }
