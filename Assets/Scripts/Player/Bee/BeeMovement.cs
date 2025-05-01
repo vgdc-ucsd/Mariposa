@@ -44,7 +44,6 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
     // only activate triggers when it is being controlled
     public override bool ActivateTriggers => parent.IsControlled;
 
-    SpriteRenderer beeSprite;
 
     private void InitDerivedConsts()
     {
