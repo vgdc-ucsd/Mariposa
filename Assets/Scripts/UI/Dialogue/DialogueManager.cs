@@ -80,7 +80,7 @@ public class DialogueManager : Singleton<DialogueManager>//, IInputListener
             StartCoroutine(TypewriterEffect());
 
             // check if Mariposa currently active
-            if (Player.ActivePlayer.Character.Id == CharID.Mariposa)
+            if (Player.ActivePlayer.Data.characterID == CharID.Mariposa)
             //if(true)    //placeholder for testing before merge
             {
                 frame.GetComponent<Image>().sprite = mariFrame;

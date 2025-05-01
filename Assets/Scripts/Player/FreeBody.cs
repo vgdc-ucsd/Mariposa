@@ -112,7 +112,7 @@ public abstract class FreeBody : Body
             didHitGround = movingPlatform.currMovement.y < 0f && groundHit.distance <= COLLISION_CHECK_DISTANCE - movingPlatform.currMovement.y;
         }
 
-        bool isSlipSlope = groundHit && Mathf.Abs(Mathf.Atan(groundHit.normal.y / groundHit.normal.x) * Mathf.Rad2Deg) <= slipAngle;
+        bool isSlipSlope = groundHit && 90 - Mathf.Abs(Mathf.Atan(groundHit.normal.y / groundHit.normal.x) * Mathf.Rad2Deg) >= slipAngle;
 
         if (didHitGround && !isSlipSlope) OnGrounded(groundHit);
         else if (!didHitGround || isSlipSlope) OnAirborne();

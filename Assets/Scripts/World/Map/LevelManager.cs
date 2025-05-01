@@ -62,6 +62,6 @@ public class LevelManager : MonoBehaviour
         {
             bc.BeeRef.transform.position = Player.ActivePlayer.transform.position + new Vector3(0, 2, 0);
         }
-        Debug.Assert(GetCurrentSublevel().SublevelCharacter == Player.ActivePlayer.Character.Id);
+        Debug.Assert(GetCurrentSublevel().SublevelCharacter == Player.ActivePlayer.Data.characterID);
     }
 }
