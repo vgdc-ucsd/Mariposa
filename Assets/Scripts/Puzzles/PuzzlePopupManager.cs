@@ -6,7 +6,7 @@ using UnityEngine;
 public class PuzzlePopupManager : MonoBehaviour
 {
     public static PuzzlePopupManager Instance;
-    [SerializeField] private GameObject background;
+    // [SerializeField] private GameObject background;
 
     private GameObject activePuzzle;
     public GameObject ActivePuzzle
@@ -37,7 +37,7 @@ public class PuzzlePopupManager : MonoBehaviour
     /// </summary>
     void Start()
     {
-        background.SetActive(false);
+        // background.SetActive(false);
     }
 
     /// <summary>
@@ -47,15 +47,15 @@ public class PuzzlePopupManager : MonoBehaviour
     public void TryHidePuzzle()
     {
         Debug.Log("Tried to hide puzzle");
-        Collider2D[] collider2Ds = Physics2D.OverlapCircleAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), 0.001f);
-        foreach(Collider2D col in collider2Ds)
-        {
-            if(col.gameObject.CompareTag("blocker"))
-            {
-                Debug.Log("Clicked blocker");
-                return;
-            }
-        }
+        // Collider2D[] collider2Ds = Physics2D.OverlapCircleAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), 0.001f);
+        // foreach(Collider2D col in collider2Ds)
+        // {
+        //     if(col.gameObject.CompareTag("blocker"))
+        //     {
+        //         Debug.Log("Clicked blocker");
+        //         return;
+        //     }
+        // }
 
         HidePuzzle();
     }
@@ -68,7 +68,7 @@ public class PuzzlePopupManager : MonoBehaviour
     private void HidePuzzle()
     {
         activePuzzle.SetActive(false);
-        background.SetActive(false);
+        // background.SetActive(false);
     }
 
     /// <summary>
@@ -77,6 +77,6 @@ public class PuzzlePopupManager : MonoBehaviour
     private void ShowPuzzle()
     {
         activePuzzle.SetActive(true);
-        background.SetActive(true);
+        // background.SetActive(true);
     }
 }

@@ -7,6 +7,11 @@ using FMODUnity;
 /// </summary>
 public abstract class Puzzle : MonoBehaviour
 {
+    void Start()
+    {
+        gameObject.SetActive(false);
+    }
+
     /// <summary>
     /// Executes generic puzzle completion actions. Should be called from child 
     /// class when player completes the puzzle.
@@ -33,5 +38,10 @@ public abstract class Puzzle : MonoBehaviour
     public void Reset()
     {
         Debug.Log("Puzzle Reset");
+    }
+
+    public void TryHidePuzzle()
+    {
+        PuzzlePopupManager.Instance.TryHidePuzzle();
     }
 }
