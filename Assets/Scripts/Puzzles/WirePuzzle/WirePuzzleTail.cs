@@ -21,11 +21,9 @@ public class WirePuzzleTail : MonoBehaviour
         }
     }
 
-    private BoxCollider2D boxCollider2D;
 
     public void InitializeWireTail()
     {
-        boxCollider2D = GetComponent<BoxCollider2D>();
     }
 
     public Vector3 GetConnectedPosition(int layer)
