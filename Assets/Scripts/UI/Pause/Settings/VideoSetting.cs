@@ -59,12 +59,15 @@ public class VideoSetting : MonoBehaviour
 
     public void Update()
     {
+        // do nothing if pause menu is open
         if (PauseMenu.activeInHierarchy) return; 
         
         if (EscapeInputAction.action.triggered)
         {
-            Debug.Log("going back to pause menu from video settings");
-            BackToPause();
+            if (VideoSettingsMenu.activeSelf)
+            {
+                BackToPause();
+            }
         }   
     }
 
