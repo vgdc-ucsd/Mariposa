@@ -34,7 +34,7 @@ public abstract class FreeBody : Body
     protected bool collisionsEnabled = true;
 
     [Tooltip("The maximum fall velocity")]
-    [SerializeField] protected float TerminalVelocity;
+    public float TerminalVelocity;
 
     [Tooltip("The minimum angle in degrees a slope must make to the ground to cause slipping")]
     [SerializeField] protected float slipAngle = 45f;
@@ -43,7 +43,7 @@ public abstract class FreeBody : Body
     [SerializeField] protected LayerMask collisionLayer;
 
 
-    protected const float CONTACT_OFFSET = 0.005f; // The gap between this body and a surface after a collision
+    public const float CONTACT_OFFSET = 0.005f; // The gap between this body and a surface after a collision
 
     protected const float LAND_SLOPE_FACTOR = 0.9f; // How horizontal a surface must be to be a ceiling or the ground
     protected const float COLLISION_CHECK_DISTANCE = 0.1f; // how far away you have to be from a ceiling or the ground to be considered "colliding" with it
@@ -100,13 +100,22 @@ public abstract class FreeBody : Body
         if (!collisionsEnabled) return;
 
         Bounds bounds = SurfaceCollider.bounds;
-        Vector2 origin = (Vector2)transform.position + SurfaceCollider.offset;
-        RaycastHit2D groundHit = Physics2D.BoxCast(origin, bounds.size, 0f, Vector2.down, COLLISION_CHECK_DISTANCE, collisionLayer);
+        Vector2 origin = (Vector2)transform.position + SurfaceCollider.offset + SurfaceCollider.bounds.extents.y * 3/4 * Vector2.down;
+        Vector2 size = new(bounds.size.x * 0.99f, bounds.size.y / 4);
+        Physics2D.SyncTransforms();
+        RaycastHit2D groundHit = Physics2D.BoxCast(origin, size, 0f, Vector2.down, Mathf.Infinity, collisionLayer);
 
-        bool isSlipSlope = groundHit && Mathf.Abs(Mathf.Atan(groundHit.normal.y / groundHit.normal.x) * Mathf.Rad2Deg) <= slipAngle;
+        bool didHitGround = groundHit && groundHit.distance <= COLLISION_CHECK_DISTANCE;
+        if (groundHit && !didHitGround && groundHit.collider.CompareTag("MovingPlatform"))
+        {
+            MovingPlatform movingPlatform = groundHit.collider.GetComponentInParent<MovingPlatform>();
+            didHitGround = movingPlatform.currMovement.y < 0f && groundHit.distance <= COLLISION_CHECK_DISTANCE - movingPlatform.currMovement.y;
+        }
 
-        if (groundHit && !isSlipSlope) OnGrounded(groundHit);
-        else if (!groundHit || isSlipSlope) OnAirborne();
+        bool isSlipSlope = groundHit && 90 - Mathf.Abs(Mathf.Atan(groundHit.normal.y / groundHit.normal.x) * Mathf.Rad2Deg) >= slipAngle;
+
+        if (didHitGround && !isSlipSlope) OnGrounded(groundHit);
+        else if (!didHitGround || isSlipSlope) OnAirborne();
     }
 
     protected virtual void OnGrounded(RaycastHit2D groundHit)
@@ -134,7 +143,13 @@ public abstract class FreeBody : Body
         Vector2 origin = (Vector2)transform.position + SurfaceCollider.offset;
         RaycastHit2D hit = Physics2D.BoxCast(origin, bounds.size, 0f, move.normalized, move.magnitude, collisionLayer);
 
-        if (hit && Mathf.Approximately(hit.distance, 0f)) ResolveInitialCollisions();
+        // If the free body is inside another object, separate them and recompute the raycast
+        if (hit && Mathf.Approximately(hit.distance, 0f))
+        {
+            ResolveInitialCollisions();
+            origin = (Vector2)transform.position + SurfaceCollider.offset;
+            hit = Physics2D.BoxCast(origin, bounds.size, 0f, move.normalized, move.magnitude, collisionLayer);
+        }
 
         int substeps = 0; // This is to prevent infinite loops in case something goes wrong
         while (hit && !hit.collider.isTrigger)

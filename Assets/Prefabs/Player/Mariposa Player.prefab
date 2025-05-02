@@ -168,7 +168,6 @@ GameObject:
   - component: {fileID: 4113967831349822113}
   - component: {fileID: 4759830076982678282}
   - component: {fileID: 407862669245769329}
-  - component: {fileID: 8504754870049651859}
   m_Layer: 8
   m_Name: Mariposa Player
   m_TagString: Player
@@ -281,6 +280,7 @@ MonoBehaviour:
   CurrentRespawnPoint: {fileID: 0}
   Character: {fileID: 0}
   Movement: {fileID: 0}
+  Data: {fileID: 11400000, guid: 39939add51503644f92443e444c6efc1, type: 2}
   FacingDirection: 1
 --- !u!114 &407862669245769329
 MonoBehaviour:
@@ -300,44 +300,16 @@ MonoBehaviour:
   State: 0
   Gravity: 50
   TerminalVelocity: 40
+  slipAngle: 45
   collisionLayer:
     serializedVersion: 2
     m_Bits: 64
   Parent: {fileID: 0}
-  MoveSpeed: 6.5
-  wallJumpMoveLockTime: 0.3
-  wallJumpHorizontalSpeed: 10
-  groundAccelerationTime: 0.15
-  groundDecelerationTime: 0.1
-  airAccelerationTime: 0.4
-  airMovementDecelerationTime: 0.2
-  airDragDecelerationTime: 0.5
-  jumpHeight: 2.5
-  DoubleJumpFactor: 1
   CanDoubleJump: 1
   CanWallJump: 0
-  coyoteTime: 0.1
-  jumpBufferTime: 0.15
-  fallingGravityMultiplier: 0.9
   cornerCorrectMaxInsetDistance: 0
   cornerCorrectMinVelocity: 0
   airJumpAvailable: 0
-  dashForce: 20
-  dashDuration: 0.2
---- !u!114 &8504754870049651859
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4875991570046858898}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 861a2fde4eed59c439a2163c21492c48, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Name: Mariposa
-  Id: 0
 --- !u!1 &8480086329348406677
 GameObject:
   m_ObjectHideFlags: 0

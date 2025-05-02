@@ -15,6 +15,7 @@ public class ControllableMovingPlatform : MovingPlatform
         if (platformMoveSpeed == 0) platformMoveSpeed = 1f;
         startNode = pathNodes[0];
         endNode = pathNodes[1];
+        platformRb.transform.position = startNode;
         path = endNode - startNode;
     }
 
@@ -35,7 +36,13 @@ public class ControllableMovingPlatform : MovingPlatform
         {
             targetPos = endNode;
         }
-        velocity = targetPos - platformRb.position;
-        platformRb.MovePosition(targetPos);
+        currMovement = targetPos - platformRb.position;
+        platformRb.transform.position += (Vector3)currMovement;
+        Physics2D.SyncTransforms();
+
+        if (adjacentFreeBody != null)
+        {
+            adjacentFreeBody.transform.position += (Vector3)currMovement;
+        }
     }
 }
