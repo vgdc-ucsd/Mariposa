@@ -12,68 +12,29 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
     public Player Parent;
     public override bool ActivateTriggers => (IControllable)this == PlayerController.Instance.CurrentControllable;
 
-    [Header("Horizontal Parameters")]
-
-    [Tooltip("The maximum horizontal movement speed")]
-    public float MoveSpeed = 10;
+    private PlayerData data;
 
     private Vector2 moveDir = Vector2.zero;
-
-    [Tooltip("The amount of time that wall jumping locks the player out of movement")]
-    [SerializeField] private float wallJumpMoveLockTime;
-    private float wallJumpMoveLockTimeRemaining = 0.0f;
-
-    [Tooltip("The player's horizontal speed is set to this value on wall jump")]
-    [SerializeField] private float wallJumpHorizontalSpeed;
+    private bool onWalkableSlope = false;
+    private Vector2 slopeDir = Vector2.zero;
 
     private int wallNormal = 0; // -1 = left, 1 = right, 0 = not on a wall
 
-    [Tooltip("The time it takes to accelerate to maximum horizontal speed from rest on the ground")]
-    [SerializeField] private float groundAccelerationTime;
     private float groundAcceleration;
-
-    [Tooltip("The time it takes to decelerate to rest from maximum horizontal speed on the ground")]
-    [SerializeField] private float groundDecelerationTime;
     private float groundDeceleration;
-
-    [Tooltip("The time it takes to accelerate to maximum horizontal speed from rest in the air")]
-    [SerializeField] private float airAccelerationTime;
     private float airAcceleration;
-
-    [Tooltip("The time it takes to decelerate to rest by moving from maximum horizontal speed in the air")]
-    [SerializeField] private float airMovementDecelerationTime;
     private float airMovementDeceleration;
-
-    [Tooltip("The time it takes to decelerate to rest via drag from maximum horizontal speed in the air")]
-    [SerializeField] private float airDragDecelerationTime;
     private float airDragDeceleration;
 
-
-    [Header("Vertical Parameters")]
-
-    [Tooltip("The height in tiles/units of a jump")]
-    [SerializeField] private float jumpHeight = 2;
     private float jumpVelocity;
-
-    [Tooltip("The factor by which the velocity of a normal jump is scaled by for a double jump")]
-    [SerializeField] private float DoubleJumpFactor = 0.5f;
-
     [Tooltip("Checks if Player can use Double Jump")]
     public bool CanDoubleJump;
-
     [Tooltip("Checks if Player can use Wall Jump")]
     public bool CanWallJump;
-
-    [Tooltip("The amount of extra time the player has to jump after leaving the ground")]
-    [SerializeField] private float coyoteTime;
     private float coyoteTimeRemaining = 0.0f;
-
-    [Tooltip("The amount of time the player has to buffer a jump input")]
-    [SerializeField] private float jumpBufferTime;
     private float jumpBufferTimeRemaining = 0.0f;
 
-    [Tooltip("Multiplier applied to the player's gravity when they are falling")]
-    [SerializeField] private float fallingGravityMultiplier;
+    private float wallJumpMoveLockTimeRemaining = 0.0f;
 
     [Tooltip("The maximum horizontal distance by which the player's collider is inset the barrier's collider for corner correction")]
     [SerializeField] private float cornerCorrectMaxInsetDistance;
@@ -83,13 +44,6 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
 
     // whether the player has a charge of double jump (whether player touched the ground since last double jump
     public bool airJumpAvailable = false;
-    [Header("Dash Parameters")]
-    [Tooltip("Force applied during dash")]
-    public float dashForce = 20f;
-    [Tooltip("Duration of the dash (seconds)")]
-    public float dashDuration = 0.2f;
-    private bool isDashing = false;
-
 
     private MovingPlatform currentMovingPlatform = null;
     private bool onControllableMovingPlatform = false;
@@ -97,13 +51,20 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
     // Useful for when their dependent values are changed during runtime
     private void InitDerivedConsts()
     {
-        groundAcceleration = MoveSpeed / groundAccelerationTime;
-        groundDeceleration = MoveSpeed / groundDecelerationTime;
-        airAcceleration = MoveSpeed / airAccelerationTime;
-        airMovementDeceleration = MoveSpeed / airMovementDecelerationTime;
-        airDragDeceleration = MoveSpeed / airDragDecelerationTime;
+        if (Parent == null) Parent = GetComponent<Player>();
+        data =  Parent.Data;
 
-        jumpVelocity = Mathf.Sqrt(2 * Gravity * jumpHeight);
+        Gravity = data.gravity;
+        TerminalVelocity = data.terminalVelocity;
+        slipAngle = data.slipAngle;
+
+        groundAcceleration = data.movementSpeed / data.groundAccelerationTime;
+        groundDeceleration = data.movementSpeed / data.groundDecelerationTime;
+        airAcceleration = data.movementSpeed / data.airAccelerationTime;
+        airMovementDeceleration = data.movementSpeed / data.airMovementDecelerationTime;
+        airDragDeceleration = data.movementSpeed / data.airDragDecelerationTime;
+
+        jumpVelocity = Mathf.Sqrt(2 * Gravity * data.jumpHeight);
     }
 
     protected override void Awake()
@@ -121,7 +82,8 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
     protected override void Update()
     {
         base.Update();
-        if (Input.GetKeyDown(KeyCode.V) && !isDashing)
+        /*
+        if (Input.GetKeyDown(KeyCode.V)) // TODO make this an input action
         {
             // Consume a battery if available
             if (InventoryManager.Instance.GetItemCount(InventoryType.Mariposa, BatteryItem.Instance) > 0)
@@ -130,11 +92,12 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
                 StartCoroutine(DashRoutine());
             }
         }
+        */
     }
 
     private void OnValidate()
     {
-        InitDerivedConsts();
+        if (Application.isPlaying) InitDerivedConsts();
     }
 
     protected override void FixedUpdate()
@@ -195,44 +158,37 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
                     : airMovementDeceleration
                 : groundDeceleration;
         // Compute the difference between the max velocity and the current velocity
-        float deltaV = dir * MoveSpeed - Velocity.x;
+        float deltaV = dir * data.movementSpeed - Velocity.x;
         // If the acceleration parameter would cause the player to exceed their maximum speed,
         // use enough acceleration to reach maximum speed. Otherwise, use the acceleration parameter
         float acceleration = Mathf.Min(Mathf.Abs(deltaV / fdt), accelerationParam);
 
-        // Apply the acceleration
-        Velocity.x += acceleration * fdt * Mathf.Sign(deltaV);
+        Vector2 axis = onWalkableSlope ? slopeDir : Vector2.right;
 
-        if (currentMovingPlatform != null)
-        {
-            Vector2 platformMovement = currentMovingPlatform.velocity * fdt;
-            if (currentMovingPlatform.velocity.y < -Gravity) platformMovement.y = -Gravity;
-            ApplyMovement(platformMovement);
-            ResolveInitialCollisions();
-        }
+        // Apply the acceleration
+        Velocity += acceleration * fdt * Mathf.Sign(deltaV) * axis;
     }
 
     // Directly set the player's y velocity
     public void JumpInputDown()
     {
-        CheckOnWall();
-        CheckGrounded();
-
+        Physics2D.SyncTransforms();
         Bounds bounds = SurfaceCollider.bounds;
-        Vector2 beeCastCenter = bounds.center + 0.375f * bounds.size.y * Vector3.down;
-        Vector2 beeCastSize = 0.25f * bounds.size;
-        RaycastHit2D[] beeHits = Physics2D.BoxCastAll(beeCastCenter, beeCastSize, 0f, Vector2.down, COLLISION_CHECK_DISTANCE);
+
         bool onBee = false;
-        foreach (var hit in beeHits)
+        if (CanDoubleJump && airJumpAvailable)
         {
-            if (hit.collider.CompareTag("Bee")) onBee = true;
+            Vector2 beeCastCenter = bounds.center + 0.375f * bounds.size.y * Vector3.down;
+            Vector2 beeCastSize = 0.25f * bounds.size;
+            RaycastHit2D[] beeHits = Physics2D.BoxCastAll(beeCastCenter, beeCastSize, 0f, Vector2.down, COLLISION_CHECK_DISTANCE);
+            foreach (var hit in beeHits) if (hit.collider.CompareTag("Bee")) onBee = true;
         }
 
         if (CanWallJump && wallNormal != 0 && State == BodyState.InAir)
         {
             Velocity.y = jumpVelocity;
-            Velocity.x = wallJumpHorizontalSpeed * wallNormal;
-            wallJumpMoveLockTimeRemaining = wallJumpMoveLockTime;
+            Velocity.x = data.wallJumpHorizontalSpeed * wallNormal;
+            wallJumpMoveLockTimeRemaining = data.wallJumpMoveLockTime;
             RuntimeManager.PlayOneShot("event:/sfx/player/jump");
         }
         else if (State == BodyState.OnGround || coyoteTimeRemaining > 0f)
@@ -241,9 +197,9 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
             coyoteTimeRemaining = 0f;   // consume coyote time
             RuntimeManager.PlayOneShot("event:/sfx/player/jump");
         }
-        else if (CanDoubleJump && airJumpAvailable && onBee)
+        else if (onBee)
         {
-            Velocity.y = jumpVelocity * DoubleJumpFactor;
+            Velocity.y = jumpVelocity * data.DoubleJumpFactor;
             airJumpAvailable = false;
             coyoteTimeRemaining = 0f;
             RuntimeManager.PlayOneShot("event:/sfx/player/jump");
@@ -251,7 +207,7 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
         }
         else if (State != BodyState.OnGround && coyoteTimeRemaining <= 0.0f)
         {
-            jumpBufferTimeRemaining = jumpBufferTime;
+            jumpBufferTimeRemaining = data.jumpBufferTime;
         }
     }
 
@@ -261,34 +217,49 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
     {
         if (State != BodyState.InAir || !gravityEnabled) return;
 
-        float currentGravity = Velocity.y > 0 ? Gravity : Gravity * fallingGravityMultiplier;
+        float currentGravity = Velocity.y > 0 ? Gravity : Gravity * data.fallingGravityMultiplier;
         Velocity.y = Mathf.Max(Velocity.y - currentGravity * fdt, -TerminalVelocity);
     }
 
-    // If the player was in the air and has a barrier below it, they must now be on the ground
-    // Otherwise, if the player was grounded and has no barrier below it, they must now be in the air
-    protected override void CheckGrounded()
+    protected override void OnGrounded(RaycastHit2D groundHit)
     {
-        Bounds bounds = SurfaceCollider.bounds;
-        RaycastHit2D groundHit = Physics2D.BoxCast(bounds.center, bounds.size, 0f, Vector2.down, COLLISION_CHECK_DISTANCE, collisionLayer);
-        if (State != BodyState.OnGround && groundHit && groundHit.normal.normalized.y > LAND_SLOPE_FACTOR)
+        if (State != BodyState.OnGround)
         {
-            State = BodyState.OnGround;
-            airJumpAvailable = true;
-            if (jumpBufferTimeRemaining > 0.0f) JumpInputDown();
             if (groundHit.collider.CompareTag("MovingPlatform"))
             {
                 currentMovingPlatform = groundHit.collider.GetComponentInParent<MovingPlatform>();
+                if (currentMovingPlatform.currMovement.y < 0) transform.position += currentMovingPlatform.currMovement.y * Vector3.up;
+                currentMovingPlatform.adjacentFreeBody = this;
                 if (currentMovingPlatform is ControllableMovingPlatform) onControllableMovingPlatform = true;
             }
+            airJumpAvailable = true;
         }
-        else if (State == BodyState.OnGround && !groundHit)
+        base.OnGrounded(groundHit);
+        if (jumpBufferTimeRemaining > 0.0f) JumpInputDown();
+        if (Mathf.Abs(Mathf.Atan(groundHit.normal.y / groundHit.normal.x) * Mathf.Rad2Deg) > slipAngle)
         {
-            State = BodyState.InAir;
-            coyoteTimeRemaining = coyoteTime;
-            currentMovingPlatform = null;
-            onControllableMovingPlatform = false;
+            onWalkableSlope = true;
+            slopeDir = new Vector2(groundHit.normal.normalized.y, -groundHit.normal.normalized.x);
         }
+    }
+
+    protected override void OnAirborne()
+    {
+        if (State == BodyState.OnGround)
+        {
+            coyoteTimeRemaining = data.coyoteTime;
+        }
+        base.OnAirborne();
+        onWalkableSlope = false;
+        slopeDir = Vector2.zero;
+        if (onControllableMovingPlatform)
+        {
+            currentMovingPlatform.currMovement = Vector2.zero;
+            ((ControllableMovingPlatform)currentMovingPlatform).MovePlatform(Vector2.zero);
+        }
+        if (currentMovingPlatform != null) currentMovingPlatform.adjacentFreeBody = null;
+        currentMovingPlatform = null;
+        onControllableMovingPlatform = false;
     }
 
     // Shift the player horizontally when they barely bump a ceiling
@@ -320,7 +291,7 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
         wallJumpMoveLockTimeRemaining = Mathf.Max(wallJumpMoveLockTimeRemaining - dt, 0.0f);
     }
 
-
+    /*
     /// <summary>
     /// Coroutine that handles the dash ability.
     /// </summary>
@@ -332,4 +303,5 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
         yield return new WaitForSeconds(dashDuration);
         isDashing = false;
     }
+    */
 }

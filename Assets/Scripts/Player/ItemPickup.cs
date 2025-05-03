@@ -40,7 +40,7 @@ public class ItemPickup : Interactable
             if (controllable is BeeMovement) type = InventoryType.Mariposa;
             else if (controllable is PlayerMovement pm)
             {
-                if (pm.Parent.Character.Id == CharID.Mariposa)
+                if (pm.Parent.Data.characterID == CharID.Mariposa)
                 {
                     type = InventoryType.Mariposa;
                 }
