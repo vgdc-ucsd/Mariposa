@@ -2,13 +2,20 @@ using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using System;
+using static UnityEngine.UI.Image;
 
 public interface IBeeBehavior
 {
     // Specifies a vector to add to the position in the next frame
     public Vector2 GetMoveStep(float fdt);
 
-    public Vector2 GetDir();
+    public Vector2 GetDir()
+    {
+        Vector2 direction2D = (Vector2)(Player.ActivePlayer.transform.position - Bee.Instance.transform.position);
+        direction2D.Normalize();
+        return direction2D;
+        
+    }
 }
 
 public class Follow : IBeeBehavior
@@ -34,10 +41,19 @@ public class Follow : IBeeBehavior
         return (target.position - origin.position) * speed * fdt;
     }
 
+    // default: face player
     public Vector2 GetDir() {
         Vector2 direction2D = (Vector2)(target.position - origin.position);
         direction2D.Normalize();
         return direction2D;
+    }
+}
+
+public class Stay : IBeeBehavior
+{
+    public Vector2 GetMoveStep(float fdt)
+    {
+        return Vector2.zero;
     }
 }
 
@@ -82,12 +98,6 @@ public class JumpAssist : IBeeBehavior
         return newPos - (Vector2)origin.position;
     }
 
-    public Vector2 GetDir()
-    {
-        Vector2 direction2D = (Vector2)(target.position - origin.position);
-        direction2D.Normalize();
-        return direction2D;
-    }
 
     private IEnumerator Finish()
     {

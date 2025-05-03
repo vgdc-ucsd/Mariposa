@@ -30,7 +30,7 @@ public class Bee : MonoBehaviour
         else
         {
             PlayerController.Instance.StartControlling(Player.ActivePlayer.Movement);
-            StartFollow();
+            Movement.SetBehavior(new Stay());
         }
     }
 
