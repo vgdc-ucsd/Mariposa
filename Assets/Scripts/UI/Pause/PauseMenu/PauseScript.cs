@@ -14,7 +14,7 @@ public class PauseScript : MonoBehaviour
     public GameObject VideoSettingsMenu;
 
 
-    public InputActionReference pauseAction;
+    private InputSystem_Actions actions;
     public bool paused = false;
 
     public float sfxVolumeValue;
@@ -22,18 +22,34 @@ public class PauseScript : MonoBehaviour
     public float masterVolumeValue;
     public float dialogueVolumeValue;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+
+    void Awake()
     {
-        VideoSettingsMenu.SetActive(false);
-        PauseMenu.SetActive(false);
-        Time.timeScale = 1.0f;
-        pauseAction.action.Enable();
+        actions = new();
     }
 
-    // Update is called once per frame
-    void Update()
+    // void Start()
+    // {
+    //     VideoSettingsMenu.SetActive(false);
+    //     PauseMenu.SetActive(false);
+    //     Time.timeScale = 1.0f;
+    // }
+
+    void OnEnable()
     {
-        if (pauseAction.action.triggered && !VideoSettingsMenu.activeSelf)
+        actions.Player.Pause.Enable();
+        actions.Player.Pause.started += HandlePause;
+    }
+
+    void OnDisable()
+    {
+        actions.Player.Pause.started -= HandlePause;
+        actions.Player.Pause.Disable();
+    }
+
+    private void HandlePause(InputAction.CallbackContext ctx)
+    {
+        if (!VideoSettingsMenu.activeSelf)
         {
             if (paused)
             {
@@ -44,6 +60,12 @@ public class PauseScript : MonoBehaviour
                 PauseGame();
             }
         }
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        return;
     }
 
     public void PauseGame()
