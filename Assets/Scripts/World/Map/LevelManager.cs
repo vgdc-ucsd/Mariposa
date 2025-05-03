@@ -7,6 +7,7 @@ public class LevelManager : MonoBehaviour
     public static LevelManager Instance;
 
     public Level CurrentLevel;
+    public string NextLevelName;
     public int SublevelIndex { get; private set; }
 
     private void Awake()
@@ -45,6 +46,19 @@ public class LevelManager : MonoBehaviour
         CurrentLevel.LoadSublevel(SublevelIndex);
         InitSublevel();
         
+    }
+
+    public void GoToPreviousLevel()
+    {
+        CurrentLevel.UnloadSublevel(SublevelIndex);
+        SublevelIndex--;
+        if (SublevelIndex <= 0)
+        {
+            Debug.LogWarning("no previous level; looping");
+            SublevelIndex += CurrentLevel.Sublevels.Length;
+        }
+        CurrentLevel.LoadSublevel(SublevelIndex);
+        InitSublevel();
     }
 
     private void InitSublevel()
