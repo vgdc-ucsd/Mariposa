@@ -43,5 +43,6 @@ public class CameraController : MonoBehaviour
         if (newBounds == null) return;
         confiner.InvalidateBoundingShapeCache();
         confiner.BoundingShape2D = newBounds;
+        cinemachineCamera.PreviousStateIsValid = false;
     }
 }
