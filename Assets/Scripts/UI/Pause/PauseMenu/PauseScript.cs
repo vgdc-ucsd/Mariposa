@@ -10,6 +10,7 @@ public class PauseScript : MonoBehaviour
     public Slider MusicSlider;
     public Slider DialogueSlider;
     public Slider MasterSlider;
+    public Slider AmbienceSlider;
 
     public GameObject VideoSettingsMenu;
 
@@ -21,6 +22,7 @@ public class PauseScript : MonoBehaviour
     public float musicVolumeValue;
     public float masterVolumeValue;
     public float dialogueVolumeValue;
+    public float ambienceVolumeValue;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     void Awake()
@@ -94,6 +96,12 @@ public class PauseScript : MonoBehaviour
     {
         if (Settings.Instance.Debug.GetAudioDebug()) { Debug.Log("change detected"); }
         musicVolumeValue = MusicSlider.value;
+    }
+
+    public void UpdateAmbienceVolumeSetting()
+    {
+        if (Settings.Instance.Debug.GetAudioDebug()) { Debug.Log("change detected"); }
+        ambienceVolumeValue = AmbienceSlider.value;
     }
 
     public void UpdateMasterVolumeSetting()
