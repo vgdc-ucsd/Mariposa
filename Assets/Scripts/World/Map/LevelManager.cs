@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using NUnit.Framework;
+using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
@@ -19,6 +20,10 @@ public class LevelManager : MonoBehaviour
         }
         SublevelIndex = GameManager.Instance.TargetSublevel;
         CurrentLevel.LoadSublevel(SublevelIndex);
+
+        // does this even work?
+        if (SceneManager.GetActiveScene().buildIndex >= SceneManager.sceneCount - 1) return;
+        NextLevelName = SceneManager.GetSceneByBuildIndex(SceneManager.GetActiveScene().buildIndex + 1).name;
         
     }
 
@@ -33,6 +38,11 @@ public class LevelManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F))
         {
             GoToNextSublevel();
+        }
+
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            LoadNextLevel();
         }
     }
 
@@ -77,5 +87,11 @@ public class LevelManager : MonoBehaviour
             bc.BeeRef.transform.position = Player.ActivePlayer.transform.position + new Vector3(0, 2, 0);
         }
         Debug.Assert(GetCurrentSublevel().SublevelCharacter == Player.ActivePlayer.Data.characterID);
+    }
+
+    public void LoadNextLevel()
+    {
+        SceneManager.LoadScene(NextLevelName);
+        // Scene nextLevel = SceneManager.GetSceneByName(NextLevelName);
     }
 }
