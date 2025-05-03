@@ -197,13 +197,11 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
             coyoteTimeRemaining = 0f;   // consume coyote time
             RuntimeManager.PlayOneShot("event:/sfx/player/jump");
         }
-        else if (onBee)
+        else if (CanDoubleJump && airJumpAvailable && Bee.Instance.CanBeeJump())
         {
-            Velocity.y = jumpVelocity * data.DoubleJumpFactor;
-            airJumpAvailable = false;
-            coyoteTimeRemaining = 0f;
-            RuntimeManager.PlayOneShot("event:/sfx/player/jump");
-            RuntimeManager.PlayOneShot("event:/sfx/player/bee/double_jump");
+            StartCoroutine(DelayedJump());
+            Bee.Instance.TriggerBeeJump();
+
         }
         else if (State != BodyState.OnGround && coyoteTimeRemaining <= 0.0f)
         {
@@ -211,6 +209,16 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
         }
     }
 
+    private IEnumerator DelayedJump()
+    {
+        yield return new WaitForSeconds(0.15f);
+        Velocity.y = jumpVelocity * data.DoubleJumpFactor;
+        airJumpAvailable = false;
+        coyoteTimeRemaining = 0f;
+        RuntimeManager.PlayOneShot("event:/sfx/player/jump");
+        RuntimeManager.PlayOneShot("event:/sfx/player/bee/double_jump");
+        
+    }
 
     // This override makes the player fall slower/faster when falling
     protected override void Fall()
