@@ -1,0 +1,27 @@
+- name: Mariposa
+  line: I'm going to say something
+  icon: Player/Mariposa/Mariposa_Neutral.PNG
+  # sound: mariposa_says_something.wav
+  # sound comes in the form of FMOD events. I actually don't know how they work.
+  sound: event_files/mariposa_says_something.fmod
+  options:
+    - text: I don't like that!
+      impact: [small, negative]
+      script: 
+        - name: Mariposa
+          line: That's a bad idea actually!
+          icon: Player/Mariposa/Mariposa_Sad.png
+          sound: event_files/exclamation.fmod
+    - text: I do like that!
+      impact: [small, positive]
+      script:
+        - name: Mariposa
+          line: That's a good idea actually!
+          icon: Player/Mariposa/Mariposa_Happy.png
+- name: Unnamed
+  line: Alright. Glad that's settled.
+  sound: event_files/nonchalant_grunt.fmod
+  icon: Player/TheUnnamed/Unnamed_Neutral.png
+- name: Mariposa
+  line: Oh, I thought you'd disagree...
+  icon: Player/Mariposa/Mariposa_Surprised.png

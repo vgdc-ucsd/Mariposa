@@ -89,11 +89,35 @@ public class DialogueParser
 		.WithNamingConvention(CamelCaseNamingConvention.Instance)
 		.IgnoreUnmatchedProperties()
 		.Build();
-	public static Dialogue ParseDialogue(string path)
+
+	private string ArtPath;
+	private string YamlPath;
+
+	public DialogueParser(string ArtPath, string YamlPath)
+	{
+		this.ArtPath = ArtPath;
+		this.YamlPath = YamlPath;
+	}
+	public Dialogue ParseDialogue(string path)
 	{
 		/*FileStream file = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.Read);*/
 		string yml = File.ReadAllText(path);
-		return null;
+		var inter = deserializer.Deserialize<List<DialogueElementIntermediate>>(yml);
+		Dialogue parsedDialogue = new Dialogue();
+		parsedDialogue.Conversation = new List<DialogueElement>();
+		foreach (DialogueElementIntermediate ele in inter) 
+		{
+			DialogueElement realEle = new DialogueElement();
+			realEle.Speaker = ele.name;
+			realEle.Line = ele.line;
+			realEle.FromRadio = false; // oversight: did not implement this
+			realEle.Sprite = Resources.Load(ArtPath + ele.icon) as Sprite;
+
+			// the rest of the fields are actually lost for now.
+
+			parsedDialogue.Conversation.Add(realEle);
+		}
+		return parsedDialogue;
 	}
 	static List<DialogueElementIntermediate> ParseDialogueTest(string path)
 	{
