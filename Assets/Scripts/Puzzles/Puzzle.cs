@@ -8,20 +8,10 @@ using UnityEngine.UI;
 /// </summary>
 public abstract class Puzzle : MonoBehaviour
 {
-    private GameObject background;
-    [HideInInspector]
-    public GameObject Background
-    {
-        get => background;
-        set => background = value;
-    }
-
+    
     void Start()
     {
-        Background = transform.Find("Background").gameObject;
-        if (background == null) Debug.LogError("Background GameObject not found!");
         gameObject.SetActive(false);
-        Background.SetActive(false);
     }
 
     /// <summary>

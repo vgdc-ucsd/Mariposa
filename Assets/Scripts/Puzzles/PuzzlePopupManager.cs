@@ -6,7 +6,6 @@ using UnityEngine;
 public class PuzzlePopupManager : MonoBehaviour
 {
     public static PuzzlePopupManager Instance;
-    private GameObject background;
 
     private GameObject activePuzzle;
     public GameObject ActivePuzzle
@@ -15,7 +14,6 @@ public class PuzzlePopupManager : MonoBehaviour
         set {
             if(activePuzzle != null) HidePuzzle();
             activePuzzle = value;
-            background = activePuzzle.GetComponent<Puzzle>().Background;
             if (activePuzzle != null) ShowPuzzle();
         }
     }
@@ -66,7 +64,6 @@ public class PuzzlePopupManager : MonoBehaviour
     private void HidePuzzle()
     {
         activePuzzle.SetActive(false);
-        background.SetActive(false);
     }
 
     /// <summary>
@@ -75,6 +72,5 @@ public class PuzzlePopupManager : MonoBehaviour
     private void ShowPuzzle()
     {
         activePuzzle.SetActive(true);
-        background.SetActive(true);
     }
 }
