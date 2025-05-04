@@ -111,7 +111,13 @@ public class DialogueParser
 			realEle.Speaker = ele.name;
 			realEle.Line = ele.line;
 			realEle.FromRadio = false; // oversight: did not implement this
-			realEle.Sprite = Resources.Load(ArtPath + ele.icon) as Sprite;
+			Sprite s = Resources.Load<Sprite>(ArtPath + ele.icon);
+			Debug.Log("We're loading " + ArtPath + ele.icon + "\n");
+			if (s == null)
+			{
+				Debug.Log("Sprite is null! This approach SUCKS!\n");
+			}
+			realEle.Sprite = s;
 
 			// the rest of the fields are actually lost for now.
 
