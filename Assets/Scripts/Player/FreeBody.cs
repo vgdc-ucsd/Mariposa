@@ -109,7 +109,7 @@ public abstract class FreeBody : Body
         if (groundHit && !didHitGround && groundHit.collider.CompareTag("MovingPlatform"))
         {
             MovingPlatform movingPlatform = groundHit.collider.GetComponentInParent<MovingPlatform>();
-            didHitGround = movingPlatform.currMovement.y < 0f && groundHit.distance <= COLLISION_CHECK_DISTANCE - movingPlatform.currMovement.y;
+            didHitGround = movingPlatform.currentMovement.y < 0f && groundHit.distance <= COLLISION_CHECK_DISTANCE - movingPlatform.currentMovement.y;
         }
 
         bool isSlipSlope = groundHit && 90 - Mathf.Abs(Mathf.Atan(groundHit.normal.y / groundHit.normal.x) * Mathf.Rad2Deg) >= slipAngle;
