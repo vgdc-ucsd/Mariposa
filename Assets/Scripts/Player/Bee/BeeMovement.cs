@@ -6,7 +6,7 @@ using UnityEngine.Experimental.GlobalIllumination;
 
 public class BeeMovement : FreeBody, IInputListener, IControllable
 {
-    public static PlayerMovement Instance;
+    public static BeeMovement Instance;
     private Bee parent;
 
     private Vector2 velocityFieldVelocity = Vector2.zero;
@@ -35,7 +35,7 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
     private const float RADIUS_SLOWDOWN_BOUNDARY = 1f;  // how close to the max control radius to start slowing down
     private const float RESISTANCE_ADJUSTMENT = 0.3f;   // strength of the slowdown effect
 
-    private IBeeBehavior currentBehavior;    // Strategy, returns a vector for the bee to move towards in the next frame
+    public IBeeBehavior CurrentBehavior;    // Strategy, returns a vector for the bee to move towards in the next frame
 
     SpriteRenderer beeSprite;
 
@@ -82,7 +82,7 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
         else
         {
             Velocity = Vector2.zero;
-            if (currentBehavior != null)
+            if (CurrentBehavior != null)
             {
                 AutoMove();
             }
@@ -107,7 +107,7 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
 
     public void SetBehavior(IBeeBehavior behavior)
     {
-        currentBehavior = behavior;
+        CurrentBehavior = behavior;
     }
 
     private void Move()
@@ -190,13 +190,13 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
 
     private void AutoMove()
     {
-        transform.position += (Vector3)currentBehavior.GetMoveStep(fdt);
+        transform.position += (Vector3)CurrentBehavior.GetMoveStep(fdt);
 
         // change where the bee faces when in AutoMove mode
-        if (currentBehavior.GetDir().x > 0) {
+        if (CurrentBehavior.GetDir().x > 0) {
             beeSprite.flipX = false;
         }
-        else if (currentBehavior.GetDir().x < 0) {
+        else if (CurrentBehavior.GetDir().x < 0) {
             beeSprite.flipX = true;
         }
     }
@@ -223,4 +223,6 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
             velocityFieldVelocity = Vector2.zero;
         }
     }
+
+
 }

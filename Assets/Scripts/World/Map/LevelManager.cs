@@ -1,12 +1,14 @@
 using UnityEngine;
 using System.Collections;
 using NUnit.Framework;
+using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
     public static LevelManager Instance;
 
     public Level CurrentLevel;
+    public string NextLevelName;
     public int SublevelIndex { get; private set; }
 
     private void Awake()
@@ -18,6 +20,10 @@ public class LevelManager : MonoBehaviour
         }
         SublevelIndex = GameManager.Instance.TargetSublevel;
         CurrentLevel.LoadSublevel(SublevelIndex);
+
+        // does this even work?
+        if (SceneManager.GetActiveScene().buildIndex >= SceneManager.sceneCount - 1) return;
+        NextLevelName = SceneManager.GetSceneByBuildIndex(SceneManager.GetActiveScene().buildIndex + 1).name;
         
     }
 
@@ -33,6 +39,11 @@ public class LevelManager : MonoBehaviour
         {
             GoToNextSublevel();
         }
+
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            LoadNextLevel();
+        }
     }
 
     private Sublevel GetCurrentSublevel() => CurrentLevel.Sublevels[SublevelIndex];
@@ -45,6 +56,19 @@ public class LevelManager : MonoBehaviour
         CurrentLevel.LoadSublevel(SublevelIndex);
         InitSublevel();
         
+    }
+
+    public void GoToPreviousLevel()
+    {
+        CurrentLevel.UnloadSublevel(SublevelIndex);
+        SublevelIndex--;
+        if (SublevelIndex <= 0)
+        {
+            Debug.LogWarning("no previous level; looping");
+            SublevelIndex += CurrentLevel.Sublevels.Length;
+        }
+        CurrentLevel.LoadSublevel(SublevelIndex);
+        InitSublevel();
     }
 
     private void InitSublevel()
@@ -63,5 +87,11 @@ public class LevelManager : MonoBehaviour
             bc.BeeRef.transform.position = Player.ActivePlayer.transform.position + new Vector3(0, 2, 0);
         }
         Debug.Assert(GetCurrentSublevel().SublevelCharacter == Player.ActivePlayer.Data.characterID);
+    }
+
+    public void LoadNextLevel()
+    {
+        SceneManager.LoadScene(NextLevelName);
+        // Scene nextLevel = SceneManager.GetSceneByName(NextLevelName);
     }
 }
