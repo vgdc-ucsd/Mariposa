@@ -11,7 +11,6 @@ public abstract class Puzzle : MonoBehaviour
     
     void Start()
     {
-        Debug.Log("started");
         gameObject.SetActive(false);
     }
 

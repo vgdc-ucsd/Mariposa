@@ -161,6 +161,6 @@ public class BlockPuzzle : Puzzle
     private void FinishPuzzle()
     {
         IsComplete = true;
-        OnComplete();
+        // OnComplete();
     }
 }
