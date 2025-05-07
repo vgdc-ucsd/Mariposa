@@ -1,6 +1,7 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class BlockPuzzleBlock : MonoBehaviour
+public class BlockPuzzleBlock : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     public Vector2Int Position;
     public Vector2Int Size;
@@ -9,7 +10,7 @@ public class BlockPuzzleBlock : MonoBehaviour
     public bool IsFixed = false;
 
     private Vector3 mouseOffset;
-    private bool isDragging = false;
+    // private bool isDragging = false;
     private Vector2Int originalPosition;
     private Vector3 stagingPosition;
     [SerializeField] private bool isInGrid = false;
@@ -17,7 +18,7 @@ public class BlockPuzzleBlock : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private BlockPreview preview;
 
-    public bool IsDragging => isDragging;
+    // public bool IsDragging => isDragging;
 
     public void InitializeBlock()
     {
@@ -47,11 +48,26 @@ public class BlockPuzzleBlock : MonoBehaviour
         }
     }
 
-    private void OnMouseDown()
+    // private void OnMouseDown()
+    // {
+    //     if ((isInGrid && BlockPuzzle.Instance.CanMove(this, Vector2Int.zero) || !isInGrid) && !IsFixed)
+    //     {
+    //         isDragging = true;
+    //         mouseOffset = transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            
+    //         if (isInGrid)
+    //         {
+    //             originalPosition = Position;
+    //             BlockPuzzle.Instance.ClearBlockFromGrid(this);
+    //         }
+    //     }
+    // }
+
+    public void OnBeginDrag(PointerEventData eventData)
     {
         if ((isInGrid && BlockPuzzle.Instance.CanMove(this, Vector2Int.zero) || !isInGrid) && !IsFixed)
         {
-            isDragging = true;
+            // isDragging = true;
             mouseOffset = transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition);
             
             if (isInGrid)
@@ -62,57 +78,102 @@ public class BlockPuzzleBlock : MonoBehaviour
         }
     }
 
-    private void OnMouseDrag()
+    // private void OnMouseDrag()
+    // {
+    //     if (isDragging)
+    //     {
+    //         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition) + mouseOffset;
+    //         mousePosition.z = 0;
+
+    //         Vector2Int nearestGridPos = SnapToGrid(mousePosition);
+    //         Vector3 previewPos = BlockPuzzle.Instance.GridToWorldPosition(nearestGridPos);
+
+    //         transform.position = mousePosition;
+
+    //         bool isValidPosition = BlockPuzzle.Instance.IsPositionValidForBlock(nearestGridPos, this);
+    //         if (isValidPosition) ShowPreview(previewPos);
+    //         else ShowPreview(previewPos, false);
+    //     }
+    // }
+
+    public void OnDrag(PointerEventData eventData)
     {
-        if (isDragging)
-        {
-            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition) + mouseOffset;
-            mousePosition.z = 0;
+        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition) + mouseOffset;
+        mousePosition.z = 0;
 
-            Vector2Int nearestGridPos = SnapToGrid(mousePosition);
-            Vector3 previewPos = BlockPuzzle.Instance.GridToWorldPosition(nearestGridPos);
+        Vector2Int nearestGridPos = SnapToGrid(mousePosition);
+        Vector3 previewPos = BlockPuzzle.Instance.GridToWorldPosition(nearestGridPos);
 
-            transform.position = mousePosition;
+        transform.position = mousePosition;
 
-            bool isValidPosition = BlockPuzzle.Instance.IsPositionValidForBlock(nearestGridPos, this);
-            if (isValidPosition) ShowPreview(previewPos);
-            else ShowPreview(previewPos, false);
-        }
+        bool isValidPosition = BlockPuzzle.Instance.IsPositionValidForBlock(nearestGridPos, this);
+        if (isValidPosition) ShowPreview(previewPos);
+        else ShowPreview(previewPos, false);
     }
 
-    private void OnMouseUp()
+    // private void OnMouseUp()
+    // {
+    //     if (isDragging)
+    //     {
+    //         isDragging = false;
+
+    //         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition) + mouseOffset;
+    //         Vector2Int targetPosition = SnapToGrid(mousePosition);
+
+    //         if (BlockPuzzle.Instance.IsPositionValidForBlock(targetPosition, this))
+    //         {
+    //             Position = targetPosition;
+    //             transform.position = BlockPuzzle.Instance.GridToWorldPosition(Position);
+    //             BlockPuzzle.Instance.SetBlockInGrid(this, Position);
+    //             isInGrid = true;
+    //         }
+    //         else
+    //         {
+    //             if (BlockPuzzle.Instance.IsPositionInGridForBlock(targetPosition, this) && isInGrid)
+    //             {
+    //                 Position = originalPosition;
+    //                 transform.position = BlockPuzzle.Instance.GridToWorldPosition(Position);
+    //                 BlockPuzzle.Instance.SetBlockInGrid(this, Position);
+    //             }
+    //             else
+    //             {
+    //                 transform.position = stagingPosition;
+    //                 isInGrid = false;
+    //             }
+    //         }
+
+    //         HidePreview();
+    //     }
+    // }
+
+    public void OnEndDrag(PointerEventData eventData)
     {
-        if (isDragging)
+        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition) + mouseOffset;
+        Vector2Int targetPosition = SnapToGrid(mousePosition);
+
+        if (BlockPuzzle.Instance.IsPositionValidForBlock(targetPosition, this))
         {
-            isDragging = false;
-
-            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition) + mouseOffset;
-            Vector2Int targetPosition = SnapToGrid(mousePosition);
-
-            if (BlockPuzzle.Instance.IsPositionValidForBlock(targetPosition, this))
+            Position = targetPosition;
+            transform.position = BlockPuzzle.Instance.GridToWorldPosition(Position);
+            BlockPuzzle.Instance.SetBlockInGrid(this, Position);
+            isInGrid = true;
+        }
+        else
+        {
+            if (BlockPuzzle.Instance.IsPositionInGridForBlock(targetPosition, this) && isInGrid)
             {
-                Position = targetPosition;
+                Position = originalPosition;
                 transform.position = BlockPuzzle.Instance.GridToWorldPosition(Position);
                 BlockPuzzle.Instance.SetBlockInGrid(this, Position);
-                isInGrid = true;
             }
             else
             {
-                if (BlockPuzzle.Instance.IsPositionInGridForBlock(targetPosition, this) && isInGrid)
-                {
-                    Position = originalPosition;
-                    transform.position = BlockPuzzle.Instance.GridToWorldPosition(Position);
-                    BlockPuzzle.Instance.SetBlockInGrid(this, Position);
-                }
-                else
-                {
-                    transform.position = stagingPosition;
-                    isInGrid = false;
-                }
+                transform.position = stagingPosition;
+                isInGrid = false;
             }
-
-            HidePreview();
         }
+
+        HidePreview();
     }
 
     private void ShowPreview(Vector3 position, bool isValid = true)

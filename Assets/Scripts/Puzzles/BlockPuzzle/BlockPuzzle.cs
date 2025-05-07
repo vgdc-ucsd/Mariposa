@@ -22,15 +22,9 @@ public class BlockPuzzle : Puzzle
         }
 
         grid = new BlockPuzzleBlock[GridWidth, GridHeight];
-        Instantiate(gridVisualizerPrefab, transform);
+        // Instantiate(gridVisualizerPrefab, transform);
         BlockPuzzleBlock[] blocks = GetComponentsInChildren<BlockPuzzleBlock>();
         foreach (BlockPuzzleBlock block in blocks) block.InitializeBlock();
-    }
-
-    // Debug
-    void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.Space)) FinishPuzzle();
     }
 
     public Vector3 GridToWorldPosition(Vector2Int gridPosition)
