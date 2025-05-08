@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEditor.Rendering;
@@ -15,7 +16,9 @@ public class WaterPuzzleTile : MonoBehaviour, IPointerClickHandler
     [HideInInspector] public bool MustBeTurn;
     [HideInInspector] public bool MustBeStraight;
     [HideInInspector] public bool MustBeCross;
-
+    [SerializeField] private Color fillColor;
+    [SerializeField] private float popSpeed, popSizeScale, popRotSpeed, popEasingScale;
+    private bool animating = false;
     public float RandomPipeChance; // odds from 0 to 1 per side on this tile for a pipe to randomly spawn there
 
    
@@ -87,15 +90,13 @@ public class WaterPuzzleTile : MonoBehaviour, IPointerClickHandler
                     break;
             }
         }
-        //if (MustBeCross) PipeRight = PipeUp = PipeLeft = PipeDown = true;
         
-        if (!(MustBeTurn || MustBeStraight || MustBeCross))
-        {
-            if (Random.Range(0f, 1f) < RandomPipeChance) PipeRight = true;
-            if (Random.Range(0f, 1f) < RandomPipeChance) PipeUp = true;
-            if (Random.Range(0f, 1f) < RandomPipeChance) PipeLeft = true;
-            if (Random.Range(0f, 1f) < RandomPipeChance) PipeDown = true;
-        }
+        
+        if (Random.Range(0f, 1f) < RandomPipeChance) PipeRight = true;
+        if (Random.Range(0f, 1f) < RandomPipeChance) PipeUp = true;
+        if (Random.Range(0f, 1f) < RandomPipeChance) PipeLeft = true;
+        if (Random.Range(0f, 1f) < RandomPipeChance) PipeDown = true;
+        
         if (WaterPuzzle.Instance.EndTile == this || WaterPuzzle.Instance.EndTile2 == this)
         {
             PipeLeft = true;
@@ -162,20 +163,37 @@ public class WaterPuzzleTile : MonoBehaviour, IPointerClickHandler
             return;
         }
         Image.sprite = WaterPuzzle.Instance.TileSprites[spriteIndex - 1]; // as of 5/7/25, there's no empty sprite
-        transform.eulerAngles += Vector3.forward * (transform.eulerAngles.z + rotation);
+        Image.transform.eulerAngles += Vector3.forward * (transform.eulerAngles.z + rotation);
     }
 
     /// <summary>
     /// Rotates this tile 90 degrees clockwise, updating its sprite and pipe states.
     /// </summary>
-    public void RotateThisTile()
+    public IEnumerator RotateThisTile()
     {
+        animating = true;
+        float startRot = Image.transform.eulerAngles.z;
+        float totalRot = 0f;
+        float width = WaterPuzzle.Instance.TileWidth;
+
         bool temp = PipeRight;
         PipeRight = PipeUp;
         PipeUp = PipeLeft;
         PipeLeft = PipeDown;
         PipeDown = temp;
-        transform.eulerAngles -= Vector3.forward * 90;
+
+        do
+        {
+            yield return new WaitForSeconds(popSpeed);
+            float rot = popRotSpeed * (popEasingScale + 1 - Mathf.Pow((totalRot / 45f) - 1f, 2)) / popEasingScale;
+            Image.transform.localScale = Vector3.one * (1 + popSizeScale *  rot / popRotSpeed);
+            Image.transform.eulerAngles -= Vector3.forward * rot;
+            totalRot += rot;
+        } while (totalRot <= 90f);
+        Image.transform.localScale = Vector3.one;
+        Image.transform.eulerAngles = Vector3.forward * (startRot - 90f);
+        animating = false;
+
     }
 
     /// <summary>
@@ -243,7 +261,7 @@ public class WaterPuzzleTile : MonoBehaviour, IPointerClickHandler
                 WaterPuzzle.Instance.CompletePuzzle();
             }*/
 
-            Image.color = Color.blue;
+            Image.color = fillColor;
             HasWater = true;
             FillAdjacentTiles();
         }
@@ -269,10 +287,11 @@ public class WaterPuzzleTile : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (!WaterPuzzle.Instance.PuzzleComplete)
+        if (!WaterPuzzle.Instance.PuzzleComplete && !animating)
         {
             if (Input.GetKey(KeyCode.LeftControl) && !WaterPuzzle.Instance.UsedPipeSplitter) UsePipeSplitterOnTile();
-            RotateThisTile();
+            StartCoroutine(RotateThisTile());
+            //RotateThisTile();
             WaterPuzzle.Instance.ResetPuzzle();
         }
     }
