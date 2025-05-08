@@ -17,6 +17,7 @@ public class WaterPuzzle : Puzzle
 
     [SerializeField] private GameObject tilePrefab;
     private List<WaterPuzzleTile> tilesInSolution;
+    [SerializeField] private GameObject backgroundParent;
 
     public float RandomTurnChance; // odds from 0 to 1 for the solution generator to make a random turn between tiles.
     public float TileWidth, TileHeight; // width and height of one tile in the scene
@@ -68,6 +69,7 @@ public class WaterPuzzle : Puzzle
                 GameObject tile = Instantiate(tilePrefab, new Vector3(TileWidth * i, -TileHeight * j, 0), Quaternion.identity, PuzzleUI.transform);
                 tile.transform.position += PuzzleUI.transform.position;
                 Tiles[i, j] = tile.GetComponent<WaterPuzzleTile>();
+                Tiles[i, j].background.transform.SetParent(backgroundParent.transform, true);
                 Tiles[i, j].PosX = i;
                 Tiles[i, j].PosY = j;
                 Tiles[i, j].InitializeTile();

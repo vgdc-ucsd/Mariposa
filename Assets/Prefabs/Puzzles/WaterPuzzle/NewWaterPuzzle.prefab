@@ -1,5 +1,49 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6026251232856028117
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1060293892115606473}
+  - component: {fileID: 158715577118093169}
+  m_Layer: 5
+  m_Name: Background
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1060293892115606473
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6026251232856028117}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8085847854771794974}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &158715577118093169
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6026251232856028117}
+  m_CullTransparentMesh: 1
 --- !u!1001 &1699045216456643924
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -114,6 +158,9 @@ PrefabInstance:
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 7467684341598871882, guid: 4877796f7a6692a44a337da29da4aadf, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 1060293892115606473}
+    - targetCorrespondingSourceObject: {fileID: 7467684341598871882, guid: 4877796f7a6692a44a337da29da4aadf, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 2112702246695101591}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6540258807784271503, guid: 4877796f7a6692a44a337da29da4aadf, type: 3}
@@ -146,6 +193,7 @@ MonoBehaviour:
   GridHeight: 7
   PuzzleComplete: 0
   tilePrefab: {fileID: 167192345093911540, guid: 31272c9e4c1162f4f84695da2f6321cb, type: 3}
+  backgroundParent: {fileID: 6026251232856028117}
   RandomTurnChance: 0.2
   TileWidth: 64
   TileHeight: 64

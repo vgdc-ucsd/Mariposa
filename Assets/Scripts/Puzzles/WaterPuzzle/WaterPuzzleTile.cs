@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class WaterPuzzleTile : MonoBehaviour, IPointerClickHandler
+public class WaterPuzzleTile : MonoBehaviour
 {
     [HideInInspector] public bool PipeRight, PipeUp, PipeLeft, PipeDown;
     [HideInInspector] public bool HasWater;
@@ -20,7 +20,7 @@ public class WaterPuzzleTile : MonoBehaviour, IPointerClickHandler
     [SerializeField] private float popSpeed, popSizeScale, popRotSpeed, popEasingScale;
     private bool animating = false;
     public float RandomPipeChance; // odds from 0 to 1 per side on this tile for a pipe to randomly spawn there
-
+    public GameObject background;
    
     private void Start()
     {
@@ -176,11 +176,6 @@ public class WaterPuzzleTile : MonoBehaviour, IPointerClickHandler
         float totalRot = 0f;
         float width = WaterPuzzle.Instance.TileWidth;
 
-        bool temp = PipeRight;
-        PipeRight = PipeUp;
-        PipeUp = PipeLeft;
-        PipeLeft = PipeDown;
-        PipeDown = temp;
 
         do
         {
@@ -194,6 +189,12 @@ public class WaterPuzzleTile : MonoBehaviour, IPointerClickHandler
         Image.transform.eulerAngles = Vector3.forward * (startRot - 90f);
         animating = false;
 
+        bool temp = PipeRight;
+        PipeRight = PipeUp;
+        PipeUp = PipeLeft;
+        PipeLeft = PipeDown;
+        PipeDown = temp;
+        WaterPuzzle.Instance.ResetPuzzle();
     }
 
     /// <summary>
@@ -285,14 +286,12 @@ public class WaterPuzzleTile : MonoBehaviour, IPointerClickHandler
         WaterPuzzle.Instance.UsedPipeSplitter = true;
     }
 
-    public void OnPointerClick(PointerEventData eventData)
+    public void OnClick()
     {
         if (!WaterPuzzle.Instance.PuzzleComplete && !animating)
         {
             if (Input.GetKey(KeyCode.LeftControl) && !WaterPuzzle.Instance.UsedPipeSplitter) UsePipeSplitterOnTile();
             StartCoroutine(RotateThisTile());
-            //RotateThisTile();
-            WaterPuzzle.Instance.ResetPuzzle();
         }
     }
 }
