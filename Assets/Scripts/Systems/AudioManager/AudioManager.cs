@@ -18,7 +18,6 @@ public class AudioManager : Singleton<AudioManager>
         // used for testing -> testAudioEvents();
     }
 
-
     // START OF TEST METHODS
     private void testAudioEvents()
     {
@@ -67,10 +66,10 @@ public class AudioManager : Singleton<AudioManager>
     private void example_non_simpleton_call()
     {
         // example sfx event with debug mode off (default is off)
-        var exampleSFXEvent = createAudioEvent(Audio_SFX.test_sfx);
+        var exampleSFXEvent = AudioManager.Instance.createAudioEvent(Audio_SFX.test_sfx);
 
         // example dialogue event with debug mode enabled
-        var exampleDialogueDebugEvent = createAudioEvent(Audio_Dialogue.s0_tutorial_mariposa, true);
+        var exampleDialogueDebugEvent = AudioManager.Instance.createAudioEvent(Audio_Dialogue.s0_tutorial_mariposa, true);
 
         // command to run common commands shared by all audio events
         exampleSFXEvent.DefaultControls.Play();
