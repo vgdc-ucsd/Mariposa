@@ -9,8 +9,6 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
     public static BeeMovement Instance;
     private Bee parent;
 
-    private Vector2 velocityFieldVelocity = Vector2.zero;
-
     [Header("Horizontal Parameters")]
 
     [Tooltip("The maximum horizontal movement speed")]
@@ -148,8 +146,6 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
             tempVelocity *= MoveSpeed / tempVelocity.magnitude;
         }
 
-        tempVelocity += velocityFieldVelocity;
-
         Vector2 normalComp = Vector2.Dot(tempVelocity, r) / r.sqrMagnitude * r;
 
 
@@ -209,19 +205,11 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
     protected override void OnTriggerEnter2D(Collider2D collision)
     {
         base.OnTriggerEnter2D(collision);
-        if (collision.CompareTag("VelocityField"))
-        {
-            velocityFieldVelocity = collision.GetComponent<VelocityField>().velocity;
-        }
     }
 
     protected override void OnTriggerExit2D(Collider2D collision)
     {
         base.OnTriggerExit2D(collision);
-        if (collision.CompareTag("VelocityField"))
-        {
-            velocityFieldVelocity = Vector2.zero;
-        }
     }
 
 
