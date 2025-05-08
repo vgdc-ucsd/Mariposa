@@ -8,41 +8,57 @@ public class ControllableMovingPlatform : MovingPlatform
     private Vector2 path;
     private Vector2 moveDir = Vector2.zero;
 
-    protected override void Awake()
+    public override void Initialize()
     {
-        base.Awake();
-        if (pathNodes.Length != 2) Debug.LogError(name + " should have exactly 2 path nodes, but it has " + pathNodes.Length);
-        if (platformMoveSpeed == 0) platformMoveSpeed = 1f;
-        startNode = pathNodes[0];
-        endNode = pathNodes[1];
-        platformRb.transform.position = startNode;
+        base.Initialize();
+
+        startNode = manager.pathNodes[0];
+        endNode = manager.pathNodes[^1];
         path = endNode - startNode;
     }
 
+    public override int GetInitialNodeIndex() => 0;
+
     public void MovePlatform(Vector2 controlDir)
     {
-        moveDir = Helper.Vec2Proj(controlDir, path).normalized;
+        if (state == PlatformState.Resetting) return;
+
+        if (controlDir == Vector2.zero)
+        {
+            state = PlatformState.Stopped;
+        }
+        else
+        {
+            moveDir = Helper.Vec2Proj(controlDir, path).normalized;
+            state = PlatformState.Moving;
+        }
     }
 
-    protected override void FixedUpdate()
+    protected override Vector2 GetCurrentMovement()
     {
         float fdt = Time.fixedDeltaTime;
-        Vector2 targetPos = platformRb.position + platformMoveSpeed * fdt * moveDir;
+
+        Vector2 targetPos = rb.position + platformMoveSpeed * fdt * moveDir;
+
+        for (int i = 0; i < manager.pathNodes.Length; ++i)
+        {
+            Vector2 node = manager.pathNodes[i];
+            if (Vector2.Distance(node, rb.position) < 0.1f) currentNodeIdx = i;
+        }
+
         if ((targetPos - endNode).sqrMagnitude > path.sqrMagnitude)
         {
             targetPos = startNode;
+            StopMoving(0);
         }
         else if ((targetPos - startNode).sqrMagnitude > path.sqrMagnitude)
         {
             targetPos = endNode;
+            StopMoving(manager.pathNodes.Length - 1);
         }
-        currMovement = targetPos - platformRb.position;
-        platformRb.transform.position += (Vector3)currMovement;
-        Physics2D.SyncTransforms();
 
-        if (adjacentFreeBody != null)
-        {
-            adjacentFreeBody.transform.position += (Vector3)currMovement;
-        }
+        Vector2 movement = targetPos - rb.position;
+
+        return movement;
     }
 }

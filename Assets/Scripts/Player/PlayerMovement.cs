@@ -236,7 +236,8 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
             if (groundHit.collider.CompareTag("MovingPlatform"))
             {
                 currentMovingPlatform = groundHit.collider.GetComponentInParent<MovingPlatform>();
-                if (currentMovingPlatform.currMovement.y < 0) transform.position += currentMovingPlatform.currMovement.y * Vector3.up;
+                //if (currentMovingPlatform.currentMovement.y < 0) 
+                    //transform.position += currentMovingPlatform.currentMovement.y * Vector3.up;
                 currentMovingPlatform.adjacentFreeBody = this;
                 if (currentMovingPlatform is ControllableMovingPlatform) onControllableMovingPlatform = true;
             }
@@ -262,7 +263,7 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
         slopeDir = Vector2.zero;
         if (onControllableMovingPlatform)
         {
-            currentMovingPlatform.currMovement = Vector2.zero;
+            currentMovingPlatform.currentMovement = Vector2.zero;
             ((ControllableMovingPlatform)currentMovingPlatform).MovePlatform(Vector2.zero);
         }
         if (currentMovingPlatform != null) currentMovingPlatform.adjacentFreeBody = null;
