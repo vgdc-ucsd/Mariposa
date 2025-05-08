@@ -39,7 +39,7 @@ public class WaterPuzzle : Puzzle
 
     private void Update()
     {
-        if (EndTile.HasWater && (EndTile2.HasWater || !twoEndings) && !PuzzleComplete)
+        if (EndTile.HasWater && (!twoEndings || EndTile2.HasWater) && !PuzzleComplete)
         {
             Debug.Log("should complete puzzle");
             CompletePuzzle();

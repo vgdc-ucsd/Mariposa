@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -22,7 +23,7 @@ public class WaterPuzzleTile : MonoBehaviour, IPointerClickHandler
         if (WaterPuzzle.Instance.StartTile == this) FillTile(true);
         else EmptyTile();
 
-        if (WaterPuzzle.Instance.EndTile == this || WaterPuzzle.Instance.EndTile2 == this) Image.material.color = Color.red;
+        if (WaterPuzzle.Instance.EndTile == this || WaterPuzzle.Instance.EndTile2 == this) Image.color = Color.red;
 
         SetPipes();
         SetSprite();
@@ -228,6 +229,7 @@ public class WaterPuzzleTile : MonoBehaviour, IPointerClickHandler
     /// <param name="filled"> Whether or not the tile should actually be filled</param>
     public void FillTile(bool filled)
     {
+        Debug.Log(filled);
         if (filled && !HasWater)
         {
             /*if (WaterPuzzle.Instance.EndTile.HasWater && (!WaterPuzzle.Instance.twoEndings || WaterPuzzle.Instance.EndTile2.HasWater))
@@ -240,6 +242,7 @@ public class WaterPuzzleTile : MonoBehaviour, IPointerClickHandler
             HasWater = true;
             FillAdjacentTiles();
         }
+        
     }
 
     /// <summary>
@@ -247,7 +250,7 @@ public class WaterPuzzleTile : MonoBehaviour, IPointerClickHandler
     /// </summary>
     public void EmptyTile()
     {
-        if (WaterPuzzle.Instance.EndTile != this && WaterPuzzle.Instance.EndTile2 != this) Image.material.color = Color.white;
+        if (WaterPuzzle.Instance.EndTile != this && WaterPuzzle.Instance.EndTile2 != this) Image.color = Color.white;
         HasWater = false;
     }
 
