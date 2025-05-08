@@ -39,7 +39,11 @@ public class WaterPuzzle : Puzzle
 
     private void Update()
     {
-        if (EndTile.HasWater && (EndTile2.HasWater || !twoEndings) && !PuzzleComplete) CompletePuzzle();
+        if (EndTile.HasWater && (EndTile2.HasWater || !twoEndings) && !PuzzleComplete)
+        {
+            Debug.Log("should complete puzzle");
+            CompletePuzzle();
+        }
     }
     private void Awake()
     {
@@ -53,7 +57,8 @@ public class WaterPuzzle : Puzzle
         }
 
         // move the puzzle object so that the center of the puzzle is at (0, 0, 0)
-        PuzzleUI.transform.position = new Vector3(TileWidth * (-GridWidth + 1) / 2, TileHeight * (GridHeight - 1) / 2, 0);
+        Debug.Log(TileWidth * (-GridWidth + 1) / 2);
+        PuzzleUI.GetComponent<RectTransform>().localPosition = new Vector3(TileWidth * (-GridWidth + 1) / 2, TileHeight * (GridHeight - 1) / 2, 0);
 
         Tiles = new WaterPuzzleTile[GridWidth, GridHeight];
         for (int i = 0; i < GridWidth; i++)
@@ -83,15 +88,7 @@ public class WaterPuzzle : Puzzle
     }
 
 
-    private void OnEnable()
-    {
-        ActivatePuzzle();
-    }
 
-    public void ActivatePuzzle()
-    {
-        PuzzleUI.SetActive(true);
-    }
 
     public void ResetPuzzle()
     {
@@ -271,7 +268,7 @@ public class WaterPuzzle : Puzzle
 
     private bool IsTileFree(int x, int y, bool secondPass)
     {
-        if (!secondPass && EndTile2.PosX == x && EndTile2.PosY == y) return false;
+        if (twoEndings && !secondPass && EndTile2.PosX == x && EndTile2.PosY == y) return false;
         return (IsTileInBounds(x, y) && !tilesInSolution.Contains(Tiles[x, y]));
     }
 

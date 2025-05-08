@@ -100,6 +100,7 @@ public class WaterPuzzleTile : MonoBehaviour, IPointerClickHandler
             PipeDown = false;
             PipeUp = false;
             PipeRight = false;
+            Image.color = Color.red;
         }
 
         if (WaterPuzzle.Instance.StartTile == this)
