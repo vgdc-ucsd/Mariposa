@@ -144,7 +144,7 @@ public abstract class FreeBody : Body
         RaycastHit2D hit = Physics2D.BoxCast(origin, bounds.size, 0f, move.normalized, move.magnitude, collisionLayer);
 
         // If the free body is inside another object, separate them and recompute the raycast
-        if (hit && Mathf.Approximately(hit.distance, 0f))
+        if (hit && !hit.collider.isTrigger && Mathf.Approximately(hit.distance, 0f))
         {
             ResolveInitialCollisions();
             origin = (Vector2)transform.position + SurfaceCollider.offset;
