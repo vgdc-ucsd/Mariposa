@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using TMPro;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -10,7 +11,7 @@ public class WaterPuzzleTile : MonoBehaviour, IPointerClickHandler
     [HideInInspector] public bool HasWater;
     [HideInInspector] public int PosX, PosY;
     [HideInInspector] public BoxCollider2D MyCollider;
-    [HideInInspector] public Image Image;
+    public Image Image;
     [HideInInspector] public bool MustBeTurn;
     [HideInInspector] public bool MustBeStraight;
     [HideInInspector] public bool MustBeCross;
@@ -35,7 +36,7 @@ public class WaterPuzzleTile : MonoBehaviour, IPointerClickHandler
     public void InitializeTile()
     {
         MyCollider = GetComponent<BoxCollider2D>();
-        Image = GetComponent<Image>();
+        if (Image == null) Debug.LogError("Pipe Image component is missing!");
     }
 
     /// <summary>
@@ -155,8 +156,12 @@ public class WaterPuzzleTile : MonoBehaviour, IPointerClickHandler
                 spriteIndex = 5;
                 break;
         }
-
-        Image.sprite = WaterPuzzle.Instance.TileSprites[spriteIndex];
+        if (spriteIndex == 0)
+        {
+            Image.enabled = false;
+            return;
+        }
+        Image.sprite = WaterPuzzle.Instance.TileSprites[spriteIndex - 1]; // as of 5/7/25, there's no empty sprite
         transform.eulerAngles += Vector3.forward * (transform.eulerAngles.z + rotation);
     }
 

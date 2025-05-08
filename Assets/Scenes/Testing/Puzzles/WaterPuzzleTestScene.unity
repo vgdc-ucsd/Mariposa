@@ -6387,7 +6387,7 @@ PrefabInstance:
       objectReference: {fileID: 5573083751296085753}
     - target: {fileID: 2333449670300436533, guid: 3bb4e460b649efe4193ee60a5001d33f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -7.03
+      value: -19.91
       objectReference: {fileID: 0}
     - target: {fileID: 2333449670300436533, guid: 3bb4e460b649efe4193ee60a5001d33f, type: 3}
       propertyPath: m_LocalPosition.y
@@ -8370,9 +8370,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GridWidth: 7
   GridHeight: 7
-  GridScale: 0.85
   gridVisualizerPrefab: {fileID: 3532741713559453623, guid: b980cde7e71cb1e4ab3e05b6039fe45e, type: 3}
   IsComplete: 0
+  gridContainer: {fileID: 0}
 --- !u!4 &1904017872
 Transform:
   m_ObjectHideFlags: 0
@@ -9873,17 +9873,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3617df70f439e964db71e891206774dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &4798549085910118933 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4798549084926633783, guid: ab07f1b8ba5160942b40d3810b18bdbb, type: 3}
-  m_PrefabInstance: {fileID: 9188035413560691042}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5573083751296085753}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a812288e96fc54040a6b5ee6c44eedad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &5573083751296085753 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5573083750316669915, guid: ab07f1b8ba5160942b40d3810b18bdbb, type: 3}
@@ -9897,18 +9886,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 878594129037421790, guid: ab07f1b8ba5160942b40d3810b18bdbb, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 4798549085910118933}
-    - target: {fileID: 878594129037421790, guid: ab07f1b8ba5160942b40d3810b18bdbb, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: TryHidePuzzle
-      objectReference: {fileID: 0}
-    - target: {fileID: 5492832544420496691, guid: ab07f1b8ba5160942b40d3810b18bdbb, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5573083750316669915, guid: ab07f1b8ba5160942b40d3810b18bdbb, type: 3}
       propertyPath: m_Name
       value: NewWaterPuzzle
