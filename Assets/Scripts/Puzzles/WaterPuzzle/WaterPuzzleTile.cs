@@ -4,10 +4,12 @@ using TMPro;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
 public class WaterPuzzleTile : MonoBehaviour
 {
+    [HideInInspector] public WaterPuzzle puzzle;
     [HideInInspector] public bool PipeRight, PipeUp, PipeLeft, PipeDown;
     [HideInInspector] public bool HasWater;
     [HideInInspector] public int PosX, PosY;
@@ -24,10 +26,10 @@ public class WaterPuzzleTile : MonoBehaviour
    
     private void Start()
     {
-        if (WaterPuzzle.Instance.StartTile == this) FillTile(true);
+        if (puzzle.StartTile == this) FillTile(true);
         else EmptyTile();
 
-        if (WaterPuzzle.Instance.EndTile == this || WaterPuzzle.Instance.EndTile2 == this) Image.color = Color.red;
+        if (puzzle.EndTile == this || puzzle.EndTile2 == this) Image.color = Color.red;
 
         SetPipes();
         SetSprite();
@@ -47,7 +49,7 @@ public class WaterPuzzleTile : MonoBehaviour
     /// </summary>
     private void SetPipes()
     {
-        
+        if (MustBeStraight && MustBeTurn) MustBeStraight = false;
 
         if (MustBeTurn || MustBeCross)
         {
@@ -97,7 +99,7 @@ public class WaterPuzzleTile : MonoBehaviour
         if (Random.Range(0f, 1f) < RandomPipeChance) PipeLeft = true;
         if (Random.Range(0f, 1f) < RandomPipeChance) PipeDown = true;
         
-        if (WaterPuzzle.Instance.EndTile == this || WaterPuzzle.Instance.EndTile2 == this)
+        if (puzzle.EndTile == this || puzzle.EndTile2 == this)
         {
             PipeLeft = true;
             PipeDown = false;
@@ -106,7 +108,7 @@ public class WaterPuzzleTile : MonoBehaviour
             Image.color = Color.red;
         }
 
-        if (WaterPuzzle.Instance.StartTile == this)
+        if (puzzle.StartTile == this)
         {
             PipeLeft = true;
             PipeRight = false;
@@ -162,7 +164,7 @@ public class WaterPuzzleTile : MonoBehaviour
             Image.enabled = false;
             return;
         }
-        Image.sprite = WaterPuzzle.Instance.TileSprites[spriteIndex - 1]; // as of 5/7/25, there's no empty sprite
+        Image.sprite = puzzle.TileSprites[spriteIndex - 1]; // as of 5/7/25, there's no empty sprite
         Image.transform.eulerAngles += Vector3.forward * (transform.eulerAngles.z + rotation);
     }
 
@@ -174,7 +176,7 @@ public class WaterPuzzleTile : MonoBehaviour
         animating = true;
         float startRot = Image.transform.eulerAngles.z;
         float totalRot = 0f;
-        float width = WaterPuzzle.Instance.TileWidth;
+        float width = puzzle.TileWidth;
 
 
         do
@@ -194,7 +196,7 @@ public class WaterPuzzleTile : MonoBehaviour
         PipeUp = PipeLeft;
         PipeLeft = PipeDown;
         PipeDown = temp;
-        WaterPuzzle.Instance.ResetPuzzle();
+        puzzle.ResetPuzzle();
     }
 
     /// <summary>
@@ -223,24 +225,24 @@ public class WaterPuzzleTile : MonoBehaviour
         WaterPuzzleTile[] result = new WaterPuzzleTile[4];
 
         // right
-        if (PosX < WaterPuzzle.Instance.GridWidth - 1)
+        if (PosX < puzzle.GridWidth - 1)
         {
-            result[0] = WaterPuzzle.Instance.Tiles[PosX + 1, PosY];
+            result[0] = puzzle.Tiles[PosX + 1, PosY];
         }
         // up
         if (PosY > 0)
         {
-            result[1] = WaterPuzzle.Instance.Tiles[PosX, PosY - 1];
+            result[1] = puzzle.Tiles[PosX, PosY - 1];
         }
         // left
         if (PosX > 0)
         {
-            result[2] = WaterPuzzle.Instance.Tiles[PosX - 1, PosY];
+            result[2] = puzzle.Tiles[PosX - 1, PosY];
         }
         // down
-        if (PosY < WaterPuzzle.Instance.GridHeight - 1)
+        if (PosY < puzzle.GridHeight - 1)
         {
-            result[3] = WaterPuzzle.Instance.Tiles[PosX, PosY + 1];
+            result[3] = puzzle.Tiles[PosX, PosY + 1];
         }
 
         return result;
@@ -253,18 +255,18 @@ public class WaterPuzzleTile : MonoBehaviour
     /// <param name="filled"> Whether or not the tile should actually be filled</param>
     public void FillTile(bool filled)
     {
-        Debug.Log(filled);
         if (filled && !HasWater)
         {
-            /*if (WaterPuzzle.Instance.EndTile.HasWater && (!WaterPuzzle.Instance.twoEndings || WaterPuzzle.Instance.EndTile2.HasWater))
-            {
-                Debug.Log("should complete puzzle");
-                WaterPuzzle.Instance.CompletePuzzle();
-            }*/
-
             Image.color = fillColor;
             HasWater = true;
             FillAdjacentTiles();
+
+            if (puzzle.EndTile.HasWater && (!puzzle.twoEndings || puzzle.EndTile2.HasWater) && !puzzle.PuzzleComplete)
+            {
+                puzzle.CompletePuzzle();
+            }
+
+
         }
         
     }
@@ -274,23 +276,23 @@ public class WaterPuzzleTile : MonoBehaviour
     /// </summary>
     public void EmptyTile()
     {
-        if (WaterPuzzle.Instance.EndTile != this && WaterPuzzle.Instance.EndTile2 != this) Image.color = Color.white;
+        if (puzzle.EndTile != this && puzzle.EndTile2 != this) Image.color = Color.white;
         HasWater = false;
     }
 
     public void UsePipeSplitterOnTile()
     {
-        if (!WaterPuzzle.Instance.twoEndings) return; 
+        if (!puzzle.twoEndings) return; 
         PipeRight = PipeUp = PipeLeft = PipeDown = true;
         SetSprite();
-        WaterPuzzle.Instance.UsedPipeSplitter = true;
+        puzzle.UsedPipeSplitter = true;
     }
 
     public void OnClick()
     {
-        if (!WaterPuzzle.Instance.PuzzleComplete && !animating)
+        if (!puzzle.PuzzleComplete && !animating)
         {
-            if (Input.GetKey(KeyCode.LeftControl) && !WaterPuzzle.Instance.UsedPipeSplitter) UsePipeSplitterOnTile();
+            if (Input.GetKey(KeyCode.LeftControl) && !puzzle.UsedPipeSplitter) UsePipeSplitterOnTile();
             StartCoroutine(RotateThisTile());
         }
     }
