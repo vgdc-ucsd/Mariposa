@@ -98,20 +98,57 @@ public class DialogueParser
 		this.ArtPath = ArtPath;
 		this.YamlPath = YamlPath;
 	}
+	private Sprite loadSpriteFromPath(string path) 
+	{
+		// read file as raw bytes into memory
+		string fullPath = Path.Combine(ArtPath, path);
+		byte[] rawBytes = File.ReadAllBytes(fullPath);
+
+		// arguments to Texture2D constructor have no effect after LoadImage
+		Texture2D rawTexture = new Texture2D(2,2);
+		rawTexture.LoadImage(rawBytes);
+
+		// if this mangles the output, look into Rect and Vector params
+		Sprite spr = Sprite.Create(rawTexture, 
+				// dimension of sprite from (0,0) to (w,h)
+				new Rect(0, 0, rawTexture.width, rawTexture.height),
+				// center is (0.5,0.5) where (1,1) is top right and (0,0) is bottom left
+				// not sure what the meaning of this is, but adjust if necessary
+				new Vector2(0.5f, 0.5f) 
+				);
+		return spr;
+	}
 	public Dialogue ParseDialogue(string path)
 	{
 		/*FileStream file = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.Read);*/
-		string yml = File.ReadAllText(path);
+		string ymlPath = Path.Combine(YamlPath, path);
+		string yml = File.ReadAllText(ymlPath);
+
+		// Not actually possible to read YAML as Dialogue object directly.
 		var inter = deserializer.Deserialize<List<DialogueElementIntermediate>>(yml);
+
 		Dialogue parsedDialogue = new Dialogue();
 		parsedDialogue.Conversation = new List<DialogueElement>();
+
+		// translate every DialogueElementIntermediate to DialogueElement
 		foreach (DialogueElementIntermediate ele in inter) 
 		{
 			DialogueElement realEle = new DialogueElement();
 			realEle.Speaker = ele.name;
 			realEle.Line = ele.line;
 			realEle.FromRadio = false; // oversight: did not implement this
-			Sprite s = Resources.Load<Sprite>(ArtPath + ele.icon);
+
+			// assume path == "" if there is no icon
+			// TODO: verify?
+			Sprite s;
+			if(path != "") 
+			{
+				s = loadSpriteFromPath(ele.icon);
+			}
+			else {
+				s = null;
+			}
+
 			Debug.Log("We're loading " + ArtPath + ele.icon + "\n");
 			if (s == null)
 			{
