@@ -17,7 +17,7 @@ public class Crane : MonoBehaviour
 
     public void TriggerCrane()
     {
-        platform.SendPlatform();
+        // platform.SendPlatform();
     }
 
 }
