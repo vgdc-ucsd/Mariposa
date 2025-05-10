@@ -60,6 +60,12 @@ public class ItemPickup : Interactable
         {
             Debug.LogError("InventoryManager.Instance or item is null!");
         }
+
+        // play bee grab animation 
+        if (controllable is BeeMovement bee)
+        {
+            bee.GetComponentInChildren<BeeGrabAnimation>().runGrabAnimation();
+        }
         //Destroy(gameObject);
     }
 }
