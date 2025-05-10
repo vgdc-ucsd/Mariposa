@@ -81,6 +81,7 @@ public class Settings : Singleton<Settings>
 
     private void checkActive()
     {
+        if (MasterSlider == null) { return; }
         if (MasterSlider.isActiveAndEnabled)
         {
             pauseSounds(true);
