@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: -2835857228430702200}
   m_Layer: 8
   m_Name: Bee
-  m_TagString: Untagged
+  m_TagString: Bee
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -90,7 +90,7 @@ SpriteRenderer:
   m_Size: {x: 13.2699995, y: 10.004335}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!50 &3317154477483511944
@@ -197,10 +197,10 @@ MonoBehaviour:
   Velocity: {x: 0, y: 0}
   Rb: {fileID: 0}
   SurfaceCollider: {fileID: 0}
-  InsideTriggers: []
   State: 1
   Gravity: 0
-  TerminalVelocity: 0
+  TerminalVelocity: 40
+  slipAngle: 45
   collisionLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -218,7 +218,7 @@ Animator:
   m_GameObject: {fileID: 4696093065261200018}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: c0bc086e55a6a014997b17de15fffd5b, type: 2}
+  m_Controller: {fileID: 9100000, guid: df0a694ded61e6048a957d510ff57a36, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

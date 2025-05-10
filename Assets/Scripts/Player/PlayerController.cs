@@ -76,7 +76,7 @@ public class PlayerController : MonoBehaviour
 
     public void SwitchCharacters()
     {
-        if (ControlledPlayer.Character.Id == CharID.Mariposa) SwitchTo(CharID.Unnamed);
+        if (ControlledPlayer.Data.characterID == CharID.Mariposa) SwitchTo(CharID.Unnamed);
         else SwitchTo(CharID.Mariposa);
         
     }

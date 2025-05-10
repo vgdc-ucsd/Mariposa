@@ -8,6 +8,14 @@ public class BeeControlAbility : MonoBehaviour, IAbility
     EventInstance BeeFlap;
 
 
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            BeeRef.StartFollow();
+        }
+    }
+
     public void AbilityInputDown()
     {
         ToggleBeeControl();
@@ -16,6 +24,7 @@ public class BeeControlAbility : MonoBehaviour, IAbility
     public void Initialize()
     {
         BeeRef.ToggleControl(false);
+        BeeRef.StartFollow();
     }
 
     private void ToggleBeeControl()

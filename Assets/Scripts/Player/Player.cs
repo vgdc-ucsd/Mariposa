@@ -15,6 +15,7 @@ public class Player : MonoBehaviour
 	public PlayerCharacter Character;
 	public PlayerMovement Movement;
 	public IAbility Ability;
+	public PlayerData Data;
 
 
 	// which way the character is facing
@@ -25,10 +26,8 @@ public class Player : MonoBehaviour
 	private void Awake()
 	{
 		Movement = GetComponent<PlayerMovement>();
-		Movement.Parent = this;
-		Character = GetComponent<PlayerCharacter>();
 		Ability = GetComponentInChildren<IAbility>();
-		if (Movement == null || Character == null || Ability == null)
+		if (Movement == null || Data == null || Ability == null)
 		{
 			Debug.LogError("Player object not fully set up with Movement, Character, and Ability classes");
 			return;
@@ -109,12 +108,12 @@ public class Player : MonoBehaviour
 		UpdateRespawn(checkpoint.GetComponent<RespawnPoint>());
 		checkpoint.GetComponent<Collider2D>().enabled = false;
 
-		switch (Player.ActivePlayer.Character.Name)
+		switch (Player.ActivePlayer.Data.characterID)
 		{
-			case "Mariposa":
+			case CharID.Mariposa:
 				RuntimeManager.PlayOneShot("event:/sfx/world/spawnpoint_activate/mariposa");
 				break;
-			case "Unnamed":
+			case CharID.Unnamed:
 				RuntimeManager.PlayOneShot("event:/sfx/world/spawnpoint_activate/unnamed");
 				break;
 		}
