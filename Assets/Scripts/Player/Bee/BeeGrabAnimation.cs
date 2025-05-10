@@ -12,8 +12,7 @@ public class BeeGrabAnimation : MonoBehaviour
     }
 
     public void runGrabAnimation(){
-        // beeAnimator.SetBool("startGrab", true);
-
+        // run this to activate grab then "turn it off" on timer
         StartCoroutine(runGrabOnce());
     }
 
