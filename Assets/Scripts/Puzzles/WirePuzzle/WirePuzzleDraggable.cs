@@ -1,6 +1,10 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
-public class WirePuzzleDraggable : MonoBehaviour
+public class WirePuzzleDraggable : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     public Color Color;
     public WirePuzzleTail MatchingTail;
@@ -23,113 +27,108 @@ public class WirePuzzleDraggable : MonoBehaviour
                 connectedTail = null;
                 oldTail.ConnectedDraggable = null;
             }
-            
+
             connectedTail = value;
-            
+
             if (connectedTail != null)
             {
                 connectedTail.ConnectedDraggable = this;
-                transform.position = connectedTail.GetConnectedPosition(index);
+                // transform.position = connectedTail.GetConnectedPosition(index);
+                // This line checks for the solution
                 WirePuzzle.Instance.OnMoveWire();
             }
-            else 
-            {
-                transform.localPosition = defaultPosition;
-            }
-            
-            UpdateLineRenderer();
         }
     }
     public bool IsMatched
     { get => ConnectedTail != null && ConnectedTail == MatchingTail; }
-    
-    private Vector3 mouseOffset;
-    private bool isDragging = false;
 
-    private SpriteRenderer headSprite;
-    private Transform baseTransform;
-    private LineRenderer lineRenderer;
-    private Transform[] linePoints;
-    private Vector3 defaultPosition;
-    private int index;
+    // private int index;
+    [SerializeField] private Image wireVisuals;
+    private Coroutine currentCoroutine;
+    private Vector3 visualsOrigSize;
+    private Vector3 origPos;
 
     public void InitializeWireDraggable(int index)
     {
         if (MatchingTail == null) Debug.LogWarning($"{transform.parent.name} Draggable MatchingTail not set");
 
-        defaultPosition = transform.localPosition;
-        this.index = index;
+        // this.index = index;
 
-        headSprite = GetComponentInChildren<SpriteRenderer>();
-        headSprite.sortingOrder = index + 1;
-
-        lineRenderer = transform.GetComponentInChildren<LineRenderer>();
-        lineRenderer.startColor = Color;
-        lineRenderer.endColor = Color;
-        lineRenderer.sortingOrder = index + 1;
-
-        baseTransform = transform.parent.GetChild(0);
-        baseTransform.GetComponent<SpriteRenderer>().color = Color;
-
-        SetupLineRenderer(new Transform[]{baseTransform, transform});
+        wireVisuals.color = Color;
+        visualsOrigSize = wireVisuals.rectTransform.sizeDelta;
+        origPos = transform.position;
 
         ConnectedTail = null;
     }
 
-    private void SetupLineRenderer(Transform[] points)
+    public void OnPointerDown(PointerEventData eventData)
     {
-        lineRenderer.positionCount = points.Length;
-        linePoints = points;
-        UpdateLineRenderer();
+        currentCoroutine = StartCoroutine(DragUpdate());
     }
 
-    private void OnMouseDown()
+    public void OnPointerUp(PointerEventData eventData)
     {
-        if (!WirePuzzle.Instance.IsComplete)
+        StopCoroutine(currentCoroutine);
+
+        // Check for wire tail
+        eventData.position = Input.mousePosition;
+        List<RaycastResult> raycastResults = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventData, raycastResults);
+        foreach (var hit in raycastResults)
         {
-            isDragging = true;
-            mouseOffset = transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        }
-    }
-
-    private void OnMouseDrag()
-    {
-        if (isDragging)
-        {
-            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition) + mouseOffset;
-            mousePosition.z = 0;
-            transform.position = mousePosition;
-            UpdateLineRenderer();
-        }
-    }
-
-    private void UpdateLineRenderer()
-    {
-        lineRenderer.SetPosition(0, linePoints[0].position);
-        lineRenderer.SetPosition(1, linePoints[1].position);
-    }
-
-    private void OnMouseUp()
-    {
-        if (isDragging)
-        {
-            isDragging = false;
-
-            Vector2 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition) + mouseOffset;
-            bool placedWire = false;
-
-            Collider2D[] colliders = Physics2D.OverlapCircleAll(worldPos, 0.01f);
-            foreach (Collider2D collider in colliders)
+            if (hit.gameObject.GetComponent<WirePuzzleTail>() != null)
             {
-                if (collider.TryGetComponent<WirePuzzleTail>(out var tail))
-                {
-                    ConnectedTail = tail;
-                    placedWire = true;
-                    break;
-                }
+                TryConnectWire(hit.gameObject.GetComponent<WirePuzzleTail>());
+                return;
             }
-
-            if (!placedWire) ConnectedTail = null;
         }
+
+        // If did not connect then disconnect wire
+        DisconnectWire();
+    }
+
+    // The loop in this method is called every frame when mouse is down
+    private IEnumerator DragUpdate()
+    {
+        RectTransform wireRectTransform = wireVisuals.rectTransform;
+        while (true)
+        {
+            // Set length (By changing height of rect transform)
+            Vector2 mousePos = Input.mousePosition;
+            wireRectTransform.sizeDelta = new(visualsOrigSize.x, Vector2.Distance(mousePos, wireRectTransform.position));
+
+            // Add rotation
+            float rotation = Mathf.Atan2(wireRectTransform.position.y - mousePos.y, wireRectTransform.position.x - mousePos.x) * Mathf.Rad2Deg - 90f;
+            wireRectTransform.localEulerAngles = new(0, 0, rotation);
+            yield return null;
+        }
+    }
+
+    private void TryConnectWire(WirePuzzleTail wirePuzzleTail)
+    {
+        RectTransform wireRectTransform = wireVisuals.rectTransform;
+
+        ConnectedTail = wirePuzzleTail;
+
+        // Set size & rotation of visuals
+        wireRectTransform.sizeDelta = new(visualsOrigSize.x, Vector2.Distance(wirePuzzleTail.transform.position, wireRectTransform.position));
+        float rotation = Mathf.Atan2(wireRectTransform.position.y - wirePuzzleTail.transform.position.y,
+                            wireRectTransform.position.x - wirePuzzleTail.transform.position.x) * Mathf.Rad2Deg - 90f;
+        wireRectTransform.localEulerAngles = new(0, 0, rotation);
+
+        // Set position of "draggable" game object
+        transform.position = wirePuzzleTail.transform.position;
+    }
+
+    public void DisconnectWire()
+    {
+        ConnectedTail = null;
+
+        // Reset visuals
+        wireVisuals.rectTransform.sizeDelta = visualsOrigSize;
+        wireVisuals.rectTransform.localEulerAngles = new(0, 0, 0);
+
+        // Reset position of "draggable" game object
+        transform.position = origPos;
     }
 }
