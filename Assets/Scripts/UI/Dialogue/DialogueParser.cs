@@ -151,11 +151,6 @@ public class DialogueParser
 				s = null;
 			}
 
-			Debug.Log("We're loading " + fullArtPath + "\n");
-			if (s == null)
-			{
-				Debug.Log("Sprite is null! This approach SUCKS!\n");
-			}
 			realEle.Sprite = s;
 
 			// the rest of the fields are actually lost for now.
@@ -177,8 +172,6 @@ public class DialogueParser
 	public static void SelfTest(string path)
 	{
 		var test = ParseDialogueTest(path);
-
-		Debug.Log("Length: " + test.Count.ToString());
 
 		foreach (DialogueElementIntermediate ele in test)
 		{
