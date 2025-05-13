@@ -101,6 +101,7 @@ public class DialogueParser
 	private Sprite loadSpriteFromPath(string path) 
 	{
 		// read file as raw bytes into memory
+		if(path == "" || path == null) return null;
 		string fullPath = Path.Combine(ArtPath, path);
 		byte[] rawBytes = File.ReadAllBytes(fullPath);
 
@@ -123,6 +124,7 @@ public class DialogueParser
 		/*FileStream file = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.Read);*/
 		string ymlPath = Path.Combine(YamlPath, path);
 		string yml = File.ReadAllText(ymlPath);
+		string fullArtPath = Path.Combine(ArtPath, path);
 
 		// Not actually possible to read YAML as Dialogue object directly.
 		var inter = deserializer.Deserialize<List<DialogueElementIntermediate>>(yml);
@@ -141,7 +143,7 @@ public class DialogueParser
 			// assume path == "" if there is no icon
 			// TODO: verify?
 			Sprite s;
-			if(path != "") 
+			if(path != "" && ele.icon != null) 
 			{
 				s = loadSpriteFromPath(ele.icon);
 			}
@@ -149,7 +151,7 @@ public class DialogueParser
 				s = null;
 			}
 
-			Debug.Log("We're loading " + ArtPath + ele.icon + "\n");
+			Debug.Log("We're loading " + fullArtPath + "\n");
 			if (s == null)
 			{
 				Debug.Log("Sprite is null! This approach SUCKS!\n");
