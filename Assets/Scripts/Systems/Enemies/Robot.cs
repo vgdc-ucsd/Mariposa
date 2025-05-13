@@ -1,14 +1,26 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class Robot : MonoBehaviour
+public class Robot : Enemy
 {
     [HideInInspector] public RobotMovement Movement;
 
     [SerializeField] private float closeDistance = 1f;
     
-    private void Awake()
+
+
+    protected override void Awake()
     {
+        base.Awake();
         Movement = GetComponent<RobotMovement>();
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject == Player.ActivePlayer.gameObject)
+        {
+            Player.ActivePlayer.Respawn();
+        }
     }
 
     // Update is called once per frame
