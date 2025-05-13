@@ -3,9 +3,6 @@ using UnityEngine.UI;
 using FMODUnity;
 using System;
 using FMOD.Studio;
-using System.Threading;
-using System.ComponentModel;
-using Unity.VisualScripting;
 
 public class VolumeControl : MonoBehaviour
 {
@@ -19,7 +16,6 @@ public class VolumeControl : MonoBehaviour
     private EventInstance testAudio;
     [SerializeField] private float testAudioTimer = -1.0f;
     private bool isTestAudioPlaying = false;
-    private bool previousPlayTestAudio = false;
     PLAYBACK_STATE testAudioState;
 
     void Update()

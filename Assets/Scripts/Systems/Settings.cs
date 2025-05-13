@@ -26,7 +26,7 @@ public class Settings : Singleton<Settings>
         // play background test audio if audio debug is on to test volume slider functionality
         if (Debug.GetAudioDebug())
         {
-            backgroundAudioTest();
+            //backgroundAudioTest();
         }
     }
 
@@ -34,7 +34,8 @@ public class Settings : Singleton<Settings>
     {
         // this is a band-aid to check to see if the menu is open or not
         // should be moved into menu to prevent continuous sounds playing even after pause
-        checkActive();
+        // to prevent headaches later down the line, this function has been disabled until the settings menu is more fleshed out
+        //checkActive();
     }
 
     private void backgroundAudioTest()
