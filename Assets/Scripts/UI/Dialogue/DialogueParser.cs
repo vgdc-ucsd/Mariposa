@@ -11,6 +11,9 @@ public class DialogueOptionIntermediate
 	public List<string> impact;
 	public List<DialogueElementIntermediate> script;
 
+
+	// Note: I recommend you fold the ToString implementation. It's kind of useless.
+	// Have not decided whether to delete or not.
 	public override string ToString() 
 	{
 		string output = "Option titled \"" + text + "\"\n";
@@ -43,7 +46,11 @@ public class DialogueElementIntermediate
 	public string line;
 	public string sound;
 	public string icon;
+	public bool fromRadio;
 	public List<DialogueOptionIntermediate> options;
+
+	// Note: I recommend you fold the ToString implementation. It's kind of useless.
+	// Have not decided whether to delete or not.
 
 	public override string ToString() 
 	{
@@ -138,7 +145,7 @@ public class DialogueParser
 			DialogueElement realEle = new DialogueElement();
 			realEle.Speaker = ele.name;
 			realEle.Line = ele.line;
-			realEle.FromRadio = false; // oversight: did not implement this
+			realEle.FromRadio = ele.fromRadio;
 
 			// assume path == "" if there is no icon
 			// TODO: verify?
