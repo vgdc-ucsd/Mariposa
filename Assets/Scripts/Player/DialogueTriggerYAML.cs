@@ -7,7 +7,7 @@ public class DialogueTriggerYAML : Trigger
     public override bool OnEnter(Body body)
     {
         if (!base.OnEnter(body)) return false;
-		DialogueParser parser = new DialogueParser("Assets/Art/Sprites/", "");
+		DialogueParser parser = DialogueParser.Instance;
 		Dialogue dialogueEvent = parser.ParseDialogue(DialoguePath);
         DialogueManager.Instance.PlayDialogue(dialogueEvent);
         Destroy(this.gameObject);

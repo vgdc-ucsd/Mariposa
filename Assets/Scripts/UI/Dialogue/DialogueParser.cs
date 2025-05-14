@@ -90,21 +90,16 @@ public class DialogueElementIntermediate
 	}
 }
 
-public class DialogueParser 
+public class DialogueParser : Singleton<DialogueParser>
 {
 	private static IDeserializer deserializer = new DeserializerBuilder()
 		.WithNamingConvention(CamelCaseNamingConvention.Instance)
 		.IgnoreUnmatchedProperties()
 		.Build();
 
-	private string ArtPath;
-	private string YamlPath;
+	[SerializeField] string ArtPath;
+	[SerializeField] string YamlPath;
 
-	public DialogueParser(string ArtPath, string YamlPath)
-	{
-		this.ArtPath = ArtPath;
-		this.YamlPath = YamlPath;
-	}
 	private Sprite loadSpriteFromPath(string path) 
 	{
 		// read file as raw bytes into memory
