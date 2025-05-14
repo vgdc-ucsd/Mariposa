@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Android;
 using UnityEngine.UI;
 
 public class BlockPuzzle : Puzzle
@@ -129,6 +130,7 @@ public class BlockPuzzle : Puzzle
         OnComplete();
     }
 
+    // TODO: debug, remove
     private void PrintGridState()
     {
         string output = "\n";
@@ -142,5 +144,11 @@ public class BlockPuzzle : Puzzle
             output += "\n";
         }
         Debug.Log(output);
+    }
+
+    // TODO: debug, remove
+    public void DebugSelectSlot(Vector2Int gridPos)
+    {
+        slots[gridPos.x, gridPos.y].GetComponent<Image>().color = Color.red;
     }
 }

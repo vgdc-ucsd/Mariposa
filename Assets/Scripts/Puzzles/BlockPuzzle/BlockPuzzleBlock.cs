@@ -26,6 +26,8 @@ public class BlockPuzzleBlock : MonoBehaviour, IBeginDragHandler, IDragHandler, 
     {
         rectTransform = GetComponent<RectTransform>();
         image = GetComponent<Image>();
+        image.alphaHitTestMinimumThreshold = 0.95f;
+
         canvasGroup = GetComponent<CanvasGroup>();
         if (canvasGroup == null) canvasGroup = gameObject.AddComponent<CanvasGroup>();
         canvas = GetComponentInParent<Canvas>();
@@ -66,20 +68,24 @@ public class BlockPuzzleBlock : MonoBehaviour, IBeginDragHandler, IDragHandler, 
         if (isFixed) return;
 
         Vector2 pointerPos = eventData.position;
+
+        Vector3 pointerWorldPos;
+        RectTransformUtility.ScreenPointToWorldPointInRectangle(
+            rectTransform.parent as RectTransform,
+            pointerPos,
+            eventData.pressEventCamera,
+            out pointerWorldPos);
+
+        dragOffsetCell = CalculateCellOffset(pointerWorldPos, rectTransform.position);
+
         Vector2 blockScreenPos = RectTransformUtility.WorldToScreenPoint(
             eventData.pressEventCamera, 
             rectTransform.position);
-
-        // TODO: get proper cell offset
         dragOffset = blockScreenPos - pointerPos;
-        dragOffsetCell = new Vector2Int(
-            (int) Mathf.Floor((rectTransform.position.x - pointerPos.x) / BlockPuzzle.Instance.CellDiameter),
-            (int) Mathf.Floor((rectTransform.position.y - pointerPos.y) / BlockPuzzle.Instance.CellDiameter)
-        );
 
         canvasGroup.alpha = 0.7f;
         canvasGroup.blocksRaycasts = false;
-        
+
         if (isInGrid)
         {
             lastPos = GridPos;
@@ -87,6 +93,25 @@ public class BlockPuzzleBlock : MonoBehaviour, IBeginDragHandler, IDragHandler, 
         BlockPuzzle.Instance.ClearBlockFromGrid(this);
 
         transform.SetAsLastSibling();
+    }
+
+    // TODO: fix cell offset misalignment
+    private Vector2Int CalculateCellOffset(Vector3 pointerWorldPos, Vector3 transformWorldPos)
+    {
+        Vector2Int output = new Vector2Int(
+            Mathf.FloorToInt(
+                (pointerWorldPos.x - transformWorldPos.x + (Size.x - 1) * BlockPuzzle.Instance.CellDiameter) / 
+                (2 * BlockPuzzle.Instance.CellDiameter)),
+            Mathf.FloorToInt(
+                (pointerWorldPos.y - transformWorldPos.y + (Size.y - 1) * BlockPuzzle.Instance.CellDiameter) 
+                / (2 * BlockPuzzle.Instance.CellDiameter))
+        );
+        if (output.x < 0) output.x = 0;
+        if (output.x >= Size.x) output.x = Size.x - 1;
+        if (output.y < 0) output.y = 0;
+        if (output.y >= Size.y) output.y = Size.y - 1;
+        Debug.Log($"Offset: {output}");
+        return output;
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -109,16 +134,12 @@ public class BlockPuzzleBlock : MonoBehaviour, IBeginDragHandler, IDragHandler, 
         {
             if (BlockPuzzle.Instance.HoveredSlot != null)
             {
-                // TODO: fix, depends on cell offset
-                // Vector2Int nearestGridPos = BlockPuzzle.Instance.HoveredSlot.GridPos - dragOffsetCell;
-                Vector2Int targetGridPos = BlockPuzzle.Instance.HoveredSlot.GridPos;
-
+                Vector2Int targetGridPos = BlockPuzzle.Instance.HoveredSlot.GridPos - dragOffsetCell;
+                BlockPuzzle.Instance.DebugSelectSlot(targetGridPos);
                 Vector3 previewWorldPos = BlockPuzzle.Instance.GetSlotTransformAtPosition(targetGridPos).anchoredPosition;
                 previewWorldPos += new Vector3(
-                    // -3.5f * BlockPuzzle.Instance.CellDiameter - BlockPuzzle.Instance.CellDiameter + Size.x * BlockPuzzle.Instance.CellDiameter,
-                    (-3.5f - 1f + Size.x) * BlockPuzzle.Instance.CellDiameter,
-                    // 3.5f * BlockPuzzle.Instance.CellDiameter - BlockPuzzle.Instance.CellDiameter + Size.y * BlockPuzzle.Instance.CellDiameter,
-                    (3.5f - 1f + Size.y) * BlockPuzzle.Instance.CellDiameter,
+                    (-3.5f - 1f + Size.x) * BlockPuzzle.Instance.CellDiameter - (Size.x - 1f) * BlockPuzzle.Instance.CellDiameter / 2f,
+                    (3.5f - 1f + Size.y) * BlockPuzzle.Instance.CellDiameter - (Size.y - 1f) * BlockPuzzle.Instance.CellDiameter / 2f,
                     0f
                 );
                 ShowPreview(previewWorldPos, BlockPuzzle.Instance.IsPositionValidForBlock(targetGridPos, this));
@@ -139,11 +160,8 @@ public class BlockPuzzleBlock : MonoBehaviour, IBeginDragHandler, IDragHandler, 
 
         if (BlockPuzzle.Instance.HoveredSlot != null)
         {
-            // TODO: fix, depends on cell offset
-            // Vector2Int targetGridPos = BlockPuzzle.Instance.HoveredSlot.GridPos - dragOffsetCell;
-            Vector2Int targetGridPos = BlockPuzzle.Instance.HoveredSlot.GridPos;
+            Vector2Int targetGridPos = BlockPuzzle.Instance.HoveredSlot.GridPos - dragOffsetCell;
 
-            // Debug.Log($"Placing block in slot={targetGridPos}, valid={BlockPuzzle.Instance.IsPositionValidForBlock(targetGridPos, this)}");
             if (BlockPuzzle.Instance.IsPositionValidForBlock(targetGridPos, this))
             {
                 BlockPuzzle.Instance.SetBlockInGrid(this, targetGridPos);
@@ -164,7 +182,6 @@ public class BlockPuzzleBlock : MonoBehaviour, IBeginDragHandler, IDragHandler, 
         }
         else
         {
-            // Debug.Log("Hovered Slot = null");
             rectTransform.anchoredPosition = stagingPos;
             GridPos = -1 * Vector2Int.one;
             isInGrid = false;
