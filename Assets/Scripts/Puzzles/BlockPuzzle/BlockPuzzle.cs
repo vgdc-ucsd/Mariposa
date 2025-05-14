@@ -145,10 +145,4 @@ public class BlockPuzzle : Puzzle
         }
         Debug.Log(output);
     }
-
-    // TODO: debug, remove
-    public void DebugSelectSlot(Vector2Int gridPos)
-    {
-        slots[gridPos.x, gridPos.y].GetComponent<Image>().color = Color.red;
-    }
 }

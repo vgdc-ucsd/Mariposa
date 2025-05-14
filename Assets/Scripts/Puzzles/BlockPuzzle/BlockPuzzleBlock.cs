@@ -95,22 +95,16 @@ public class BlockPuzzleBlock : MonoBehaviour, IBeginDragHandler, IDragHandler, 
         transform.SetAsLastSibling();
     }
 
-    // TODO: fix cell offset misalignment
     private Vector2Int CalculateCellOffset(Vector3 pointerWorldPos, Vector3 transformWorldPos)
     {
         Vector2Int output = new Vector2Int(
-            Mathf.FloorToInt(
-                (pointerWorldPos.x - transformWorldPos.x + (Size.x - 1) * BlockPuzzle.Instance.CellDiameter) / 
-                (2 * BlockPuzzle.Instance.CellDiameter)),
-            Mathf.FloorToInt(
-                (pointerWorldPos.y - transformWorldPos.y + (Size.y - 1) * BlockPuzzle.Instance.CellDiameter) 
-                / (2 * BlockPuzzle.Instance.CellDiameter))
+            Mathf.FloorToInt((Size.x / 2f * BlockPuzzle.Instance.CellDiameter + pointerWorldPos.x - transformWorldPos.x) / BlockPuzzle.Instance.CellDiameter),
+            Mathf.FloorToInt((Size.y / 2f * BlockPuzzle.Instance.CellDiameter + pointerWorldPos.y - transformWorldPos.y) / BlockPuzzle.Instance.CellDiameter)
         );
         if (output.x < 0) output.x = 0;
         if (output.x >= Size.x) output.x = Size.x - 1;
         if (output.y < 0) output.y = 0;
         if (output.y >= Size.y) output.y = Size.y - 1;
-        Debug.Log($"Offset: {output}");
         return output;
     }
 
@@ -135,11 +129,10 @@ public class BlockPuzzleBlock : MonoBehaviour, IBeginDragHandler, IDragHandler, 
             if (BlockPuzzle.Instance.HoveredSlot != null)
             {
                 Vector2Int targetGridPos = BlockPuzzle.Instance.HoveredSlot.GridPos - dragOffsetCell;
-                BlockPuzzle.Instance.DebugSelectSlot(targetGridPos);
                 Vector3 previewWorldPos = BlockPuzzle.Instance.GetSlotTransformAtPosition(targetGridPos).anchoredPosition;
                 previewWorldPos += new Vector3(
-                    (-3.5f - 1f + Size.x) * BlockPuzzle.Instance.CellDiameter - (Size.x - 1f) * BlockPuzzle.Instance.CellDiameter / 2f,
-                    (3.5f - 1f + Size.y) * BlockPuzzle.Instance.CellDiameter - (Size.y - 1f) * BlockPuzzle.Instance.CellDiameter / 2f,
+                    (-4.5f + Size.x) * BlockPuzzle.Instance.CellDiameter - (Size.x - 1f) * BlockPuzzle.Instance.CellDiameter / 2f,
+                    (2.5f + Size.y) * BlockPuzzle.Instance.CellDiameter - (Size.y - 1f) * BlockPuzzle.Instance.CellDiameter / 2f,
                     0f
                 );
                 ShowPreview(previewWorldPos, BlockPuzzle.Instance.IsPositionValidForBlock(targetGridPos, this));
