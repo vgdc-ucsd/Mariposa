@@ -129,13 +129,21 @@ public class BlockPuzzleBlock : MonoBehaviour, IBeginDragHandler, IDragHandler, 
             if (BlockPuzzle.Instance.HoveredSlot != null)
             {
                 Vector2Int targetGridPos = BlockPuzzle.Instance.HoveredSlot.GridPos - dragOffsetCell;
-                Vector3 previewWorldPos = BlockPuzzle.Instance.GetSlotTransformAtPosition(targetGridPos).anchoredPosition;
-                previewWorldPos += new Vector3(
-                    (-4.5f + Size.x) * BlockPuzzle.Instance.CellDiameter - (Size.x - 1f) * BlockPuzzle.Instance.CellDiameter / 2f,
-                    (2.5f + Size.y) * BlockPuzzle.Instance.CellDiameter - (Size.y - 1f) * BlockPuzzle.Instance.CellDiameter / 2f,
-                    0f
-                );
-                ShowPreview(previewWorldPos, BlockPuzzle.Instance.IsPositionValidForBlock(targetGridPos, this));
+                RectTransform rectTransform = BlockPuzzle.Instance.GetSlotTransformAtPosition(targetGridPos);
+                if (rectTransform != null)
+                {
+                    Vector3 previewWorldPos = rectTransform.anchoredPosition;
+                    previewWorldPos += new Vector3(
+                        (-4.5f + Size.x) * BlockPuzzle.Instance.CellDiameter - (Size.x - 1f) * BlockPuzzle.Instance.CellDiameter / 2f,
+                        (2.5f + Size.y) * BlockPuzzle.Instance.CellDiameter - (Size.y - 1f) * BlockPuzzle.Instance.CellDiameter / 2f,
+                        0f
+                    );
+                    ShowPreview(previewWorldPos, BlockPuzzle.Instance.IsPositionValidForBlock(targetGridPos, this));
+                }
+                else
+                {
+                    ShowPreview(stagingPos, false);
+                }
             }
             else
             {

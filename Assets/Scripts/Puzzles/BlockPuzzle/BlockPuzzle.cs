@@ -60,7 +60,14 @@ public class BlockPuzzle : Puzzle
 
     public RectTransform GetSlotTransformAtPosition(Vector2Int gridPos)
     {
-        return slots[gridPos.x, gridPos.y].GetComponent<RectTransform>();
+        try
+        {
+            return slots[gridPos.x, gridPos.y].GetComponent<RectTransform>();
+        }
+        catch
+        {
+            return null;
+        }
     }
 
     public bool IsPositionValidForBlock(Vector2Int gridPos, BlockPuzzleBlock block)
