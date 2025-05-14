@@ -35,7 +35,7 @@ public class BlockPuzzle : Puzzle
             for (int j = 0; j < GridWidth; j++)
             {
                 BlockPuzzleSlot temp = Instantiate(SlotPrefab, SlotContainer.transform).GetComponent<BlockPuzzleSlot>();
-                temp.GridPosition = new Vector2Int(j, i);
+                temp.GridPos = new Vector2Int(j, i);
                 temp.gameObject.name = $"Slot_{j}_{i}";
                 slots[j,i] = temp;
             }
@@ -48,72 +48,58 @@ public class BlockPuzzle : Puzzle
         foreach (BlockPuzzleBlock block in blocks) block.InitializeBlock();
     }
 
-    public RectTransform GetSlotTransformAtPosition(Vector2Int gridPosition)
+    public RectTransform GetSlotTransformAtPosition(Vector2Int gridPos)
     {
-        return slots[gridPosition.x, gridPosition.y].GetComponent<RectTransform>();
+        return slots[gridPos.x, gridPos.y].GetComponent<RectTransform>();
     }
 
-    public void SetBlockInGrid(BlockPuzzleBlock block, Vector2Int newPosition)
+    public void SetBlockInGrid(BlockPuzzleBlock block, Vector2Int newGridPos)
     {
         foreach (Vector2Int offset in block.Cells)
         {
-            Vector2Int cellPos = new Vector2Int(newPosition.x + offset.x, newPosition.y + offset.y);
+            Vector2Int cellPos = new Vector2Int(newGridPos.x + offset.x, newGridPos.y + offset.y);
             grid[cellPos.x, cellPos.y] = block;
         }
 
-        RectTransform slotRectTransform = GetSlotTransformAtPosition(newPosition);
-        Vector2 transformPosition = new Vector2(
-            block.Size.x * SlotContainer.cellSize.x / 2 + slotRectTransform.position.x,
-            block.Size.y * SlotContainer.cellSize.y / 2 + slotRectTransform.position.y
+        RectTransform slotRectTransform = GetSlotTransformAtPosition(newGridPos);
+        float cellDiameter = SlotContainer.cellSize.x;  // Assumes cell width and height are the same
+        Vector2 worldPos = new Vector2(
+            slotRectTransform.position.x - cellDiameter + block.Size.x * cellDiameter,
+            slotRectTransform.position.y - cellDiameter + block.Size.y * cellDiameter
         );
-        block.SetPosition(transformPosition);
-        block.Position = newPosition;
+        block.SetPosition(worldPos);
+        block.GridPos = newGridPos;
 
         if (CheckSolution()) FinishPuzzle();
     }
 
-    public bool CanMove(BlockPuzzleBlock block, Vector2Int direction)
-    {
-        if (IsComplete) return false;
-
-        Vector2Int newPosition = block.Position + direction;
-        return IsPositionValidForBlock(newPosition, block);
-    }
-
-    public bool IsPositionValidForBlock(Vector2Int position, BlockPuzzleBlock block)
+    public bool IsPositionValidForBlock(Vector2Int gridPos, BlockPuzzleBlock block)
     {
         if (IsComplete) return false;
 
         foreach (Vector2Int offset in block.Cells)
         {
-            Vector2Int cellPos = new Vector2Int(position.x + offset.x, position.y + offset.y);
-            if (!IsPositionInGrid(cellPos)) return false;
-            // if (grid[cellPos.x, cellPos.y] != null && grid[cellPos.x, cellPos.y] != block) return false;
+            Vector2Int cellPos = new Vector2Int(gridPos.x + offset.x, gridPos.y + offset.y);
+            if (cellPos.x < 0 || cellPos.x >= GridWidth || cellPos.y < 0 || cellPos.y >= GridHeight) return false;
             if (grid[cellPos.x, cellPos.y] != null) return false;
         }
 
         return true;
     }
 
-    private bool IsPositionInGrid(Vector2Int position)
-    {
-        return position.x >= 0 && position.x < GridWidth && 
-               position.y >= 0 && position.y < GridHeight;
-    }
-
     public void ClearBlockFromGrid(BlockPuzzleBlock block)
     {
         foreach (Vector2Int offset in block.Cells)
         {
-            Vector2Int cellPos = new Vector2Int(block.Position.x + offset.x, block.Position.y + offset.y);
+            Vector2Int cellPos = new Vector2Int(block.GridPos.x + offset.x, block.GridPos.y + offset.y);
             grid[cellPos.x, cellPos.y] = null;
         }
-        PrintGridState();
+        // PrintGridState();
     }
 
     public bool CheckSolution()
     {
-        PrintGridState();
+        // PrintGridState();
         for (int i = 0; i < GridWidth; ++i)
         {
             for (int j = 0; j < GridHeight; ++j)

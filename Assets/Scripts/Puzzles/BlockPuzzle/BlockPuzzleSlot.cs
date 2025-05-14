@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class BlockPuzzleSlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointerExitHandler
+public class BlockPuzzleSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    public Vector2Int GridPosition;
+    public Vector2Int GridPos;
 
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -13,13 +13,5 @@ public class BlockPuzzleSlot : MonoBehaviour, IDropHandler, IPointerEnterHandler
     public void OnPointerExit(PointerEventData eventData)
     {
         BlockPuzzle.Instance.HoveredSlot = null;
-    }
-
-    public void OnDrop(PointerEventData eventData)
-    {
-        // if (eventData.pointerDrag.TryGetComponent<BlockPuzzleBlock>(out var block))
-        // {
-        //     BlockPuzzle.Instance.SetBlockInGrid(block, GridPosition);
-        // }
     }
 }
