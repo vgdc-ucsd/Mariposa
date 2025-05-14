@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Android;
 using UnityEngine.UI;
 
 public class BlockPuzzle : Puzzle
@@ -9,7 +8,6 @@ public class BlockPuzzle : Puzzle
     public static BlockPuzzle Instance;
     public int GridWidth = 7;
     public int GridHeight = 7;
-    public GameObject gridVisualizerPrefab;
     public bool IsComplete;
     public RectTransform gridContainer;
     public GridLayoutGroup SlotContainer;
@@ -107,6 +105,7 @@ public class BlockPuzzle : Puzzle
             Vector2Int cellPos = new Vector2Int(block.GridPos.x + offset.x, block.GridPos.y + offset.y);
             if (cellPos.x < 0 || cellPos.x >= GridWidth || cellPos.y < 0 || cellPos.y >= GridHeight) continue;
             grid[cellPos.x, cellPos.y] = null;
+            Debug.Log($"Clearing {cellPos}");
         }
         PrintGridState();
     }

@@ -40,7 +40,7 @@ public class BlockPuzzleBlock : MonoBehaviour, IBeginDragHandler, IDragHandler, 
         }
         else
         {
-            GridPos = -1 * Vector2Int.one;
+            GridPos = -99 * Vector2Int.one;
             if (PreviewPrefab != null && preview == null)
             {
                 GameObject previewObj = Instantiate(PreviewPrefab, transform.parent);
@@ -169,14 +169,14 @@ public class BlockPuzzleBlock : MonoBehaviour, IBeginDragHandler, IDragHandler, 
                 else
                 {
                     rectTransform.anchoredPosition = stagingPos;
-                    GridPos = -1 * Vector2Int.one;
+                    GridPos = -99 * Vector2Int.one;
                 }
             }
         }
         else
         {
             rectTransform.anchoredPosition = stagingPos;
-            GridPos = -1 * Vector2Int.one;
+            GridPos = -99 * Vector2Int.one;
             isInGrid = false;
         }
 
