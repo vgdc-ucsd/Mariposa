@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,9 +14,11 @@ public class BlockPuzzle : Puzzle
     public GridLayoutGroup SlotContainer;
     public GameObject SlotPrefab;
 
-    public BlockPuzzleSlot HoveredSlot = null;
+    [HideInInspector] public float CellDiameter;
+    [HideInInspector] public BlockPuzzleSlot HoveredSlot = null;
     private BlockPuzzleBlock[,] grid;
     private BlockPuzzleSlot[,] slots;
+    BlockPuzzleBlock[] blocks;
 
     void Awake()
     {
@@ -30,6 +33,7 @@ public class BlockPuzzle : Puzzle
         slots = new BlockPuzzleSlot[GridWidth, GridHeight];
 
         SlotContainer.cellSize = new Vector2(gridContainer.rect.width / GridWidth, gridContainer.rect.height / GridHeight);
+        CellDiameter = SlotContainer.cellSize.x;
         for (int i = 0; i < GridHeight; i++)
         {
             for (int j = 0; j < GridWidth; j++)
@@ -40,37 +44,24 @@ public class BlockPuzzle : Puzzle
                 slots[j,i] = temp;
             }
         }
+
+        blocks = GetComponentsInChildren<BlockPuzzleBlock>();
     }
 
     void OnEnable()
     {
-        BlockPuzzleBlock[] blocks = GetComponentsInChildren<BlockPuzzleBlock>();
+        StartCoroutine(DelayInitializeBlocks());
+    }
+
+    IEnumerator DelayInitializeBlocks()
+    {
+        yield return new WaitForEndOfFrame();
         foreach (BlockPuzzleBlock block in blocks) block.InitializeBlock();
     }
 
     public RectTransform GetSlotTransformAtPosition(Vector2Int gridPos)
     {
         return slots[gridPos.x, gridPos.y].GetComponent<RectTransform>();
-    }
-
-    public void SetBlockInGrid(BlockPuzzleBlock block, Vector2Int newGridPos)
-    {
-        foreach (Vector2Int offset in block.Cells)
-        {
-            Vector2Int cellPos = new Vector2Int(newGridPos.x + offset.x, newGridPos.y + offset.y);
-            grid[cellPos.x, cellPos.y] = block;
-        }
-
-        RectTransform slotRectTransform = GetSlotTransformAtPosition(newGridPos);
-        float cellDiameter = SlotContainer.cellSize.x;  // Assumes cell width and height are the same
-        Vector2 worldPos = new Vector2(
-            slotRectTransform.position.x - cellDiameter + block.Size.x * cellDiameter,
-            slotRectTransform.position.y - cellDiameter + block.Size.y * cellDiameter
-        );
-        block.SetPosition(worldPos);
-        block.GridPos = newGridPos;
-
-        if (CheckSolution()) FinishPuzzle();
     }
 
     public bool IsPositionValidForBlock(Vector2Int gridPos, BlockPuzzleBlock block)
@@ -87,19 +78,41 @@ public class BlockPuzzle : Puzzle
         return true;
     }
 
+    public void SetBlockInGrid(BlockPuzzleBlock block, Vector2Int newGridPos)
+    {
+        Debug.Log($"Setting {block.gameObject.name} in {newGridPos}");
+        foreach (Vector2Int offset in block.Cells)
+        {
+            Vector2Int cellPos = new Vector2Int(newGridPos.x + offset.x, newGridPos.y + offset.y);
+            grid[cellPos.x, cellPos.y] = block;
+        }
+
+        RectTransform slotRectTransform = GetSlotTransformAtPosition(newGridPos);
+        Vector2 worldPos = new Vector2(
+            slotRectTransform.position.x + (block.Size.x - 1) * CellDiameter,
+            slotRectTransform.position.y + (block.Size.y - 1) * CellDiameter
+        );
+        block.SetPosition(worldPos);
+        block.GridPos = newGridPos;
+
+        if (CheckSolution()) FinishPuzzle();
+    }
+
     public void ClearBlockFromGrid(BlockPuzzleBlock block)
     {
+        Debug.Log($"Clearing {block.gameObject.name}");
         foreach (Vector2Int offset in block.Cells)
         {
             Vector2Int cellPos = new Vector2Int(block.GridPos.x + offset.x, block.GridPos.y + offset.y);
+            if (cellPos.x < 0 || cellPos.x >= GridWidth || cellPos.y < 0 || cellPos.y >= GridHeight) continue;
             grid[cellPos.x, cellPos.y] = null;
         }
-        // PrintGridState();
+        PrintGridState();
     }
 
     public bool CheckSolution()
     {
-        // PrintGridState();
+        PrintGridState();
         for (int i = 0; i < GridWidth; ++i)
         {
             for (int j = 0; j < GridHeight; ++j)
