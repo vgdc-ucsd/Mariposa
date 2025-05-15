@@ -59,4 +59,9 @@ public class VelocityField : MonoBehaviour
 
         bee = null;
     }
+
+    public void OnFieldToggle()
+    {
+        gameObject.SetActive(!gameObject.activeSelf);
+    }
 }
