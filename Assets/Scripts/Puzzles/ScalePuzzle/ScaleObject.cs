@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,11 +8,11 @@ public class ScaleObject : MonoBehaviour
     [HideInInspector] public bool onScale;
     private bool dragging;
     private RectTransform dragTarget;
-    private RectTransform rectTransform;
+    private RectTransform rectTransform, ghostRectTransform;
     private Rect rect;
     private Vector3 mousePos;
     private bool justClicked = false;
-    private Image image;
+    private Image image, ghostImage;
     [HideInInspector] public bool partOfSolution;
     private Vector3 oldPos;
     private void Awake()
@@ -24,6 +25,9 @@ public class ScaleObject : MonoBehaviour
     private void Start()
     {
         dragTarget = ScalePuzzle.Instance.selectionArea.GetComponent<RectTransform>();
+        ghostRectTransform = ScalePuzzle.Instance.ghost.GetComponent<RectTransform>();
+        ghostImage = ScalePuzzle.Instance.ghost.GetComponent<Image>();
+        if (GetType() != typeof(MysteryBox)) OnClick();
     }
 
     private void Update()
@@ -49,7 +53,9 @@ public class ScaleObject : MonoBehaviour
         oldPos = rectTransform.position;
         dragging = true;
         justClicked = true;
-        image.color = new Color(1, 1, 1, 0.5f);
+        ghostRectTransform.SetParent(transform, false);
+        ghostImage.sprite = image.sprite;
+        ghostRectTransform.sizeDelta = rect.size;
     }
 
     public void Drag()
@@ -62,17 +68,28 @@ public class ScaleObject : MonoBehaviour
             if (RectTransformUtility.RectangleContainsScreenPoint(rt, mousePos))
             {
                 target = rt;
+                if (target.TryGetComponent<ScaleHand>(out ScaleHand scaleHand))
+                {
+                    ScalePuzzle.Instance.ghost.SetActive(true);
+                    ghostImage.enabled = true;
+                    ghostRectTransform.position = transform.position;
+                    scaleHand.FitToPlatform(ghostRectTransform);
+                    ghostRectTransform.localScale = Vector3.one;
+                }
             }
         }
-
+        if (target == null && ScalePuzzle.Instance.ghost.activeInHierarchy)
+        {
+            ScalePuzzle.Instance.ghost.transform.SetParent(transform, false);
+            ScalePuzzle.Instance.ghost.SetActive(false);
+        } 
 
 
         if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonUp(0))
         {
             if (target != null)
             {
-                bool sameTarget = (target == dragTarget);
-                if (!sameTarget) SnapToTarget(target);
+                SnapToTarget(target);
             }
             else
             {
@@ -90,10 +107,10 @@ public class ScaleObject : MonoBehaviour
     {
         bool fromHand = false;
         bool toHand = false;
-        
+        bool isHand = target.TryGetComponent<ScaleHand>(out ScaleHand scaleHand);
 
         justClicked = true;
-        if (target != dragTarget)
+        if (target != dragTarget || isHand) // dragging from selection area to selection area should destroy object
         {
             if (dragTarget.TryGetComponent<ScaleHand>(out ScaleHand prevScaleHand))
             {
@@ -101,25 +118,35 @@ public class ScaleObject : MonoBehaviour
                 fromHand = true;
             }
             dragTarget = target;
-            rectTransform.SetParent(target.transform, true);
-            if (target.TryGetComponent<ScaleHand>(out ScaleHand scaleHand))
+            if (isHand)
             {
                 PlaceOnScaleHand(scaleHand);
                 toHand = true;
             }
-            else if (GetType() != typeof(MysteryBox)) Destroy(gameObject);
-            else rectTransform.transform.position = mousePos;
+            else if (GetType() != typeof(MysteryBox)) Despawn();
+            else
+            {
+                rectTransform.transform.position = mousePos;
+                rectTransform.SetParent(target.transform, true);
+            }
             if (fromHand || toHand) ScalePuzzle.Instance.MoveHands();
+
+            dragging = false;
+            ScalePuzzle.Instance.isDragging = false;
+            ghostImage.enabled = false;
+
         }
 
-        dragging = false;
-        ScalePuzzle.Instance.isDragging = false;
-        image.color = Color.white;
     }
     public void PlaceOnScaleHand(ScaleHand scaleHand)
     {
         scaleHand.AddObject(this);
     }
 
-    
+    private void Despawn()
+    {
+        ghostRectTransform.SetParent(ScalePuzzle.Instance.transform, true);
+        ghostImage.enabled = false;
+        Destroy(gameObject);
+    }
 }

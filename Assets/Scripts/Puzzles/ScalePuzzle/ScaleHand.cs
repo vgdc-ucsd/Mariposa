@@ -26,7 +26,9 @@ public class ScaleHand : MonoBehaviour
     {
         scaleObjects.Add(obj);
         totalWeight += obj.weight;
-        FitToPlatform(obj);
+        Debug.Log(obj.GetComponent<RectTransform>().localPosition.x);
+        Debug.Log(platformRect.x);
+        FitToPlatform(obj.GetComponent<RectTransform>(), true);
         ScalePuzzle.Instance.CheckSolution();
         
     }
@@ -35,17 +37,13 @@ public class ScaleHand : MonoBehaviour
     {
         scaleObjects.Remove(obj);
         totalWeight -= obj.weight;
-        FitToPlatform(obj);
         ScalePuzzle.Instance.CheckSolution();
     }
 
-    private void FitToPlatform(ScaleObject obj)
+    public void FitToPlatform(RectTransform objRect, bool print = false)
     {
-        RectTransform objRect = obj.GetComponent<RectTransform>();
         objRect.SetParent(platform, true);
-        Debug.Log(objRect.transform.localPosition.y);
-        Debug.Log(platformRect.y);
-        Debug.Log(platformRect.yMax);
+        if (print) Debug.Log(objRect.localPosition.x);
         objRect.transform.localPosition = new Vector3(
             Mathf.Clamp(objRect.transform.localPosition.x, platformRect.x, platformRect.xMax),
             Mathf.Clamp(objRect.transform.localPosition.y, platformRect.y, platformRect.yMax), 0

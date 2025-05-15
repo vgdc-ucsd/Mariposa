@@ -177,6 +177,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5313605323863157013, guid: 5f08c41fa317eb14799986f4f664520a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 340783034}
+    - targetCorrespondingSourceObject: {fileID: 5313605323863157013, guid: 5f08c41fa317eb14799986f4f664520a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1461545194}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5f08c41fa317eb14799986f4f664520a, type: 3}
 --- !u!4 &12252419 stripped
@@ -1716,14 +1719,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f055dd3f2e407a498fd541af784ca10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Position: {x: 1, y: 3}
+  GridPos: {x: 0, y: 0}
   Size: {x: 1, y: 3}
   Cells:
   - {x: 0, y: 0}
   - {x: 0, y: 1}
   - {x: 0, y: 2}
   PreviewPrefab: {fileID: 3498609193837567825, guid: 9eae30b5e6c32c44498c5ad592ab75e0, type: 3}
-  IsFixed: 0
+  isFixed: 0
   isInGrid: 0
 --- !u!1 &452640592
 GameObject:
@@ -1949,14 +1952,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f055dd3f2e407a498fd541af784ca10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Position: {x: 2, y: 1}
+  GridPos: {x: 0, y: 0}
   Size: {x: 2, y: 2}
   Cells:
   - {x: 0, y: 1}
   - {x: 1, y: 1}
   - {x: 1, y: 0}
   PreviewPrefab: {fileID: 3498609193837567825, guid: 9eae30b5e6c32c44498c5ad592ab75e0, type: 3}
-  IsFixed: 0
+  isFixed: 0
   isInGrid: 0
 --- !u!1 &478294193
 GameObject:
@@ -2229,7 +2232,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f055dd3f2e407a498fd541af784ca10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Position: {x: 5, y: 2}
+  GridPos: {x: 0, y: 0}
   Size: {x: 2, y: 2}
   Cells:
   - {x: 0, y: 0}
@@ -2237,7 +2240,7 @@ MonoBehaviour:
   - {x: 1, y: 0}
   - {x: 1, y: 1}
   PreviewPrefab: {fileID: 3498609193837567825, guid: 9eae30b5e6c32c44498c5ad592ab75e0, type: 3}
-  IsFixed: 0
+  isFixed: 0
   isInGrid: 0
 --- !u!1 &518919588
 GameObject:
@@ -2681,6 +2684,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CurrentLevel: {fileID: 1973550937}
+  NextLevelName: 
+  ActiveEnemies: []
 --- !u!4 &620531839
 Transform:
   m_ObjectHideFlags: 0
@@ -2796,14 +2801,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f055dd3f2e407a498fd541af784ca10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Position: {x: 5, y: 4}
+  GridPos: {x: 0, y: 0}
   Size: {x: 2, y: 2}
   Cells:
   - {x: 0, y: 1}
   - {x: 1, y: 1}
   - {x: 1, y: 0}
   PreviewPrefab: {fileID: 3498609193837567825, guid: 9eae30b5e6c32c44498c5ad592ab75e0, type: 3}
-  IsFixed: 1
+  isFixed: 0
   isInGrid: 0
 --- !u!1 &669985536
 GameObject:
@@ -2902,13 +2907,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f055dd3f2e407a498fd541af784ca10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Position: {x: 6, y: 0}
+  GridPos: {x: 0, y: 0}
   Size: {x: 1, y: 2}
   Cells:
   - {x: 0, y: 0}
   - {x: 0, y: 1}
   PreviewPrefab: {fileID: 3498609193837567825, guid: 9eae30b5e6c32c44498c5ad592ab75e0, type: 3}
-  IsFixed: 0
+  isFixed: 0
   isInGrid: 0
 --- !u!1 &673043317
 GameObject:
@@ -3893,7 +3898,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f055dd3f2e407a498fd541af784ca10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Position: {x: 0, y: 5}
+  GridPos: {x: 0, y: 0}
   Size: {x: 3, y: 2}
   Cells:
   - {x: 0, y: 0}
@@ -3901,7 +3906,7 @@ MonoBehaviour:
   - {x: 1, y: 1}
   - {x: 2, y: 1}
   PreviewPrefab: {fileID: 3498609193837567825, guid: 9eae30b5e6c32c44498c5ad592ab75e0, type: 3}
-  IsFixed: 0
+  isFixed: 0
   isInGrid: 0
 --- !u!1 &847224806
 GameObject:
@@ -4644,7 +4649,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f055dd3f2e407a498fd541af784ca10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Position: {x: 2, y: 5}
+  GridPos: {x: 0, y: 0}
   Size: {x: 3, y: 2}
   Cells:
   - {x: 0, y: 0}
@@ -4652,7 +4657,7 @@ MonoBehaviour:
   - {x: 2, y: 0}
   - {x: 1, y: 1}
   PreviewPrefab: {fileID: 3498609193837567825, guid: 9eae30b5e6c32c44498c5ad592ab75e0, type: 3}
-  IsFixed: 0
+  isFixed: 0
   isInGrid: 0
 --- !u!1 &1012400390
 GameObject:
@@ -4974,14 +4979,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f055dd3f2e407a498fd541af784ca10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Position: {x: 2, y: 3}
+  GridPos: {x: 0, y: 0}
   Size: {x: 2, y: 2}
   Cells:
   - {x: 0, y: 0}
   - {x: 1, y: 0}
   - {x: 0, y: 1}
   PreviewPrefab: {fileID: 3498609193837567825, guid: 9eae30b5e6c32c44498c5ad592ab75e0, type: 3}
-  IsFixed: 0
+  isFixed: 0
   isInGrid: 0
 --- !u!1 &1033579659
 GameObject:
@@ -5856,10 +5861,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: ScalePuzzle
       objectReference: {fileID: 0}
-    - target: {fileID: 5446080011309582121, guid: 6f72183b79a6b52468101aba8e1f3107, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7822887357235999075, guid: 6f72183b79a6b52468101aba8e1f3107, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -6175,7 +6176,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f055dd3f2e407a498fd541af784ca10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Position: {x: 0, y: 2}
+  GridPos: {x: 0, y: 0}
   Size: {x: 2, y: 3}
   Cells:
   - {x: 0, y: 0}
@@ -6183,7 +6184,7 @@ MonoBehaviour:
   - {x: 0, y: 2}
   - {x: 1, y: 0}
   PreviewPrefab: {fileID: 3498609193837567825, guid: 9eae30b5e6c32c44498c5ad592ab75e0, type: 3}
-  IsFixed: 0
+  isFixed: 0
   isInGrid: 0
 --- !u!1 &1322876649
 GameObject:
@@ -6583,7 +6584,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 850217280}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 12252419}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -6816,7 +6817,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f055dd3f2e407a498fd541af784ca10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Position: {x: 0, y: 0}
+  GridPos: {x: 0, y: 0}
   Size: {x: 2, y: 2}
   Cells:
   - {x: 0, y: 0}
@@ -6824,7 +6825,7 @@ MonoBehaviour:
   - {x: 1, y: 0}
   - {x: 1, y: 1}
   PreviewPrefab: {fileID: 3498609193837567825, guid: 9eae30b5e6c32c44498c5ad592ab75e0, type: 3}
-  IsFixed: 0
+  isFixed: 0
   isInGrid: 0
 --- !u!1 &1510115418
 GameObject:
@@ -7783,12 +7784,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f055dd3f2e407a498fd541af784ca10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Position: {x: 4, y: 1}
+  GridPos: {x: 0, y: 0}
   Size: {x: 1, y: 1}
   Cells:
   - {x: 0, y: 0}
   PreviewPrefab: {fileID: 3498609193837567825, guid: 9eae30b5e6c32c44498c5ad592ab75e0, type: 3}
-  IsFixed: 0
+  isFixed: 0
   isInGrid: 0
 --- !u!1 &1818072507
 GameObject:
@@ -8310,13 +8311,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f055dd3f2e407a498fd541af784ca10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Position: {x: 2, y: 0}
+  GridPos: {x: 0, y: 0}
   Size: {x: 1, y: 2}
   Cells:
   - {x: 0, y: 0}
   - {x: 0, y: 1}
   PreviewPrefab: {fileID: 3498609193837567825, guid: 9eae30b5e6c32c44498c5ad592ab75e0, type: 3}
-  IsFixed: 1
+  isFixed: 0
   isInGrid: 0
 --- !u!1 &1902091775
 GameObject:
@@ -8426,9 +8427,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GridWidth: 7
   GridHeight: 7
-  gridVisualizerPrefab: {fileID: 3532741713559453623, guid: b980cde7e71cb1e4ab3e05b6039fe45e, type: 3}
   IsComplete: 0
   gridContainer: {fileID: 0}
+  SlotContainer: {fileID: 0}
+  SlotPrefab: {fileID: 0}
+  CellDiameter: 0
+  HoveredSlot: {fileID: 0}
 --- !u!4 &1904017872
 Transform:
   m_ObjectHideFlags: 0
@@ -8972,14 +8976,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f055dd3f2e407a498fd541af784ca10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Position: {x: 4, y: 6}
+  GridPos: {x: 0, y: 0}
   Size: {x: 3, y: 1}
   Cells:
   - {x: 0, y: 0}
   - {x: 1, y: 0}
   - {x: 2, y: 0}
   PreviewPrefab: {fileID: 3498609193837567825, guid: 9eae30b5e6c32c44498c5ad592ab75e0, type: 3}
-  IsFixed: 0
+  isFixed: 0
   isInGrid: 0
 --- !u!1 &1973550936
 GameObject:
@@ -9169,7 +9173,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f055dd3f2e407a498fd541af784ca10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Position: {x: 3, y: 2}
+  GridPos: {x: 0, y: 0}
   Size: {x: 3, y: 3}
   Cells:
   - {x: 0, y: 2}
@@ -9178,7 +9182,7 @@ MonoBehaviour:
   - {x: 1, y: 1}
   - {x: 1, y: 0}
   PreviewPrefab: {fileID: 3498609193837567825, guid: 9eae30b5e6c32c44498c5ad592ab75e0, type: 3}
-  IsFixed: 0
+  isFixed: 0
   isInGrid: 0
 --- !u!1 &2018053666
 GameObject:
@@ -9842,7 +9846,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f055dd3f2e407a498fd541af784ca10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Position: {x: 3, y: 0}
+  GridPos: {x: 0, y: 0}
   Size: {x: 3, y: 2}
   Cells:
   - {x: 0, y: 0}
@@ -9850,7 +9854,7 @@ MonoBehaviour:
   - {x: 2, y: 0}
   - {x: 2, y: 1}
   PreviewPrefab: {fileID: 3498609193837567825, guid: 9eae30b5e6c32c44498c5ad592ab75e0, type: 3}
-  IsFixed: 0
+  isFixed: 0
   isInGrid: 0
 --- !u!1001 &2135649800
 PrefabInstance:
@@ -9935,7 +9939,6 @@ SceneRoots:
   m_Roots:
   - {fileID: 620531839}
   - {fileID: 1746916493}
-  - {fileID: 1461545194}
   - {fileID: 12252418}
   - {fileID: 778289355}
   - {fileID: 1267554316}

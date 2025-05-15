@@ -17,7 +17,7 @@ public class ScalePuzzle : Puzzle
     public ScalePuzzleLevel[] levels;
     private int level = 0;
     private MysteryBox mysteryBox;
-
+    public GameObject ghost;
     private void Awake()
     {
         if (Instance == null) Instance = this;

@@ -32,6 +32,5 @@ public class ScaleObjectButton : MonoBehaviour
     {
         ScaleObject obj = Instantiate(scaleObject.gameObject, transform.position, Quaternion.identity).GetComponent<ScaleObject>();
         obj.transform.SetParent(ScalePuzzle.Instance.selectionArea.transform, true);
-        obj.OnClick();
     }
 }
