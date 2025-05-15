@@ -28,6 +28,7 @@ public class ScaleObject : MonoBehaviour
         ghostRectTransform = ScalePuzzle.Instance.ghost.GetComponent<RectTransform>();
         ghostImage = ScalePuzzle.Instance.ghost.GetComponent<Image>();
         if (GetType() != typeof(MysteryBox)) OnClick();
+        rectTransform.localScale = Vector3.one;
     }
 
     private void Update()

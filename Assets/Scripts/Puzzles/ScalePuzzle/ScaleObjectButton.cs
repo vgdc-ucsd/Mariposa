@@ -19,7 +19,6 @@ public class ScaleObjectButton : MonoBehaviour
     private void Update()
     {
         mousePos = RectTransformUtility.WorldToScreenPoint(Camera.main, Camera.main.ScreenToWorldPoint(Input.mousePosition));
-
         if (Input.GetMouseButtonDown(0))
         {
             if (RectTransformUtility.RectangleContainsScreenPoint(rectTransform, mousePos))

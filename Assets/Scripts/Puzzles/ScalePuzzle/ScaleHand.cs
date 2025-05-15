@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +10,7 @@ public class ScaleHand : MonoBehaviour
     [HideInInspector] public int totalWeight;
     [HideInInspector] public Vector3 initialPos;
     [SerializeField] private RectTransform platform;
+    [SerializeField] private TMP_Text weightText;
     private Rect platformRect;
 
     private Vector3[] corners;
@@ -18,6 +20,7 @@ public class ScaleHand : MonoBehaviour
         totalWeight = 0;
         initialPos = GetComponent<RectTransform>().localPosition;
         platformRect = platform.rect;
+        weightText.text = string.Empty;
     }
 
     
@@ -26,6 +29,7 @@ public class ScaleHand : MonoBehaviour
     {
         scaleObjects.Add(obj);
         totalWeight += obj.weight;
+        UpdateWeightText();
         Debug.Log(obj.GetComponent<RectTransform>().localPosition.x);
         Debug.Log(platformRect.x);
         FitToPlatform(obj.GetComponent<RectTransform>(), true);
@@ -37,7 +41,14 @@ public class ScaleHand : MonoBehaviour
     {
         scaleObjects.Remove(obj);
         totalWeight -= obj.weight;
+        UpdateWeightText();
         ScalePuzzle.Instance.CheckSolution();
+    }
+
+    private void UpdateWeightText()
+    {
+        if (scaleObjects.Contains(ScalePuzzle.Instance.mysteryBox)) weightText.text = "???";
+        else weightText.text = (totalWeight == 0 ? string.Empty : totalWeight.ToString());
     }
 
     public void FitToPlatform(RectTransform objRect, bool print = false)

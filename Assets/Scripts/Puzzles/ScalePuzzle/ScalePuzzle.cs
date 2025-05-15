@@ -16,7 +16,7 @@ public class ScalePuzzle : Puzzle
     [HideInInspector] public bool isDragging = false;
     public ScalePuzzleLevel[] levels;
     private int level = 0;
-    private MysteryBox mysteryBox;
+    [HideInInspector] public MysteryBox mysteryBox;
     public GameObject ghost;
     private void Awake()
     {
@@ -86,6 +86,8 @@ public class ScalePuzzle : Puzzle
             if (level < levels.Length - 1)
             {
                 ResetPuzzle();
+                TryHidePuzzle();
+                DialogueManager.Instance.PlayDialogue(levels[level].dialogue);
                 level++;
                 GenerateSolution();
             }

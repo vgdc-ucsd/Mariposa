@@ -5,4 +5,5 @@ using System.Collections.Generic;
 public class ScalePuzzleLevel : ScriptableObject
 {
     public List<ScaleObject> objects;
+    public Dialogue dialogue;
 }
