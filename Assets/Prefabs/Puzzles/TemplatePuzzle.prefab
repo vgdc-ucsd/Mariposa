@@ -87,7 +87,6 @@ GameObject:
   - component: {fileID: 6326640621088890879}
   - component: {fileID: 4066528161424083305}
   - component: {fileID: 8088600623600349753}
-  - component: {fileID: 3653474981431743069}
   - component: {fileID: 7341836575758796918}
   m_Layer: 5
   m_Name: TemplatePuzzle
@@ -181,19 +180,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &3653474981431743069
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6540258807784271503}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30dabb8434ac393428362f5d6ae398b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  IsComplete: 0
 --- !u!222 &7341836575758796918
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -367,7 +353,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3653474981431743069}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Puzzle, Assembly-CSharp
         m_MethodName: TryHidePuzzle
         m_Mode: 1

@@ -6,6 +6,7 @@ public class WirePuzzle : Puzzle
 
     private WirePuzzleDraggable[] wireDraggables;
     private WirePuzzleTail[] wireTails;
+    private WirePuzzleNode[] wireNodes;
 
     void Awake()
     {
@@ -15,7 +16,7 @@ public class WirePuzzle : Puzzle
             Debug.LogWarning("Tried to create more than one instance of the WirePuzzle singleton!");
             Destroy(this);
         }
-        
+
         InitializeWires();
     }
 
@@ -23,6 +24,7 @@ public class WirePuzzle : Puzzle
     {
         wireDraggables = GetComponentsInChildren<WirePuzzleDraggable>();
         wireTails = GetComponentsInChildren<WirePuzzleTail>();
+        wireNodes = GetComponentsInChildren<WirePuzzleNode>();
 
         if (wireDraggables.Length != wireTails.Length) Debug.LogError("Invalid number of wire objects");
         else
@@ -32,6 +34,11 @@ public class WirePuzzle : Puzzle
                 wireDraggables[i].InitializeWireDraggable(i);
                 wireTails[i].InitializeWireTail();
             }
+        }
+
+        foreach (var node in wireNodes)
+        {
+            node.InitializeWireNode();
         }
     }
 
@@ -46,10 +53,16 @@ public class WirePuzzle : Puzzle
 
     private bool CheckSolution()
     {
-        foreach (WirePuzzleDraggable wpd in wireDraggables)
+        foreach (WirePuzzleTail wpt in wireTails)
         {
-            if (!wpd.IsMatched) return false;
+            if (!wpt.IsMatched) return false;
         }
+
+        foreach (WirePuzzleNode wpn in wireNodes)
+        {
+            if (!wpn.IsMatched) return false;
+        }
+
         return true;
     }
 }
