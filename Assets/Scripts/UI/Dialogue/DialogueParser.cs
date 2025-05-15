@@ -99,6 +99,13 @@ public class DialogueParser : Singleton<DialogueParser>
 
 	[SerializeField] string ArtPath;
 	[SerializeField] string YamlPath;
+	private Dictionary<string, Sprite> spriteCache;
+
+	void Awake()
+	{
+		base.Awake();
+		this.spriteCache = new Dictionary<string, Sprite>();
+	}
 
 	private Sprite loadSpriteFromPath(string path) 
 	{
@@ -146,13 +153,15 @@ public class DialogueParser : Singleton<DialogueParser>
 			// assume path == "" if there is no icon
 			// TODO: verify?
 			Sprite s;
-			if(path != "" && ele.icon != null) 
+			if(ele.icon == null)
+			{
+				s = null;
+			}
+			else if(!spriteCache.TryGetValue(ele.icon, out s))
 			{
 				string iconPath = FilePathManager.Instance.FindFullPath(ele.icon);
 				s = loadSpriteFromPath(iconPath);
-			}
-			else {
-				s = null;
+				spriteCache.Add(ele.icon, s);
 			}
 
 			realEle.Sprite = s;
