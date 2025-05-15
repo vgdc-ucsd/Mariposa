@@ -104,7 +104,8 @@ public class DialogueParser : Singleton<DialogueParser>
 	{
 		// read file as raw bytes into memory
 		if(path == "" || path == null) return null;
-		string fullPath = Path.Combine(ArtPath, path);
+		/*string fullPath = Path.Combine(ArtPath, path);*/
+		string fullPath = path;
 		byte[] rawBytes = File.ReadAllBytes(fullPath);
 
 		// arguments to Texture2D constructor have no effect after LoadImage
@@ -147,7 +148,8 @@ public class DialogueParser : Singleton<DialogueParser>
 			Sprite s;
 			if(path != "" && ele.icon != null) 
 			{
-				s = loadSpriteFromPath(ele.icon);
+				string iconPath = FilePathManager.Instance.FindFullPath(ele.icon);
+				s = loadSpriteFromPath(iconPath);
 			}
 			else {
 				s = null;

@@ -3,9 +3,12 @@ using System.IO;
 using System.Collections.Generic;
 public class FilePathManager : Singleton<FilePathManager>
 {
+	// Paths and extensions to consider.
 	[SerializeField] List<string> Paths;
 	[SerializeField] List<string> Extensions;
 
+	// Given a keyword, find it in one of the paths
+	// Can return null.
 	public string FindFullPath(string keyword)
 	{
 		// search for keyword within other files
@@ -30,6 +33,8 @@ public class FilePathManager : Singleton<FilePathManager>
 
 		return null;
 	}
+
+	// Given a path, check that it has an accepted extension.
 	private bool verifyAccepted(string path)
 	{
 		foreach(string extension in Extensions)
