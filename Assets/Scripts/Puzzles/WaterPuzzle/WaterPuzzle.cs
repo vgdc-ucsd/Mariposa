@@ -37,15 +37,13 @@ public class WaterPuzzle : Puzzle
     public Sprite[] TileSprites;
 
     [HideInInspector] public bool UsedPipeSplitter;
+    [HideInInspector] public WaterPuzzleTile SplitTile;
+    [HideInInspector] public bool[] SplitTilePipes = new bool[4];
 
     [SerializeField] private bool usingSeedBank;
     [SerializeField] private int[] seedBank;
 
 
-    private void Update()
-    {
-        
-    }
     private void Awake()
     {
         // move the puzzle object so that the center of the puzzle is at (0, 0, 0)
@@ -69,8 +67,8 @@ public class WaterPuzzle : Puzzle
         StartTile = Tiles[0, GridHeight / 2];
         if (twoEndings)
         {
-            EndTile = Tiles[GridWidth - 1, 0];
-            EndTile2 = Tiles[GridWidth - 1, GridHeight - 1];
+            EndTile = Tiles[GridWidth - 1, GridHeight / 2 + 2];
+            EndTile2 = Tiles[GridWidth - 1, GridHeight / 2 - 2];
         }
         else EndTile = Tiles[GridWidth - 1, GridHeight / 2];
 
@@ -99,6 +97,19 @@ public class WaterPuzzle : Puzzle
     public void CompletePuzzle()
     {
         OnComplete();
+    }
+
+    public void RevertSplitTile()
+    {
+        if (SplitTile == null) return;
+        SplitTile.PipeRight = SplitTilePipes[0];
+        SplitTile.PipeUp = SplitTilePipes[1];
+        SplitTile.PipeLeft = SplitTilePipes[2];
+        SplitTile.PipeDown = SplitTilePipes[3];
+        SplitTile.SetSprite();
+        SplitTile = null;
+        SplitTilePipes = new bool[4];
+        UsedPipeSplitter = false;
     }
 
     /// <summary>
@@ -227,7 +238,7 @@ public class WaterPuzzle : Puzzle
                 if (!tilesInSolution.Contains(Tiles[x, y]))
                 {
                     tilesInSolution.Add(Tiles[x, y]);
-                    Tiles[x, y].RandomPipeChance /= 10f;
+                    Tiles[x, y].RandomPipeChance /= 20f;
                 }
                 else if (!twoEndings) Tiles[x, y].MustBeCross = true;
 

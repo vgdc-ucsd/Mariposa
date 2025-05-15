@@ -282,7 +282,12 @@ public class WaterPuzzleTile : MonoBehaviour
 
     public void UsePipeSplitterOnTile()
     {
-        if (!puzzle.twoEndings) return; 
+        if (!puzzle.twoEndings) return;
+        puzzle.SplitTile = this;
+        puzzle.SplitTilePipes[0] = PipeRight;
+        puzzle.SplitTilePipes[1] = PipeUp;
+        puzzle.SplitTilePipes[2] = PipeLeft;
+        puzzle.SplitTilePipes[3] = PipeDown;
         PipeRight = PipeUp = PipeLeft = PipeDown = true;
         SetSprite();
         puzzle.UsedPipeSplitter = true;
@@ -293,7 +298,7 @@ public class WaterPuzzleTile : MonoBehaviour
         if (!puzzle.IsComplete && !animating)
         {
             if (Input.GetKey(KeyCode.LeftControl) && !puzzle.UsedPipeSplitter) UsePipeSplitterOnTile();
-            StartCoroutine(RotateThisTile());
+            else StartCoroutine(RotateThisTile());
         }
     }
 }
