@@ -1,10 +1,6 @@
 using System.Collections;
-using System.Runtime.CompilerServices;
 using TMPro;
-using UnityEditor.Rendering;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
 public class WaterPuzzleTile : MonoBehaviour
@@ -263,7 +259,7 @@ public class WaterPuzzleTile : MonoBehaviour
 
             if (puzzle.EndTile.HasWater && (!puzzle.twoEndings || puzzle.EndTile2.HasWater) && !puzzle.IsComplete)
             {
-                puzzle.CompletePuzzle();
+                StartCoroutine(puzzle.CompletePuzzle());
             }
 
 
@@ -277,6 +273,7 @@ public class WaterPuzzleTile : MonoBehaviour
     public void EmptyTile()
     {
         if (puzzle.EndTile != this && puzzle.EndTile2 != this) Image.color = Color.white;
+        else Image.color = Color.red;
         HasWater = false;
     }
 
@@ -291,13 +288,15 @@ public class WaterPuzzleTile : MonoBehaviour
         PipeRight = PipeUp = PipeLeft = PipeDown = true;
         SetSprite();
         puzzle.UsedPipeSplitter = true;
+        puzzle.ToggleSplitTile();
+        puzzle.ResetPuzzle();
     }
 
     public void OnClick()
     {
         if (!puzzle.IsComplete && !animating)
         {
-            if (Input.GetKey(KeyCode.LeftControl) && !puzzle.UsedPipeSplitter) UsePipeSplitterOnTile();
+            if (!puzzle.UsedPipeSplitter && puzzle.PipeSplitterToggled) UsePipeSplitterOnTile();
             else StartCoroutine(RotateThisTile());
         }
     }

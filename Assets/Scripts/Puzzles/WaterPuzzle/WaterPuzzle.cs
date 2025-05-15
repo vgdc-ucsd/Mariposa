@@ -1,9 +1,8 @@
+using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Unity.VisualScripting;
+using TMPro;
 using UnityEngine;
-using UnityEngine.Timeline;
+using UnityEngine.UI;
 
 public class WaterPuzzle : Puzzle
 {
@@ -36,13 +35,13 @@ public class WaterPuzzle : Puzzle
     /// </summary>
     public Sprite[] TileSprites;
 
-    [HideInInspector] public bool UsedPipeSplitter;
+    [HideInInspector] public bool UsedPipeSplitter, PipeSplitterToggled;
     [HideInInspector] public WaterPuzzleTile SplitTile;
     [HideInInspector] public bool[] SplitTilePipes = new bool[4];
+    [SerializeField] private TMP_Text toggleText;
 
     [SerializeField] private bool usingSeedBank;
     [SerializeField] private int[] seedBank;
-
 
     private void Awake()
     {
@@ -72,7 +71,7 @@ public class WaterPuzzle : Puzzle
         }
         else EndTile = Tiles[GridWidth - 1, GridHeight / 2];
 
-        int seed = Random.Range(0, int.MaxValue);
+        int seed = (int)System.DateTime.Now.Ticks;
         if (usingSeedBank) seed = seedBank[Random.Range(0, seedBank.Length)];
         Debug.Log(gameObject.name + " seed: " + seed);
         Random.InitState(seed);
@@ -94,8 +93,9 @@ public class WaterPuzzle : Puzzle
         StartTile.FillTile(true);
     }
 
-    public void CompletePuzzle()
+    public IEnumerator CompletePuzzle()
     {
+        yield return new WaitForSeconds(1f);
         OnComplete();
     }
 
@@ -110,6 +110,20 @@ public class WaterPuzzle : Puzzle
         SplitTile = null;
         SplitTilePipes = new bool[4];
         UsedPipeSplitter = false;
+        toggleText.text = (PipeSplitterToggled ? "Click a pipe to split it!" : "Use Pipe Splitter");
+
+    }
+
+    public void ToggleSplitTile()
+    {
+        PipeSplitterToggled = !PipeSplitterToggled;
+        if (UsedPipeSplitter)
+        {
+            toggleText.text = "Pipe Splitter already used";
+            return;
+        }
+        toggleText.text = (PipeSplitterToggled ? "Click a pipe to split it!" : "Use Pipe Splitter");
+
     }
 
     /// <summary>
