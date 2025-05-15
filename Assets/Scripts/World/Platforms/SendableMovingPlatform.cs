@@ -1,73 +1,76 @@
+using Unity.Mathematics;
 using UnityEditor;
 using UnityEngine;
 
 public class SendableMovingPlatform : MovingPlatform
 {
-    private bool isMoving = false;
-    [SerializeField] private int physicsFramesToPushPlayerOut = 4;
-
-    [ContextMenu("SendPlatform")]
-    public void SendPlatform()
+    public override void Initialize()
     {
-        if (isMoving)
-        {
-            isMovingForward = !isMovingForward;
-            MoveToNextTarget();
-        }
-        isMoving = true;
+        base.Initialize();
 
-        Vector2 targetNode = pathNodes[targetNodeIdx];
-        Vector2 separationToNextNode = targetNode - platformRb.position;
-        currMovement = platformMoveSpeed * Time.fixedDeltaTime * separationToNextNode.normalized;
+        currentNodeIdx = initialNodeIndex;
     }
 
-    protected override void Awake()
+    /// <summary>
+    /// Sends the platform to move <paramref name="nodesToTraverse"/> nodes. If <paramref name="nodesToTraverse"/>
+    /// is negative, will move the platform down.
+    /// </summary>
+    /// <param name="nodesToTraverse">The number of nodes to traverse</param>
+    public void SendPlatform(int nodesToTraverse)
     {
-        base.Awake();
-    }
+        if (state == PlatformState.Resetting) return;
 
-    protected override void FixedUpdate()
-    {
-        if (!isMoving)
+        if (nodesToTraverse == 0) return;
+
+        int targetNodeIdx = currentNodeIdx + nodesToTraverse;
+
+        if (targetNodeIdx < 0 || targetNodeIdx >= manager.pathNodes.Length)
         {
-            currMovement = Vector2.zero;
             return;
         }
+        if (nodesToTraverse > 0)
+        {
+            for (int i = currentNodeIdx + 1; i <= targetNodeIdx; ++i)
+            {
+                if (manager.platforms[i] != null) return;
+            }
+        }
+        else
+        {
+            for (int i = currentNodeIdx - 1; i >= targetNodeIdx; --i)
+            {
+                if (manager.platforms[i] != null) return;
+            }
+        }
 
+        manager.platforms[currentNodeIdx] = null;
+        manager.platforms[targetNodeIdx] = this;
+        currentNodeIdx = targetNodeIdx;
+
+        state = PlatformState.Moving;
+    }
+
+    protected override Vector2 GetCurrentMovement()
+    {
         float fdt = Time.fixedDeltaTime;
 
-        Vector2 targetNode = pathNodes[targetNodeIdx];
-        Vector2 separationToNextNode = targetNode - platformRb.position;
+        Vector2 targetPos = manager.pathNodes[currentNodeIdx];
+        Vector2 separationToTarget = targetPos - rb.position;
 
-        Vector2 movement = platformMoveSpeed * fdt * separationToNextNode.normalized;
-        float distanceToNextNode = separationToNextNode.magnitude;
-        if (distanceToNextNode < platformMoveSpeed * fdt)
+        if (separationToTarget.magnitude > platformMoveSpeed * fdt)
         {
-            movement = separationToNextNode;
-
-            if (MoveToNextTarget()) isMoving = false;
+            return platformMoveSpeed * fdt * separationToTarget.normalized;
         }
-
-        currMovement = movement;
-        platformRb.transform.position += (Vector3)movement;
-        Physics2D.SyncTransforms();
-
-        if (adjacentFreeBody != null)
+        else
         {
-            Vector2 movementToApply = movement;
-            if (currMovement.y / fdt < -adjacentFreeBody.TerminalVelocity) 
-                movementToApply.y = -adjacentFreeBody.TerminalVelocity * fdt; // cap the free body's downward movement;
-            adjacentFreeBody.transform.position += (Vector3)movementToApply;
+            StopMoving(currentNodeIdx);
+            return separationToTarget;
         }
+    }
 
-        if (movement.y >= 0) return;
-        Vector2 pushColOrigin = (Vector2)platformCol.bounds.center + platformCol.bounds.extents.y * Vector2.down;
-        Vector2 pushColSize = new(platformCol.size.x, platformCol.size.y / 2);
-        Collider2D playerCol = Physics2D.OverlapBox(pushColOrigin, pushColSize, 0f, playerLayerMask);
-        float pushFraction = 1 / (float)physicsFramesToPushPlayerOut;
-        if (!playerCol) return;
-        playerCol.transform.position += playerCol.transform.position.x > transform.position.x
-            ? (platformCol.bounds.max.x - playerCol.bounds.min.x + FreeBody.CONTACT_OFFSET) * pushFraction * Vector3.right
-            : (playerCol.bounds.max.x - platformCol.bounds.min.x + FreeBody.CONTACT_OFFSET) * pushFraction * Vector3.left;
+    protected override void StopMoving(int stopNodeIdx)
+    {
+        state = PlatformState.Stopped;
+        currentNodeIdx = stopNodeIdx;
     }
 }

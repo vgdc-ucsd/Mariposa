@@ -14,11 +14,6 @@ public class BlockPreview : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    // public void SetSize(Vector2Int size)
-    // {
-    //     transform.localScale = new Vector3(size.x, size.y, 1);
-    // }
-
     public void SetSprite(Vector2 sizeDelta, Sprite sprite, Color color)
     {
         image.sprite = sprite;
@@ -26,9 +21,9 @@ public class BlockPreview : MonoBehaviour
         rectTransform.sizeDelta = sizeDelta;
     }
 
-    public void SetPosition(Vector3 position)
+    public void SetPosition(Vector3 worldPos)
     {
-        transform.position = position;
+        rectTransform.anchoredPosition = worldPos;
     }
 
     public void Show()

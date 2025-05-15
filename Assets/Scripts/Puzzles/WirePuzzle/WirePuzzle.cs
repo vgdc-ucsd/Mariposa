@@ -3,7 +3,6 @@ using UnityEngine;
 public class WirePuzzle : Puzzle
 {
     public static WirePuzzle Instance;
-    public bool IsComplete;
 
     private WirePuzzleDraggable[] wireDraggables;
     private WirePuzzleTail[] wireTails;
