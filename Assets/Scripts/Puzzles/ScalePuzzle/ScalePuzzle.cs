@@ -65,14 +65,15 @@ public class ScalePuzzle : Puzzle
         mysteryBox = Instantiate(mysteryBoxPrefab, selectionArea.transform).GetComponent<MysteryBox>();
         Vector3 offset = Vector3.up * selectionArea.GetComponent<RectTransform>().rect.height / 2.5f;
         mysteryBox.transform.localPosition += offset;
-        
         foreach (ScaleObject scaleObj in levels[level].objects)
         {
             mysteryBox.mysteryObjects.Add(scaleObj);
             mysteryBox.weight += scaleObj.weight;
         }
 
-        
+        mysteryBox.text.text = mysteryBox.mysteryObjects.Count.ToString();
+
+
 
     }
 
@@ -105,6 +106,7 @@ public class ScalePuzzle : Puzzle
             foreach (ScaleObject scaleObj in scaleHand.scaleObjects) Destroy(scaleObj.gameObject);
             scaleHand.scaleObjects.Clear();
             scaleHand.totalWeight = 0;
+            scaleHand.UpdateWeightText();
         }
         if (mysteryBox != null) Destroy(mysteryBox.gameObject);
         

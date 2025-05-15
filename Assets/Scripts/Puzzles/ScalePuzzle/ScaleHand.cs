@@ -45,7 +45,7 @@ public class ScaleHand : MonoBehaviour
         ScalePuzzle.Instance.CheckSolution();
     }
 
-    private void UpdateWeightText()
+    public void UpdateWeightText()
     {
         if (scaleObjects.Contains(ScalePuzzle.Instance.mysteryBox)) weightText.text = "???";
         else weightText.text = (totalWeight == 0 ? string.Empty : totalWeight.ToString());

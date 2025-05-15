@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -44,7 +45,6 @@ public class ScaleObject : MonoBehaviour
             }
         }
 
-        justClicked = false;
     }
 
     public void OnClick()
@@ -57,6 +57,13 @@ public class ScaleObject : MonoBehaviour
         ghostRectTransform.SetParent(transform, false);
         ghostImage.sprite = image.sprite;
         ghostRectTransform.sizeDelta = rect.size;
+        StartCoroutine(ResetJustClicked());
+    }
+
+    private IEnumerator ResetJustClicked()
+    {
+        yield return new WaitForSeconds(0.25f);
+        justClicked = false;
     }
 
     public void Drag()
@@ -86,7 +93,7 @@ public class ScaleObject : MonoBehaviour
         } 
 
 
-        if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonUp(0) && !justClicked)
         {
             if (target != null)
             {
@@ -110,7 +117,6 @@ public class ScaleObject : MonoBehaviour
         bool toHand = false;
         bool isHand = target.TryGetComponent<ScaleHand>(out ScaleHand scaleHand);
 
-        justClicked = true;
         if (target != dragTarget || isHand) // dragging from selection area to selection area should destroy object
         {
             if (dragTarget.TryGetComponent<ScaleHand>(out ScaleHand prevScaleHand))
