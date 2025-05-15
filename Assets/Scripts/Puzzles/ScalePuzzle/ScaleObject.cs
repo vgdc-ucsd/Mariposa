@@ -59,7 +59,7 @@ public class ScaleObject : MonoBehaviour
         RectTransform target = null;
         foreach (RectTransform rt in ScalePuzzle.Instance.dragTargets)
         {
-            if (RectTransformUtility.RectangleContainsScreenPoint(target, mousePos))
+            if (RectTransformUtility.RectangleContainsScreenPoint(rt, mousePos))
             {
                 target = rt;
             }
@@ -67,7 +67,7 @@ public class ScaleObject : MonoBehaviour
 
 
 
-        if (Input.GetMouseButton(0) || Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonUp(0))
         {
             if (target != null)
             {
