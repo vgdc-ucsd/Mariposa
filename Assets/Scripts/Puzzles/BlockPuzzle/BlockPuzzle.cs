@@ -8,7 +8,6 @@ public class BlockPuzzle : Puzzle
     public static BlockPuzzle Instance;
     public int GridWidth = 7;
     public int GridHeight = 7;
-    public bool IsComplete;
     public RectTransform gridContainer;
     public GridLayoutGroup SlotContainer;
     public GameObject SlotPrefab;
@@ -132,7 +131,6 @@ public class BlockPuzzle : Puzzle
 
     private void FinishPuzzle()
     {
-        IsComplete = true;
         OnComplete();
     }
 

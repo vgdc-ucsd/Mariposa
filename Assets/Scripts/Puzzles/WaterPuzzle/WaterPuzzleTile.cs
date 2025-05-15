@@ -261,7 +261,7 @@ public class WaterPuzzleTile : MonoBehaviour
             HasWater = true;
             FillAdjacentTiles();
 
-            if (puzzle.EndTile.HasWater && (!puzzle.twoEndings || puzzle.EndTile2.HasWater) && !puzzle.PuzzleComplete)
+            if (puzzle.EndTile.HasWater && (!puzzle.twoEndings || puzzle.EndTile2.HasWater) && !puzzle.IsComplete)
             {
                 puzzle.CompletePuzzle();
             }
@@ -290,7 +290,7 @@ public class WaterPuzzleTile : MonoBehaviour
 
     public void OnClick()
     {
-        if (!puzzle.PuzzleComplete && !animating)
+        if (!puzzle.IsComplete && !animating)
         {
             if (Input.GetKey(KeyCode.LeftControl) && !puzzle.UsedPipeSplitter) UsePipeSplitterOnTile();
             StartCoroutine(RotateThisTile());

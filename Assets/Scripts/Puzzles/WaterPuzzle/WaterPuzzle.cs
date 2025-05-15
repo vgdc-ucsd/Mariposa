@@ -15,7 +15,6 @@ public class WaterPuzzle : Puzzle
     [HideInInspector] public WaterPuzzleTile[,] Tiles;
     public int GridWidth, GridHeight;
     [HideInInspector]
-    public bool PuzzleComplete = false;
     
     [SerializeField] private GameObject tilePrefab;
     private List<WaterPuzzleTile> tilesInSolution;
@@ -99,7 +98,6 @@ public class WaterPuzzle : Puzzle
 
     public void CompletePuzzle()
     {
-        PuzzleComplete = true;
         OnComplete();
     }
 
