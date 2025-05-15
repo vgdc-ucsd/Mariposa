@@ -30,7 +30,7 @@ public class LevelManager : MonoBehaviour
         // does this even work?
         if (SceneManager.GetActiveScene().buildIndex >= SceneManager.sceneCount - 1) return;
         NextLevelName = SceneManager.GetSceneByBuildIndex(SceneManager.GetActiveScene().buildIndex + 1).name;
-        
+
     }
 
     private void Start()
@@ -61,7 +61,7 @@ public class LevelManager : MonoBehaviour
         SublevelIndex %= CurrentLevel.Sublevels.Length;
         CurrentLevel.LoadSublevel(SublevelIndex);
         InitSublevel();
-        
+
     }
 
     public void GoToPreviousLevel()
@@ -96,6 +96,13 @@ public class LevelManager : MonoBehaviour
 
         ActiveEnemies = FindObjectsByType<Enemy>(FindObjectsInactive.Exclude, FindObjectsSortMode.None).ToList();
         ResetEnemies();
+
+        // Tell AudioManager to change audio if PlayOnLoad is on in the sublevel
+        if (GetCurrentSublevel().PlayOnLoad)
+        {
+            MusicManager.Instance.ChangeEvent();
+            AmbienceManager.Instance.ChangeEvent();
+        }
     }
 
     public void ResetEnemies()

@@ -1,4 +1,6 @@
 using System.Collections;
+using FMOD.Studio;
+using FMODUnity;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -26,7 +28,7 @@ public class ItemPickup : Interactable
             spriteRenderer.sprite = item.lowResSprite;
         }
     }
-    
+
     /// <summary>
     /// Called when this item is picked up.
     /// Adds the item to the specified inventory and then destroys this pickup.
@@ -66,6 +68,27 @@ public class ItemPickup : Interactable
         {
             bee.GetComponentInChildren<BeeGrabAnimation>().runGrabAnimation();
         }
+        playPickupSFX();
         //Destroy(gameObject);
+    }
+
+    private void playPickupSFX()
+    {
+        string itemSFX = item.ItemSFXType.ToString();
+        EventInstance itemPickupSFX = RuntimeManager.CreateInstance(AudioEvents.SFX.item_pickup.GetPath());
+        itemPickupSFX.setParameterByNameWithLabel("ItemType", itemSFX);
+        itemPickupSFX.start();
+        itemPickupSFX.release();
+    }
+
+    public enum ItemSFXType
+    {
+        Default,
+        MetalicLeather,
+        Rustle,
+        Papery,
+        Metalic,
+        Cloth,
+        MetalWood
     }
 }

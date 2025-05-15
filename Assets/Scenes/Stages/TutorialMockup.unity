@@ -848,6 +848,42 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 696762601}
   m_CullTransparentMesh: 1
+--- !u!1 &772434527 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2684961304735206060, guid: 1ab7bc7f443708b46ae44f7ad95f4288, type: 3}
+  m_PrefabInstance: {fileID: 2024417727}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &772434532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 772434527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 121802912
+      Data2: 1206342435
+      Data3: -1298938221
+      Data4: 2005707069
+    Path: event:/sfx/item/radio/static
+  Event: 
+  EventPlayTrigger: 11
+  EventStopTrigger: 12
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!4 &824576132 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5313605323863157013, guid: 5f08c41fa317eb14799986f4f664520a, type: 3}
@@ -1009,7 +1045,11 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -8.33
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 295678317207362282, guid: f7ba4b11513a904409f499c05ca71649, type: 3}
+    - {fileID: 5202764370860185585, guid: f7ba4b11513a904409f499c05ca71649, type: 3}
+    - {fileID: 8541456727686140102, guid: f7ba4b11513a904409f499c05ca71649, type: 3}
+    - {fileID: 7964096021949726856, guid: f7ba4b11513a904409f499c05ca71649, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -1406,7 +1446,7 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 5313605323863157013, guid: 5f08c41fa317eb14799986f4f664520a, type: 3}
-      insertIndex: -1
+      insertIndex: 2
       addedObject: {fileID: 1042938437}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5f08c41fa317eb14799986f4f664520a, type: 3}
@@ -1787,6 +1827,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3529839200492878378, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
       propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3529839200492878378, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
+      propertyPath: _sublevelMusic
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3529839200492878378, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
+      propertyPath: _sublevelAmbience
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3552367427401703280, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
@@ -2359,6 +2407,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CurrentLevel: {fileID: 5883707273069645461}
   NextLevelName: 
+  ActiveEnemies: []
 --- !u!4 &2022088644
 Transform:
   m_ObjectHideFlags: 0
@@ -2563,6 +2612,14 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5574249224141043270, guid: 1ab7bc7f443708b46ae44f7ad95f4288, type: 3}
+      propertyPath: _sublevelMusic
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5574249224141043270, guid: 1ab7bc7f443708b46ae44f7ad95f4288, type: 3}
+      propertyPath: _sublevelAmbience
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6172860703217113734, guid: 1ab7bc7f443708b46ae44f7ad95f4288, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -2581,7 +2638,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7700931678076625751, guid: 1ab7bc7f443708b46ae44f7ad95f4288, type: 3}
       propertyPath: EventPlayTrigger
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7717677624476085100, guid: 1ab7bc7f443708b46ae44f7ad95f4288, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2661,6 +2718,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 630720031236171103, guid: 1ab7bc7f443708b46ae44f7ad95f4288, type: 3}
       insertIndex: -1
       addedObject: {fileID: 50639419}
+    - targetCorrespondingSourceObject: {fileID: 2684961304735206060, guid: 1ab7bc7f443708b46ae44f7ad95f4288, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 772434532}
   m_SourcePrefab: {fileID: 100100000, guid: 1ab7bc7f443708b46ae44f7ad95f4288, type: 3}
 --- !u!4 &2024417729 stripped
 Transform:

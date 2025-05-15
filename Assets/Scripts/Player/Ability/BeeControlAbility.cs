@@ -12,6 +12,7 @@ public class BeeControlAbility : MonoBehaviour, IAbility
     {
         if (Input.GetKeyDown(KeyCode.R))
         {
+            if (Bee.Instance.Movement.CurrentBehavior is not Follow) { RuntimeManager.PlayOneShot("event:/sfx/player/bee/recall"); }
             BeeRef.StartFollow();
         }
     }
@@ -43,7 +44,8 @@ public class BeeControlAbility : MonoBehaviour, IAbility
         else
         {
             BeeRef.ToggleControl(false);
-            RuntimeManager.PlayOneShot("event:/sfx/player/bee/recall");
+            //RuntimeManager.PlayOneShot("event:/sfx/player/bee/recall");
+            // maybe should be swap sfx for perspective swapping for player
             BeeFlap.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         }
     }
