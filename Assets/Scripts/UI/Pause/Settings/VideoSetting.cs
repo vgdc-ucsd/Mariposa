@@ -44,6 +44,10 @@ public class VideoSetting : MonoBehaviour
     public Dropdown ResolutionTypeDropdown;
     public Dropdown ResolutionSizeDropdown;
 
+    public int defaultQualityIndex;
+    public int defaultResolutionIndex;
+    public int defaultResolutionTypeIndex;
+
     /// <summary>
     /// On program start, sets default resolution (may want to edit this if settings are saved)
     /// </summary>
@@ -116,5 +120,21 @@ public class VideoSetting : MonoBehaviour
         Debug.Log(GraphicsQualityDropdown.value);
         QualitySettings.SetQualityLevel(GraphicsQualityDropdown.value);
         QualitySettings.renderPipeline = QualityLevels[GraphicsQualityDropdown.value]; 
+    }
+
+    public void ApplyAllGraphicsChanges()
+    {
+        ChangeGraphicsQuality();
+        SaveResolutionDimensions();
+        SaveResolutionType();
+        ApplyResolutionChanges();
+    }
+
+    public void ResetGraphicsSettings()
+    {
+        GraphicsQualityDropdown.value = defaultQualityIndex;
+        ResolutionTypeDropdown.value = defaultResolutionTypeIndex;
+        ResolutionSizeDropdown.value = defaultResolutionIndex;
+        ApplyAllGraphicsChanges();
     }
 }
