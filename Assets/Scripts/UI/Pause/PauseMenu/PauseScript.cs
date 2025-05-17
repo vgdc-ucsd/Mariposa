@@ -8,6 +8,7 @@ public class PauseScript : MonoBehaviour
     public GameObject PauseMenu;
     public GameObject VideoSettingsMenu;
     public GameObject AudioSettingsMenu;
+    public GameObject BackgroundPanel;
 
     private InputSystem_Actions actions;
     public bool paused = false;
@@ -64,6 +65,7 @@ public class PauseScript : MonoBehaviour
     public void PauseGame()
     {
         OpenPauseMenu();
+        BackgroundPanel.SetActive(true);
         Time.timeScale = 0.0f;
         paused = true;
     }
@@ -72,6 +74,7 @@ public class PauseScript : MonoBehaviour
     public void ResumeGame()
     {
         CloseAllMenus();
+        BackgroundPanel.SetActive(false);
         Time.timeScale = 1.0f;
         paused = false;
     }
