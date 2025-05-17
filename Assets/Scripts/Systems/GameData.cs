@@ -13,6 +13,8 @@ public class GameData
     // Player inventory
     // Not sure if there should be two fields? aren't there two different inventories
     public List<InventoryItemSO> Inventory;
+    public int currentSublevelIndex;
+    public string nextLevelScene;
     /// <summary>
     /// Constructor for the GameData object
     /// Creates a new object with the default values
@@ -21,5 +23,7 @@ public class GameData
     {
         Inventory = new List<InventoryItemSO>();
         this.TEST_keyStrokeCount = 0;
+        this.currentSublevelIndex = 0;
+        this.nextLevelScene       = "TutorialMockup";
     }
 }
