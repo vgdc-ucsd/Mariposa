@@ -186,7 +186,7 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
 
         if (CanWallJump && wallNormal != 0 && State == BodyState.InAir)
         {
-            Velocity.y = jumpVelocity;
+            Velocity.y = jumpVelocity * data.wallJumpHeightScale;
             Velocity.x = data.wallJumpHorizontalSpeed * wallNormal;
             wallJumpMoveLockTimeRemaining = data.wallJumpMoveLockTime;
             RuntimeManager.PlayOneShot("event:/sfx/player/jump");

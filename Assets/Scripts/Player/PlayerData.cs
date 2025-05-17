@@ -72,4 +72,7 @@ public class PlayerData : ScriptableObject
 
     [Tooltip("The player's horizontal speed is set to this value on wall jump")]
     public float wallJumpHorizontalSpeed;
+
+    [Tooltip("The factor by which the player's jump velocity is scaled for a wall jump")]
+    public float wallJumpHeightScale = 1.5f;
 }
