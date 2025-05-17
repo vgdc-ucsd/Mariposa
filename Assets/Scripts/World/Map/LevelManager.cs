@@ -21,7 +21,6 @@
         {
             if (Instance != null && Instance != this) { Destroy(gameObject); return; }
             Instance = this;
-            DontDestroyOnLoad(gameObject);
             foreach (var sl in CurrentLevel.Sublevels) sl.Unload();
             SublevelIndex = GameManager.Instance.TargetSublevel;  
             CurrentLevel.LoadSublevel(SublevelIndex);
