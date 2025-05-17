@@ -38,16 +38,20 @@ public class PauseScript : Singleton<PauseScript>
         {
             IsPaused = true;
             PauseMenu.SetActive(true);
+            Time.timeScale = 0.0f;
         }
         else
         {
             IsPaused = false;
             PauseMenu.SetActive(false);
+            Time.timeScale = 1.0f;
         }
     }
 
     public void RestartLevel()
     {
+        Time.timeScale = 1.0f;
+        PauseGame(false);
         if (LevelManager.Instance == null)
         {
             Debug.LogWarning("Pause manager attempting to restart level but LevelManager not found!");
@@ -58,6 +62,7 @@ public class PauseScript : Singleton<PauseScript>
 
     public void QuitLevel()
     {
+        Time.timeScale = 1.0f;
         SceneManager.LoadScene(0);
     }
 }
