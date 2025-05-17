@@ -6,23 +6,11 @@ using UnityEngine.UI;
 public class PauseScript : MonoBehaviour
 {
     public GameObject PauseMenu;
-    public Slider SfxSlider;
-    public Slider MusicSlider;
-    public Slider DialogueSlider;
-    public Slider MasterSlider;
-    public Slider AmbienceSlider;
-
     public GameObject VideoSettingsMenu;
-
+    public GameObject AudioSettingsMenu;
 
     private InputSystem_Actions actions;
     public bool paused = false;
-
-    public float sfxVolumeValue;
-    public float musicVolumeValue;
-    public float masterVolumeValue;
-    public float dialogueVolumeValue;
-    public float ambienceVolumeValue;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     void Awake()
@@ -51,16 +39,19 @@ public class PauseScript : MonoBehaviour
 
     private void HandlePause(InputAction.CallbackContext ctx)
     {
-        if (!VideoSettingsMenu.activeSelf)
+        if (!paused)
         {
-            if (paused)
-            {
-                ResumeGame();
-            }
-            else
-            {
-                PauseGame();
-            }
+            PauseGame();
+            return;
+        }
+
+        if (PauseMenu.activeSelf)
+        {
+            ResumeGame();
+        }
+        else
+        {
+            OpenPauseMenu();
         }
     }
 
@@ -72,7 +63,7 @@ public class PauseScript : MonoBehaviour
 
     public void PauseGame()
     {
-        PauseMenu.SetActive(true);
+        OpenPauseMenu();
         Time.timeScale = 0.0f;
         paused = true;
     }
@@ -80,47 +71,37 @@ public class PauseScript : MonoBehaviour
 
     public void ResumeGame()
     {
-        PauseMenu.SetActive(false);
+        CloseAllMenus();
         Time.timeScale = 1.0f;
         paused = false;
     }
 
-    // Note: The gameObject "Settings" is directly grabbing the slider values to update volume
-    // the update methods below were kept here in-case the developer wants to still have access to the values
-    public void UpdateSFXVolumeSetting()
-    {
-        if (Settings.Instance.Debug.GetAudioDebug()) { Debug.Log("change detected"); }
-        sfxVolumeValue = SfxSlider.value;
-    }
-    public void UpdateMusicVolumeSetting()
-    {
-        if (Settings.Instance.Debug.GetAudioDebug()) { Debug.Log("change detected"); }
-        musicVolumeValue = MusicSlider.value;
-    }
-
-    public void UpdateAmbienceVolumeSetting()
-    {
-        if (Settings.Instance.Debug.GetAudioDebug()) { Debug.Log("change detected"); }
-        ambienceVolumeValue = AmbienceSlider.value;
-    }
-
-    public void UpdateMasterVolumeSetting()
-    {
-        if (Settings.Instance.Debug.GetAudioDebug()) { Debug.Log("change detected"); }
-        masterVolumeValue = MasterSlider.value;
-        AudioListener.volume = sfxVolumeValue;
-    }
-
-    public void UpdateDialogueVolumeSetting()
-    {
-        if (Settings.Instance.Debug.GetAudioDebug()) { Debug.Log("change detected"); }
-        dialogueVolumeValue = DialogueSlider.value;
-    }
 
     public void OpenVideoSettings()
     {
-        Debug.Log("setting video settings");
         PauseMenu.SetActive(false);
+        AudioSettingsMenu.SetActive(false);
         VideoSettingsMenu.SetActive(true);
+    }
+
+    public void OpenAudioSettings()
+    {
+        PauseMenu.SetActive(false);
+        AudioSettingsMenu.SetActive(true);
+        VideoSettingsMenu.SetActive(false);
+    }
+
+    public void OpenPauseMenu()
+    {
+        PauseMenu.SetActive(true);
+        AudioSettingsMenu.SetActive(false);
+        VideoSettingsMenu.SetActive(false);
+    }
+
+    public void CloseAllMenus()
+    {
+        PauseMenu.SetActive(false);
+        AudioSettingsMenu.SetActive(false);
+        VideoSettingsMenu.SetActive(false);
     }
 }

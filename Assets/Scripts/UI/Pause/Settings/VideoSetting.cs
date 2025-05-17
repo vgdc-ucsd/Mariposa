@@ -36,7 +36,6 @@ public class VideoSetting : MonoBehaviour
     public int Height;
     public WindowType ResolutionType = WindowType.Windowed;
 
-    public InputActionReference EscapeInputAction;
     public GameObject PauseMenu;
     public GameObject VideoSettingsMenu;
 
@@ -59,20 +58,6 @@ public class VideoSetting : MonoBehaviour
 
         GraphicsQualityDropdown.value = QualitySettings.GetQualityLevel();
         GraphicsQualityIndex = GraphicsQualityDropdown.value;
-    }
-
-    public void Update()
-    {
-        // do nothing if pause menu is open
-        if (PauseMenu.activeInHierarchy) return; 
-        
-        if (EscapeInputAction.action.triggered)
-        {
-            if (VideoSettingsMenu.activeSelf)
-            {
-                BackToPause();
-            }
-        }   
     }
 
     /// <summary>
@@ -109,12 +94,6 @@ public class VideoSetting : MonoBehaviour
         }
     }
 
-    public void BackToPause()
-    {
-        VideoSettingsMenu.SetActive(false);
-        PauseMenu.SetActive(true);
-    }
-
     public void ChangeGraphicsQuality()
     {
         Debug.Log(GraphicsQualityDropdown.value);
@@ -135,6 +114,7 @@ public class VideoSetting : MonoBehaviour
         GraphicsQualityDropdown.value = defaultQualityIndex;
         ResolutionTypeDropdown.value = defaultResolutionTypeIndex;
         ResolutionSizeDropdown.value = defaultResolutionIndex;
+
         ApplyAllGraphicsChanges();
     }
 }
