@@ -1,44 +1,76 @@
+using Unity.Mathematics;
+using UnityEditor;
 using UnityEngine;
 
 public class SendableMovingPlatform : MovingPlatform
 {
-    private bool isMoving = false;
-
-    [ContextMenu("SendPlatform")]
-    public void SendPlatform()
+    public override void Initialize()
     {
-        isMoving = true;
-        nextNodeIdx = GetNextNodeIdx(currNodeIdx);
+        base.Initialize();
+
+        currentNodeIdx = initialNodeIndex;
     }
 
-    protected override void Awake()
+    /// <summary>
+    /// Sends the platform to move <paramref name="nodesToTraverse"/> nodes. If <paramref name="nodesToTraverse"/>
+    /// is negative, will move the platform down.
+    /// </summary>
+    /// <param name="nodesToTraverse">The number of nodes to traverse</param>
+    public void SendPlatform(int nodesToTraverse)
     {
-        base.Awake();
-    }
+        if (state == PlatformState.Resetting) return;
 
-    protected override void FixedUpdate()
-    {
-        if (!isMoving)
+        if (nodesToTraverse == 0) return;
+
+        int targetNodeIdx = currentNodeIdx + nodesToTraverse;
+
+        if (targetNodeIdx < 0 || targetNodeIdx >= manager.pathNodes.Length)
         {
-            velocity = Vector2.zero;
             return;
         }
-
-        float fdt = Time.fixedDeltaTime;
-        Vector2 nextNode = pathNodes[nextNodeIdx];
-        Vector2 separationToNextNode = nextNode - platformRb.position;
-
-        Vector2 movement = platformMoveSpeed * fdt * separationToNextNode.normalized;
-        float distanceToNextNode = separationToNextNode.magnitude;
-        if (distanceToNextNode < platformMoveSpeed * fdt)
+        if (nodesToTraverse > 0)
         {
-            currNodeIdx = nextNodeIdx;
-            nextNodeIdx = (currNodeIdx + 1) % nodeCount;
-            movement = separationToNextNode;
-            isMoving = false;
+            for (int i = currentNodeIdx + 1; i <= targetNodeIdx; ++i)
+            {
+                if (manager.platforms[i] != null) return;
+            }
+        }
+        else
+        {
+            for (int i = currentNodeIdx - 1; i >= targetNodeIdx; --i)
+            {
+                if (manager.platforms[i] != null) return;
+            }
         }
 
-        velocity = movement / fdt;
-        platformRb.MovePosition(platformRb.position + movement);
+        manager.platforms[currentNodeIdx] = null;
+        manager.platforms[targetNodeIdx] = this;
+        currentNodeIdx = targetNodeIdx;
+
+        state = PlatformState.Moving;
+    }
+
+    protected override Vector2 GetCurrentMovement()
+    {
+        float fdt = Time.fixedDeltaTime;
+
+        Vector2 targetPos = manager.pathNodes[currentNodeIdx];
+        Vector2 separationToTarget = targetPos - rb.position;
+
+        if (separationToTarget.magnitude > platformMoveSpeed * fdt)
+        {
+            return platformMoveSpeed * fdt * separationToTarget.normalized;
+        }
+        else
+        {
+            StopMoving(currentNodeIdx);
+            return separationToTarget;
+        }
+    }
+
+    protected override void StopMoving(int stopNodeIdx)
+    {
+        state = PlatformState.Stopped;
+        currentNodeIdx = stopNodeIdx;
     }
 }

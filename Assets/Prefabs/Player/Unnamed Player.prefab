@@ -80,15 +80,15 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: da7feed84effcfe4ba6f7c51b05ec76a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3083909c13d2e0d4fb18b2fe7dd057db, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.7032258, y: 1.2354839}
+  m_Size: {x: 6.97, y: 9.79}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!95 &8376647658677142028
@@ -168,7 +168,6 @@ GameObject:
   - component: {fileID: 4113967831349822113}
   - component: {fileID: 4759830076982678282}
   - component: {fileID: 407862669245769329}
-  - component: {fileID: 476828147665577477}
   - component: {fileID: 2366443956971805421}
   m_Layer: 8
   m_Name: Unnamed Player
@@ -282,6 +281,7 @@ MonoBehaviour:
   CurrentRespawnPoint: {fileID: 0}
   Character: {fileID: 0}
   Movement: {fileID: 0}
+  Data: {fileID: 11400000, guid: f8617fd77dd925548a7220289a3c669a, type: 2}
   FacingDirection: 1
 --- !u!114 &407862669245769329
 MonoBehaviour:
@@ -298,48 +298,19 @@ MonoBehaviour:
   Velocity: {x: 0, y: 0}
   Rb: {fileID: 0}
   SurfaceCollider: {fileID: 0}
-  InsideTriggers: []
   State: 0
   Gravity: 50
   TerminalVelocity: 40
+  slipAngle: 45
   collisionLayer:
     serializedVersion: 2
     m_Bits: 64
   Parent: {fileID: 0}
-  MoveSpeed: 6.5
-  wallJumpMoveLockTime: 0.3
-  wallJumpHorizontalSpeed: 10
-  groundAccelerationTime: 0.15
-  groundDecelerationTime: 0.1
-  airAccelerationTime: 0.4
-  airMovementDecelerationTime: 0.2
-  airDragDecelerationTime: 0.5
-  jumpHeight: 2.5
-  DoubleJumpFactor: 0.85
   CanDoubleJump: 0
   CanWallJump: 1
-  coyoteTime: 0.1
-  jumpBufferTime: 0.15
-  fallingGravityMultiplier: 0.9
   cornerCorrectMaxInsetDistance: 0
   cornerCorrectMinVelocity: 0
   airJumpAvailable: 0
-  dashForce: 20
-  dashDuration: 0.2
---- !u!114 &476828147665577477
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4875991570046858898}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 861a2fde4eed59c439a2163c21492c48, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Name: The Unnamed
-  Id: 1
 --- !u!95 &2366443956971805421
 Animator:
   serializedVersion: 7
