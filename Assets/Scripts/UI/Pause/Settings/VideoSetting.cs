@@ -20,7 +20,7 @@ public class VideoSetting : MonoBehaviour
 
     public RenderPipelineAsset[] QualityLevels;
 
-    private readonly int[,] resolutions = 
+    private readonly int[,] resolutions =
     {
         {640, 360},
         {1280, 720},
@@ -29,63 +29,54 @@ public class VideoSetting : MonoBehaviour
         {2560, 1440},
         {3840, 2160}
     };
-    public int currentResolutionIndex = 0;
-    public int GraphicsQualityIndex = 0;
+    public int graphicsQualityIndex = 2;
+    public WindowType ResolutionType = WindowType.Windowed;
+    public int currentResolutionIndex = 5;
 
     public int Width;
     public int Height;
-    public WindowType ResolutionType = WindowType.Windowed;
 
     public GameObject PauseMenu;
     public GameObject VideoSettingsMenu;
 
-    public Dropdown GraphicsQualityDropdown;
-    public Dropdown ResolutionTypeDropdown;
-    public Dropdown ResolutionSizeDropdown;
+    [SerializeField] private Dropdown GraphicsQualityDropdown;
+    [SerializeField] private Dropdown ResolutionTypeDropdown;
+    [SerializeField] private Dropdown ResolutionSizeDropdown;
 
-    public int defaultQualityIndex;
-    public int defaultResolutionIndex;
-    public int defaultResolutionTypeIndex;
+    [SerializeField] private int defaultQualityIndex;
+    [SerializeField] private int defaultResolutionTypeIndex;
+    [SerializeField] private int defaultResolutionIndex;
 
     /// <summary>
     /// On program start, sets default resolution (may want to edit this if settings are saved)
     /// </summary>
     public void Start()
     {
-        Width = resolutions[currentResolutionIndex,0];
-        Height = resolutions[currentResolutionIndex,1];
+        Width = resolutions[currentResolutionIndex, 0];
+        Height = resolutions[currentResolutionIndex, 1];
         Screen.SetResolution(Width, Height, FullScreenMode.Windowed);
 
         GraphicsQualityDropdown.value = QualitySettings.GetQualityLevel();
-        GraphicsQualityIndex = GraphicsQualityDropdown.value;
+        graphicsQualityIndex = GraphicsQualityDropdown.value;
     }
 
     /// <summary>
     /// Saves applied resolution to class when resolutionObj is clicked
     /// </summary>
     /// <param name="resolutionObj">the dropdown menu GameObject</param>
-    public void SaveResolutionDimensions()
+    public void ApplyResolutionDimensionsChanges()
     {
-        currentResolutionIndex = ResolutionTypeDropdown.value;
-        Debug.Log(currentResolutionIndex);
+        currentResolutionIndex = ResolutionSizeDropdown.value;
         Width = resolutions[currentResolutionIndex, 0];
         Height = resolutions[currentResolutionIndex, 1];
     }
 
     /// <summary>
-    /// Saves resolution type to class when resolutionObj is clicked
-    /// </summary>
-    /// <param name="fullScreenObj">the dropdown menu GameObject</param>
-    public void SaveResolutionType()
-    {
-        ResolutionType = (WindowType)ResolutionTypeDropdown.value;
-    }
-
-    /// <summary>
     /// Finally apply changes to resolution when resolutionObj is clicked
     /// </summary>
-    public void ApplyResolutionChanges()
+    public void ApplyResolutionTypeChanges()
     {
+        ResolutionType = (WindowType)ResolutionTypeDropdown.value;
         switch (ResolutionType)
         {
             case WindowType.Windowed: Screen.SetResolution(Width, Height, FullScreenMode.Windowed); return;
@@ -96,25 +87,36 @@ public class VideoSetting : MonoBehaviour
 
     public void ChangeGraphicsQuality()
     {
-        Debug.Log(GraphicsQualityDropdown.value);
-        QualitySettings.SetQualityLevel(GraphicsQualityDropdown.value);
-        QualitySettings.renderPipeline = QualityLevels[GraphicsQualityDropdown.value]; 
+        graphicsQualityIndex = GraphicsQualityDropdown.value;
+        QualitySettings.SetQualityLevel(graphicsQualityIndex);
+        QualitySettings.renderPipeline = QualityLevels[graphicsQualityIndex];
     }
 
     public void ApplyAllGraphicsChanges()
     {
         ChangeGraphicsQuality();
-        SaveResolutionDimensions();
-        SaveResolutionType();
-        ApplyResolutionChanges();
+        ApplyResolutionDimensionsChanges();
+        ApplyResolutionTypeChanges();
     }
 
     public void ResetGraphicsSettings()
     {
+        Debug.Log("caca");
         GraphicsQualityDropdown.value = defaultQualityIndex;
+        Debug.Log(GraphicsQualityDropdown.value);
         ResolutionTypeDropdown.value = defaultResolutionTypeIndex;
         ResolutionSizeDropdown.value = defaultResolutionIndex;
 
         ApplyAllGraphicsChanges();
+        Debug.Log("loco");
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyUp(KeyCode.U))
+        {
+            ResolutionSizeDropdown.value++;
+            ApplyAllGraphicsChanges();
+        }
     }
 }
