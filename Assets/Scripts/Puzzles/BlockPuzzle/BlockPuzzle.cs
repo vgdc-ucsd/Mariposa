@@ -12,6 +12,11 @@ public class BlockPuzzle : Puzzle
     public GridLayoutGroup SlotContainer;
     public GameObject SlotPrefab;
 
+    public delegate void OnStartDragBlock();
+    public static OnStartDragBlock onStartDragBlock;
+    public delegate void OnEndDragBlock();
+    public static OnEndDragBlock onEndDragBlock;
+
     [HideInInspector] public float CellDiameter;
     [HideInInspector] public BlockPuzzleSlot HoveredSlot = null;
     private BlockPuzzleBlock[,] grid;
@@ -85,9 +90,16 @@ public class BlockPuzzle : Puzzle
         return true;
     }
 
+    public Vector2 GetWorldPositionForBlock(BlockPuzzleBlock block, RectTransform rect)
+    {
+        return new Vector2(
+            rect.anchoredPosition.x + (-4f + block.Size.x / 2f) * CellDiameter,
+            rect.anchoredPosition.y + (3f + block.Size.y / 2f) * CellDiameter
+        );
+    }
+
     public void SetBlockInGrid(BlockPuzzleBlock block, Vector2Int newGridPos)
     {
-        //Debug.Log($"Setting {block.gameObject.name} in {newGridPos}");
         foreach (Vector2Int offset in block.Cells)
         {
             Vector2Int cellPos = new Vector2Int(newGridPos.x + offset.x, newGridPos.y + offset.y);
@@ -95,11 +107,7 @@ public class BlockPuzzle : Puzzle
         }
 
         RectTransform slotRectTransform = GetSlotTransformAtPosition(newGridPos);
-        Vector2 worldPos = new Vector2(
-            slotRectTransform.position.x + (block.Size.x - 1) * CellDiameter,
-            slotRectTransform.position.y + (block.Size.y - 1) * CellDiameter
-        );
-        Debug.Log($"Block world pos is {worldPos}");
+        Vector2 worldPos = GetWorldPositionForBlock(block, slotRectTransform);
         block.SetPosition(worldPos);
         block.GridPos = newGridPos;
 
@@ -108,20 +116,16 @@ public class BlockPuzzle : Puzzle
 
     public void ClearBlockFromGrid(BlockPuzzleBlock block)
     {
-        //Debug.Log($"Clearing {block.gameObject.name}");
         foreach (Vector2Int offset in block.Cells)
         {
             Vector2Int cellPos = new Vector2Int(block.GridPos.x + offset.x, block.GridPos.y + offset.y);
             if (cellPos.x < 0 || cellPos.x >= GridWidth || cellPos.y < 0 || cellPos.y >= GridHeight) continue;
             grid[cellPos.x, cellPos.y] = null;
-            //Debug.Log($"Clearing {cellPos}");
         }
-        //PrintGridState();
     }
 
     public bool CheckSolution()
     {
-        //PrintGridState();
         for (int i = 0; i < GridWidth; ++i)
         {
             for (int j = 0; j < GridHeight; ++j)
@@ -140,21 +144,5 @@ public class BlockPuzzle : Puzzle
         });
         OnComplete();
         
-    }
-
-    // TODO: debug, remove
-    private void PrintGridState()
-    {
-        string output = "\n";
-        for (int i = GridHeight - 1; i >= 0; i--)
-        {
-            for (int j = 0; j < GridWidth; j++)
-            {
-                if (grid[j,i] != null) output += "#";
-                else output += "-";
-            }
-            output += "\n";
-        }
-        Debug.Log(output);
     }
 }

@@ -48,9 +48,12 @@ public class BlockPuzzleBlock : MonoBehaviour, IBeginDragHandler, IDragHandler, 
                 preview.SetSprite(rectTransform.sizeDelta, image.sprite, image.color);
                 preview.Hide();
             }
-            
+
             if (stagingPos == Vector3.one) stagingPos = rectTransform.anchoredPosition;
         }
+
+        BlockPuzzle.onStartDragBlock += () => canvasGroup.blocksRaycasts = false;
+        BlockPuzzle.onEndDragBlock += () => canvasGroup.blocksRaycasts = !isFixed;  // if not fixed block casts, if fixed don't block
     }
 
     private void OnDestroy()
@@ -60,7 +63,7 @@ public class BlockPuzzleBlock : MonoBehaviour, IBeginDragHandler, IDragHandler, 
 
     public void SetPosition(Vector2 worldPos)
     {
-        rectTransform.position = worldPos;
+        rectTransform.anchoredPosition = worldPos;
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -79,12 +82,13 @@ public class BlockPuzzleBlock : MonoBehaviour, IBeginDragHandler, IDragHandler, 
         dragOffsetCell = CalculateCellOffset(pointerWorldPos, rectTransform.position);
 
         Vector2 blockScreenPos = RectTransformUtility.WorldToScreenPoint(
-            eventData.pressEventCamera, 
+            eventData.pressEventCamera,
             rectTransform.position);
         dragOffset = blockScreenPos - pointerPos;
 
         canvasGroup.alpha = 0.7f;
-        canvasGroup.blocksRaycasts = false;
+        // canvasGroup.blocksRaycasts = false;
+        BlockPuzzle.onStartDragBlock.Invoke();
 
         if (isInGrid)
         {
@@ -98,8 +102,8 @@ public class BlockPuzzleBlock : MonoBehaviour, IBeginDragHandler, IDragHandler, 
     private Vector2Int CalculateCellOffset(Vector3 pointerWorldPos, Vector3 transformWorldPos)
     {
         Vector2Int output = new Vector2Int(
-            Mathf.FloorToInt((Size.x / 2f * BlockPuzzle.Instance.CellDiameter + pointerWorldPos.x - transformWorldPos.x) / BlockPuzzle.Instance.CellDiameter),
-            Mathf.FloorToInt((Size.y / 2f * BlockPuzzle.Instance.CellDiameter + pointerWorldPos.y - transformWorldPos.y) / BlockPuzzle.Instance.CellDiameter)
+            Mathf.FloorToInt(Size.x / 2f + (pointerWorldPos.x - transformWorldPos.x) / BlockPuzzle.Instance.CellDiameter),
+            Mathf.FloorToInt(Size.y / 2f + (pointerWorldPos.y - transformWorldPos.y) / BlockPuzzle.Instance.CellDiameter)
         );
         if (output.x < 0) output.x = 0;
         if (output.x >= Size.x) output.x = Size.x - 1;
@@ -129,15 +133,10 @@ public class BlockPuzzleBlock : MonoBehaviour, IBeginDragHandler, IDragHandler, 
             if (BlockPuzzle.Instance.HoveredSlot != null)
             {
                 Vector2Int targetGridPos = BlockPuzzle.Instance.HoveredSlot.GridPos - dragOffsetCell;
-                RectTransform rectTransform = BlockPuzzle.Instance.GetSlotTransformAtPosition(targetGridPos);
-                if (rectTransform != null)
+                RectTransform slotRectTransform = BlockPuzzle.Instance.GetSlotTransformAtPosition(targetGridPos);
+                if (slotRectTransform != null)
                 {
-                    Vector3 previewWorldPos = rectTransform.anchoredPosition;
-                    previewWorldPos += new Vector3(
-                        (-4.5f + Size.x) * BlockPuzzle.Instance.CellDiameter - (Size.x - 1f) * BlockPuzzle.Instance.CellDiameter / 2f,
-                        (2.5f + Size.y) * BlockPuzzle.Instance.CellDiameter - (Size.y - 1f) * BlockPuzzle.Instance.CellDiameter / 2f,
-                        0f
-                    );
+                    Vector2 previewWorldPos = BlockPuzzle.Instance.GetWorldPositionForBlock(this, slotRectTransform);
                     ShowPreview(previewWorldPos, BlockPuzzle.Instance.IsPositionValidForBlock(targetGridPos, this));
                 }
                 else
@@ -157,7 +156,8 @@ public class BlockPuzzleBlock : MonoBehaviour, IBeginDragHandler, IDragHandler, 
         if (isFixed) return;
 
         canvasGroup.alpha = 1f;
-        canvasGroup.blocksRaycasts = true;
+        // canvasGroup.blocksRaycasts = true;
+        BlockPuzzle.onEndDragBlock.Invoke();
 
         if (BlockPuzzle.Instance.HoveredSlot != null)
         {
@@ -191,7 +191,7 @@ public class BlockPuzzleBlock : MonoBehaviour, IBeginDragHandler, IDragHandler, 
         if (preview != null) preview.Hide();
     }
 
-    private void ShowPreview(Vector3 worldPos, bool isValid)
+    private void ShowPreview(Vector2 worldPos, bool isValid)
     {
         if (preview == null) return;
 
@@ -199,7 +199,7 @@ public class BlockPuzzleBlock : MonoBehaviour, IBeginDragHandler, IDragHandler, 
 
         if (isValid) preview.SetSprite(rectTransform.sizeDelta, image.sprite, image.color);
         else preview.SetSprite(rectTransform.sizeDelta, image.sprite, new Color(1f, 0.3f, 0.3f));
-        
+
         preview.Show();
     }
 }
