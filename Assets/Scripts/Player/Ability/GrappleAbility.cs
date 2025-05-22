@@ -129,6 +129,8 @@ public class GrappleAbility : MonoBehaviour, IAbility
 
         foreach (GrappleTarget target in grappleTargets)
         {
+            if (!target.isAvailable) continue;
+
             int targetDir = target.transform.position.x < Player.ActivePlayer.transform.position.x ? -1 : 1;
             float dist = Vector2.Distance(target.transform.position, Player.ActivePlayer.transform.position);
             if (dist <= grappleRange)

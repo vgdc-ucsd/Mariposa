@@ -79,6 +79,7 @@ public class Player : MonoBehaviour
 		if (CurrentRespawnPoint == null)
 		{
 			transform.position = new Vector3(0f, 0f, transform.position.z);
+            Movement.ResolveInitialCollisions();
 			if (playerDebug) Debug.Log($"Player respawned to: {transform.position.ToString()}");
 		}
 		else
