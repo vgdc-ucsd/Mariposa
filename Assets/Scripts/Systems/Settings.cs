@@ -11,8 +11,9 @@ public class Settings : Singleton<Settings>
     [SerializeField] private Slider MusicSlider;
     [SerializeField] private Slider SFXSlider;
     [SerializeField] private Slider DialogueSlider;
+    [SerializeField] private Slider AmbienceSlider;
 
-    private VolumeControl MasterVolume, MusicVolume, SFXVolume, DialogueVolume;
+    private VolumeControl MasterVolume, MusicVolume, SFXVolume, DialogueVolume, AmbienceVolume;
 
     void Start()
     {
@@ -22,7 +23,7 @@ public class Settings : Singleton<Settings>
         if (Debug.GetAudioDebug())
         {
             // test music (using mariposa's tutorial music)
-            EventInstance audioEvent = FMODUnity.RuntimeManager.CreateInstance("event:/music/1_tutorial/mariposa");
+            EventInstance audioEvent = FMODUnity.RuntimeManager.CreateInstance("event:/music/s0_tutorial/mariposa");
             audioEvent.start();
 
             // test sfx (using bee flap sfx)
@@ -50,5 +51,9 @@ public class Settings : Singleton<Settings>
         DialogueVolume = transform.Find("DialogueVolume").gameObject.AddComponent<VolumeControl>();
         DialogueVolume.Initialize(DialogueSlider, "bus:/Dialogue");
         DialogueVolume.StartControl();
+
+        AmbienceVolume = transform.Find("AmbienceVolume").gameObject.AddComponent<VolumeControl>();
+        AmbienceVolume.Initialize(AmbienceSlider, "bus:/Ambience");
+        AmbienceVolume.StartControl();
     }
 }
