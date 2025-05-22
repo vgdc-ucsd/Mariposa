@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 public class TutorialJammedDoor : Interactable
 {
     public Dialogue jammedDialogue, mariposaDialogue;
-    [HideInInspector] public bool jammed = true;
+    public bool jammed;
 
     public override void OnInteract(IControllable controllable)
     {
