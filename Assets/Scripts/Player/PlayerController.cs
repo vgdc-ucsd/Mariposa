@@ -139,7 +139,9 @@ public class PlayerController : MonoBehaviour
         // TODO: TEMPORARY AND SHOULD BE REMOVED IN ANY NON-TEST BUILD
         if (Input.GetKeyDown(KeyCode.Tab)) SwitchCharacters();
         if (Input.GetKeyDown(KeyCode.E)) SendInteract();
-    }
+
+        if (Input.GetKeyDown(KeyCode.K)) StartControlling(SquidMovement.Instance);
+    }   
 
     public void SendAbilityDown(InputAction.CallbackContext ctx)
     {

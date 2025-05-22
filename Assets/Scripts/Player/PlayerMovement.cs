@@ -227,7 +227,7 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
 
         float currentGravity = Velocity.y > 0 ? Gravity : Gravity * data.fallingGravityMultiplier;
         Velocity.y = Mathf.Max(Velocity.y - currentGravity * fdt, -TerminalVelocity);
-    }
+    } 
 
     protected override void OnGrounded(RaycastHit2D groundHit)
     {
