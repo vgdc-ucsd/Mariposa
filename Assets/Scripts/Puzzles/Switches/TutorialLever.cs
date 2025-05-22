@@ -6,20 +6,28 @@ using UnityEngine;
 
 public class TutorialLever : Switch
 {
-   public SpriteRenderer spriteRenderer;
+    public SpriteRenderer spriteRenderer;
 
-   /// <summary>
-   /// Override of TriggerSwitch from switch class which switchs lever to opposite value
-   /// calls public ChangeState method to open a door or close a door
-   /// </summary>
+    /// <summary>
+    /// Override of TriggerSwitch from switch class which switchs lever to opposite value
+    /// calls public ChangeState method to open a door or close a door
+    /// </summary>
 
-   public override void TriggerSwitch()
-   {
-      if (!SwitchToggled)
-      {
-         SwitchToggled = true;
-         spriteRenderer.flipX = true;
-         RuntimeManager.PlayOneShot("event:/sfx/puzzle/lever_pull");
-      }
-   }
+    public override void TriggerSwitch()
+    {
+        if (!SwitchToggled)
+        {
+            SwitchToggled = true;
+            spriteRenderer.flipX = true;
+            RuntimeManager.PlayOneShot("event:/sfx/puzzle/lever_pull");
+
+            if (BlockPuzzle.Instance.IsComplete)
+            {
+                DialogueManager.Instance.PlayDialogue(BlockPuzzle.Instance.dialogue, () =>
+                {
+                    LevelManager.Instance.GoToNextSublevel();
+                });
+            }
+        }
+    }
 }

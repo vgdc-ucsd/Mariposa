@@ -183,6 +183,7 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
             RaycastHit2D[] beeHits = Physics2D.BoxCastAll(beeCastCenter, beeCastSize, 0f, Vector2.down, COLLISION_CHECK_DISTANCE);
             foreach (var hit in beeHits) if (hit.collider.CompareTag("Bee")) onBee = true;
         }
+        
 
         if (CanWallJump && wallNormal != 0 && State == BodyState.InAir)
         {

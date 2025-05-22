@@ -23,7 +23,8 @@ public class BlockPuzzle : Puzzle
     private BlockPuzzleSlot[,] slots;
     BlockPuzzleBlock[] blocks;
 
-    public Dialogue dialogue; // played when puzzle is completed
+    public Dialogue dialogue, radioDialogue; // played when puzzle is completed
+    [SerializeField] private TutorialLever lever;
 
     void Awake()
     {
@@ -138,10 +139,14 @@ public class BlockPuzzle : Puzzle
 
     private void FinishPuzzle()
     {
-        DialogueManager.Instance.PlayDialogue(dialogue, () =>
+        if (lever.SwitchToggled)
         {
-            LevelManager.Instance.GoToNextSublevel();
-        });
+            DialogueManager.Instance.PlayDialogue(dialogue, () =>
+            {
+                LevelManager.Instance.GoToNextSublevel();
+                DialogueManager.Instance.PlayDialogue(radioDialogue);
+            });
+        }
         OnComplete();
         
     }
