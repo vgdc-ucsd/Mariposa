@@ -14,6 +14,7 @@ public class BlockPuzzleInteractable : GenericInteractable
     {
         /* PuzzlePopupManager.Instance.ActivePuzzle = puzzle.gameObject; */
         base.OnInteract(controllable);
+        SceneManager.LoadScene(2); // TODO remove after EOQ social
     }
 
 

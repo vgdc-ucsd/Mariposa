@@ -52,7 +52,7 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    public Sublevel GetCurrentSublevel() => CurrentLevel.Sublevels[SublevelIndex];
+    private Sublevel GetCurrentSublevel() => CurrentLevel.Sublevels[SublevelIndex];
 
     public void GoToNextSublevel()
     {
