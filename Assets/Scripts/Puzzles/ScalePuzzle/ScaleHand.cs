@@ -47,8 +47,9 @@ public class ScaleHand : MonoBehaviour
 
     public void UpdateWeightText()
     {
-        if (scaleObjects.Contains(ScalePuzzle.Instance.mysteryBox)) weightText.text = "???";
-        else weightText.text = (totalWeight == 0 ? string.Empty : totalWeight.ToString());
+        weightText.text = totalWeight.ToString();
+        /*if (scaleObjects.Contains(ScalePuzzle.Instance.mysteryBox)) weightText.text = "???";
+        else weightText.text = (totalWeight == 0 ? string.Empty : totalWeight.ToString());*/
     }
 
     public void FitToPlatform(RectTransform objRect, bool print = false)
