@@ -44,6 +44,7 @@ public class VelocityField : MonoBehaviour
             : fieldMaxSize.x;
         blowField.transform.localScale = new(newLength, fieldMaxSize.y);
         blowField.transform.localPosition = new Vector2(newLength / 2f, 0f);
+        // Debug.Log(newLength);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
