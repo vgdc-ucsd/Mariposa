@@ -100,8 +100,8 @@ public class LevelManager : MonoBehaviour
         // Tell AudioManager to change audio if PlayOnLoad is on in the sublevel
         if (GetCurrentSublevel().PlayOnLoad)
         {
-            MusicManager.Instance.ChangeEvent();
-            AmbienceManager.Instance.ChangeEvent();
+            MusicManager.Instance.ChangeMusic(MusicManager.Instance.GetMusicToCurrentSublevel());
+            AmbienceManager.Instance.ChangeAmbience(AmbienceManager.Instance.GetAmbienceToCurrentSublevel());
         }
     }
 

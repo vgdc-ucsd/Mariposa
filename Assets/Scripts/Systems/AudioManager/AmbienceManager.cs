@@ -18,7 +18,6 @@ public class AmbienceManager : Singleton<AmbienceManager>
 
     private void createInstance()
     {
-        getCurrentSublevelEvent();
         if (AmbienceEvent != Ambience.NONE)
         {
             AmbienceEventInstance = RuntimeManager.CreateInstance(AmbienceEvent.GetPath());
@@ -30,10 +29,14 @@ public class AmbienceManager : Singleton<AmbienceManager>
         }
     }
 
-    private void getCurrentSublevelEvent()
+    public Ambience GetAmbienceToCurrentSublevel()
     {
         Sublevel currentSublevel = AudioManager.Instance.getCurrentSublevel();
-        AmbienceEvent = currentSublevel != null ? currentSublevel.SublevelAmbience : Ambience.NONE;
+        if (currentSublevel == null)
+        {
+            return Ambience.NONE;
+        }
+        return currentSublevel.SublevelAmbience;
     }
 
     [ContextMenu("Play")]
@@ -69,10 +72,17 @@ public class AmbienceManager : Singleton<AmbienceManager>
         }
     }
 
-    public void ChangeEvent()
+    public void ChangeAmbience(Ambience ambienceEvent)
     {
+        if (ambienceEvent == Ambience.NONE)
+        {
+            Debug.LogError("Tried changing ambience to Ambience.NONE, no changes will be applied!");
+            return;
+        }
+
+        AmbienceEvent = ambienceEvent;
+
         Stop();
-        createInstance();
         Play();
     }
 

@@ -1,5 +1,4 @@
 using System;
-using FMODUnity;
 using UnityEngine;
 
 public class AudioManager : Singleton<AudioManager>
@@ -14,6 +13,11 @@ public class AudioManager : Singleton<AudioManager>
     public MusicManager musicManager
     {
         get { return _musicManager; }
+    }
+    private VoicelineManager _voicelineManager = null;
+    public VoicelineManager voicelineManager
+    {
+        get { return _voicelineManager; }
     }
 
     // if other managers not found, add them in with default settings
@@ -30,6 +34,12 @@ public class AudioManager : Singleton<AudioManager>
             Debug.LogWarning("MusicManager not found! Attaching default MusicManager to AudioManager.");
             _musicManager = gameObject.AddComponent<MusicManager>();
         }
+
+        if (!TryGetComponent<VoicelineManager>(out _voicelineManager))
+        {
+            Debug.LogWarning("VoicelineManager not found! Attaching default VoicelineManager to AudioManager.");
+            _voicelineManager = gameObject.AddComponent<VoicelineManager>();
+        }
     }
 
     public Sublevel getCurrentSublevel()
@@ -38,6 +48,7 @@ public class AudioManager : Singleton<AudioManager>
         try
         {
             currentSublevel = levelManager.CurrentLevel.Sublevels[levelManager.SublevelIndex];
+            // Debug.Log("Sublevel index found: " + levelManager.SublevelIndex);
         }
         catch (NullReferenceException)
         {

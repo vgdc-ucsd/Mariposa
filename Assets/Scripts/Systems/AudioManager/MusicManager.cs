@@ -19,7 +19,6 @@ public class MusicManager : Singleton<MusicManager>
 
     private void createInstance()
     {
-        getCurrentSublevelEvent();
         if (MusicEvent != Music.NONE)
         {
             MusicEventInstance = RuntimeManager.CreateInstance(MusicEvent.GetPath());
@@ -31,10 +30,14 @@ public class MusicManager : Singleton<MusicManager>
         }
     }
 
-    private void getCurrentSublevelEvent()
+    public Music GetMusicToCurrentSublevel()
     {
         Sublevel currentSublevel = AudioManager.Instance.getCurrentSublevel();
-        MusicEvent = currentSublevel != null ? currentSublevel.SublevelMusic : Music.NONE;
+        if (currentSublevel == null)
+        {
+            return Music.NONE;
+        }
+        return currentSublevel.SublevelMusic;
     }
 
     [ContextMenu("Play")]
@@ -42,9 +45,9 @@ public class MusicManager : Singleton<MusicManager>
     {
         if (isPlaying()) { return; }
 
-        //Stop();
         createInstance();
 
+        // checks if instance is valid again
         if (isValid)
         {
             MusicEventInstance.start();
@@ -70,11 +73,23 @@ public class MusicManager : Singleton<MusicManager>
         }
     }
 
-    public void ChangeEvent()
+    public void ChangeMusic(Music musicEvent)
     {
+        if (musicEvent == Music.NONE)
+        {
+            Debug.LogError("Tried changing music to Music.NONE, no changes will be applied!");
+            return;
+        }
+
+        MusicEvent = musicEvent;
+
         Stop();
-        createInstance();
         Play();
+    }
+
+    public void ChangeTrack()
+    {
+
     }
 
     private bool isPlaying()
