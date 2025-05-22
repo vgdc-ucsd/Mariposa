@@ -10,13 +10,13 @@ public class PauseScript : Singleton<PauseScript>
 
     private InputAction pauseInputAction;
 
-	override public void Awake()
-	{
+    override public void Awake()
+    {
         base.Awake();
         pauseInputAction = InputSystem.actions.FindActionMap("Player").FindAction("Escape");
-	}
+    }
 
-	void Start()
+    void Start()
     {
         Canvas pauseCanvas = PauseMenu.GetComponent<Canvas>();
         if (pauseCanvas.worldCamera == null) pauseCanvas.worldCamera = Camera.main;
