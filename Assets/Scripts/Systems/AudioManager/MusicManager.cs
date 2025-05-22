@@ -87,11 +87,6 @@ public class MusicManager : Singleton<MusicManager>
         Play();
     }
 
-    public void ChangeTrack()
-    {
-
-    }
-
     private bool isPlaying()
     {
         if (isValid)
