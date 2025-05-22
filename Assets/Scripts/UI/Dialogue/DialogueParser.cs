@@ -4,191 +4,53 @@ using System.IO;
 
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
+using System;
 
-public class DialogueOptionIntermediate
+public class DialogueException : Exception
 {
-	public string text;
-	public List<string> impact;
-	public List<DialogueElementIntermediate> script;
-
-
-	// Note: I recommend you fold the ToString implementation. It's kind of useless.
-	// Have not decided whether to delete or not.
-	public override string ToString() 
-	{
-		string output = "Option titled \"" + text + "\"\n";
-		output += "Impact: ";
-		foreach (string aspect in impact)
-		{
-			output += aspect + " ";
-		}
-		output += "Script:\n";
-		if(script != null)
-		{
-			foreach (DialogueElementIntermediate ele in script) 
-			{
-				if(ele != null)
-					output += ele.ToString();
-			}
-		}
-		else
-		{
-			output += "No script.\n";
-		}
-		return output;
-	}
-
-}
-
-public class DialogueElementIntermediate 
-{
-	public string name;
-	public string line;
-	public string sound;
-	public string icon;
-	public bool fromRadio;
-	public List<DialogueOptionIntermediate> options;
-
-	// Note: I recommend you fold the ToString implementation. It's kind of useless.
-	// Have not decided whether to delete or not.
-
-	public override string ToString() 
-	{
-		string output = name + ": [" + line + "] <plays: " + sound + " looks: " + icon + ">\n";
-		if(options == null)
-		{
-			output += "No options.\n";
-		}
-		else if(options.Count == 0)
-		{
-			output += "No options.\n";
-		}
-		else 
-		{
-			output += options.Count + " option";
-			if(options.Count == 1)
-			{
-				output += ":\n";
-			}
-			else 
-			{
-				output += "s:\n";
-			}
-			foreach (var opt in options) 
-			{
-				if(opt != null)
-				{
-					output += opt.ToString();
-				}
-				else 
-				{
-					output += "Invalid option\n";
-				}
-			}
-		}
-		return output;
-	}
+	public DialogueException(string name, string message) 
+		: base($"Error in dialogue {name}! {message}") { }
 }
 
 public class DialogueParser : Singleton<DialogueParser>
 {
 	private static IDeserializer deserializer = new DeserializerBuilder()
-		.WithNamingConvention(CamelCaseNamingConvention.Instance)
+		.WithNamingConvention(PascalCaseNamingConvention.Instance)
 		.IgnoreUnmatchedProperties()
 		.Build();
 
-	[SerializeField] string ArtPath;
-	[SerializeField] string YamlPath;
-	private Dictionary<string, Sprite> spriteCache;
-
-	void Awake()
+	private static HashSet<string> portraits = new HashSet<string>
 	{
-		base.Awake();
-		this.spriteCache = new Dictionary<string, Sprite>();
+		"MariposaNeutral", "MariposaSad", "MariposaSurprised", "MariposaHappy",
+		"UnnamedNeutral",  "UnnamedSad", "UnnamedSurprised", "UnnamedSilhouette",
+	};
+
+	public static Dictionary<string, List<DialogueElement>> Parse(TextAsset yaml)
+	{
+		Dictionary<string, List<DialogueElement>> data = deserializer.Deserialize<Dictionary<string, List<DialogueElement>>>(yaml.text);
+		return data;
 	}
 
-	private Sprite loadSpriteFromPath(string path) 
+	public static void Validate(Dictionary<string, List<DialogueElement>> data)
 	{
-		// read file as raw bytes into memory
-		if(path == "" || path == null) return null;
-		/*string fullPath = Path.Combine(ArtPath, path);*/
-		string fullPath = path;
-		byte[] rawBytes = File.ReadAllBytes(fullPath);
-
-		// arguments to Texture2D constructor have no effect after LoadImage
-		Texture2D rawTexture = new Texture2D(2,2);
-		rawTexture.LoadImage(rawBytes);
-
-		// if this mangles the output, look into Rect and Vector params
-		Sprite spr = Sprite.Create(rawTexture, 
-				// dimension of sprite from (0,0) to (w,h)
-				new Rect(0, 0, rawTexture.width, rawTexture.height),
-				// center is (0.5,0.5) where (1,1) is top right and (0,0) is bottom left
-				// not sure what the meaning of this is, but adjust if necessary
-				new Vector2(0.5f, 0.5f) 
-				);
-		return spr;
-	}
-	public Dialogue ParseDialogue(string path)
-	{
-		/*FileStream file = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.Read);*/
-		string ymlPath = Path.Combine(YamlPath, path);
-		string yml = File.ReadAllText(ymlPath);
-		string fullArtPath = Path.Combine(ArtPath, path);
-
-		// Not actually possible to read YAML as Dialogue object directly.
-		var inter = deserializer.Deserialize<List<DialogueElementIntermediate>>(yml);
-
-		Dialogue parsedDialogue = new Dialogue();
-		parsedDialogue.Conversation = new List<DialogueElement>();
-
-		// translate every DialogueElementIntermediate to DialogueElement
-		foreach (DialogueElementIntermediate ele in inter) 
+		foreach ((string name, List<DialogueElement> dialogue) in data)
 		{
-			DialogueElement realEle = new DialogueElement();
-			realEle.Speaker = ele.name;
-			realEle.Line = ele.line;
-			realEle.FromRadio = ele.fromRadio;
-
-			// assume path == "" if there is no icon
-			// TODO: verify?
-			Sprite s;
-			if(ele.icon == null)
+			bool first = true;
+			foreach (DialogueElement element in dialogue)
 			{
-				s = null;
+				if (first)
+				{
+					if (element.Speaker == null) throw new DialogueException(name, "The first entry does not contain the speaker's name!");
+					first = false;
+				}
+
+				if (element.Line == null)
+				{
+					throw new DialogueException(name, "Empty line!");
+				}
+
+				// TODO
 			}
-			else if(!spriteCache.TryGetValue(ele.icon, out s))
-			{
-				string iconPath = FilePathManager.Instance.FindFullPath(ele.icon);
-				s = loadSpriteFromPath(iconPath);
-				spriteCache.Add(ele.icon, s);
-			}
-
-			realEle.Sprite = s;
-
-			// the rest of the fields are actually lost for now.
-
-			parsedDialogue.Conversation.Add(realEle);
-		}
-		return parsedDialogue;
-	}
-	static List<DialogueElementIntermediate> ParseDialogueTest(string path)
-	{
-		string yml = File.ReadAllText(path);
-
-		var p = deserializer.Deserialize<List<DialogueElementIntermediate>>(yml);
-
-		return p;
-		/*return returnable;*/
-	}
-
-	public static void SelfTest(string path)
-	{
-		var test = ParseDialogueTest(path);
-
-		foreach (DialogueElementIntermediate ele in test)
-		{
-			Debug.Log(ele.ToString());
 		}
 	}
 }

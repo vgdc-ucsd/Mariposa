@@ -1,174 +1,75 @@
 using UnityEngine;
 using System.Collections.Generic;
-using TMPro;
-using UnityEngine.UI;
-using System.Collections;
-using System;
 
-public class DialogueManager : Singleton<DialogueManager>//, IInputListener
+/// <summary>
+/// Responsible for coordinating the loading and playing of dialogue
+/// </summary>
+public class DialogueManager : Singleton<DialogueManager>
 {
-    // object references
-    public GameObject DialogueWindow;
-    [SerializeField] Image rect;
-    [SerializeField] Sprite mariRect;
-    [SerializeField] Sprite unnRect;
-    [SerializeField] Sprite mariRadio;
-    [SerializeField] Sprite unnRadio;
+    [SerializeField] private DialoguePlayer dialoguePlayer;
 
-    [SerializeField] TMP_Text speakerTarget;
-    [SerializeField] TMP_Text lineTarget;
+    private InputSystem_Actions inputs;
+    private Dictionary<string, List<DialogueElement>> dialogueDictionary = new Dictionary<string, List<DialogueElement>>();
+    private Dictionary<string, DialogueEvent> eventDictionary = new Dictionary<string, DialogueEvent>();
 
-    [SerializeField] GameObject frame;
-    [SerializeField] Sprite mariFrame;
-    [SerializeField] Sprite unnFrame;
-
-    [SerializeField] Image mask;
-    [SerializeField] Image portrait;
-
-    // dialogue control
-    List<DialogueElement> conversation;
-    int dialogueIndex;
-
-    // typewriter control
-    [SerializeField] float DIALOGUE_SPEED = 0.025f;
-    public bool finishedTypewriter;
-    private System.Action callback;
-    public bool IsPlayingDialogue = false;
-
-    void Start()
+    public override void Awake()
     {
-        DialogueWindow.SetActive(false);
+        base.Awake();
+        inputs = new InputSystem_Actions();
     }
 
-    public void PlayDialogue(Dialogue dialogue, System.Action callback = null)
+    /// <summary>
+    /// Loads the dialogue data in the given yaml file.
+    /// </summary>
+    /// <param name="yamlName">The name of the yaml file to be loaded. This should NOT include the .yaml file extension</param>
+    public void LoadYaml(string yamlName)
     {
-        Debug.Log("Started dialogue");
-
-        conversation = dialogue.Conversation;
-        dialogueIndex = -1;
-        this.callback = callback;
-
-        DialogueWindow.SetActive(true);
-        IsPlayingDialogue = true;
-        PlayerController.Instance.ToggleMovementLock();
-        //PlayerController.Instance.Subscribe(this);
-        AdvanceDialogue();
-    }
-
-    public void InteractInputDown() {
-        AdvanceDialogue();
-    }
-
-    public void AdvanceDialogue()
-    {
-        dialogueIndex++;
-
-        // check if conversation ended
-        if (dialogueIndex >= conversation.Count)
+        TextAsset yaml = (TextAsset)Resources.Load($"DialogueData/{yamlName}", typeof(TextAsset));
+        if (yaml == null)
         {
-            DialogueWindow.SetActive(false);
-            //PlayerController.Instance.Unsubscribe(this);
-            IsPlayingDialogue = false;
-            PlayerController.Instance.ToggleMovementLock();
-            if(callback != null) callback.Invoke();
+            Debug.LogError($"Error loading yaml file {yamlName}! Check that it's spelled correctly and located in Resources/DialogueData!");
+            return;
         }
-        else
+        Dictionary<string, List<DialogueElement>> parsedDialogue = DialogueParser.Parse(yaml);
+
+        if (parsedDialogue.Count == 0)
         {
-            // start dialogue
-            speakerTarget.text = conversation[dialogueIndex].Speaker;
-            lineTarget.text = conversation[dialogueIndex].Line;
-            StartCoroutine(TypewriterEffect());
+            Debug.LogWarning($"File {yamlName} contained no dialogue!");
+        }
 
-            // check if Mariposa currently active
-            if (Player.ActivePlayer.Data.characterID == CharID.Mariposa)
-            //if(true)    //placeholder for testing before merge
+        foreach ((string name, List<DialogueElement> dialogue) in parsedDialogue)
+        {
+            if (dialogueDictionary.ContainsKey(name))
             {
-                frame.GetComponent<Image>().sprite = mariFrame;
-
-                // check if from radio
-                if (conversation[dialogueIndex].FromRadio)
-                {
-                    rect.sprite = mariRadio;
-                }
-                else
-                {
-                    rect.sprite = mariRect;
-                }
+                Debug.LogWarning($"Dialogue data with the name {name} has already been loaded. This data will be overwritten!");
             }
-            else
-            {
-                frame.GetComponent<Image>().sprite = unnFrame;
-
-                // check if from radio
-                // check if from radio
-                if (conversation[dialogueIndex].FromRadio)
-                {
-                    rect.sprite = unnRadio;
-                }
-                else
-                {
-                    rect.sprite = unnRect;
-                }
-            }
-
-            // check if has sprite
-            if (conversation[dialogueIndex].Sprite != null)
-            {
-                // resize text boxes
-                speakerTarget.GetComponent<RectTransform>().offsetMin = new Vector2(150, -60);
-                lineTarget.GetComponent<RectTransform>().offsetMin = new Vector2(150, -80);
-                // show sprite
-                portrait.sprite = conversation[dialogueIndex].Sprite;
-                Debug.Log("Set sprite to " +  conversation[dialogueIndex].Sprite);
-                frame.SetActive(true);
-            }
-            else
-            {
-                // resize text boxes
-                speakerTarget.GetComponent<RectTransform>().offsetMin = new Vector2(45, -60);
-                lineTarget.GetComponent<RectTransform>().offsetMin = new Vector2(45, -80);
-                // hide sprite
-                frame.SetActive(false);
-            }
+            dialogueDictionary[name] = dialogue;
         }
     }
 
-    public void TryAdvanceDialogue()
+    /// <summary>
+    /// Begins the dialogue sequence with the matching name.
+    /// </summary>
+    /// <param name="dialogueName">The name of the dialogue sequence as written in the imported files</param>
+    public void PlayDialogue(string dialogueName)
     {
-        // if typewriter effect not finished yet
-        if (!finishedTypewriter)
-            {
-                // finish typewriter effect
-                StopAllCoroutines();
-                finishedTypewriter = true;
-                lineTarget.maxVisibleCharacters = conversation[dialogueIndex].Line.Length;
-            }
-        else
-            {
-                AdvanceDialogue();
-            }
+        if (!dialogueDictionary.ContainsKey(dialogueName))
+        {
+            Debug.LogError($"Could not find dialogue with the name {dialogueName}! Check that there's no typos and the dialogue file has been loaded!");
+            return;
+        }
+        dialoguePlayer.PlayDialogue(dialogueDictionary[dialogueName]);
     }
 
-    private IEnumerator TypewriterEffect()
+    private void OnEnable()
     {
-        finishedTypewriter = false;
-        int length = conversation[dialogueIndex].Line.Length;
-        float startTime = Time.time;
+        inputs.Enable();
+        inputs.Player.Interact.started += ctx => dialoguePlayer.TryAdvanceDialogue();
+    }
 
-        int i = 0;
-        lineTarget.maxVisibleCharacters = i;
-        while (i < length)
-        {
-            float elapsedTime = Time.time - startTime;
-            if (elapsedTime > DIALOGUE_SPEED)
-            {
-                i++;
-                lineTarget.maxVisibleCharacters = i;
-                startTime = Time.time;
-            }
-            else yield return null;
-        }
-
-        finishedTypewriter = true;
+    private void OnDisable()
+    {
+        inputs.Player.Interact.started -= ctx => dialoguePlayer.TryAdvanceDialogue();
+        inputs.Disable();
     }
 }

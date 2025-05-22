@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
@@ -5,28 +6,27 @@ using UnityEngine.Events;
 public class NPC : Interactable
 {
 
-	[SerializeField] private Dialogue dialogueNPC;
-	[SerializeField] private Dialogue finishDialogue;
+	[SerializeField] private List<string> dialogueNames;
+	//[SerializeField] private Dialogue finishDialogue;
 	private DialogueManager manager;
 	private bool isSpeaking = false;
-	private int count;
-	private Dialogue usedDialogue;
+	private int index;
 
 	protected override void Start()
 	{
 		manager = DialogueManager.Instance;
-		count = 0;
-		usedDialogue = dialogueNPC;
+		index = 0;
 	}
 
-    public override void OnInteract(IControllable controllable)
-    {
-		if(count >= usedDialogue.Conversation.Count)
+	public override void OnInteract(IControllable controllable)
+	{
+		Debug.LogError("TODO");
+		/* if(index >= usedDialogue.Conversation.Count)
 		{
 			if(manager.finishedTypewriter)
 			{
 				manager.DialogueWindow.SetActive(false);
-				count = 0;
+				index = 0;
 				isSpeaking = false;
 				this.usedDialogue = finishDialogue;
 				PlayerController.Instance.ToggleMovementLock();
@@ -36,11 +36,11 @@ public class NPC : Interactable
 				manager.TryAdvanceDialogue();
 			}
 		}
-		else if (count == 0)
+		else if (index == 0)
 		{
 			manager.PlayDialogue(usedDialogue);
 			isSpeaking = true;
-			count++;
+			index++;
 			//PlayerController.Instance.ToggleMovementLock();
 		}
 		else
@@ -48,6 +48,6 @@ public class NPC : Interactable
 			//if(manager.finishedTypewriter)
 			//	count++;
 			//manager.TryAdvanceDialogue();
-		}
-    }
+		} */
+	}
 }
