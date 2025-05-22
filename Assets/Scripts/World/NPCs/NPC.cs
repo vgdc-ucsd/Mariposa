@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
@@ -11,6 +12,7 @@ public class NPC : Interactable
 	private bool isSpeaking = false;
 	private int count;
 	private Dialogue usedDialogue;
+	private bool canInteract = true;
 
 	protected override void Start()
 	{
@@ -19,35 +21,21 @@ public class NPC : Interactable
 		usedDialogue = dialogueNPC;
 	}
 
+	// necessary to wait one frame to set canInteract, so that player doesn't close dialogue and re-open dialogue on the same frame
+	private IEnumerator SetDialogueFinished()
+	{
+        usedDialogue = finishDialogue;
+		yield return new WaitForEndOfFrame();
+		canInteract = true;
+    }
+
+
     public override void OnInteract(IControllable controllable)
     {
-		if(count >= usedDialogue.Conversation.Count)
+        if (!manager.IsPlayingDialogue && canInteract)
 		{
-			if(manager.finishedTypewriter)
-			{
-				manager.DialogueWindow.SetActive(false);
-				count = 0;
-				isSpeaking = false;
-				this.usedDialogue = finishDialogue;
-				PlayerController.Instance.ToggleMovementLock();
-			}
-			else
-			{
-				manager.TryAdvanceDialogue();
-			}
-		}
-		else if (count == 0)
-		{
-			manager.PlayDialogue(usedDialogue);
-			isSpeaking = true;
-			count++;
-			//PlayerController.Instance.ToggleMovementLock();
-		}
-		else
-		{
-			//if(manager.finishedTypewriter)
-			//	count++;
-			//manager.TryAdvanceDialogue();
+            manager.PlayDialogue(usedDialogue, () => StartCoroutine(SetDialogueFinished()));
+			canInteract = false;
 		}
     }
 }
