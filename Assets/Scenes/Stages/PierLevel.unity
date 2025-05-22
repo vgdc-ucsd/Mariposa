@@ -9737,7 +9737,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1798863012}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -9834,16 +9834,15 @@ MonoBehaviour:
   Rb: {fileID: 1798863014}
   SurfaceCollider: {fileID: 1798863015}
   State: 0
-  Gravity: 0
-  TerminalVelocity: 0
+  Gravity: 50
+  TerminalVelocity: 40
   slipAngle: 45
   collisionLayer:
     serializedVersion: 2
-    m_Bits: 0
-  MoveSpeed: 10
-  airAccelerationTime: 1
-  airMovementDecelerationTime: 1
-  airDragDecelerationTime: 1
+    m_Bits: 64
+  data: {fileID: 11400000, guid: 39939add51503644f92443e444c6efc1, type: 2}
+  cornerCorrectMaxInsetDistance: 0
+  cornerCorrectMinVelocity: 0
 --- !u!212 &1798863018
 SpriteRenderer:
   m_ObjectHideFlags: 0
