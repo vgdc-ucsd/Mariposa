@@ -77,7 +77,7 @@ public class LevelManager : MonoBehaviour
         InitSublevel();
     }
 
-    private void InitSublevel()
+    public void InitSublevel()
     {
         // teleport previous player (and bee, if applicable) off screen
         Player.ActivePlayer.transform.position = new Vector3(-1000, -1000, 0);

@@ -6,7 +6,6 @@ using UnityEngine;
 public class PuzzlePopupManager : MonoBehaviour
 {
     public static PuzzlePopupManager Instance;
-    [SerializeField] private GameObject background;
 
     private GameObject activePuzzle;
     public GameObject ActivePuzzle
@@ -15,7 +14,7 @@ public class PuzzlePopupManager : MonoBehaviour
         set {
             if(activePuzzle != null) HidePuzzle();
             activePuzzle = value;
-            if(activePuzzle != null) ShowPuzzle();
+            if (activePuzzle != null) ShowPuzzle();
         }
     }
 
@@ -32,13 +31,7 @@ public class PuzzlePopupManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Initially disable packground panel
-    /// </summary>
-    void Start()
-    {
-        background.SetActive(false);
-    }
+    
 
     /// <summary>
     /// Try to hide the active puzzle when the player clicks on the screen.
@@ -47,12 +40,15 @@ public class PuzzlePopupManager : MonoBehaviour
     public void TryHidePuzzle()
     {
         Debug.Log("Tried to hide puzzle");
+
+
         Collider2D[] collider2Ds = Physics2D.OverlapCircleAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), 0.001f);
         foreach(Collider2D col in collider2Ds)
         {
             if(col.gameObject.CompareTag("blocker"))
             {
                 Debug.Log("Clicked blocker");
+                Debug.Log(col.gameObject.name);
                 return;
             }
         }
@@ -68,7 +64,6 @@ public class PuzzlePopupManager : MonoBehaviour
     private void HidePuzzle()
     {
         activePuzzle.SetActive(false);
-        background.SetActive(false);
     }
 
     /// <summary>
@@ -77,6 +72,5 @@ public class PuzzlePopupManager : MonoBehaviour
     private void ShowPuzzle()
     {
         activePuzzle.SetActive(true);
-        background.SetActive(true);
     }
 }
