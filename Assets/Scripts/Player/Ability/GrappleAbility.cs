@@ -46,7 +46,7 @@ public class GrappleAbility : MonoBehaviour, IAbility
     private float maxLaunchForce = 30f;
 
     [SerializeField]
-    private float storedMomentum;
+    private Vector2 storedMomentum;
     [SerializeField]
     private float retentionDuration = 1f;   // how long the player still keeps the speed boost when jumping, even after stopping
 
@@ -207,7 +207,7 @@ public class GrappleAbility : MonoBehaviour, IAbility
             Player.ActivePlayer.Movement.Velocity = Player.ActivePlayer.Movement.Velocity.normalized * maxSpeed;
         }
 
-        storedMomentum = Player.ActivePlayer.Movement.Velocity.magnitude;
+        storedMomentum = Player.ActivePlayer.Movement.Velocity;
 
         if (Vector2.Distance(playerPos, (Vector2)lockedTarget.transform.position) < STOP_DISTANCE)
         {
@@ -229,7 +229,7 @@ public class GrappleAbility : MonoBehaviour, IAbility
         }
         else
         {
-            storedMomentum = 0;
+            storedMomentum = Vector2.zero;
         }
 
     }
@@ -239,8 +239,8 @@ public class GrappleAbility : MonoBehaviour, IAbility
     {
         if (!(state == GrappleState.Pulling || state == GrappleState.Stopped)) return;
 
-        Vector2 launchDir = Player.ActivePlayer.Movement.Velocity.normalized;
-        Player.ActivePlayer.Movement.Velocity = launchDir * Mathf.Clamp(storedMomentum + baseLaunchForce, baseLaunchForce, maxLaunchForce);
+        Vector2 launchDir = storedMomentum.normalized;
+        Player.ActivePlayer.Movement.Velocity = launchDir * Mathf.Clamp(storedMomentum.magnitude + baseLaunchForce, baseLaunchForce, maxLaunchForce);
 
         GrappleRelease();
 
@@ -250,7 +250,7 @@ public class GrappleAbility : MonoBehaviour, IAbility
     private void GrappleRelease()
     {
         state = GrappleState.Idle;
-        storedMomentum = 0;
+        storedMomentum = Vector2.zero;
         Player.ActivePlayer.Movement.ToggleGravity(true);
         lockedTarget.ReleaseGrapple();
     }
