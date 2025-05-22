@@ -1,15 +1,18 @@
 using UnityEngine;
+using static AudioEvents;
 
 public class Sublevel : MonoBehaviour
 {
     [SerializeField]
     private CharID _subLevelCharacter;
-    public CharID SublevelCharacter { 
-        get => _subLevelCharacter; 
-    }
+    public CharID SublevelCharacter { get => _subLevelCharacter; }
 
     public RespawnPoint StartingSpawn;
     public Collider2D CameraBounds;
+
+    [field: SerializeField, Header("Audio Properties")] public Music SublevelMusic { get; private set; } = Music.NONE;
+    [field: SerializeField] public Ambience SublevelAmbience { get; private set; } = Ambience.NONE;
+    [field: SerializeField] public bool PlayOnLoad { get; private set; } = true;
 
     private void Awake()
     {

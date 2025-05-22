@@ -2,13 +2,13 @@
 <objects serializationModel="Studio.02.03.00">
 	<object class="Event" id="{16f80c03-2716-4612-8b54-e17b40f2dbbf}">
 		<property name="name">
-			<value>mariposa</value>
+			<value>theme_mariposa</value>
 		</property>
 		<property name="outputFormat">
 			<value>1</value>
 		</property>
 		<relationship name="folder">
-			<destination>{825a3781-7aec-4f20-8d8c-f22c016f509d}</destination>
+			<destination>{700ca03f-0b90-4d9a-82bd-e08b66ff008d}</destination>
 		</relationship>
 		<relationship name="mixer">
 			<destination>{a5cba3d7-6eef-49df-9fac-dbe40ce9c647}</destination>
@@ -32,7 +32,7 @@
 			<destination>{ea2b935e-d90e-4ba2-a2ff-14a9d084889d}</destination>
 		</relationship>
 		<relationship name="banks">
-			<destination>{c2fa281f-c996-4bd9-857b-8644105fbd5f}</destination>
+			<destination>{c7ecb820-ff6e-4f7f-8dd1-c4aac61e81b4}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixer" id="{a5cba3d7-6eef-49df-9fac-dbe40ce9c647}">
@@ -57,7 +57,7 @@
 			<destination>{cf31b3d2-77d7-4977-bcb9-c622d610e9b2}</destination>
 		</relationship>
 		<relationship name="output">
-			<destination>{a2f82a4f-d49f-4918-8a57-f916295586e6}</destination>
+			<destination>{9fffeff8-5487-4826-86b8-3cf392c33f7e}</destination>
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{2236589d-61da-46e0-b12f-d98faa75fa7c}" />
@@ -82,6 +82,12 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{85321a34-22ed-402e-aff1-8f7d61b56501}">
+		<property name="volume">
+			<value>2</value>
+		</property>
+		<relationship name="modulators">
+			<destination>{66d2a4f0-c300-4c02-a60b-9da35d1e0fa7}</destination>
+		</relationship>
 		<relationship name="effectChain">
 			<destination>{9b92d523-f8a3-49bc-ac8a-a71acf68b0d5}</destination>
 		</relationship>
@@ -182,6 +188,20 @@
 		<relationship name="destination">
 			<destination>{79a1c73c-e1fe-4c82-827f-2ede5f29f174}</destination>
 		</relationship>
+	</object>
+	<object class="ADSRModulator" id="{66d2a4f0-c300-4c02-a60b-9da35d1e0fa7}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>volume</value>
+		</property>
+		<property name="initialValue">
+			<value>-80</value>
+		</property>
+		<property name="attackTime">
+			<value>0</value>
+		</property>
+		<property name="finalValue">
+			<value>-80</value>
+		</property>
 	</object>
 	<object class="MixerBusEffectChain" id="{9b92d523-f8a3-49bc-ac8a-a71acf68b0d5}">
 		<relationship name="effects">

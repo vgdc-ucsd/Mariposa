@@ -1,22 +1,16 @@
-using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class BlockPuzzle : Puzzle
 {
-    public const float BLOCK_GRID_SCALE = 1f;
     public static BlockPuzzle Instance;
     public int GridWidth = 7;
     public int GridHeight = 7;
-    public RectTransform gridContainer;
-    public GridLayoutGroup SlotContainer;
-    public GameObject SlotPrefab;
+    public float GridScale = 0.85f;
+    public GameObject gridVisualizerPrefab;
+    public bool IsComplete;
 
-    [HideInInspector] public float CellDiameter;
-    [HideInInspector] public BlockPuzzleSlot HoveredSlot = null;
     private BlockPuzzleBlock[,] grid;
-    private BlockPuzzleSlot[,] slots;
-    BlockPuzzleBlock[] blocks;
 
     void Awake()
     {
@@ -28,97 +22,91 @@ public class BlockPuzzle : Puzzle
         }
 
         grid = new BlockPuzzleBlock[GridWidth, GridHeight];
-        slots = new BlockPuzzleSlot[GridWidth, GridHeight];
-
-        SlotContainer.cellSize = new Vector2(gridContainer.rect.width / GridWidth, gridContainer.rect.height / GridHeight);
-        CellDiameter = SlotContainer.cellSize.x;
-        for (int i = 0; i < GridHeight; i++)
-        {
-            for (int j = 0; j < GridWidth; j++)
-            {
-                BlockPuzzleSlot temp = Instantiate(SlotPrefab, SlotContainer.transform).GetComponent<BlockPuzzleSlot>();
-                temp.GridPos = new Vector2Int(j, i);
-                temp.gameObject.name = $"Slot_{j}_{i}";
-                slots[j,i] = temp;
-            }
-        }
-
-        blocks = GetComponentsInChildren<BlockPuzzleBlock>();
-    }
-
-    void OnEnable()
-    {
-        StartCoroutine(DelayInitializeBlocks());
-    }
-
-    IEnumerator DelayInitializeBlocks()
-    {
-        yield return new WaitForEndOfFrame();
+        Instantiate(gridVisualizerPrefab, transform);
+        BlockPuzzleBlock[] blocks = GetComponentsInChildren<BlockPuzzleBlock>();
         foreach (BlockPuzzleBlock block in blocks) block.InitializeBlock();
     }
 
-    public RectTransform GetSlotTransformAtPosition(Vector2Int gridPos)
+    // Debug
+    void Update()
     {
-        try
-        {
-            return slots[gridPos.x, gridPos.y].GetComponent<RectTransform>();
-        }
-        catch
-        {
-            return null;
-        }
+        if(Input.GetKeyDown(KeyCode.Space)) FinishPuzzle();
     }
 
-    public bool IsPositionValidForBlock(Vector2Int gridPos, BlockPuzzleBlock block)
+    public Vector3 GridToWorldPosition(Vector2Int gridPosition)
+    {
+        float offsetX = -GridWidth / 2f + 0.5f;
+        float offsetY = -GridHeight / 2f + 0.5f;
+        return new Vector3(
+            (gridPosition.x + offsetX) * GridScale,
+            (gridPosition.y + offsetY) * GridScale,
+            0
+        );
+    }
+
+    public Vector2Int WorldToGridPosition(Vector3 worldPosition)
+    {
+        float offsetX = GridWidth / 2f - 0.5f;
+        float offsetY = GridHeight / 2f - 0.5f;
+        return new Vector2Int(
+            Mathf.RoundToInt(worldPosition.x + offsetX),
+            Mathf.RoundToInt(worldPosition.y + offsetY)
+        );
+    }
+
+    public void SetBlockInGrid(BlockPuzzleBlock block, Vector2Int newPosition)
+    {
+        foreach (Vector2Int offset in block.Cells)
+        {
+            grid[newPosition.x + offset.x, newPosition.y + offset.y] = block;
+        }
+
+        if (CheckSolution()) FinishPuzzle();
+    }
+
+    public bool CanMove(BlockPuzzleBlock block, Vector2Int direction)
     {
         if (IsComplete) return false;
 
+        Vector2Int newPosition = block.Position + direction;
+        return IsPositionValidForBlock(newPosition, block);
+    }
+
+    public bool IsPositionValidForBlock(Vector2Int position, BlockPuzzleBlock block)
+    {
+        if (IsComplete) return false;
+
+        if (!IsPositionInGridForBlock(position, block))
+        {
+            return false;
+        }
+
         foreach (Vector2Int offset in block.Cells)
         {
-            Vector2Int cellPos = new Vector2Int(gridPos.x + offset.x, gridPos.y + offset.y);
-            if (cellPos.x < 0 || cellPos.x >= GridWidth || cellPos.y < 0 || cellPos.y >= GridHeight) return false;
-            if (grid[cellPos.x, cellPos.y] != null) return false;
+            int x = position.x + offset.x;
+            int y = position.y + offset.y;
+            if (grid[x, y] != null && grid[x, y] != block) return false;
         }
 
         return true;
     }
 
-    public void SetBlockInGrid(BlockPuzzleBlock block, Vector2Int newGridPos)
+    public bool IsPositionInGridForBlock(Vector2Int position, BlockPuzzleBlock block)
     {
-        Debug.Log($"Setting {block.gameObject.name} in {newGridPos}");
-        foreach (Vector2Int offset in block.Cells)
-        {
-            Vector2Int cellPos = new Vector2Int(newGridPos.x + offset.x, newGridPos.y + offset.y);
-            grid[cellPos.x, cellPos.y] = block;
-        }
-
-        RectTransform slotRectTransform = GetSlotTransformAtPosition(newGridPos);
-        Vector2 worldPos = new Vector2(
-            slotRectTransform.position.x + (block.Size.x - 1) * CellDiameter,
-            slotRectTransform.position.y + (block.Size.y - 1) * CellDiameter
-        );
-        block.SetPosition(worldPos);
-        block.GridPos = newGridPos;
-
-        if (CheckSolution()) FinishPuzzle();
+        return position.x >= 0 && position.x + block.Size.x <= GridWidth && 
+            position.y >= 0 && position.y + block.Size.y <= GridHeight;
     }
 
     public void ClearBlockFromGrid(BlockPuzzleBlock block)
     {
-        Debug.Log($"Clearing {block.gameObject.name}");
         foreach (Vector2Int offset in block.Cells)
         {
-            Vector2Int cellPos = new Vector2Int(block.GridPos.x + offset.x, block.GridPos.y + offset.y);
-            if (cellPos.x < 0 || cellPos.x >= GridWidth || cellPos.y < 0 || cellPos.y >= GridHeight) continue;
-            grid[cellPos.x, cellPos.y] = null;
-            Debug.Log($"Clearing {cellPos}");
+            grid[block.Position.x + offset.x, block.Position.y + offset.y] = null;
         }
-        PrintGridState();
     }
 
     public bool CheckSolution()
     {
-        PrintGridState();
         for (int i = 0; i < GridWidth; ++i)
         {
             for (int j = 0; j < GridHeight; ++j)
@@ -131,22 +119,10 @@ public class BlockPuzzle : Puzzle
 
     private void FinishPuzzle()
     {
-        OnComplete();
-    }
-
-    // TODO: debug, remove
-    private void PrintGridState()
-    {
-        string output = "\n";
-        for (int i = GridHeight - 1; i >= 0; i--)
-        {
-            for (int j = 0; j < GridWidth; j++)
-            {
-                if (grid[j,i] != null) output += "#";
-                else output += "-";
-            }
-            output += "\n";
-        }
-        Debug.Log(output);
+    
+        IsComplete = true;
+        GameManager.Instance.TargetSublevel = 3; // TODO change to 2 after EOQ social
+        SceneManager.LoadScene(1); // TODO remove after EOQ social
+        //OnComplete();
     }
 }

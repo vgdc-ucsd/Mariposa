@@ -77,7 +77,7 @@ public class LevelManager : MonoBehaviour
         InitSublevel();
     }
 
-    public void InitSublevel()
+    private void InitSublevel()
     {
         // teleport previous player (and bee, if applicable) off screen
         Player.ActivePlayer.transform.position = new Vector3(-1000, -1000, 0);
@@ -96,6 +96,13 @@ public class LevelManager : MonoBehaviour
 
         ActiveEnemies = FindObjectsByType<Enemy>(FindObjectsInactive.Exclude, FindObjectsSortMode.None).ToList();
         ResetEnemies();
+
+        // Tell AudioManager to change audio if PlayOnLoad is on in the sublevel
+        if (GetCurrentSublevel().PlayOnLoad)
+        {
+            MusicManager.Instance.ChangeMusic(MusicManager.Instance.GetMusicToCurrentSublevel());
+            AmbienceManager.Instance.ChangeAmbience(AmbienceManager.Instance.GetAmbienceToCurrentSublevel());
+        }
     }
 
     public void ResetEnemies()
