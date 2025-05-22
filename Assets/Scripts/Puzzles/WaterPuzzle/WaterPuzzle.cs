@@ -1,23 +1,20 @@
-using System.Collections;
+using JetBrains.Annotations;
 using System.Collections.Generic;
-using TMPro;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.Timeline;
 
 public class WaterPuzzle : Puzzle
 {
-    [SerializeField] public bool twoEndings;
-
-    //public static WaterPuzzle Instance;
+    public static WaterPuzzle Instance;
     public GameObject PuzzleUI;
-    [HideInInspector] public WaterPuzzleTile StartTile, EndTile, EndTile2;
+    [HideInInspector] public WaterPuzzleTile StartTile, EndTile;
     [HideInInspector] public WaterPuzzleTile[,] Tiles;
     public int GridWidth, GridHeight;
-    [HideInInspector]
-    
+    [HideInInspector] public bool PuzzleComplete;
+
     [SerializeField] private GameObject tilePrefab;
     private List<WaterPuzzleTile> tilesInSolution;
-    [SerializeField] private GameObject backgroundParent;
 
     public float RandomTurnChance; // odds from 0 to 1 for the solution generator to make a random turn between tiles.
     public float TileWidth, TileHeight; // width and height of one tile in the scene
@@ -35,52 +32,55 @@ public class WaterPuzzle : Puzzle
     /// </summary>
     public Sprite[] TileSprites;
 
-    [HideInInspector] public bool UsedPipeSplitter, PipeSplitterToggled;
-    [HideInInspector] public WaterPuzzleTile SplitTile;
-    [HideInInspector] public bool[] SplitTilePipes = new bool[4];
-    [SerializeField] private TMP_Text toggleText;
 
-    [SerializeField] private bool usingSeedBank;
-    [SerializeField] private int[] seedBank;
-
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space)) GenerateSolution();
+    }
     private void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Debug.Log("Tried to create more than one instance of the WaterPuzzle singleton!");
+        }
+
         // move the puzzle object so that the center of the puzzle is at (0, 0, 0)
-        PuzzleUI.GetComponent<RectTransform>().localPosition = new Vector3(TileWidth * (-GridWidth + 1) / 2, TileHeight * (GridHeight - 1) / 2, 0);
+        PuzzleUI.transform.position = new Vector3(TileWidth * (-GridWidth + 1) / 2, TileHeight * (GridHeight - 1) / 2, 0);
 
         Tiles = new WaterPuzzleTile[GridWidth, GridHeight];
         for (int i = 0; i < GridWidth; i++)
         {
             for (int j = 0; j < GridHeight; j++)
             {
-                GameObject tile = Instantiate(tilePrefab, new Vector3(TileWidth * i, -TileHeight * j, 0), Quaternion.identity, PuzzleUI.transform);
+                GameObject tile = Instantiate(tilePrefab,  new Vector3(TileWidth * i, -TileHeight * j, 0), Quaternion.identity, PuzzleUI.transform);
                 tile.transform.position += PuzzleUI.transform.position;
                 Tiles[i, j] = tile.GetComponent<WaterPuzzleTile>();
-                Tiles[i, j].background.transform.SetParent(backgroundParent.transform, true);
                 Tiles[i, j].PosX = i;
                 Tiles[i, j].PosY = j;
                 Tiles[i, j].InitializeTile();
-                Tiles[i, j].puzzle = this;
             }
         }
         StartTile = Tiles[0, GridHeight / 2];
-        if (twoEndings)
-        {
-            EndTile = Tiles[GridWidth - 1, GridHeight / 2 + 2];
-            EndTile2 = Tiles[GridWidth - 1, GridHeight / 2 - 2];
-        }
-        else EndTile = Tiles[GridWidth - 1, GridHeight / 2];
+        EndTile = Tiles[GridWidth - 1, GridHeight / 2];
 
-        int seed = (int)System.DateTime.Now.Ticks;
-        if (usingSeedBank) seed = seedBank[Random.Range(0, seedBank.Length)];
-        Debug.Log(gameObject.name + " seed: " + seed);
-        Random.InitState(seed);
+
         GenerateSolution();
-        UsedPipeSplitter = false;
     }
 
 
+    private void OnEnable()
+    {
+        ActivatePuzzle();
+    }
 
+    public void ActivatePuzzle()
+    {
+        PuzzleUI.SetActive(true);
+    }
 
     public void ResetPuzzle()
     {
@@ -93,37 +93,10 @@ public class WaterPuzzle : Puzzle
         StartTile.FillTile(true);
     }
 
-    public IEnumerator CompletePuzzle()
+    public void CompletePuzzle()
     {
-        yield return new WaitForSeconds(1f);
         OnComplete();
-    }
-
-    public void RevertSplitTile()
-    {
-        if (SplitTile == null) return;
-        SplitTile.PipeRight = SplitTilePipes[0];
-        SplitTile.PipeUp = SplitTilePipes[1];
-        SplitTile.PipeLeft = SplitTilePipes[2];
-        SplitTile.PipeDown = SplitTilePipes[3];
-        SplitTile.SetSprite();
-        SplitTile = null;
-        SplitTilePipes = new bool[4];
-        UsedPipeSplitter = false;
-        toggleText.text = (PipeSplitterToggled ? "Click a pipe to split it!" : "Use Pipe Splitter");
-
-    }
-
-    public void ToggleSplitTile()
-    {
-        PipeSplitterToggled = !PipeSplitterToggled;
-        if (UsedPipeSplitter)
-        {
-            toggleText.text = "Pipe Splitter already used";
-            return;
-        }
-        toggleText.text = (PipeSplitterToggled ? "Click a pipe to split it!" : "Use Pipe Splitter");
-
+        PuzzleComplete = true;
     }
 
     /// <summary>
@@ -131,29 +104,17 @@ public class WaterPuzzle : Puzzle
     /// Set RandomTurnChance to a value close to 1 for more turns in the solution path,
     /// or set it to a value close to 0 for fewer turns.
     /// </summary>
-    public void GenerateSolution(bool secondPass = false)
+    public void GenerateSolution()
     {
-        int x, y;
-        int branchIndex = 0;
-        if (!secondPass)
-        {
-            tilesInSolution = new List<WaterPuzzleTile>();
-            tilesInSolution.Add(StartTile);
-
-            x = StartTile.PosX;
-            y = StartTile.PosY;
-        }
-        else
-        {
-            branchIndex = Random.Range(tilesInSolution.Count / 4, tilesInSolution.Count / 2);
-            x = tilesInSolution[branchIndex].PosX;
-            y = tilesInSolution[branchIndex].PosY;
-        }
+        tilesInSolution = new List<WaterPuzzleTile>();
+        tilesInSolution.Add(StartTile);
         int[] direction = { 0, 0 };
         int[] right = { 1, 0 };
         int[] up = { 0, -1 };
         int[] left = { -1, 0 };
         int[] down = { 0, 1 };
+        int x = StartTile.PosX;
+        int y = StartTile.PosY;
 
         switch (Random.Range(0, 3))
         {
@@ -170,17 +131,16 @@ public class WaterPuzzle : Puzzle
 
         int steps = 0;
 
-        // first pass - needs end tile 1
-        // second pass - needs end tile 2
-        while (steps < GridWidth * GridHeight * 2)
+        while (!tilesInSolution.Contains(EndTile))
         {
-            if (!secondPass && tilesInSolution.Contains(EndTile)) break;
-            else if (secondPass && tilesInSolution.Contains(EndTile2))
-            {
-                break;  
-            }
             steps++;
-            
+            if (steps > 1000)
+            {
+                Debug.Log("skill issue");
+                Debug.Log(x);
+                Debug.Log(y);
+                break;
+            }
 
 
             int[] prevDirection = { direction[0], direction[1] };
@@ -222,7 +182,7 @@ public class WaterPuzzle : Puzzle
             // if there's no free direction to go, attempt to turn right
             // also try to avoid making 180 degree turns if possible
             int turnsMade = 0;
-            while (!IsTileFree(x + direction[0], y + direction[1], secondPass)
+            while (!IsTileFree(x + direction[0], y + direction[1])
                 || (direction[0] == 1 && prevDirection[0] == -1)
                 || (direction[0] == -1 && prevDirection[0] == 1)
                 || (direction[1] == -1 && prevDirection[1] == 1)
@@ -249,12 +209,8 @@ public class WaterPuzzle : Puzzle
                 else Tiles[x - direction[0], y - direction[1]].MustBeStraight = true;
 
 
-                if (!tilesInSolution.Contains(Tiles[x, y]))
-                {
-                    tilesInSolution.Add(Tiles[x, y]);
-                    Tiles[x, y].RandomPipeChance /= 20f;
-                }
-                else if (!twoEndings) Tiles[x, y].MustBeCross = true;
+                if (!tilesInSolution.Contains(Tiles[x, y])) tilesInSolution.Add(Tiles[x, y]);
+                else Tiles[x, y].MustBeCross = true;
 
 
             }
@@ -267,19 +223,17 @@ public class WaterPuzzle : Puzzle
 
         }
 
-        if (twoEndings && !secondPass) GenerateSolution(true);
+
+        Debug.Log(steps);
     }
 
-
-    private bool IsTileFree(int x, int y, bool secondPass)
+    private bool IsTileFree(int x, int y)
     {
-        if (twoEndings && !secondPass && EndTile2.PosX == x && EndTile2.PosY == y) return false;
         return (IsTileInBounds(x, y) && !tilesInSolution.Contains(Tiles[x, y]));
     }
 
     private bool IsTileInBounds(int x, int y)
     {
-        
         return (x >= 0 && x < GridWidth && y >= 0 && y < GridHeight);
     }
 

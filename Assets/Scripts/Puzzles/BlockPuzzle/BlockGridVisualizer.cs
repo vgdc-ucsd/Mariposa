@@ -23,8 +23,8 @@ public class BlockGridVisualizer : MonoBehaviour
         {
             horizontalLines[y] = CreateLine($"HorizontalLine_{y}");
             SetLinePositions(horizontalLines[y], 
-                new Vector3(startX * BlockPuzzle.BLOCK_GRID_SCALE, (startY + y) * BlockPuzzle.BLOCK_GRID_SCALE, 0), 
-                new Vector3((startX + puzzle.GridWidth) * BlockPuzzle.BLOCK_GRID_SCALE, (startY + y) * BlockPuzzle.BLOCK_GRID_SCALE, 0));
+                new Vector3(startX * BlockPuzzle.Instance.GridScale, (startY + y) * BlockPuzzle.Instance.GridScale, 0), 
+                new Vector3((startX + puzzle.GridWidth) * BlockPuzzle.Instance.GridScale, (startY + y) * BlockPuzzle.Instance.GridScale, 0));
         }
 
         // Create vertical lines
@@ -33,8 +33,8 @@ public class BlockGridVisualizer : MonoBehaviour
         {
             verticalLines[x] = CreateLine($"VerticalLine_{x}");
             SetLinePositions(verticalLines[x], 
-                new Vector3((startX + x) * BlockPuzzle.BLOCK_GRID_SCALE, startY * BlockPuzzle.BLOCK_GRID_SCALE, 0), 
-                new Vector3((startX + x) * BlockPuzzle.BLOCK_GRID_SCALE, (startY + puzzle.GridHeight) * BlockPuzzle.BLOCK_GRID_SCALE, 0));
+                new Vector3((startX + x) * BlockPuzzle.Instance.GridScale, startY * BlockPuzzle.Instance.GridScale, 0), 
+                new Vector3((startX + x) * BlockPuzzle.Instance.GridScale, (startY + puzzle.GridHeight) * BlockPuzzle.Instance.GridScale, 0));
         }
     }
 

@@ -37,6 +37,7 @@ public class FruitScalePuzzle : Puzzle
         }
     }
     public FruitScale OldScale;
+    public bool IsComplete;
 
     [SerializeField] private List<FruitScale> scales;
     [SerializeField] private List<Fruit> fruits;
@@ -117,6 +118,7 @@ public class FruitScalePuzzle : Puzzle
         {
             // TODO: trigger after final scale finishes moving into its balanced position place?
             // Currently triggers instantly when the last fruit is placed on its scale
+            IsComplete = true;
             OnComplete();
         }
     }
