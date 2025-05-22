@@ -11,6 +11,17 @@ public class DialogueElement
     public List<string> Sounds; // A list of sound effects to play 
     public List<string> Events; // A list of arbitrary named events to trigger (see DialogueEvent.cs)
     public List<DialogueChoice> Choices; // A list of responses that the player can choose, no responses if empty
+
+    public DialogueElement()
+    {
+        Speaker = null;
+        Line = null;
+        Icon = null;
+        FromRadio = false;
+        Sounds = new List<string>();
+        Events = new List<string>();
+        Choices = new List<DialogueChoice>();
+    }
 }
 
 public class DialogueChoice

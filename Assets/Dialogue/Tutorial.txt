@@ -1,0 +1,590 @@
+﻿#Writer Name: Jordan Huynh
+#Edited by: Lucas Ramirez, Joshua Nolasco, Jess Yang
+
+
+#>[START OPENING CUTSCENE]
+
+
+#>[END OPENING CUTSCENE]
+
+
+#INT. UNDERGROUND SHOPS - DAY
+
+
+#[IN-GAME] MARIPOSA stands outside the underground shops. BEEBO floats beside her.  
+
+
+!name start
+
+
+MARIPOSA
+(neutral)
+(Looks like I’ve got a bit of time before the job.)
+
+
+MARIPOSA
+(neutral)
+(I can’t wait to get home and take a nice, long nap...)
+
+
+MARIPOSA
+(happy)
+Let’s get going, BEEBO!
+
+
+#[GAMEPLAY]- INTRODUCTION TO MARIPOSA MECHANICS. 
+
+
+#At the station, MARIPOSA sees a guard standing in front of a taped-off turnstile. Talk to the GUARD. 
+!name guard
+
+
+MARIPOSA
+(happy)
+Hey there! You called for a faulty turnstile? 
+
+
+GUARD
+Oh, yeah. Guess we did. It’s been acting up. Sometimes works, sometimes doesn’t. Don’t really know what’s wrong with it.
+
+
+MARIPOSA
+(neutral)
+Got it! No worries, I’ll get this thing working in no time.
+
+
+GUARD
+Good to hear. Here’s the card for the thing. Or whatever. I’ll just, I don’t know, wait here until you’re done.
+
+
+#MARIPOSA gets to work, examining the turnstile. She puts the card into the machine to open it, but the machine ejects it out of the other end.
+!name turnstyle_keycard
+MARIPOSA
+(Surprised)
+Oh! Well. 
+
+
+MARIPOSA
+(Neutral)
+BEEBO, can you grab the keycard for me? 
+
+
+MARIPOSA
+(bashful)
+Looks like this turnstile is giving me more trouble than I had anticipated...
+
+
+BEEBO
+<Putting task: Get Keycard into task list. Task number 17. Would you like to prioritize this task?>
+
+
+MARIPOSA
+(neutral)
+Please do. Thanks, BEEBO!
+
+
+#[GAMEPLAY]- INTRODUCTION TO [BEE] MECHANICS.
+
+
+________________
+
+
+
+
+#>If interact with MARIPOSA
+!name interact_mariposa
+#1:
+MARIPOSA
+(bashful)
+I can’t access the interior without it...
+
+
+#2: (repeat forever)
+
+
+________________
+
+
+
+
+#>If interact with GUARD 
+!name interact guard
+#1:
+GUARD
+When’s this girl going to be done...?
+
+
+#2: (repeat forever)
+
+
+________________
+
+
+#After PLAYER successfully uses the [BEE] to grab the keycard, PLAYER will be introduced to inventory set up. PLAYER uses the item to fix the turnstile. 
+!name fix_turnstyle
+MARIPOSA
+(happy)
+There we go. Everything should be in order now!
+
+
+GUARD
+Oh, you’re finished? Thanks. Someone’ll send the payment later. 
+
+
+MARIPOSA 
+(neutral)
+See you around!
+
+
+GUARD
+Sure. See ya.
+
+
+#STOP INTERACTING WITH GUARD. 
+!name catch_train
+MARIPOSA
+(neutral)
+(I’m finally all done for the day.)
+
+
+MARIPOSA
+(happy)
+(Time to catch the train and go home.)
+
+
+MARIPOSA 
+(bashful)
+(I miss my bed...)
+
+
+________________
+
+
+!name guard_post_puzzle
+#>If interact with GUARD (post-puzzle)
+
+
+#1:
+GUARD
+Is my shift over yet?
+
+
+#2: (repeat forever)
+
+
+________________
+
+
+
+
+#The GUARD walks away, and MARIPOSA heads to the platform through the recently fixed turnstile. PLAYER will have the option of interacting with NPCs in the tunnel, but once she progresses far enough, the game will stop her. She will remain idle and wait for the train. 
+!name waiting_for_train
+
+
+MARIPOSA 
+(neutral)
+BEEBO, how much time until the train gets here?
+
+
+BEEBO
+<ETA: 12 Minutes>
+
+
+MARIPOSA
+(neutral)
+Hmm, I think I have some time then. Can you pull up my notes for Project #314? Let’s see if I can’t get this thing working...
+
+
+A static crackling noise echoes in the subway tunnel.
+
+
+UNNAMED 
+(blank portrait)
+---not much left around here. Might have to head back soon.
+
+
+MARIPOSA 
+(surprised)
+Hello? Is someone there?
+
+
+#CUT TO UNNAMED
+!event switch_to_unnamed1
+________________
+
+
+#INT. UNDERGROUND SUBWAY RUINS - DAY
+#UNNAMED stands at the start of the ruins of the subway. 
+!name unnamed_start
+
+
+UNNAMED
+(neutral)
+(...Looks like no one’s been here in a while.)
+
+
+UNNAMED
+!audio cough_sfx
+(...!)
+
+
+UNNAMED
+(neutral)
+(...No time to rest now. Keep moving.)
+
+
+#[GAMEPLAY]- INTRODUCTION TO UNNAMED MECHANICS
+
+
+#UNNAMED walks into the gutted train car. They eventually pick up the RADIO. 
+!name radio_pickup
+
+
+UNNAMED 
+(muttering)
+The hell is this? 
+
+
+#Show radio.
+!event show_radio
+
+
+UNNAMED 
+(neutral)
+Just scrap metal. Might have some useful parts though.
+
+
+UNNAMED
+(neutral)
+...Not much left around here.
+
+
+#A static crackling noise echoes in the subway tunnel. An unknown voice flickers in and out of audibility. The screen may shake slightly as the sound of gnashing metal rumbles through the tunnel. 
+!event_screenshake
+!audio tunnel
+
+
+MARIPOSA 
+(startled)
+Hello? Is someone there?
+
+
+MARIPOSA
+(neutral)
+Can you hear me?
+
+
+MARIPOSA
+...
+Thought I already rewired this part...
+
+
+UNNAMED
+(surprised)
+(How do I shut this thing off??)
+
+
+#UNNAMED escapes from the train car. They move to the maintenance room and try the emergency exit. It’s jammed.
+
+
+________________
+
+
+!name backtrack_attempt
+#>IF TRY TO BACKTRACK 
+
+
+#1:
+UNNAMED
+(neutral)
+(Can’t go back. I’ll be torn apart.)
+
+
+#2: (repeat forever)
+
+
+________________
+
+
+
+
+!name door_jammed
+UNNAMED
+(neutral)
+Of course the door is jammed. Why wouldn’t it be?
+
+
+MARIPOSA
+(neutral)
+What’s happening? It’s awfully noisy on your end, stranger.
+
+
+UNNAMED
+(ignoring her)
+Can’t backtrack. And I won’t be able to hold off those bots forever. 
+
+
+MARIPOSA
+(neutral)
+A bot? Is it malfunctioning? 
+
+
+MARIPOSA
+(happy)
+I could help you out if you tell me what’s wrong! Could you describe—--
+
+
+UNNAMED
+Damn it, how do I get out of here?
+
+
+MARIPOSA
+(sad)
+Um—--alright then.
+
+
+
+
+#>NEW AREA (DUO-GAMEPLAY TUTORIAL)
+
+
+#UNNAMED explores the maintenance room with the JAMMED DOOR. They can make comments on various useless items they find. Eventually, they find a BATTERY in this area. 
+!name battery
+
+
+UNNAMED
+(neutral)
+A battery with nothing to put it in. If only there were any of those maintenance bots still around...
+...
+Which don’t want to kill me, that is. 
+
+
+UNNAMED
+(neutral)
+...but they scrapped the chargers for parts a long, long time ago. 
+
+
+#PLAYER now switches to MARIPOSA.
+!event switch_mariposa1
+
+
+MARIPOSA
+(I think I’ll give them a bit of space for now. Seems like they’re not interested in talking to me...)
+
+
+#She notices the train still hasn’t arrived and decides to walk around. She can walk around the platform. She will see the charging station for maintenance bots.
+
+
+MARIPOSA
+(neutral)
+But that reminds me...speaking of maintenance bots...
+
+
+MARIPOSA
+(neutral)
+There’s a charger for them right here. Though, honestly, it looks kind of scuffed... 
+
+
+MARIPOSA
+(neutral)
+Needs just a few little tweaks to get back into shape, though. I wonder why no one’s bothered?
+
+
+MARIPOSA
+(happy)
+Well, since I’m here...I’ll keep the bots running around here in good shape for a bit longer.
+
+
+#[BEE] hits the lever to restart the electricity flow to the charger on the edge of the platform. MARIPOSA completes a block puzzle to fully fix the charging station, and the maintenance robot will be able to function again.
+
+
+________________
+
+
+#>IF PUZZLE IS NOT COMPLETE 
+!name block_puzzle_incomplete_unnamed
+
+
+UNNAMED
+(to themself) 
+No way out of this. I’m trapped here.
+
+
+#OR
+
+
+!name block_puzzle_incomplete_mariposa
+MARIPOSA
+(Let’s see here…)
+
+
+#>IF PUZZLE IS HALFWAY COMPLETE
+!name block_puzzle_halfway_unnamed
+
+
+UNNAMED
+(to themself) 
+(Maybe I can rig this thing up and...no. That won’t work.)
+
+
+UNNAMED 
+(Urgh, my head...)
+
+
+#OR 
+
+
+!name block_puzzle_halfway_mariposa
+MARIPOSA
+(Just a bit more.)
+
+
+________________
+
+
+
+
+#Player completes the puzzle and the charger is now fully functioning.
+!name block_puzzle_complete
+
+
+MARIPOSA
+There we go! Everything’s in working order now.
+
+
+BEEBO
+<ALERT: Train has been delayed. Estimated wait time: 1 hour. Recommended Route: Bus.>
+
+
+MARIPOSA
+(exasperated)
+Delayed? Again? That’s the second time this week...
+
+
+BEEBO
+<Understood. Do you wish to file a complaint?>
+
+
+MARIPOSA
+No! No, I mean---Don’t send anything, BEEBO. Let’s just head to the bus stop. I don’t want to get back to town too late.
+
+
+!event switch_unnamed2
+#PLAYER now switches to UNNAMED.
+
+
+#UNNAMED is still stuck in the room. 
+!name unnamed_stuck
+
+
+MARIPOSA
+So...How are things going for you there? Fixed your bot situation?
+
+
+UNNAMED
+(neutral)
+...
+
+
+MARIPOSA
+Well, I fixed things on my end. I know a few things about bots if you need some help; If you just describe what you’re seeing...I could tell you what to do?
+
+
+NARRATION 
+[You hear a faint clicking sound. The soft hum of electricity fills the room.]
+
+
+UNNAMED
+(Maybe I missed something.)
+
+
+#UNNAMED looks around the room again. If he clicks on anything that hasn’t changed, he repeats prior dialogue. In the room, there is now a deactivated maintenance bot. 
+
+
+#UNNAMED can interact with this bot to progress.
+
+
+!name unnamed_bot
+UNNAMED
+(neutral)
+(Was this always here? I thought I checked this whole room.)
+
+
+MARIPOSA
+(neutral)
+What is it? You found something?
+
+
+UNNAMED
+...
+
+
+UNNAMED
+(hesitant)
+You said you...fixed something. What did you do?
+
+
+MARIPOSA
+(neutral)
+You...were listening? It was a charger for the maintenance bots at this station. It needed a bit of tuning up, but it should be good for a little while.
+
+
+UNNAMED
+(neutral)
+What model?
+
+
+MARIPOSA
+(neutral)
+Hmm. Not sure, actually. I think my station is still on the MK6? They’re pretty reliable, if a little clunky. 
+
+
+MARIPOSA
+(happy)
+I think they’re cute, though! 
+
+
+UNNAMED
+(neutral)
+(That’s...not possible...)
+
+
+UNNAMED 
+(neutral)
+(But I wonder if the battery would still...)
+
+
+#UNNAMED puts the battery into the bot. It powers on.
+
+
+NARRATION
+<i>You slot the battery into the automaton. The charging station starts to churr. The automaton creaks to life. It barely moves, but its eyes begin to glow.</i>
+
+
+AUTOMATON
+DOOR...7...8...6...4...2...EMERGENCY...OVERRIDE.
+
+
+________________
+
+
+
+
+!name bot_interact_again
+#>IF INTERACT AGAIN 
+#1:
+AUTOMATON
+7...8...6...4...2...
+
+
+NARRATION
+<i>It's struggling to move. The charging station sounds like it's straining to keep it alive.</i>
+
+
+#2: "7...8...6...4...2..." (repeat forever)
+
+
+#PLAYER puts in code. The lock sparks, and the door is now unlocked. UNNAMED exits immediately after.
+
+
+#>GAME PROCEEDS TO CITY 1

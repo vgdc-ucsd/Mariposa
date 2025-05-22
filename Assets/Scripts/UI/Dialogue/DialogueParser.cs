@@ -19,6 +19,10 @@ public class DialogueParser : Singleton<DialogueParser>
 		.IgnoreUnmatchedProperties()
 		.Build();
 
+	private static ISerializer serializer = new SerializerBuilder()
+		.WithNamingConvention(PascalCaseNamingConvention.Instance)
+		.Build();
+
 	private static HashSet<string> portraits = new HashSet<string>
 	{
 		"MariposaNeutral", "MariposaSad", "MariposaSurprised", "MariposaHappy",
@@ -31,11 +35,19 @@ public class DialogueParser : Singleton<DialogueParser>
 		return data;
 	}
 
+	public static string ToYaml(Dictionary<string, List<DialogueElement>> data)
+	{
+		return serializer.Serialize(data);
+	}
+
 	public static void Validate(Dictionary<string, List<DialogueElement>> data)
 	{
 		foreach ((string name, List<DialogueElement> dialogue) in data)
 		{
 			bool first = true;
+			string speaker = "";
+			if (dialogue.Count == 0) throw new DialogueException(name, "There is no data for this conversation!");
+
 			foreach (DialogueElement element in dialogue)
 			{
 				if (first)
@@ -43,13 +55,17 @@ public class DialogueParser : Singleton<DialogueParser>
 					if (element.Speaker == null) throw new DialogueException(name, "The first entry does not contain the speaker's name!");
 					first = false;
 				}
+				speaker = element.Speaker;
 
 				if (element.Line == null)
 				{
 					throw new DialogueException(name, "Empty line!");
 				}
 
-				// TODO
+				if (element.Icon != null && !portraits.Contains(speaker + element.Icon))
+				{
+					throw new DialogueException(name, $"The expression {element.Icon} does not exist for {speaker}!");
+				}
 			}
 		}
 	}
