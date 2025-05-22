@@ -1,7 +1,9 @@
 using Unity.VisualScripting;
+using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PauseScript : MonoBehaviour
 {
@@ -106,5 +108,19 @@ public class PauseScript : MonoBehaviour
         PauseMenu.SetActive(false);
         AudioSettingsMenu.SetActive(false);
         VideoSettingsMenu.SetActive(false);
+    }
+
+    public void RestartCheckpoint()
+    {
+        CloseAllMenus();
+        ResumeGame();
+        Player.ActivePlayer.transform.position = LevelManager.Instance.GetCurrentSublevel().StartingSpawn.GetRespawnPosition();  
+    }
+
+    public void ExitToTitle()
+    {
+        CloseAllMenus();
+        ResumeGame();
+        SceneManager.LoadScene(0);
     }
 }
