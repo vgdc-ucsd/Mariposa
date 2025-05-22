@@ -53,10 +53,10 @@ public class Turret : MonoBehaviour
     // -------- IEnumerator --------
     IEnumerator chargingCO; // Have this so that we can stop the charging when take off the battery
 
+    BreakablePlatform[] shotPlatforms;
     private void Start()
     {
-		turretBehaviour = GetComponent<ITurretBehaviour>();
-        bodyPart.GetComponent<SpriteRenderer>().color = Color.green; // For battery test
+        turretBehaviour = GetComponent<ITurretBehaviour>();
         chargingPoint.SetActive(false);
         laser.SetActive(false);
         SetLaserMaxLength();
@@ -107,16 +107,17 @@ public class Turret : MonoBehaviour
         hasBattery = false;
 	}
 
-    
+
 
     // ---------- private functions ----------
 
     private void SetLaserMaxLength()
     {
-        // float lengthX = rangeDetectorForAttack.SizeX / 2 + rangeDetectorForAttack.OffsetX;
-        // float lengthY = rangeDetectorForAttack.SizeY / 2 + rangeDetectorForAttack.OffsetY;
-        // float maxLength = Mathf.Sqrt(Mathf.Pow(lengthX, 2) + Mathf.Pow(lengthY, 2));
-        laser.SetLocalScaleX(rangeDetectorForAttack.SizeY + rangeDetectorForAttack.OffsetY);
+        float laserOffset = transform.position.y - laser.transform.position.y;
+        float lengthX = rangeDetectorForAttack.SizeX / 2 - rangeDetectorForAttack.OffsetX;
+        float lengthY = rangeDetectorForAttack.SizeY / 2 - rangeDetectorForAttack.OffsetY - laserOffset;
+        float maxLength = Mathf.Sqrt(Mathf.Pow(lengthX, 2) + Mathf.Pow(lengthY, 2));
+        laser.SetLocalScaleX(maxLength);
 	}
 
     public void TurnToTarget()

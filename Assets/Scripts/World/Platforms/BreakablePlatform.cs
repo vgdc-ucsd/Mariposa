@@ -16,7 +16,7 @@ public class BreakablePlatform : MonoBehaviour
     public bool breakFromPlayer = false; // set to true if you want platform to shake/crumble after player stands on it for breakDelay time
 
     // ---------- variables for breaking from player ----------
-    public SpriteRenderer spriteRenderer;    public float flashSpeed = 10f;
+    public SpriteRenderer spriteRenderer; public float flashSpeed = 10f;
     public float breakDelay = 3f;
     public float flashTime = 2f;
     private Coroutine breakRoutine;
@@ -35,7 +35,7 @@ public class BreakablePlatform : MonoBehaviour
         {
             breakRoutine = StartCoroutine(BeginBreakFromPlayer());
         }
-    } 
+    }
 
     // uncomment if we want player to be able to reset a 'shaking' platform by moving off it
     // void OnTriggerExit2D(Collider2D collider)
@@ -53,7 +53,6 @@ public class BreakablePlatform : MonoBehaviour
         yield return new WaitForSeconds(breakDelay);
 
         state = PlatformState.Shaking;
-        Debug.Log("Platform is flashing...");
 
         float timer = 0f;
         Color originalColor = spriteRenderer.color;
@@ -71,10 +70,18 @@ public class BreakablePlatform : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void BeenShot() {
-        if (!breakFromPlayer && state != PlatformState.Broken) {
+    public void BeenShot()
+    {
+        if (!breakFromPlayer && state != PlatformState.Broken)
+        {
             state = PlatformState.Broken;
             gameObject.SetActive(false);
         }
+    }
+
+    public void Reset()
+    {
+        state = PlatformState.Stable;
+        gameObject.SetActive(true);
     }
 }
