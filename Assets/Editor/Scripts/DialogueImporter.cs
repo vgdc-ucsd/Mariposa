@@ -50,7 +50,8 @@ public class DialogueImporter : EditorWindow
     {
         string innerTextPattern = @"^\(([^)]+)\)";
         Match match = Regex.Match(line, innerTextPattern);
-        return match.Groups[1].Value;
+        string icon = match.Groups[1].Value;
+        return char.ToUpper(icon[0]) + icon.Substring(1);
     }
 
     private string ParseLine(string line)
@@ -76,54 +77,65 @@ public class DialogueImporter : EditorWindow
         DialogueElement element = new DialogueElement();
         string dialogueName = "";
         bool firstSpeaker = true;
+        bool afterSpeaker = false;
 
         for (int i = 0; i < lines.Length; i++)
         {
             string line = lines[i].Trim();
             if (string.IsNullOrWhiteSpace(line)) continue;
             if (line.StartsWith("#") || line.StartsWith("_")) continue; // comment or line break
+            bool speaker = Regex.IsMatch(line, @"^[A-Z]+$");
+            bool hasLineNext = false;
+            if (i + 1 < lines.Length)
+            {
+                string next = lines[i + 1].Trim();
+                hasLineNext = !string.IsNullOrWhiteSpace(next) && !next.StartsWith("#") && !next.StartsWith("!");
+            }
 
             if (Regex.IsMatch(line, @"^!(name|n)\b")) // dialogue name
-            {
-                if (dialogueName != "") dd[dialogueName].Add(element);
-
-                dialogueName = ParseLabel(line);
-                if (dd.ContainsKey(dialogueName))
                 {
-                    throw new DialogueException(dialogueName, $"Multiple dialogues share the same name \"{dialogueName}\"!");
+                    if (dialogueName != "") dd[dialogueName].Add(element);
+
+                    dialogueName = ParseLabel(line);
+                    if (dd.ContainsKey(dialogueName))
+                    {
+                        throw new DialogueException(dialogueName, $"Multiple dialogues share the same name \"{dialogueName}\"!");
+                    }
+
+                    dd[dialogueName] = new List<DialogueElement>();
+                    element = new DialogueElement();
+                    firstSpeaker = true;
+                }
+                else if (Regex.IsMatch(line, @"^!(audio|a)\b")) // audio
+                {
+                    element.Sounds.Add(ParseLabel(line));
+                }
+                else if (Regex.IsMatch(line, @"^!(event|e)\b")) // event
+                {
+                    element.Events.Add(ParseLabel(line));
+                }
+                else if (speaker) // speaker
+                {
+                    if (!firstSpeaker) dd[dialogueName].Add(element);
+                    else firstSpeaker = false;
+                    element = new DialogueElement();
+                    element.Speaker = ParseSpeaker(line);
+                    afterSpeaker = true;
+                }
+                else if (afterSpeaker && hasLineNext && Regex.IsMatch(line, @"^\([^)]+\)")) // icon
+                {
+                    element.Icon = ParseIcon(line);
+                }
+                else // line
+                {
+                    element.Line = ParseLine(line);
                 }
 
-                dd[dialogueName] = new List<DialogueElement>();
-                element = new DialogueElement();
-                firstSpeaker = true;
-            }
-            else if (Regex.IsMatch(line, @"^!(audio|a)\b")) // audio
-            {
-                element.Sounds.Add(ParseLabel(line));
-            }
-            else if (Regex.IsMatch(line, @"^!(event|e)\b")) // event
-            {
-                element.Events.Add(ParseLabel(line));
-            }
-            else if (Regex.IsMatch(line, @"^[A-Z]+$")) // speaker
-            {
-                if (!firstSpeaker) dd[dialogueName].Add(element);
-                else firstSpeaker = false;
-                element = new DialogueElement();
-                element.Speaker = ParseSpeaker(line);
-            }
-            else if (Regex.IsMatch(line, @"^\([^)]+\)")) // icon
-            {
-                element.Icon = ParseIcon(line);
-            }
-            else // line
-            {
-                element.Line = ParseLine(line);
-            }
+            if (!speaker) afterSpeaker = false;
         }
 
         dd[dialogueName].Add(element);
-        //DialogueParser.Validate(dd);
+        DialogueParser.Validate(dd);
         string assetName = dialogue.name.Replace(" ", "_").Replace("\"", "") + ".yaml";
         string yaml = DialogueParser.ToYaml(dd);
         string assetPath = Path.Combine("Resources/DialogueData", assetName);

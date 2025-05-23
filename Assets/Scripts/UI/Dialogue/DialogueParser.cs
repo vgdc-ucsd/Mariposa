@@ -64,7 +64,7 @@ public class DialogueParser : Singleton<DialogueParser>
 
 				if (element.Icon != null && !portraits.Contains(speaker + element.Icon))
 				{
-					throw new DialogueException(name, $"The expression {element.Icon} does not exist for {speaker}!");
+					throw new DialogueException(name, $"The expression \"({element.Icon})\" does not exist for {speaker}!");
 				}
 			}
 		}

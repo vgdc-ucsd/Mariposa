@@ -1,21 +1,21 @@
 start:
 - Speaker: Mariposa
-  Line: 
-  Icon: Looks like I’ve got a bit of time before the job.
+  Line: (Looks like I’ve got a bit of time before the job.)
+  Icon: Neutral
   FromRadio: false
   Sounds: []
   Events: []
   Choices: []
 - Speaker: Mariposa
-  Line: 
-  Icon: I can’t wait to get home and take a nice, long nap...
+  Line: (I can’t wait to get home and take a nice, long nap...)
+  Icon: Neutral
   FromRadio: false
   Sounds: []
   Events: []
   Choices: []
 - Speaker: Mariposa
   Line: Let’s get going, BEEBO!
-  Icon: happy
+  Icon: Happy
   FromRadio: false
   Sounds: []
   Events: []
@@ -23,7 +23,7 @@ start:
 guard:
 - Speaker: Mariposa
   Line: Hey there! You called for a faulty turnstile?
-  Icon: happy
+  Icon: Happy
   FromRadio: false
   Sounds: []
   Events: []
@@ -37,7 +37,7 @@ guard:
   Choices: []
 - Speaker: Mariposa
   Line: Got it! No worries, I’ll get this thing working in no time.
-  Icon: neutral
+  Icon: Neutral
   FromRadio: false
   Sounds: []
   Events: []
@@ -66,7 +66,7 @@ turnstyle_keycard:
   Choices: []
 - Speaker: Mariposa
   Line: Looks like this turnstile is giving me more trouble than I had anticipated...
-  Icon: bashful
+  Icon: 
   FromRadio: false
   Sounds: []
   Events: []
@@ -80,7 +80,7 @@ turnstyle_keycard:
   Choices: []
 - Speaker: Mariposa
   Line: Please do. Thanks, BEEBO!
-  Icon: neutral
+  Icon: Neutral
   FromRadio: false
   Sounds: []
   Events: []
@@ -88,7 +88,7 @@ turnstyle_keycard:
 interact_mariposa:
 - Speaker: Mariposa
   Line: I can’t access the interior without it...
-  Icon: bashful
+  Icon: 
   FromRadio: false
   Sounds: []
   Events: []
@@ -104,7 +104,7 @@ interact:
 fix_turnstyle:
 - Speaker: Mariposa
   Line: There we go. Everything should be in order now!
-  Icon: happy
+  Icon: Happy
   FromRadio: false
   Sounds: []
   Events: []
@@ -118,7 +118,7 @@ fix_turnstyle:
   Choices: []
 - Speaker: Mariposa
   Line: See you around!
-  Icon: neutral
+  Icon: Neutral
   FromRadio: false
   Sounds: []
   Events: []
@@ -132,22 +132,22 @@ fix_turnstyle:
   Choices: []
 catch_train:
 - Speaker: Mariposa
-  Line: 
-  Icon: I’m finally all done for the day.
+  Line: (I’m finally all done for the day.)
+  Icon: Neutral
   FromRadio: false
   Sounds: []
   Events: []
   Choices: []
 - Speaker: Mariposa
-  Line: 
-  Icon: Time to catch the train and go home.
+  Line: (Time to catch the train and go home.)
+  Icon: Happy
   FromRadio: false
   Sounds: []
   Events: []
   Choices: []
 - Speaker: Mariposa
-  Line: 
-  Icon: I miss my bed...
+  Line: (I miss my bed...)
+  Icon: 
   FromRadio: false
   Sounds: []
   Events: []
@@ -163,7 +163,7 @@ guard_post_puzzle:
 waiting_for_train:
 - Speaker: Mariposa
   Line: BEEBO, how much time until the train gets here?
-  Icon: neutral
+  Icon: Neutral
   FromRadio: false
   Sounds: []
   Events: []
@@ -177,21 +177,21 @@ waiting_for_train:
   Choices: []
 - Speaker: Mariposa
   Line: A static crackling noise echoes in the subway tunnel.
-  Icon: neutral
+  Icon: Neutral
   FromRadio: false
   Sounds: []
   Events: []
   Choices: []
 - Speaker: Unnamed
   Line: '---not much left around here. Might have to head back soon.'
-  Icon: blank portrait
+  Icon: 
   FromRadio: false
   Sounds: []
   Events: []
   Choices: []
 - Speaker: Mariposa
   Line: Hello? Is someone there?
-  Icon: surprised
+  Icon: Surprised
   FromRadio: false
   Sounds: []
   Events:
@@ -199,23 +199,23 @@ waiting_for_train:
   Choices: []
 unnamed_start:
 - Speaker: Unnamed
-  Line: 
-  Icon: '...Looks like no one’s been here in a while.'
+  Line: (...Looks like no one’s been here in a while.)
+  Icon: Neutral
   FromRadio: false
   Sounds: []
   Events: []
   Choices: []
 - Speaker: Unnamed
-  Line: 
-  Icon: '...!'
+  Line: (...!)
+  Icon: 
   FromRadio: false
   Sounds:
   - cough_sfx
   Events: []
   Choices: []
 - Speaker: Unnamed
-  Line: 
-  Icon: '...No time to rest now. Keep moving.'
+  Line: (...No time to rest now. Keep moving.)
+  Icon: Neutral
   FromRadio: false
   Sounds: []
   Events: []
@@ -223,7 +223,7 @@ unnamed_start:
 radio_pickup:
 - Speaker: Unnamed
   Line: The hell is this?
-  Icon: muttering
+  Icon: 
   FromRadio: false
   Sounds: []
   Events:
@@ -231,29 +231,30 @@ radio_pickup:
   Choices: []
 - Speaker: Unnamed
   Line: Just scrap metal. Might have some useful parts though.
-  Icon: neutral
+  Icon: Neutral
   FromRadio: false
   Sounds: []
   Events: []
   Choices: []
 - Speaker: Unnamed
-  Line: '!event_screenshake'
-  Icon: neutral
+  Line: '...Not much left around here.'
+  Icon: Neutral
   FromRadio: false
   Sounds:
   - tunnel
-  Events: []
+  Events:
+  - screenshake
   Choices: []
 - Speaker: Mariposa
   Line: Hello? Is someone there?
-  Icon: startled
+  Icon: 
   FromRadio: false
   Sounds: []
   Events: []
   Choices: []
 - Speaker: Mariposa
   Line: Can you hear me?
-  Icon: neutral
+  Icon: Neutral
   FromRadio: false
   Sounds: []
   Events: []
@@ -266,16 +267,16 @@ radio_pickup:
   Events: []
   Choices: []
 - Speaker: Unnamed
-  Line: 
-  Icon: How do I shut this thing off??
+  Line: (How do I shut this thing off??)
+  Icon: Surprised
   FromRadio: false
   Sounds: []
   Events: []
   Choices: []
 backtrack_attempt:
 - Speaker: Unnamed
-  Line: 
-  Icon: Can’t go back. I’ll be torn apart.
+  Line: (Can’t go back. I’ll be torn apart.)
+  Icon: Neutral
   FromRadio: false
   Sounds: []
   Events: []
@@ -283,35 +284,35 @@ backtrack_attempt:
 door_jammed:
 - Speaker: Unnamed
   Line: Of course the door is jammed. Why wouldn’t it be?
-  Icon: neutral
+  Icon: Neutral
   FromRadio: false
   Sounds: []
   Events: []
   Choices: []
 - Speaker: Mariposa
   Line: What’s happening? It’s awfully noisy on your end, stranger.
-  Icon: neutral
+  Icon: Neutral
   FromRadio: false
   Sounds: []
   Events: []
   Choices: []
 - Speaker: Unnamed
   Line: Can’t backtrack. And I won’t be able to hold off those bots forever.
-  Icon: ignoring her
+  Icon: 
   FromRadio: false
   Sounds: []
   Events: []
   Choices: []
 - Speaker: Mariposa
   Line: A bot? Is it malfunctioning?
-  Icon: neutral
+  Icon: Neutral
   FromRadio: false
   Sounds: []
   Events: []
   Choices: []
 - Speaker: Mariposa
   Line: I could help you out if you tell me what’s wrong! Could you describe—--
-  Icon: happy
+  Icon: Happy
   FromRadio: false
   Sounds: []
   Events: []
@@ -325,7 +326,7 @@ door_jammed:
   Choices: []
 - Speaker: Mariposa
   Line: Um—--alright then.
-  Icon: sad
+  Icon: Sad
   FromRadio: false
   Sounds: []
   Events: []
@@ -333,50 +334,50 @@ door_jammed:
 battery:
 - Speaker: Unnamed
   Line: Which don’t want to kill me, that is.
-  Icon: neutral
+  Icon: Neutral
   FromRadio: false
   Sounds: []
   Events: []
   Choices: []
 - Speaker: Unnamed
   Line: '...but they scrapped the chargers for parts a long, long time ago.'
-  Icon: neutral
+  Icon: Neutral
   FromRadio: false
   Sounds: []
   Events:
   - switch_mariposa1
   Choices: []
 - Speaker: Mariposa
-  Line: 
-  Icon: I think I’ll give them a bit of space for now. Seems like they’re not interested in talking to me...
+  Line: (I think I’ll give them a bit of space for now. Seems like they’re not interested in talking to me...)
+  Icon: 
   FromRadio: false
   Sounds: []
   Events: []
   Choices: []
 - Speaker: Mariposa
   Line: But that reminds me...speaking of maintenance bots...
-  Icon: neutral
+  Icon: Neutral
   FromRadio: false
   Sounds: []
   Events: []
   Choices: []
 - Speaker: Mariposa
   Line: There’s a charger for them right here. Though, honestly, it looks kind of scuffed...
-  Icon: neutral
+  Icon: Neutral
   FromRadio: false
   Sounds: []
   Events: []
   Choices: []
 - Speaker: Mariposa
   Line: Needs just a few little tweaks to get back into shape, though. I wonder why no one’s bothered?
-  Icon: neutral
+  Icon: Neutral
   FromRadio: false
   Sounds: []
   Events: []
   Choices: []
 - Speaker: Mariposa
   Line: Well, since I’m here...I’ll keep the bots running around here in good shape for a bit longer.
-  Icon: happy
+  Icon: Happy
   FromRadio: false
   Sounds: []
   Events: []
@@ -384,38 +385,38 @@ battery:
 block_puzzle_incomplete_unnamed:
 - Speaker: Unnamed
   Line: No way out of this. I’m trapped here.
-  Icon: to themself
+  Icon: 
   FromRadio: false
   Sounds: []
   Events: []
   Choices: []
 block_puzzle_incomplete_mariposa:
 - Speaker: Mariposa
-  Line: 
-  Icon: Let’s see here…
+  Line: (Let’s see here…)
+  Icon: 
   FromRadio: false
   Sounds: []
   Events: []
   Choices: []
 block_puzzle_halfway_unnamed:
 - Speaker: Unnamed
-  Line: 
-  Icon: Maybe I can rig this thing up and...no. That won’t work.
+  Line: (Maybe I can rig this thing up and...no. That won’t work.)
+  Icon: 
   FromRadio: false
   Sounds: []
   Events: []
   Choices: []
 - Speaker: Unnamed
-  Line: 
-  Icon: Urgh, my head...
+  Line: (Urgh, my head...)
+  Icon: 
   FromRadio: false
   Sounds: []
   Events: []
   Choices: []
 block_puzzle_halfway_mariposa:
 - Speaker: Mariposa
-  Line: 
-  Icon: Just a bit more.
+  Line: (Just a bit more.)
+  Icon: 
   FromRadio: false
   Sounds: []
   Events: []
@@ -437,7 +438,7 @@ block_puzzle_complete:
   Choices: []
 - Speaker: Mariposa
   Line: Delayed? Again? That’s the second time this week...
-  Icon: exasperated
+  Icon: 
   FromRadio: false
   Sounds: []
   Events: []
@@ -467,7 +468,7 @@ unnamed_stuck:
   Choices: []
 - Speaker: Unnamed
   Line: '...'
-  Icon: neutral
+  Icon: Neutral
   FromRadio: false
   Sounds: []
   Events: []
@@ -487,23 +488,23 @@ unnamed_stuck:
   Events: []
   Choices: []
 - Speaker: Unnamed
-  Line: 
-  Icon: Maybe I missed something.
+  Line: (Maybe I missed something.)
+  Icon: 
   FromRadio: false
   Sounds: []
   Events: []
   Choices: []
 unnamed_bot:
 - Speaker: Unnamed
-  Line: 
-  Icon: Was this always here? I thought I checked this whole room.
+  Line: (Was this always here? I thought I checked this whole room.)
+  Icon: Neutral
   FromRadio: false
   Sounds: []
   Events: []
   Choices: []
 - Speaker: Mariposa
   Line: What is it? You found something?
-  Icon: neutral
+  Icon: Neutral
   FromRadio: false
   Sounds: []
   Events: []
@@ -517,49 +518,49 @@ unnamed_bot:
   Choices: []
 - Speaker: Unnamed
   Line: You said you...fixed something. What did you do?
-  Icon: hesitant
+  Icon: 
   FromRadio: false
   Sounds: []
   Events: []
   Choices: []
 - Speaker: Mariposa
   Line: You...were listening? It was a charger for the maintenance bots at this station. It needed a bit of tuning up, but it should be good for a little while.
-  Icon: neutral
+  Icon: Neutral
   FromRadio: false
   Sounds: []
   Events: []
   Choices: []
 - Speaker: Unnamed
   Line: What model?
-  Icon: neutral
+  Icon: Neutral
   FromRadio: false
   Sounds: []
   Events: []
   Choices: []
 - Speaker: Mariposa
   Line: Hmm. Not sure, actually. I think my station is still on the MK6? They’re pretty reliable, if a little clunky.
-  Icon: neutral
+  Icon: Neutral
   FromRadio: false
   Sounds: []
   Events: []
   Choices: []
 - Speaker: Mariposa
   Line: I think they’re cute, though!
-  Icon: happy
+  Icon: Happy
   FromRadio: false
   Sounds: []
   Events: []
   Choices: []
 - Speaker: Unnamed
-  Line: 
-  Icon: That’s...not possible...
+  Line: (That’s...not possible...)
+  Icon: Neutral
   FromRadio: false
   Sounds: []
   Events: []
   Choices: []
 - Speaker: Unnamed
-  Line: 
-  Icon: But I wonder if the battery would still...
+  Line: (But I wonder if the battery would still...)
+  Icon: Neutral
   FromRadio: false
   Sounds: []
   Events: []
