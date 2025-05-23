@@ -34,6 +34,8 @@ public class PlayerController : MonoBehaviour
     private InputSystem_Actions inputs;
     public bool IsLocked { get; private set; }
 
+    public bool IsSquidUnlocked;
+
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -46,6 +48,8 @@ public class PlayerController : MonoBehaviour
 
         InitializePlayers();
         inputs = new();
+
+        IsSquidUnlocked = false;
     }
 
     private void OnEnable()
@@ -54,6 +58,9 @@ public class PlayerController : MonoBehaviour
         inputs.Player.Ability.started += ctx => SendAbilityDown(ctx);
         inputs.Player.Ability.canceled += ctx => SendAbilityUp(ctx);
         inputs.Player.Jump.performed += ctx => SendJump(ctx);
+
+        // squid controls
+        inputs.Player.AltAbility.started += ctx => TryToggleSquid(ctx);
     }
 
     private void OnDisable()
@@ -61,6 +68,9 @@ public class PlayerController : MonoBehaviour
         inputs.Player.Ability.started -= ctx => SendAbilityDown(ctx);
         inputs.Player.Ability.canceled -= ctx => SendAbilityUp(ctx);
         inputs.Player.Jump.performed -= ctx => SendJump(ctx);
+
+        inputs.Player.AltAbility.started -= ctx => TryToggleSquid(ctx);
+
         inputs.Disable();
     }
 
@@ -78,7 +88,7 @@ public class PlayerController : MonoBehaviour
     {
         if (ControlledPlayer.Data.characterID == CharID.Mariposa) SwitchTo(CharID.Unnamed);
         else SwitchTo(CharID.Mariposa);
-        
+
     }
 
     public void SwitchTo(CharID character)
@@ -100,7 +110,7 @@ public class PlayerController : MonoBehaviour
         Subscribe(ControlledPlayer.Ability);
         ControlledPlayer.Ability.Initialize();
         InventoryUIManager inventoryUI = FindObjectOfType<InventoryUIManager>();
-        if(inventoryUI != null)
+        if (inventoryUI != null)
         {
             InventoryType newActiveInventory = (character == CharID.Mariposa) ? InventoryType.Mariposa : InventoryType.Unnamed;
             inventoryUI.SetActiveCharacterInventory(newActiveInventory);
@@ -130,7 +140,8 @@ public class PlayerController : MonoBehaviour
         listeners.Remove(Listener);
     }
 
-    public void ToggleMovementLock() {
+    public void ToggleMovementLock()
+    {
         IsLocked = !IsLocked;
     }
 
@@ -140,8 +151,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Tab)) SwitchCharacters();
         if (Input.GetKeyDown(KeyCode.E)) SendInteract();
 
-        if (Input.GetKeyDown(KeyCode.K)) StartControlling(SquidMovement.Instance);
-    }   
+    }
 
     public void SendAbilityDown(InputAction.CallbackContext ctx)
     {
@@ -170,6 +180,20 @@ public class PlayerController : MonoBehaviour
         {
             if (IsLocked) listener.SetMoveDir(Vector2.zero);
             else listener.SetMoveDir(moveDir);
+        }
+    }
+
+    private void TryToggleSquid(InputAction.CallbackContext ctx)
+    {
+        // if (!IsSquidUnlocked || ControlledPlayer.Data.characterID == CharID.Unnamed) return;
+
+        if (CurrentControllable != SquidMovement.Instance) // could be a value vs ref check error
+        {
+            StartControlling(SquidMovement.Instance);
+        }
+        else
+        {
+            StartControlling(MariposaRef.Movement);
         }
     }
 }

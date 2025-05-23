@@ -41,6 +41,8 @@ public class WirePuzzle : Puzzle
         if (CheckSolution())
         {
             IsComplete = true;
+            PlayerController.Instance.IsSquidUnlocked = true;
+            SquidMovement.Instance.gameObject.SetActive(true);
             OnComplete();
         }
     }

@@ -47,7 +47,7 @@ public class SquidMovement : FreeBody, IInputListener, IControllable
 
     private void InitDerivedConsts()
     {
-        Gravity = data.gravity;
+        // Gravity = data.gravity;
         TerminalVelocity = data.terminalVelocity;
         slipAngle = data.slipAngle;
 
