@@ -11,6 +11,7 @@ public class SquidAnimationBehavior : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         sRenderer = GetComponent<SpriteRenderer>();
+        animator.SetBool("isJumping", false);
     }
 
     // Update is called once per frame
