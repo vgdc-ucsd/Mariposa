@@ -12,6 +12,7 @@ public class SquidAnimationBehavior : MonoBehaviour
         animator = GetComponent<Animator>();
         sRenderer = GetComponent<SpriteRenderer>();
         animator.SetBool("isJumping", false);
+        wasRunning = false;
     }
 
     // Update is called once per frame
@@ -36,15 +37,15 @@ public class SquidAnimationBehavior : MonoBehaviour
                 animator.SetBool("isMoving", false);
             }
             animator.SetBool("isJumping", false);
-            animator.SetFloat("xVelocity", 0f);
-            animator.SetFloat("yVelocity", 0f);
+            animator.SetFloat("xVel", 0f);
+            animator.SetFloat("yVel", 0f);
             wasRunning = false;
             return;
         }
 
         if (Player.ActivePlayer.FacingDirection == -1)
         {
-            animator.SetFloat("xVel", 1);
+            animator.SetFloat("xVel", -1);
             animator.SetFloat("yVel", Player.ActivePlayer.Movement.Velocity.y);
             animator.SetFloat("faceRight", 0);
             sRenderer.flipX = true;
