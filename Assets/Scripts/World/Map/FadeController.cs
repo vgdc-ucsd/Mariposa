@@ -27,6 +27,11 @@ public class FadeController : MonoBehaviour
         StartCoroutine(FadeCoroutine(onComplete));
     }
 
+    public Coroutine FadeOut(System.Action onComplete = null)
+    {
+        return StartCoroutine(Fade(0f, 1f));
+    }
+    
     private IEnumerator FadeCoroutine(System.Action onComplete)
     {
         yield return Fade(0f, 1f);
