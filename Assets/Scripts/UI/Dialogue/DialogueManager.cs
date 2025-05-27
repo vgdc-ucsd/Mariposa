@@ -61,6 +61,11 @@ public class DialogueManager : Singleton<DialogueManager>
         dialoguePlayer.PlayDialogue(dialogueDictionary[dialogueName]);
     }
 
+    public Dictionary<string, List<DialogueElement>> GetDialogueDictionary()
+    {
+        return dialogueDictionary;
+    }
+
     private void OnEnable()
     {
         inputs.Enable();
