@@ -5,14 +5,14 @@ public class SquidAnimationBehavior : MonoBehaviour
     [SerializeField] private SpriteRenderer sRenderer;
     // [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Animator animator;
-    bool wasRunning;
+    public bool wasRunning;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         animator = GetComponent<Animator>();
         sRenderer = GetComponent<SpriteRenderer>();
         animator.SetBool("isJumping", false);
-        wasRunning = false;
+        wasRunning = true;
     }
 
     // Update is called once per frame
@@ -32,7 +32,7 @@ public class SquidAnimationBehavior : MonoBehaviour
     {
         if (SquidMovement.Instance.Velocity.sqrMagnitude <= 0.05f)
         {
-            if (wasRunning && Player.ActivePlayer.Movement.State == BodyState.OnGround)
+            if (Player.ActivePlayer.Movement.State == BodyState.OnGround)
             {
                 animator.SetBool("isMoving", false);
             }
