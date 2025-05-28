@@ -21,7 +21,7 @@ public class BlockPreview : MonoBehaviour
         rectTransform.sizeDelta = sizeDelta;
     }
 
-    public void SetPosition(Vector3 worldPos)
+    public void SetPosition(Vector2 worldPos)
     {
         rectTransform.anchoredPosition = worldPos;
     }

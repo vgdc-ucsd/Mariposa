@@ -8,6 +8,7 @@ public class PuzzleInteractable : Interactable
 
     public override void OnInteract(IControllable controllable)
     {
+        if (DialogueManager.Instance.IsPlayingDialogue) return;
         Debug.Log("Puzzle Interacted with!");
         if (puzzle == null) puzzle = puzzleObject.GetComponent<Puzzle>();
         if (puzzleObject == null) Debug.LogWarning($"{gameObject.name} Puzzle not assigned in inspector!");

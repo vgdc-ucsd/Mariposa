@@ -62,7 +62,7 @@ public class ScaleObject : MonoBehaviour
 
     private IEnumerator ResetJustClicked()
     {
-        yield return new WaitForSeconds(0.25f);
+        yield return new WaitForEndOfFrame();
         justClicked = false;
     }
 
@@ -116,21 +116,23 @@ public class ScaleObject : MonoBehaviour
         bool fromHand = false;
         bool toHand = false;
         bool isHand = target.TryGetComponent<ScaleHand>(out ScaleHand scaleHand);
-
-        if (target != dragTarget || isHand) // dragging from selection area to selection area should destroy object
+        dragging = false;
+        ScalePuzzle.Instance.isDragging = false;
+        ghostImage.enabled = false;
+        if (!isHand)
         {
-            if (dragTarget.TryGetComponent<ScaleHand>(out ScaleHand prevScaleHand))
-            {
-                prevScaleHand.RemoveObject(this);
-                fromHand = true;
-            }
+            if (GetType() != typeof(MysteryBox)) Despawn();
+            else LeaveScaleHand();
+        }
+        else if (target != dragTarget)
+        {
+            LeaveScaleHand();
             dragTarget = target;
             if (isHand)
             {
                 PlaceOnScaleHand(scaleHand);
                 toHand = true;
             }
-            else if (GetType() != typeof(MysteryBox)) Despawn();
             else
             {
                 rectTransform.transform.position = mousePos;
@@ -138,22 +140,31 @@ public class ScaleObject : MonoBehaviour
             }
             if (fromHand || toHand) ScalePuzzle.Instance.MoveHands();
 
-            dragging = false;
-            ScalePuzzle.Instance.isDragging = false;
-            ghostImage.enabled = false;
 
         }
-
     }
     public void PlaceOnScaleHand(ScaleHand scaleHand)
     {
+        Debug.Log("plz");
         scaleHand.AddObject(this);
     }
 
     private void Despawn()
     {
+        LeaveScaleHand();
         ghostRectTransform.SetParent(ScalePuzzle.Instance.transform, true);
         ghostImage.enabled = false;
         Destroy(gameObject);
+    }
+
+    private void LeaveScaleHand()
+    {
+        if (dragTarget != null && dragTarget.TryGetComponent<ScaleHand>(out ScaleHand prevScaleHand))
+        {
+            prevScaleHand.RemoveObject(this);
+            ScalePuzzle.Instance.MoveHands();
+            dragTarget = null;
+        }
+
     }
 }
