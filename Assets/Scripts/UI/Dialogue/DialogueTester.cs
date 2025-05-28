@@ -32,8 +32,5 @@ public class DialogueTester : MonoBehaviour
                 button.image.color = Color.green;
             });
         }
-
-        TextAsset test = (TextAsset)dialogueData[0];
-        DialogueManager.Instance.PlayDialogue("start");
     }
 }

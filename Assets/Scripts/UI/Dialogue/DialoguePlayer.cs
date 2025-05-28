@@ -33,8 +33,9 @@ public class DialoguePlayer : MonoBehaviour
     private bool finishedTypewriter;
     private const float DIALOGUE_SPEED = 0.025f;
 
-    // Tag removal
+    // Regex
     private Regex tagPattern = new Regex(@"<[^>]*>"); // Matches rich text tags like <i>text</i>
+    private Regex namePattern = new Regex(@""); // TODO
     private string taglessText = "";
 
 
@@ -45,6 +46,7 @@ public class DialoguePlayer : MonoBehaviour
 
     public void PlayDialogue(List<DialogueElement> dialogue)
     {
+        StopAllCoroutines();
         conversation = dialogue;
         dialogueIndex = -1;
 

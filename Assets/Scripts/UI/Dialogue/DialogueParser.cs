@@ -27,6 +27,7 @@ public class DialogueParser : Singleton<DialogueParser>
 	{
 		"MariposaNeutral", "MariposaSad", "MariposaSurprised", "MariposaHappy",
 		"UnnamedNeutral",  "UnnamedSad", "UnnamedSurprised", "UnnamedSilhouette",
+		"BeeboNeutral", "BeeboHappy"
 	};
 
 	public static Dictionary<string, List<DialogueElement>> Parse(TextAsset yaml)

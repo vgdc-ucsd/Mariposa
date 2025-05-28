@@ -54,6 +54,30 @@ public class DialogueImporter : EditorWindow
         return char.ToUpper(icon[0]) + icon.Substring(1);
     }
 
+    private DialogueChoice ParseChoice(string line)
+    {
+        DialogueChoice choice = new DialogueChoice();
+        string[] words = line.Split(" ");
+        if (words.Length == 0) throw new Exception($"Error parsing file! The command {line} is missing a response!");
+        choice.Response = words[0];
+
+        if (words.Length == 2)
+        {
+            if (int.TryParse(words[1], out int friendship))
+            {
+                choice.Friendship = friendship;
+            }
+            else choice.LinkedDialogue = words[1];
+        }
+        else
+        {
+            choice.LinkedDialogue = words[1];
+            choice.Friendship = Int32.Parse(words[2]);
+        }
+
+        return choice;
+    }
+
     private string ParseLine(string line)
     {
         // TODO quotes
@@ -93,43 +117,59 @@ public class DialogueImporter : EditorWindow
             }
 
             if (Regex.IsMatch(line, @"^!(name|n)\b")) // dialogue name
-                {
-                    if (dialogueName != "") dd[dialogueName].Add(element);
+            {
+                if (dialogueName != "") dd[dialogueName].Add(element);
 
-                    dialogueName = ParseLabel(line);
-                    if (dd.ContainsKey(dialogueName))
-                    {
-                        throw new DialogueException(dialogueName, $"Multiple dialogues share the same name \"{dialogueName}\"!");
-                    }
+                dialogueName = ParseLabel(line);
+                if (dd.ContainsKey(dialogueName))
+                {
+                    throw new DialogueException(dialogueName, $"Multiple dialogues share the same name \"{dialogueName}\"!");
+                }
 
-                    dd[dialogueName] = new List<DialogueElement>();
-                    element = new DialogueElement();
-                    firstSpeaker = true;
-                }
-                else if (Regex.IsMatch(line, @"^!(audio|a)\b")) // audio
-                {
-                    element.Sounds.Add(ParseLabel(line));
-                }
-                else if (Regex.IsMatch(line, @"^!(event|e)\b")) // event
-                {
-                    element.Events.Add(ParseLabel(line));
-                }
-                else if (speaker) // speaker
-                {
-                    if (!firstSpeaker) dd[dialogueName].Add(element);
-                    else firstSpeaker = false;
-                    element = new DialogueElement();
-                    element.Speaker = ParseSpeaker(line);
-                    afterSpeaker = true;
-                }
-                else if (afterSpeaker && hasLineNext && Regex.IsMatch(line, @"^\([^)]+\)")) // icon
-                {
-                    element.Icon = ParseIcon(line);
-                }
-                else // line
-                {
-                    element.Line = ParseLine(line);
-                }
+                dd[dialogueName] = new List<DialogueElement>();
+                element = new DialogueElement();
+                firstSpeaker = true;
+            }
+            else if (Regex.IsMatch(line, @"^!(audio|a)\b")) // audio
+            {
+                element.Sounds.Add(ParseLabel(line));
+            }
+            else if (Regex.IsMatch(line, @"^!(event|e)\b")) // event
+            {
+                element.Events.Add(ParseLabel(line));
+            }
+            else if (Regex.IsMatch(line, @"^!(choice1|c1)\b")) // choice1
+            {
+                element.Choice1 = ParseChoice(line);
+            }
+            else if (Regex.IsMatch(line, @"^!(choice2|c2)\b")) // choice2
+            {
+                element.Choice2 = ParseChoice(line);
+            }
+            else if (Regex.IsMatch(line, @"^!(background|b)\b")) // background
+            {
+                element.Background = ParseLabel(line);
+            }
+            else if (Regex.IsMatch(line, @"^!(radio|r)\b")) // background
+            {
+                element.FromRadio = ParseLabel(line).ToLower() == "on";
+            }
+            else if (speaker) // speaker
+            {
+                if (!firstSpeaker) dd[dialogueName].Add(element);
+                else firstSpeaker = false;
+                element = new DialogueElement();
+                element.Speaker = ParseSpeaker(line);
+                afterSpeaker = true;
+            }
+            else if (afterSpeaker && hasLineNext && Regex.IsMatch(line, @"^\([^)]+\)")) // icon
+            {
+                element.Icon = ParseIcon(line);
+            }
+            else // line
+            {
+                element.Line = ParseLine(line);
+            }
 
             if (!speaker) afterSpeaker = false;
         }
