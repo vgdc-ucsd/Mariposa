@@ -1,14 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class WirePuzzleDraggable : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+public class WirePuzzleDraggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
 {
-    public Color Color;
-    public WirePuzzleTail MatchingTail;
-
     private WirePuzzleTail connectedTail;
     public WirePuzzleTail ConnectedTail
     {
@@ -39,96 +37,108 @@ public class WirePuzzleDraggable : MonoBehaviour, IPointerDownHandler, IPointerU
             }
         }
     }
-    public bool IsMatched
-    { get => ConnectedTail != null && ConnectedTail == MatchingTail; }
 
-    // private int index;
-    [SerializeField] private Image wireVisuals;
-    private Coroutine currentCoroutine;
-    private Vector3 visualsOrigSize;
+    public List<WirePuzzleReceiver> ConnectedReceivers = new();
+    [SerializeField] private WirePuzzleVisuals wireVisuals;
     private Vector3 origPos;
 
     public void InitializeWireDraggable(int index)
     {
-        if (MatchingTail == null) Debug.LogWarning($"{transform.parent.name} Draggable MatchingTail not set");
-
-        // this.index = index;
-
-        wireVisuals.color = Color;
-        visualsOrigSize = wireVisuals.rectTransform.sizeDelta;
-        origPos = transform.position;
-
+        origPos = GetComponent<RectTransform>().localPosition;
         ConnectedTail = null;
+
+        wireVisuals.InitializeVisuals();
     }
 
-    public void OnPointerDown(PointerEventData eventData)
+    public void OnPointerClick(PointerEventData eventData)
     {
-        currentCoroutine = StartCoroutine(DragUpdate());
+        if (eventData.clickCount == 2)
+        {
+            DisconnectWire();
+        }
     }
 
-    public void OnPointerUp(PointerEventData eventData)
+    public void OnBeginDrag(PointerEventData eventData)
     {
-        StopCoroutine(currentCoroutine);
+        wireVisuals.BeginDragVisuals(this);
+    }
 
+    public void OnDrag(PointerEventData eventData)
+    {
+        wireVisuals.DragUpdateVisuals();
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
         // Check for wire tail
         eventData.position = Input.mousePosition;
         List<RaycastResult> raycastResults = new List<RaycastResult>();
         EventSystem.current.RaycastAll(eventData, raycastResults);
         foreach (var hit in raycastResults)
         {
-            if (hit.gameObject.GetComponent<WirePuzzleTail>() != null)
+            if (hit.gameObject.GetComponent<WirePuzzleReceiver>() != null)
             {
-                TryConnectWire(hit.gameObject.GetComponent<WirePuzzleTail>());
+                TryConnectWire(hit.gameObject.GetComponent<WirePuzzleReceiver>());
                 return;
             }
         }
 
         // If did not connect then disconnect wire
-        DisconnectWire();
+        SnapBackToPos();
     }
 
-    // The loop in this method is called every frame when mouse is down
-    private IEnumerator DragUpdate()
+    private void TryConnectWire(WirePuzzleReceiver wirePuzzleReceiver)
     {
-        RectTransform wireRectTransform = wireVisuals.rectTransform;
-        while (true)
+        if (wirePuzzleReceiver is WirePuzzleTail)
         {
-            // Set length (By changing height of rect transform)
-            Vector2 mousePos = Input.mousePosition;
-            wireRectTransform.sizeDelta = new(visualsOrigSize.x, Vector2.Distance(mousePos, wireRectTransform.position));
-
-            // Add rotation
-            float rotation = Mathf.Atan2(wireRectTransform.position.y - mousePos.y, wireRectTransform.position.x - mousePos.x) * Mathf.Rad2Deg - 90f;
-            wireRectTransform.localEulerAngles = new(0, 0, rotation);
-            yield return null;
+            ConnectedTail = (WirePuzzleTail)wirePuzzleReceiver;
+            // NOT NICE CODE
+            AddConnectedNode(wirePuzzleReceiver);
         }
-    }
-
-    private void TryConnectWire(WirePuzzleTail wirePuzzleTail)
-    {
-        RectTransform wireRectTransform = wireVisuals.rectTransform;
-
-        ConnectedTail = wirePuzzleTail;
-
-        // Set size & rotation of visuals
-        wireRectTransform.sizeDelta = new(visualsOrigSize.x, Vector2.Distance(wirePuzzleTail.transform.position, wireRectTransform.position));
-        float rotation = Mathf.Atan2(wireRectTransform.position.y - wirePuzzleTail.transform.position.y,
-                            wireRectTransform.position.x - wirePuzzleTail.transform.position.x) * Mathf.Rad2Deg - 90f;
-        wireRectTransform.localEulerAngles = new(0, 0, rotation);
-
-        // Set position of "draggable" game object
-        transform.position = wirePuzzleTail.transform.position;
+        else if (wirePuzzleReceiver is WirePuzzleNode)
+        {
+            AddConnectedNode(wirePuzzleReceiver);
+        }
     }
 
     public void DisconnectWire()
     {
         ConnectedTail = null;
-
-        // Reset visuals
-        wireVisuals.rectTransform.sizeDelta = visualsOrigSize;
-        wireVisuals.rectTransform.localEulerAngles = new(0, 0, 0);
+        ConnectedReceivers[^1].ConnectedDraggable = null;
+        if (ConnectedReceivers.Count > 0) ConnectedReceivers.RemoveAt(ConnectedReceivers.Count - 1);
 
         // Reset position of "draggable" game object
-        transform.position = origPos;
+        SnapBackToPos();
+    }
+
+    public void AddConnectedNode(WirePuzzleReceiver receiver)
+    {
+        if (ConnectedReceivers.Count + 1 == receiver.layer)
+        {
+            ConnectedReceivers.Add(receiver);
+            receiver.ConnectedDraggable = this;
+            // Set position of "draggable" game object
+            transform.position = receiver.transform.position;
+            wireVisuals.AddedNodeVisuals(receiver);
+        }
+        else
+        {
+            SnapBackToPos();
+        }
+    }
+
+    public void SnapBackToPos()
+    {
+        if (ConnectedReceivers.Count == 0)
+        {
+            GetComponent<RectTransform>().localPosition = origPos;
+            wireVisuals.SnapBackVisuals(this);
+        }
+        else
+        {
+            // "^1" is shorthand for last index
+            transform.position = ConnectedReceivers[^1].transform.position;
+            wireVisuals.SnapBackVisuals(this);
+        }
     }
 }

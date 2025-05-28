@@ -7,7 +7,7 @@ using UnityEngine;
 [ExecuteInEditMode]
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(Collider2D))]
-public class ValidTest : MonoBehaviour
+public class SpriteHitbox : MonoBehaviour
 {
     private SpriteRenderer _renderer;
     private BoxCollider2D _collider;

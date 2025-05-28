@@ -8,7 +8,8 @@ using UnityEngine.UI;
 /// </summary>
 public abstract class Puzzle : MonoBehaviour
 {
-    
+    public bool IsComplete = false;
+
     void Start()
     {
         gameObject.SetActive(false);
@@ -21,6 +22,7 @@ public abstract class Puzzle : MonoBehaviour
     public void OnComplete()
     {
         Debug.Log("Puzzle Complete!");
+        IsComplete = true;
         if (PuzzlePopupManager.Instance != null) PuzzlePopupManager.Instance.CompletePuzzle();
         else Debug.Log("No PuzzlePopupManager found");
 

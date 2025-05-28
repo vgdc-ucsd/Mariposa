@@ -1,125 +1,132 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.IO.LowLevel.Unsafe;
+using Unity.VisualScripting;
 using UnityEngine;
+
 
 public abstract class MovingPlatform : MonoBehaviour
 {
-    protected Vector2[] pathNodes;
-    protected int nodeCount;
-    public Rigidbody2D platformRb;
-    public BoxCollider2D platformCol;
-    [SerializeField] protected Transform pathNodeContainer;
+    public enum PlatformState
+    {
+        Stopped,
+        Moving,
+        Resetting,
+    }
+
+    public Rigidbody2D rb { get; private set; }
+    public BoxCollider2D col { get; private set; }
+    public MovingPlatformManager manager;
+
+    public int initialNodeIndex;
+    public int currentNodeIdx;
+    public PlatformState state;
+    public FreeBody adjacentFreeBody;
+    public Vector2 currentMovement;
+
     [SerializeField] protected LayerMask playerLayerMask;
-    public FreeBody adjacentFreeBody = null;
 
-    protected int targetNodeIdx;
-    protected bool isMovingForward = true;
-    /// <summary>
-    /// The platform's movement for the current physics frame;
-    /// </summary>
-    public Vector2 currMovement = Vector2.zero;
+    [SerializeField] protected float platformMoveSpeed = 5f;
+    [SerializeField] protected int physicsFramesToPushPlayerOut = 4;
 
-    [SerializeField] protected float platformMoveSpeed;
-    [SerializeField] protected bool isLooping;
-
-    [SerializeField] private bool showPath = true;
-
-    protected virtual void Awake()
+    public virtual void Initialize()
     {
-        InitializePathNodes();
+        rb = GetComponent<Rigidbody2D>();
+        col = GetComponent<BoxCollider2D>();
 
-        targetNodeIdx = 1;
-
-        platformRb.MovePosition(pathNodes[0]);
+        state = PlatformState.Stopped;
+        adjacentFreeBody = null;
+        currentMovement = Vector2.zero;
+        initialNodeIndex = GetInitialNodeIndex();
+        currentNodeIdx = initialNodeIndex;
     }
 
-    private const float NODE_VISUAL_RADIUS = 0.2f;
-    private void OnDrawGizmos()
+    public virtual int GetInitialNodeIndex()
     {
-        if (!Application.isEditor || !showPath || pathNodeContainer.childCount < 2) return;
-
-        Vector2[] nodes = new Vector2[pathNodeContainer.childCount];
-        for (int i = 0; i < pathNodeContainer.childCount; ++i)
-        {
-            nodes[i] = pathNodeContainer.GetChild(i).position;
-        }
-        for (int i = 0; i < nodes.Length - 1; ++i)
-        {
-            Gizmos.DrawSphere(nodes[i], NODE_VISUAL_RADIUS);
-            Gizmos.DrawLine(nodes[i], nodes[i + 1]);
-        }
-        Gizmos.DrawSphere(nodes[^1], NODE_VISUAL_RADIUS);
+        return manager.GetClosestNodeIndex(rb.position);
     }
 
-    [ContextMenu("Initialize Path Nodes")]
-    public void InitializePathNodes()
-    {
-        if (pathNodeContainer.childCount < 2) Debug.LogError(name + " is missing path nodes. It should have at least two in its path node container.");
 
-        nodeCount = pathNodeContainer.childCount;
-        pathNodes = new Vector2[nodeCount];
-        int i = 0;
-        foreach (Transform child in pathNodeContainer) {
-            pathNodes[i] = child.position;
-            ++i;
-        }
-    }
+    protected abstract Vector2 GetCurrentMovement();
 
-    /// <summary>
-    /// Changes the target node to the next; Will switch direction if this
-    /// is a non-looping moving platform.
-    /// </summary>
-    /// <returns>True if this moving platform reached the end of its path
-    /// and false otherwise</returns>
-    protected bool MoveToNextTarget()
+    protected Vector2 GetResettingMovement()
     {
-        bool didReachEnd = false;
-        if (!isLooping)
+        float fdt = Time.fixedDeltaTime;
+
+        manager.platforms[currentNodeIdx] = null;
+        manager.platforms[initialNodeIndex] = this;
+
+        Vector2 initialNode = manager.pathNodes[initialNodeIndex];
+        Vector2 separationToInitialNode = initialNode - rb.position;
+
+        if (separationToInitialNode.magnitude > platformMoveSpeed * fdt)
         {
-            if (targetNodeIdx == pathNodes.Length - 1)
-            {
-                isMovingForward = false;
-                didReachEnd = true;
-            }
-            else if (targetNodeIdx == 0)
-            {
-                isMovingForward = true;
-                didReachEnd = true;
-            }
-
-            targetNodeIdx = isMovingForward
-                ? targetNodeIdx + 1
-                : targetNodeIdx - 1;
+            return platformMoveSpeed * fdt * separationToInitialNode.normalized;
         }
         else
         {
-            if (targetNodeIdx == 0) didReachEnd = true;
-            targetNodeIdx = (targetNodeIdx + 1) % nodeCount;
+            StopMoving(initialNodeIndex);
+            return separationToInitialNode;
         }
-        return didReachEnd;
+    }
+
+    protected virtual void StopMoving(int stopNodeIdx)
+    {
+        state = PlatformState.Stopped;
+        for (int i = 0; i < manager.platforms.Length; ++i)
+        {
+            MovingPlatform platform = manager.platforms[i];
+            if (platform != null && platform == this) manager.platforms[i] = null;
+        }
+        manager.platforms[stopNodeIdx] = this;
+    }
+
+    protected virtual void PushPlayerOut()
+    {
+        Vector2 pushColOrigin = (Vector2)col.bounds.center + col.bounds.extents.y * Vector2.down;
+        Vector2 pushColSize = new(col.size.x, col.size.y / 2);
+        float pushFraction = 1 / (float)physicsFramesToPushPlayerOut;
+
+        Collider2D playerCol = Physics2D.OverlapBox(pushColOrigin, pushColSize, 0f, playerLayerMask);
+        if (!playerCol) return;
+
+        playerCol.transform.position += playerCol.transform.position.x > transform.position.x
+            ? (col.bounds.max.x - playerCol.bounds.min.x + FreeBody.CONTACT_OFFSET) * pushFraction * Vector3.right
+            : (playerCol.bounds.max.x - col.bounds.min.x + FreeBody.CONTACT_OFFSET) * pushFraction * Vector3.left;
     }
 
     protected virtual void FixedUpdate()
     {
-        /*
         float fdt = Time.fixedDeltaTime;
-        Vector2 nextNode = pathNodes[nextNodeIdx];
-        Vector2 separationToNextNode = nextNode - platformRb.position;
 
-        Vector2 movement = platformMoveSpeed * fdt * separationToNextNode.normalized;
-        float distanceToNextNode = separationToNextNode.magnitude;
-        if (distanceToNextNode < platformMoveSpeed * fdt)
+        switch (state)
         {
-            currNodeIdx = nextNodeIdx;
-            nextNodeIdx = (currNodeIdx + 1) % nodeCount;
-            Vector2 nextNextNode = pathNodes[nextNodeIdx];
-            Vector2 newPosition = nextNode + (platformMoveSpeed * fdt - distanceToNextNode) * (nextNextNode - nextNode).normalized;
-            movement = newPosition - platformRb.position;
+            case PlatformState.Moving:
+                currentMovement = GetCurrentMovement();
+                break;
+            case PlatformState.Resetting:
+                currentMovement = GetResettingMovement();
+                break;
+            case PlatformState.Stopped:
+                return;
+            default:
+                Debug.LogError(rb.gameObject.name + " has an invalid state");
+                return;
         }
 
-        currMovement = movement;
-        platformRb.MovePosition(platformRb.position + movement);
-        */
+        rb.transform.position += (Vector3)currentMovement;
+        Physics2D.SyncTransforms();
+
+        if (adjacentFreeBody != null)
+        {
+            Vector2 movementToApply = currentMovement;
+            if (currentMovement.y / fdt < -adjacentFreeBody.TerminalVelocity) 
+                movementToApply.y = -adjacentFreeBody.TerminalVelocity * fdt; // cap the free body's downward movement;
+            adjacentFreeBody.transform.position += (Vector3)movementToApply;
+        }
+
+        PushPlayerOut();
     }
 }

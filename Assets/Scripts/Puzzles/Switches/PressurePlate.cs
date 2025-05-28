@@ -1,32 +1,30 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class PressurePlate : Switch
+public abstract class PressurePlate : MonoBehaviour
 {
-    [SerializeField] private Door door;
-    
+    [SerializeField] private int requiredBatteries = 0;
+    [SerializeField] SpriteRenderer spriteRenderer;
+
     /// <summary>
     /// Triggers the door when something steps on the plate.
     /// </summary>
-    void OnCollisionEnter2D()
+    void OnTriggerEnter2D(Collider2D collider)
     {
-        Debug.Log("Plate is pressed");
-        TriggerSwitch();
+        if (collider.gameObject != Player.ActivePlayer.gameObject) return;
+        spriteRenderer.transform.localPosition = new Vector2(0, -0.25f);
+        OnPress();
     }
     /// <summary>
     /// Triggers the door when something gets off the plate.
     /// </summary>
-    private void OnCollisionExit2D()
+    private void OnTriggerExit2D(Collider2D collider)
     {
-        Debug.Log("Plate is released");
-        TriggerSwitch();
+        if (collider.gameObject != Player.ActivePlayer.gameObject) return;
+        spriteRenderer.transform.localPosition = new Vector2(0, 0);
+        OnRelease();
     }
 
-    /// <summary>
-    /// Toggles the state of the door.
-    /// </summary>
-    public override void TriggerSwitch()
-    {
-        SwitchToggled = !SwitchToggled;
-        if (door != null) door.ChangeState();
-    }
+    protected abstract void OnPress();
+    protected abstract void OnRelease();
 }
