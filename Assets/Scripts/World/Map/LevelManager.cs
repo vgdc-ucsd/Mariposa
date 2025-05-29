@@ -84,6 +84,7 @@ public class LevelManager : MonoBehaviour
         if (Player.ActivePlayer.Ability is BeeControlAbility b)
         {
             b.BeeRef.transform.position = new Vector3(-1000, -1000, 0);
+            b.TurnOffBeeFlap();
         }
         PlayerController.Instance.SwitchTo(GetCurrentSublevel().SublevelCharacter);
         CameraController.ActiveCamera.SetBounds(GetCurrentSublevel().CameraBounds);
