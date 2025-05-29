@@ -69,11 +69,6 @@ public class SquidMovement : FreeBody, IInputListener, IControllable
 
     }
 
-    private void Start()
-    {
-        collisionLayer = LayerMask.GetMask("SquidBarrier");
-    }
-
     protected override void Update()
     {
         base.Update();
