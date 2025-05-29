@@ -1,13 +1,12 @@
 using UnityEngine;
 
-public class ParallaxManager : MonoBehaviour
+public class ParallaxScroll : MonoBehaviour
 {
-    public GameObject cam;
     public float parallaxEffect;
     private float startPos;
     private float length;
 
-    void Start()
+    void OnEnable()
     {
         startPos = transform.position.x;
         length = GetComponent<SpriteRenderer>().bounds.size.x;
@@ -15,10 +14,10 @@ public class ParallaxManager : MonoBehaviour
 
     void Update()
     {
-        float distance = cam.transform.position.x * parallaxEffect;
-        float movement = cam.transform.position.x * (1 - parallaxEffect);
+        float distance = Camera.main.transform.position.x * parallaxEffect;
+        float movement = Camera.main.transform.position.x * (1 - parallaxEffect);
 
-        transform.position = new Vector3(startPos + distance, cam.transform.position.y, transform.position.z);
+        transform.position = new Vector3(startPos + distance, Camera.main.transform.position.y, transform.position.z);
 
         if (movement > startPos + length)
         {
