@@ -183,6 +183,7 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
             RaycastHit2D[] beeHits = Physics2D.BoxCastAll(beeCastCenter, beeCastSize, 0f, Vector2.down, COLLISION_CHECK_DISTANCE);
             foreach (var hit in beeHits) if (hit.collider.CompareTag("Bee")) onBee = true;
         }
+        
 
         if (CanWallJump && wallNormal != 0 && State == BodyState.InAir)
         {
@@ -197,13 +198,11 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
             coyoteTimeRemaining = 0f;   // consume coyote time
             RuntimeManager.PlayOneShot("event:/sfx/player/jump");
         }
-        else if (onBee)
+        else if (CanDoubleJump && airJumpAvailable && Bee.Instance.CanBeeJump())
         {
-            Velocity.y = jumpVelocity * data.DoubleJumpFactor;
-            airJumpAvailable = false;
-            coyoteTimeRemaining = 0f;
-            RuntimeManager.PlayOneShot("event:/sfx/player/jump");
-            RuntimeManager.PlayOneShot("event:/sfx/player/bee/double_jump");
+            StartCoroutine(DelayedJump());
+            Bee.Instance.TriggerBeeJump();
+
         }
         else if (State != BodyState.OnGround && coyoteTimeRemaining <= 0.0f)
         {
@@ -211,6 +210,16 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
         }
     }
 
+    private IEnumerator DelayedJump()
+    {
+        yield return new WaitForSeconds(0.15f);
+        Velocity.y = jumpVelocity * data.DoubleJumpFactor;
+        airJumpAvailable = false;
+        coyoteTimeRemaining = 0f;
+        RuntimeManager.PlayOneShot("event:/sfx/player/jump");
+        RuntimeManager.PlayOneShot("event:/sfx/player/bee/double_jump");
+        
+    }
 
     // This override makes the player fall slower/faster when falling
     protected override void Fall()
@@ -228,7 +237,8 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
             if (groundHit.collider.CompareTag("MovingPlatform"))
             {
                 currentMovingPlatform = groundHit.collider.GetComponentInParent<MovingPlatform>();
-                if (currentMovingPlatform.currMovement.y < 0) transform.position += currentMovingPlatform.currMovement.y * Vector3.up;
+                //if (currentMovingPlatform.currentMovement.y < 0) 
+                    //transform.position += currentMovingPlatform.currentMovement.y * Vector3.up;
                 currentMovingPlatform.adjacentFreeBody = this;
                 if (currentMovingPlatform is ControllableMovingPlatform) onControllableMovingPlatform = true;
             }
@@ -254,7 +264,7 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
         slopeDir = Vector2.zero;
         if (onControllableMovingPlatform)
         {
-            currentMovingPlatform.currMovement = Vector2.zero;
+            currentMovingPlatform.currentMovement = Vector2.zero;
             ((ControllableMovingPlatform)currentMovingPlatform).MovePlatform(Vector2.zero);
         }
         if (currentMovingPlatform != null) currentMovingPlatform.adjacentFreeBody = null;

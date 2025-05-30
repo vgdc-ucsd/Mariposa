@@ -109,7 +109,7 @@ public abstract class FreeBody : Body
         if (groundHit && !didHitGround && groundHit.collider.CompareTag("MovingPlatform"))
         {
             MovingPlatform movingPlatform = groundHit.collider.GetComponentInParent<MovingPlatform>();
-            didHitGround = movingPlatform.currMovement.y < 0f && groundHit.distance <= COLLISION_CHECK_DISTANCE - movingPlatform.currMovement.y;
+            didHitGround = movingPlatform.currentMovement.y < 0f && groundHit.distance <= COLLISION_CHECK_DISTANCE - movingPlatform.currentMovement.y;
         }
 
         bool isSlipSlope = groundHit && 90 - Mathf.Abs(Mathf.Atan(groundHit.normal.y / groundHit.normal.x) * Mathf.Rad2Deg) >= slipAngle;
@@ -144,7 +144,7 @@ public abstract class FreeBody : Body
         RaycastHit2D hit = Physics2D.BoxCast(origin, bounds.size, 0f, move.normalized, move.magnitude, collisionLayer);
 
         // If the free body is inside another object, separate them and recompute the raycast
-        if (hit && Mathf.Approximately(hit.distance, 0f))
+        if (hit && !hit.collider.isTrigger && Mathf.Approximately(hit.distance, 0f))
         {
             ResolveInitialCollisions();
             origin = (Vector2)transform.position + SurfaceCollider.offset;

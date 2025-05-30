@@ -8,6 +8,14 @@ public class BeeControlAbility : MonoBehaviour, IAbility
     EventInstance BeeFlap;
 
 
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            BeeRef.StartFollow();
+        }
+    }
+
     public void AbilityInputDown()
     {
         ToggleBeeControl();
@@ -16,6 +24,7 @@ public class BeeControlAbility : MonoBehaviour, IAbility
     public void Initialize()
     {
         BeeRef.ToggleControl(false);
+        BeeRef.StartFollow();
     }
 
     private void ToggleBeeControl()
@@ -42,5 +51,10 @@ public class BeeControlAbility : MonoBehaviour, IAbility
     private void Start()
     {
         BeeFlap = RuntimeManager.CreateInstance("event:/sfx/player/bee/flap");
+    }
+
+    public void TurnOffBeeFlap()
+    {
+        BeeFlap.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
     }
 }
