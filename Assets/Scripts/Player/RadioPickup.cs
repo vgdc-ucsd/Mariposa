@@ -16,7 +16,7 @@ public class RadioPickup : ItemPickup
     private EventInstance RadioPickupEvent;
     private bool playerDebug;
 
-    [SerializeField] private Dialogue dialogue;
+    [SerializeField] private string dialogueName;
 
     protected override void Start()
     {
@@ -33,7 +33,7 @@ public class RadioPickup : ItemPickup
     public override void OnInteract(IControllable controllable)
     {
         base.OnInteract(controllable);
-        manager.PlayDialogue(dialogue);
+        manager.PlayDialogue(dialogueName);
 
         RadioPickupEvent.setParameterByNameWithLabel("ItemType", "Default");
         RadioPickupEvent.start();
