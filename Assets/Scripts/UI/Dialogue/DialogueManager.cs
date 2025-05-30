@@ -61,6 +61,26 @@ public class DialogueManager : Singleton<DialogueManager>
         dialoguePlayer.PlayDialogue(dialogueDictionary[dialogueName]);
     }
 
+    public void RegisterEvent(string name, DialogueEvent dialogueEvent)
+    {
+        if (eventDictionary.ContainsKey(name))
+        {
+            Debug.LogWarning($"Multiple dialogue events with the name \"{name}\" have been registered! The old event will be overwritten!");
+            return;
+        }
+        eventDictionary.Add(name, dialogueEvent);
+    }
+
+    public void TriggerEvent(string eventName)
+    {
+        if (!eventDictionary.ContainsKey(eventName))
+        {
+            Debug.LogWarning($"Could not find an event with the name {eventName}! Check that there's no typos and the event has been created in the scene!");
+            return;
+        }
+        eventDictionary[eventName].Trigger();
+    }
+
     public Dictionary<string, List<DialogueElement>> GetDialogueDictionary()
     {
         return dialogueDictionary;

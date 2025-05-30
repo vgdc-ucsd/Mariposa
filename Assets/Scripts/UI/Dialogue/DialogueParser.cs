@@ -25,7 +25,7 @@ public class DialogueParser : Singleton<DialogueParser>
 
 	private static HashSet<string> portraits = new HashSet<string>
 	{
-		"MariposaNeutral", "MariposaSad", "MariposaSurprised", "MariposaHappy",
+		"MariposaNeutral", "MariposaSad", "MariposaSurprised", "MariposaHappy", "MariposaBashful",
 		"UnnamedNeutral",  "UnnamedSad", "UnnamedSurprised", "UnnamedSilhouette",
 		"BeeboNeutral", "BeeboHappy"
 	};
@@ -66,6 +66,12 @@ public class DialogueParser : Singleton<DialogueParser>
 				if (element.Icon != null && !portraits.Contains(speaker + element.Icon))
 				{
 					throw new DialogueException(name, $"The expression \"({element.Icon})\" does not exist for {speaker}!");
+				}
+
+				if ((element.Choice1 != null) != (element.Choice2 != null))
+				{
+					string choice = element.Choice1 != null ? element.Choice1.Response : element.Choice2.Response;
+					throw new DialogueException(name, $"Only one choice \"{choice}\" is set! Please check that the other choice is set correctly!");
 				}
 			}
 		}

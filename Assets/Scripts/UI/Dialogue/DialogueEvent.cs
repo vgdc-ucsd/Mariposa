@@ -2,9 +2,11 @@ using UnityEngine;
 
 public abstract class DialogueEvent : MonoBehaviour
 {
-    void Awake()
+    public string Name;
+
+    public virtual void Start()
     {
-        // TODO subscribe to dialogue manager
+        DialogueManager.Instance.RegisterEvent(Name, this);
     }
 
     public abstract void Trigger();

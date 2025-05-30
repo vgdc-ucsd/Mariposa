@@ -24,10 +24,21 @@ public class DialoguePlayer : MonoBehaviour
 
     [SerializeField] private Image mask;
     [SerializeField] private Image portrait;
+    [SerializeField] private SpriteMap spriteMap;
+
+    [SerializeField] private Image backgroundGraphic;
+    [SerializeField] private SpriteMap backgroundMap;
+
+    [SerializeField] private GameObject buttonDisplay;
+    [SerializeField] private UnityEngine.UI.Button choiceButton1;
+    [SerializeField] private UnityEngine.UI.Button choiceButton2;
+    [SerializeField] private TextMeshProUGUI choiceText1;
+    [SerializeField] private TextMeshProUGUI choiceText2;
 
     // dialogue control
     private List<DialogueElement> conversation;
     private int dialogueIndex;
+    private bool awaitingChoice = false;
 
     // typewriter control
     private bool finishedTypewriter;
@@ -35,9 +46,13 @@ public class DialoguePlayer : MonoBehaviour
 
     // Regex
     private Regex tagPattern = new Regex(@"<[^>]*>"); // Matches rich text tags like <i>text</i>
-    private Regex namePattern = new Regex(@""); // TODO
+    private Regex namePattern = new Regex(@"\b(Unnamed|Kairo)\b", RegexOptions.IgnoreCase);
     private string taglessText = "";
 
+    // state
+    private string speaker = null;
+    private Dictionary<string, Sprite> speakerSprites = new Dictionary<string, Sprite>();
+    private string unnamedName = "Kairo"; // placeholder TODO
 
     void Start()
     {
@@ -49,6 +64,11 @@ public class DialoguePlayer : MonoBehaviour
         StopAllCoroutines();
         conversation = dialogue;
         dialogueIndex = -1;
+        speaker = null;
+        buttonDisplay.SetActive(false);
+        speakerSprites = new Dictionary<string, Sprite>();
+        awaitingChoice = false;
+        SetCinematicMode(false);
 
         DialogueWindow.SetActive(true);
         if(PlayerController.Instance) PlayerController.Instance.SetMovementLock(true);
@@ -80,6 +100,7 @@ public class DialoguePlayer : MonoBehaviour
         }
         else
         {
+            if (awaitingChoice) return;
             AdvanceDialogue();
         }
     }
@@ -95,15 +116,92 @@ public class DialoguePlayer : MonoBehaviour
             if(PlayerController.Instance) PlayerController.Instance.SetMovementLock(false);
             return;
         }
-        
-        // start dialogue
-        taglessText = tagPattern.Replace(conversation[dialogueIndex].Line, string.Empty);
-        speakerTarget.text = conversation[dialogueIndex].Speaker;
+
+        DialogueElement element = conversation[dialogueIndex];
+
+        // Swap out "Unnamed" or "Kairo" for whatever the player named them
+        string line = namePattern.Replace(element.Line, unnamedName);
+        if (element.Speaker != null)
+        {
+            speaker = namePattern.Replace(element.Speaker, unnamedName);
+        }
+
+        // Remove rich text tags
+        taglessText = tagPattern.Replace(line, string.Empty);
+
+        // Play the dialogue
+        foreach (string sound in element.Sounds)
+        {
+            // TODO
+        }
+
+        foreach (string dialogueEvent in element.Events)
+        {
+            // TODO trigger time
+            DialogueManager.Instance.TriggerEvent(dialogueEvent);
+        }
+
+        if (element.FromRadio)
+        {
+            // TODO
+        }
+
+        if (element.Icon != null)
+        {
+            portrait.sprite = spriteMap.GetSprite(element.Speaker + element.Icon);
+        }
+        else if (speakerSprites.ContainsKey(speaker))
+        {
+            portrait.sprite = speakerSprites[speaker];
+        }
+
+        if (element.Background != null)
+        {
+            if (element.Background.ToLower() == "none")
+            {
+                SetCinematicMode(false);
+            }
+            else
+            {
+                backgroundGraphic.sprite = backgroundMap.GetSprite(element.Background);
+                SetCinematicMode(true);
+            }
+        }
+
+        if (element.Choice1 != null && element.Choice2 != null)
+        {
+            awaitingChoice = true;
+            buttonDisplay.SetActive(true);
+            SetChoiceButton(choiceButton1, choiceText1, element.Choice1);
+            SetChoiceButton(choiceButton2, choiceText2, element.Choice2);
+        }
+
         lineTarget.text = conversation[dialogueIndex].Line;
+        speakerTarget.text = speaker; 
         StartCoroutine(TypewriterEffect());
     }
 
-    
+    private void SetChoiceButton(UnityEngine.UI.Button button, TextMeshProUGUI choiceText, DialogueChoice choice)
+    {
+        choiceText.text = choice.Response;
+        button.onClick.RemoveAllListeners();
+        button.onClick.AddListener(() =>
+        {
+            // TODO adjust friendship
+            if (choice.LinkedDialogue != null)
+            {
+                DialogueManager.Instance.PlayDialogue(choice.LinkedDialogue);
+            }
+            buttonDisplay.SetActive(false);
+            awaitingChoice = false;
+        });
+    }
+
+    private void SetCinematicMode(bool isCinematic)
+    {
+        backgroundGraphic.gameObject.SetActive(isCinematic);
+    }
+
     private IEnumerator TypewriterEffect()
     {
         finishedTypewriter = false;
