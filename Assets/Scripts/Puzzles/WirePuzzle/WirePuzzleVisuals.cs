@@ -7,6 +7,7 @@ public class WirePuzzleVisuals : MonoBehaviour
     [Header("Wire Segment Settings")]
     public Color Color;
     [SerializeField] Vector2 origSize;
+    [SerializeField] Vector2 origPos;
 
     [Header("References")]
     [SerializeField] GameObject WireSegmentPrefab;
@@ -22,7 +23,8 @@ public class WirePuzzleVisuals : MonoBehaviour
         // Set Color
         instantiated.GetComponent<Image>().color = Color;
 
-        // Original Position?
+        // Set Starting Position
+        instantiated.GetComponent<RectTransform>().localPosition = origPos;
     }
 
     public void BeginDragVisuals(WirePuzzleDraggable draggable)
@@ -37,6 +39,14 @@ public class WirePuzzleVisuals : MonoBehaviour
             WireSegments.Add(instantiated);
             instantiated.GetComponent<Image>().color = Color;
             instantiated.transform.position = draggable.ConnectedReceivers[^1].transform.position;
+        }
+        else
+        {
+            // Instantiate a new wire segment
+            GameObject instantiated = Instantiate(WireSegmentPrefab, transform);
+            WireSegments.Add(instantiated);
+            instantiated.GetComponent<Image>().color = Color;
+            instantiated.GetComponent<RectTransform>().localPosition = new(0, -50f);
         }
     }
 
@@ -68,14 +78,8 @@ public class WirePuzzleVisuals : MonoBehaviour
     public void SnapBackVisuals(WirePuzzleDraggable draggable)
     {
         RectTransform wireSegment = WireSegments[^1].GetComponent<RectTransform>();
-
-        if (draggable.ConnectedReceivers.Count == 0)
-        {
-            // Reset Visuals
-            wireSegment.sizeDelta = origSize;
-            wireSegment.localEulerAngles = new(0, 0, 0);
-        }
-        else
+        
+        if (WireSegments.Count > 1)
         {
             if (WireSegments.Count > draggable.ConnectedReceivers.Count)
             {
