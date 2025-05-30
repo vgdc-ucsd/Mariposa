@@ -88,7 +88,8 @@ public class ScalePuzzle : Puzzle
             {
                 ResetPuzzle();
                 TryHidePuzzle();
-                DialogueManager.Instance.PlayDialogue(levels[level].dialogue);
+                // FIXME
+                //DialogueManager.Instance.PlayDialogue(levels[level].dialogue);
                 level++;
                 GenerateSolution();
             }

@@ -55,7 +55,7 @@ public class DialogueManager : Singleton<DialogueManager>
     {
         if (!dialogueDictionary.ContainsKey(dialogueName))
         {
-            Debug.LogError($"Could not find dialogue with the name {dialogueName}! Check that there's no typos and the dialogue file has been loaded!");
+            Debug.LogError($"Could not find dialogue with the name \"{dialogueName}\"! Check that there's no typos and the dialogue file has been loaded!");
             return;
         }
         dialoguePlayer.PlayDialogue(dialogueDictionary[dialogueName]);

@@ -39,11 +39,21 @@ public class DialogueImporter : EditorWindow
         if (words.Length < 2) throw new Exception($"Error parsing file! The command {line} is missing a label!");
         return words[1];
     }
+    
+    private DialogueEventElement ParseEvent(string line)
+    {
+        string[] words = line.Split(" ");
+        if (words.Length < 2) throw new Exception($"Error parsing file! The command {line} is missing a label!");
+        DialogueEventElement eventElement = new DialogueEventElement();
+        eventElement.eventName = words[1];
+        if (words.Length == 3) eventElement.triggerAtEnd = words[2].ToLower() == "end";
+        return eventElement;
+    }
 
     private string ParseSpeaker(string line)
     {
         string speaker = line.ToLower();
-        return char.ToUpper(speaker[0]) + speaker.Substring(1);      
+        return char.ToUpper(speaker[0]) + speaker.Substring(1);
     }
 
     private string ParseIcon(string line)
@@ -136,7 +146,7 @@ public class DialogueImporter : EditorWindow
             }
             else if (Regex.IsMatch(line, @"^!(event|e)\b")) // event
             {
-                element.Events.Add(ParseLabel(line));
+                element.Events.Add(ParseEvent(line));
             }
             else if (Regex.IsMatch(line, @"^!(choice1|c1)\b")) // choice1
             {

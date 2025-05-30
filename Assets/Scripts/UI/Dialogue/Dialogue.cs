@@ -10,7 +10,7 @@ public class DialogueElement
     public string Background; // The background graphic
     public bool FromRadio; // Indicates whether to show the radio icon on the dialogue UI
     public List<string> Sounds; // A list of sound effects to play 
-    public List<string> Events; // A list of arbitrary named events to trigger (see DialogueEvent.cs)
+    public List<DialogueEventElement> Events; // A list of arbitrary named events to trigger (see DialogueEvent.cs)
     public DialogueChoice Choice1; // Dialogue response options
     public DialogueChoice Choice2; // No responses options if null
 
@@ -22,7 +22,7 @@ public class DialogueElement
         Background = null;
         FromRadio = false;
         Sounds = new List<string>();
-        Events = new List<string>();
+        Events = new List<DialogueEventElement>();
         Choice1 = null;
         Choice2 = null;
     }
@@ -39,5 +39,17 @@ public class DialogueChoice
         Response = null;
         LinkedDialogue = null;
         Friendship = 0;
+    }
+}
+
+public class DialogueEventElement
+{
+    public string eventName;
+    public bool triggerAtEnd;
+
+    public DialogueEventElement()
+    {
+        eventName = null;
+        triggerAtEnd = false;
     }
 }

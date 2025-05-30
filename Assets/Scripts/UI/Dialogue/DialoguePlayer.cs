@@ -53,6 +53,7 @@ public class DialoguePlayer : MonoBehaviour
     private string speaker = null;
     private Dictionary<string, Sprite> speakerSprites = new Dictionary<string, Sprite>();
     private string unnamedName = "Kairo"; // placeholder TODO
+    private List<string> endingEvents = new List<string>();
 
     void Start()
     {
@@ -67,6 +68,7 @@ public class DialoguePlayer : MonoBehaviour
         speaker = null;
         buttonDisplay.SetActive(false);
         speakerSprites = new Dictionary<string, Sprite>();
+        endingEvents = new List<string>();
         awaitingChoice = false;
         SetCinematicMode(false);
 
@@ -112,6 +114,10 @@ public class DialoguePlayer : MonoBehaviour
         // check if conversation ended
         if (dialogueIndex >= conversation.Count)
         {
+            foreach (string dialogueEvent in endingEvents)
+            {
+                DialogueManager.Instance.TriggerEvent(dialogueEvent);
+            }
             DialogueWindow.SetActive(false);
             if(PlayerController.Instance) PlayerController.Instance.SetMovementLock(false);
             return;
@@ -135,10 +141,13 @@ public class DialoguePlayer : MonoBehaviour
             // TODO
         }
 
-        foreach (string dialogueEvent in element.Events)
-        {
-            // TODO trigger time
-            DialogueManager.Instance.TriggerEvent(dialogueEvent);
+        foreach (DialogueEventElement dialogueEvent in element.Events)
+        {            
+            if (dialogueEvent.triggerAtEnd)
+            {
+                endingEvents.Add(dialogueEvent.eventName);
+            }
+            else DialogueManager.Instance.TriggerEvent(dialogueEvent.eventName);
         }
 
         if (element.FromRadio)
