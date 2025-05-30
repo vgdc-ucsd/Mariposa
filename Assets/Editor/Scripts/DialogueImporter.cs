@@ -162,7 +162,7 @@ public class DialogueImporter : EditorWindow
             }
             else if (Regex.IsMatch(line, @"^!(radio|r)\b")) // background
             {
-                element.FromRadio = ParseLabel(line).ToLower() == "on";
+                element.FromRadio = ParseLabel(line);
             }
             else if (speaker) // speaker
             {

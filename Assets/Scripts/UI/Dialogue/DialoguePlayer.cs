@@ -9,20 +9,26 @@ public class DialoguePlayer : MonoBehaviour
 {
     // object references
     public GameObject DialogueWindow;
-    [SerializeField] private Image textboxRect;
-    [SerializeField] private Sprite mariRect;
-    [SerializeField] private Sprite unnRect;
-    [SerializeField] private Sprite mariRadio;
-    [SerializeField] private Sprite unnRadio;
-
+    
     [SerializeField] private TMP_Text speakerTarget;
     [SerializeField] private TMP_Text lineTarget;
 
-    [SerializeField] private Image frame;
-    [SerializeField] private Sprite mariFrame;
-    [SerializeField] private Sprite unnFrame;
+    [SerializeField] private Image textboxRect;
+    [SerializeField] private Sprite mariRect;
+    [SerializeField] private Sprite unnRect;
 
-    [SerializeField] private Image mask;
+    [SerializeField] private Image nameplate;
+    [SerializeField] private Sprite mariNameplate;
+    [SerializeField] private Sprite unnNameplate;
+
+    [SerializeField] private Image portraitBG;
+    [SerializeField] private Sprite mariBG;
+    [SerializeField] private Sprite unnBG;
+
+    [SerializeField] private Image radio;
+    [SerializeField] private Sprite mariRadio;
+    [SerializeField] private Sprite unnRadio;
+
     [SerializeField] private Image portrait;
     [SerializeField] private SpriteMap spriteMap;
 
@@ -45,7 +51,7 @@ public class DialoguePlayer : MonoBehaviour
     private const float DIALOGUE_SPEED = 0.025f;
 
     // Regex
-    private Regex tagPattern = new Regex(@"<[^>]*>"); // Matches rich text tags like <i>text</i>
+    private Regex tagPattern = new Regex(@"<\/?(i|b|color(=[^>]+)?)>"); // Matches rich text tags like <i>text</i>
     private Regex namePattern = new Regex(@"\b(Unnamed|Kairo)\b", RegexOptions.IgnoreCase);
     private string taglessText = "";
 
@@ -67,6 +73,8 @@ public class DialoguePlayer : MonoBehaviour
         dialogueIndex = -1;
         speaker = null;
         buttonDisplay.SetActive(false);
+        portraitBG.gameObject.SetActive(false);
+        radio.gameObject.SetActive(false);
         speakerSprites = new Dictionary<string, Sprite>();
         endingEvents = new List<string>();
         awaitingChoice = false;
@@ -78,13 +86,15 @@ public class DialoguePlayer : MonoBehaviour
         // check if Mariposa currently active
         if (!PlayerController.Instance || Player.ActivePlayer.Data.characterID == CharID.Mariposa)
         {
-            frame.sprite = mariFrame;
+            nameplate.sprite = mariNameplate;
             textboxRect.sprite = mariRect;
+            radio.sprite = mariRadio;
         }
         else
         {
-            frame.sprite = unnFrame;
+            nameplate.sprite = unnNameplate;
             textboxRect.sprite = unnRect;
+            radio.sprite = unnRadio;
         }
 
         AdvanceDialogue();
@@ -150,18 +160,29 @@ public class DialoguePlayer : MonoBehaviour
             else DialogueManager.Instance.TriggerEvent(dialogueEvent.eventName);
         }
 
-        if (element.FromRadio)
+        if (element.FromRadio != null)
         {
-            // TODO
+            radio.gameObject.SetActive(element.FromRadio.ToLower() == "on");
         }
 
         if (element.Icon != null)
         {
             portrait.sprite = spriteMap.GetSprite(element.Speaker + element.Icon);
+            portraitBG.gameObject.SetActive(true);
         }
         else if (speakerSprites.ContainsKey(speaker))
         {
             portrait.sprite = speakerSprites[speaker];
+            portraitBG.gameObject.SetActive(true);
+        }
+        else if (speaker == "Mariposa" || element.Speaker == "Unnamed" || speaker == "Beebo")
+        {
+            portrait.sprite = spriteMap.GetSprite(element.Speaker + "Neutral");
+            portraitBG.gameObject.SetActive(true);
+        }
+        else
+        {
+            portraitBG.gameObject.SetActive(false);
         }
 
         if (element.Background != null)
@@ -215,20 +236,16 @@ public class DialoguePlayer : MonoBehaviour
     {
         finishedTypewriter = false;
         int length = taglessText.Length;
-        float startTime = Time.time;
-
+        
         int i = 0;
         lineTarget.maxVisibleCharacters = i;
         while (i < length)
         {
-            float elapsedTime = Time.time - startTime;
-            if (elapsedTime > DIALOGUE_SPEED)
-            {
-                i++;
-                lineTarget.maxVisibleCharacters = i;
-                startTime = Time.time;
-            }
-            else yield return null;
+            i++;
+            lineTarget.maxVisibleCharacters = i;
+            bool punctuation = taglessText[i - 1] == ',' || taglessText[i - 1] == '.' || taglessText[i - 1] == '?' || taglessText[i - 1] == '!';
+            if (punctuation) yield return new WaitForSeconds(DIALOGUE_SPEED * 10.0f);
+            else yield return new WaitForSeconds(DIALOGUE_SPEED);
         }
 
         finishedTypewriter = true;

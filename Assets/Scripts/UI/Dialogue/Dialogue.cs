@@ -8,7 +8,7 @@ public class DialogueElement
     public string Line; // The line
     public string Icon; // The character portrait, assume previous icon if empty
     public string Background; // The background graphic
-    public bool FromRadio; // Indicates whether to show the radio icon on the dialogue UI
+    public string FromRadio; // Indicates whether to show the radio icon on the dialogue UI
     public List<string> Sounds; // A list of sound effects to play 
     public List<DialogueEventElement> Events; // A list of arbitrary named events to trigger (see DialogueEvent.cs)
     public DialogueChoice Choice1; // Dialogue response options
@@ -20,7 +20,7 @@ public class DialogueElement
         Line = null;
         Icon = null;
         Background = null;
-        FromRadio = false;
+        FromRadio = null;
         Sounds = new List<string>();
         Events = new List<DialogueEventElement>();
         Choice1 = null;
