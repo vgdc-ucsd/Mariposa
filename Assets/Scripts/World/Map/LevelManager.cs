@@ -19,11 +19,17 @@
 
         private void Awake()
         {
-            if (Instance != null && Instance != this) { Destroy(gameObject); return; }
+            if (Instance != null && Instance != this)
+            {
+                Destroy(gameObject);
+                return;
+            }
             Instance = this;
+
             foreach (var sl in CurrentLevel.Sublevels) sl.Unload();
-            SublevelIndex = GameManager.Instance.TargetSublevel;  
+            SublevelIndex = GameManager.Instance.TargetSublevel;
             CurrentLevel.LoadSublevel(SublevelIndex);
+
             if (string.IsNullOrEmpty(NextLevelName))
             {
                 var nextBuild = SceneManager.GetActiveScene().buildIndex + 1;
@@ -32,8 +38,8 @@
                         SceneUtility.GetScenePathByBuildIndex(nextBuild)
                     );
             }
+
             SceneManager.sceneLoaded += OnSceneLoaded;
-            
         }
 
         
@@ -70,6 +76,7 @@
         {
             InitSublevel();
         }
+        
 
         private void Update()
         {
@@ -87,20 +94,15 @@
 
         private Sublevel GetCurrentSublevel() => CurrentLevel.Sublevels[SublevelIndex];
 
-        public void GoToNextSublevel()
-        {
-            if (SublevelIndex + 1 >= CurrentLevel.Sublevels.Length)
-            {
-                CompleteLevel();
-                return;
-            }
+    public void GoToNextSublevel()
+    {
+        CurrentLevel.UnloadSublevel(SublevelIndex);
+        SublevelIndex++;
+        SublevelIndex %= CurrentLevel.Sublevels.Length;
+        CurrentLevel.LoadSublevel(SublevelIndex);
+        InitSublevel();
 
-            // otherwise just advance
-            CurrentLevel.UnloadSublevel(SublevelIndex);
-            SublevelIndex++;
-            CurrentLevel.LoadSublevel(SublevelIndex);
-            InitSublevel();
-        }
+    }
 
         public void GoToPreviousLevel()
         {
@@ -115,14 +117,16 @@
             InitSublevel();
         }
 
-        private void InitSublevel()
+        public void InitSublevel()
         {
             // teleport previous player (and bee, if applicable) off screen
             Player.ActivePlayer.transform.position = new Vector3(-1000, -1000, 0);
             if (Player.ActivePlayer.Ability is BeeControlAbility b)
             {
                 b.BeeRef.transform.position = new Vector3(-1000, -1000, 0);
+                b.TurnOffBeeFlap();
             }
+
             PlayerController.Instance.SwitchTo(GetCurrentSublevel().SublevelCharacter);
             CameraController.ActiveCamera.SetBounds(GetCurrentSublevel().CameraBounds);
             Player.ActivePlayer.transform.position = GetCurrentSublevel().StartingSpawn.GetRespawnPosition();
@@ -130,8 +134,8 @@
             {
                 bc.BeeRef.transform.position = Player.ActivePlayer.transform.position + new Vector3(0, 2, 0);
             }
-            Debug.Assert(GetCurrentSublevel().SublevelCharacter == Player.ActivePlayer.Data.characterID);
 
+            Debug.Assert(GetCurrentSublevel().SublevelCharacter == Player.ActivePlayer.Data.characterID);
             ActiveEnemies = FindObjectsByType<Enemy>(FindObjectsInactive.Exclude, FindObjectsSortMode.None).ToList();
             ResetEnemies();
         }

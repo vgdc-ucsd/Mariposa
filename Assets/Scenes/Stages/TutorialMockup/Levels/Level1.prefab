@@ -29,7 +29,8 @@ Transform:
   m_LocalPosition: {x: 3.5879033, y: -9.996554, z: 0.15552929}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 4216071652623638902}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &-2877244780141095622
@@ -45,6 +46,53 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Sublevels:
-  - {fileID: 3529839200492878378, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
-  - {fileID: 5574249224141043270, guid: 1ab7bc7f443708b46ae44f7ad95f4288, type: 3}
-  - {fileID: 4098008978971633477, guid: f0b2a4fe197120c43adaa5d5c2a61ec3, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+--- !u!1 &6052993891962865783
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4216071652623638902}
+  - component: {fileID: 3540147939522516968}
+  m_Layer: 0
+  m_Name: TutorialManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4216071652623638902
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6052993891962865783}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1950538169471733689}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3540147939522516968
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6052993891962865783}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f3d6d462a490ce46b8038d829ad9c90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unnamedRadio: {fileID: 11400000, guid: 2c764b61da771a94e8e5cab0fc36379b, type: 2}

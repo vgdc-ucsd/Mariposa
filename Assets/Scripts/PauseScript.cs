@@ -1,44 +1,68 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
-public class PauseScript : MonoBehaviour
+public class PauseScript : Singleton<PauseScript>
 {
 
-    public GameObject pauseMenu;
-    public bool paused = false;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public GameObject PauseMenu;
+    public bool IsPaused = false;
+
+    private InputAction pauseInputAction;
+
+	override public void Awake()
+	{
+        base.Awake();
+        pauseInputAction = InputSystem.actions.FindActionMap("Player").FindAction("Escape");
+	}
+
+	void Start()
     {
-        pauseMenu.SetActive(false);
-        Time.timeScale = 1.0f;
+        Canvas pauseCanvas = PauseMenu.GetComponent<Canvas>();
+        if (pauseCanvas.worldCamera == null) pauseCanvas.worldCamera = Camera.main;
+        PauseGame(false);
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyUp(KeyCode.Escape))
+        if (pauseInputAction.WasPressedThisFrame())
         {
-            if (paused) 
-            {
-                ResumeGame();
-            }
-            else
-            {
-                PauseGame();
-            }
+            if (IsPaused) PauseGame(false);
+            else PauseGame(true);
         }
     }
 
-    public void PauseGame()
+    public void PauseGame(bool nextPauseState)
     {
-        Time.timeScale = 0.0f;
-        paused = true;
-        pauseMenu.SetActive(true);
+        if (nextPauseState)
+        {
+            IsPaused = true;
+            PauseMenu.SetActive(true);
+            Time.timeScale = 0.0f;
+        }
+        else
+        {
+            IsPaused = false;
+            PauseMenu.SetActive(false);
+            Time.timeScale = 1.0f;
+        }
     }
 
-    public void ResumeGame()
+    public void RestartLevel()
     {
         Time.timeScale = 1.0f;
-        paused = false;
-        pauseMenu.SetActive(false);
+        PauseGame(false);
+        if (LevelManager.Instance == null)
+        {
+            Debug.LogWarning("Pause manager attempting to restart level but LevelManager not found!");
+            return;
+        }
+        LevelManager.Instance.InitSublevel();
+    }
+
+    public void QuitLevel()
+    {
+        Time.timeScale = 1.0f;
+        SceneManager.LoadScene(0);
     }
 }
