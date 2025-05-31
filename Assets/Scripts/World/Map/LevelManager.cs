@@ -2,6 +2,9 @@ using UnityEngine;
 using System.Collections;
 using NUnit.Framework;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 
 public class LevelManager : MonoBehaviour
 {
@@ -10,6 +13,9 @@ public class LevelManager : MonoBehaviour
     public Level CurrentLevel;
     public string NextLevelName;
     public int SublevelIndex { get; private set; }
+
+    public List<Enemy> ActiveEnemies;
+
 
     private void Awake()
     {
@@ -24,7 +30,7 @@ public class LevelManager : MonoBehaviour
         // does this even work?
         if (SceneManager.GetActiveScene().buildIndex >= SceneManager.sceneCount - 1) return;
         NextLevelName = SceneManager.GetSceneByBuildIndex(SceneManager.GetActiveScene().buildIndex + 1).name;
-        
+
     }
 
     private void Start()
@@ -55,7 +61,7 @@ public class LevelManager : MonoBehaviour
         SublevelIndex %= CurrentLevel.Sublevels.Length;
         CurrentLevel.LoadSublevel(SublevelIndex);
         InitSublevel();
-        
+
     }
 
     public void GoToPreviousLevel()
@@ -71,7 +77,7 @@ public class LevelManager : MonoBehaviour
         InitSublevel();
     }
 
-    private void InitSublevel()
+    public void InitSublevel()
     {
         // teleport previous player (and bee, if applicable) off screen
         Player.ActivePlayer.transform.position = new Vector3(-1000, -1000, 0);
@@ -87,6 +93,17 @@ public class LevelManager : MonoBehaviour
             bc.BeeRef.transform.position = Player.ActivePlayer.transform.position + new Vector3(0, 2, 0);
         }
         Debug.Assert(GetCurrentSublevel().SublevelCharacter == Player.ActivePlayer.Data.characterID);
+
+        ActiveEnemies = FindObjectsByType<Enemy>(FindObjectsInactive.Exclude, FindObjectsSortMode.None).ToList();
+        ResetEnemies();
+    }
+
+    public void ResetEnemies()
+    {
+        foreach (Enemy enemy in ActiveEnemies)
+        {
+            enemy.Init();
+        }
     }
 
     public void LoadNextLevel()

@@ -1,9 +1,8 @@
+using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Unity.VisualScripting;
+using TMPro;
 using UnityEngine;
-using UnityEngine.Timeline;
+using UnityEngine.UI;
 
 public class WaterPuzzle : Puzzle
 {
@@ -15,7 +14,6 @@ public class WaterPuzzle : Puzzle
     [HideInInspector] public WaterPuzzleTile[,] Tiles;
     public int GridWidth, GridHeight;
     [HideInInspector]
-    public bool PuzzleComplete = false;
     
     [SerializeField] private GameObject tilePrefab;
     private List<WaterPuzzleTile> tilesInSolution;
@@ -37,16 +35,14 @@ public class WaterPuzzle : Puzzle
     /// </summary>
     public Sprite[] TileSprites;
 
-    [HideInInspector] public bool UsedPipeSplitter;
+    [HideInInspector] public bool UsedPipeSplitter, PipeSplitterToggled;
+    [HideInInspector] public WaterPuzzleTile SplitTile;
+    [HideInInspector] public bool[] SplitTilePipes = new bool[4];
+    [SerializeField] private TMP_Text toggleText;
 
     [SerializeField] private bool usingSeedBank;
     [SerializeField] private int[] seedBank;
 
-
-    private void Update()
-    {
-        
-    }
     private void Awake()
     {
         // move the puzzle object so that the center of the puzzle is at (0, 0, 0)
@@ -70,12 +66,12 @@ public class WaterPuzzle : Puzzle
         StartTile = Tiles[0, GridHeight / 2];
         if (twoEndings)
         {
-            EndTile = Tiles[GridWidth - 1, 0];
-            EndTile2 = Tiles[GridWidth - 1, GridHeight - 1];
+            EndTile = Tiles[GridWidth - 1, GridHeight / 2 + 2];
+            EndTile2 = Tiles[GridWidth - 1, GridHeight / 2 - 2];
         }
         else EndTile = Tiles[GridWidth - 1, GridHeight / 2];
 
-        int seed = Random.Range(0, int.MaxValue);
+        int seed = (int)System.DateTime.Now.Ticks;
         if (usingSeedBank) seed = seedBank[Random.Range(0, seedBank.Length)];
         Debug.Log(gameObject.name + " seed: " + seed);
         Random.InitState(seed);
@@ -97,10 +93,37 @@ public class WaterPuzzle : Puzzle
         StartTile.FillTile(true);
     }
 
-    public void CompletePuzzle()
+    public IEnumerator CompletePuzzle()
     {
-        PuzzleComplete = true;
+        yield return new WaitForSeconds(1f);
         OnComplete();
+    }
+
+    public void RevertSplitTile()
+    {
+        if (SplitTile == null) return;
+        SplitTile.PipeRight = SplitTilePipes[0];
+        SplitTile.PipeUp = SplitTilePipes[1];
+        SplitTile.PipeLeft = SplitTilePipes[2];
+        SplitTile.PipeDown = SplitTilePipes[3];
+        SplitTile.SetSprite();
+        SplitTile = null;
+        SplitTilePipes = new bool[4];
+        UsedPipeSplitter = false;
+        toggleText.text = (PipeSplitterToggled ? "Click a pipe to split it!" : "Use Pipe Splitter");
+
+    }
+
+    public void ToggleSplitTile()
+    {
+        PipeSplitterToggled = !PipeSplitterToggled;
+        if (UsedPipeSplitter)
+        {
+            toggleText.text = "Pipe Splitter already used";
+            return;
+        }
+        toggleText.text = (PipeSplitterToggled ? "Click a pipe to split it!" : "Use Pipe Splitter");
+
     }
 
     /// <summary>
@@ -229,7 +252,7 @@ public class WaterPuzzle : Puzzle
                 if (!tilesInSolution.Contains(Tiles[x, y]))
                 {
                     tilesInSolution.Add(Tiles[x, y]);
-                    Tiles[x, y].RandomPipeChance /= 10f;
+                    Tiles[x, y].RandomPipeChance /= 20f;
                 }
                 else if (!twoEndings) Tiles[x, y].MustBeCross = true;
 

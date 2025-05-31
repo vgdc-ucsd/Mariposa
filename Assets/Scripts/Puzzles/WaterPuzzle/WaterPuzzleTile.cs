@@ -1,10 +1,6 @@
 using System.Collections;
-using System.Runtime.CompilerServices;
 using TMPro;
-using UnityEditor.Rendering;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
 public class WaterPuzzleTile : MonoBehaviour
@@ -261,9 +257,9 @@ public class WaterPuzzleTile : MonoBehaviour
             HasWater = true;
             FillAdjacentTiles();
 
-            if (puzzle.EndTile.HasWater && (!puzzle.twoEndings || puzzle.EndTile2.HasWater) && !puzzle.PuzzleComplete)
+            if (puzzle.EndTile.HasWater && (!puzzle.twoEndings || puzzle.EndTile2.HasWater) && !puzzle.IsComplete)
             {
-                puzzle.CompletePuzzle();
+                StartCoroutine(puzzle.CompletePuzzle());
             }
 
 
@@ -277,23 +273,31 @@ public class WaterPuzzleTile : MonoBehaviour
     public void EmptyTile()
     {
         if (puzzle.EndTile != this && puzzle.EndTile2 != this) Image.color = Color.white;
+        else Image.color = Color.red;
         HasWater = false;
     }
 
     public void UsePipeSplitterOnTile()
     {
-        if (!puzzle.twoEndings) return; 
+        if (!puzzle.twoEndings) return;
+        puzzle.SplitTile = this;
+        puzzle.SplitTilePipes[0] = PipeRight;
+        puzzle.SplitTilePipes[1] = PipeUp;
+        puzzle.SplitTilePipes[2] = PipeLeft;
+        puzzle.SplitTilePipes[3] = PipeDown;
         PipeRight = PipeUp = PipeLeft = PipeDown = true;
         SetSprite();
         puzzle.UsedPipeSplitter = true;
+        puzzle.ToggleSplitTile();
+        puzzle.ResetPuzzle();
     }
 
     public void OnClick()
     {
-        if (!puzzle.PuzzleComplete && !animating)
+        if (!puzzle.IsComplete && !animating)
         {
-            if (Input.GetKey(KeyCode.LeftControl) && !puzzle.UsedPipeSplitter) UsePipeSplitterOnTile();
-            StartCoroutine(RotateThisTile());
+            if (!puzzle.UsedPipeSplitter && puzzle.PipeSplitterToggled) UsePipeSplitterOnTile();
+            else StartCoroutine(RotateThisTile());
         }
     }
 }
