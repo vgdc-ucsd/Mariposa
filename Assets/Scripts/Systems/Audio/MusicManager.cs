@@ -12,6 +12,9 @@ public class MusicManager : Singleton<MusicManager>
 
     private float transitionPercent = 0.0f;
     private bool transitionValid = false;
+    [SerializeField] private bool playOnStart = false;
+
+    [Header("Only used in Inspector Context Menu")]
     [SerializeField] private float transitionDuration = 3.0f;
 
     private enum busOptions
@@ -30,7 +33,10 @@ public class MusicManager : Singleton<MusicManager>
         setTransitionVolume();
         updatePath();
         currentEventInstance = RuntimeManager.CreateInstance(currentMusic);
-        // start playing music if one already exists and playOnStart is on
+        if (playOnStart)
+        {
+            Play();
+        }
     }
 
     private Bus getCurrentBus()
@@ -68,12 +74,12 @@ public class MusicManager : Singleton<MusicManager>
     }
 
     [ContextMenu("Stop")]
-    public void Stop()
+    public void Stop(FMOD.Studio.STOP_MODE stopMode = FMOD.Studio.STOP_MODE.IMMEDIATE)
     {
-        currentEventInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        currentEventInstance.stop(stopMode);
         if (transitionValid)
         {
-            transitionEventInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            transitionEventInstance.stop(stopMode);
         }
     }
 
@@ -148,9 +154,8 @@ public class MusicManager : Singleton<MusicManager>
 
     private void setTransitionVolume()
     {
-        Debug.Log(getCurrentBus().setVolume(1.0f - transitionPercent));
+        getCurrentBus().setVolume(1.0f - transitionPercent);
         getTransitionBus().setVolume(transitionPercent);
-        Debug.Log(transitionPercent * 100 + "%");
     }
 
     private void updatePath()
