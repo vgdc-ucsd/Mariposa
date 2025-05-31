@@ -85,9 +85,13 @@ public class LevelManager : MonoBehaviour
         {
             b.BeeRef.transform.position = new Vector3(-1000, -1000, 0);
         }
-        PlayerController.Instance.SwitchTo(GetCurrentSublevel().SublevelCharacter);
-        CameraController.ActiveCamera.SetBounds(GetCurrentSublevel().CameraBounds);
-        Player.ActivePlayer.transform.position = GetCurrentSublevel().StartingSpawn.GetRespawnPosition();
+        Sublevel currSublevel = GetCurrentSublevel();
+        PlayerController.Instance.SwitchTo(currSublevel.SublevelCharacter);
+        if (currSublevel.isAutoscrolling)
+        {
+            CameraController.ActiveCamera.SetBounds(currSublevel.CameraBounds);
+        }
+        Player.ActivePlayer.transform.position = currSublevel.StartingSpawn.GetRespawnPosition();
         if (Player.ActivePlayer.Ability is BeeControlAbility bc)
         {
             bc.BeeRef.transform.position = Player.ActivePlayer.transform.position + new Vector3(0, 2, 0);
