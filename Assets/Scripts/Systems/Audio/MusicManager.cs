@@ -3,42 +3,103 @@ using FMOD.Studio;
 using FMODUnity;
 using UnityEngine;
 
-public class MusicManager : MonoBehaviour
+public class MusicManager : Singleton<MusicManager>
 {
-    private Bus currentBus, transitionBus;
-    private Bus music1Bus = RuntimeManager.GetBus("bus:/Music/Music1");
-    private Bus music2Bus = RuntimeManager.GetBus("bus:/Music/Music2");
-    private EventInstance currentEventInstance;
-    private EventInstance? transitionEventInstance;
-    private float transitionPercent = 0.0f;
+    [SerializeField] private string currentMusic, transitionMusic = "";
 
-    public EventReference currentMusic;
-    public EventReference? transitionMusic = null;
+    private Bus music1Bus, music2Bus;
+    private EventInstance currentEventInstance, transitionEventInstance;
+
+    private float transitionPercent = 0.0f;
+    private bool transitionValid = false;
+    [SerializeField] private float transitionDuration = 3.0f;
+
+    private enum busOptions
+    {
+        music1,
+        music2
+    }
+    private busOptions busChoice;
 
     private void Start()
     {
-        currentBus = music1Bus;
-        transitionBus = music2Bus;
+        busChoice = busOptions.music1;
+        music1Bus = RuntimeManager.GetBus("bus:/Music/Music1");
+        music2Bus = RuntimeManager.GetBus("bus:/Music/Music2");
         transitionPercent = 0.0f;
-
+        setTransitionVolume();
+        updatePath();
+        currentEventInstance = RuntimeManager.CreateInstance(currentMusic);
         // start playing music if one already exists and playOnStart is on
     }
 
-    private void CreateInstances()
+    private Bus getCurrentBus()
     {
-
+        if (busChoice == busOptions.music1)
+        {
+            return music1Bus;
+        }
+        else
+        {
+            return music2Bus;
+        }
     }
 
-    public void TransitionTo(string path)
+    private Bus getTransitionBus()
     {
-        transitionMusic = RuntimeManager.PathToEventReference(path);
-        transitionEventInstance = RuntimeManager.CreateInstance((EventReference)transitionMusic);
-        // start lowering current music and raising other music
-        // when done, stop current music, release, transition -> current, clear transition
+        if (busChoice != busOptions.music1)
+        {
+            return music1Bus;
+        }
+        else
+        {
+            return music2Bus;
+        }
+    }
+
+    [ContextMenu("Play")]
+    public void Play()
+    {
+        currentEventInstance.start();
+        if (transitionValid)
+        {
+            transitionEventInstance.start();
+        }
+    }
+
+    [ContextMenu("Stop")]
+    public void Stop()
+    {
+        currentEventInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        if (transitionValid)
+        {
+            transitionEventInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        }
+    }
+
+    public void TransitionTo(string path, float duration)
+    {
+        transitionMusic = path;
+        updatePath();
+        transitionEventInstance = RuntimeManager.CreateInstance(transitionMusic);
+        if (!transitionEventInstance.isValid())
+        {
+            Debug.LogError("Transition Event is not valid!");
+            return;
+        }
+        transitionValid = true;
+        StartCoroutine(SongTransition(duration));
+    }
+
+    [ContextMenu("Transition")]
+    private void InspectorTransition()
+    {
+        TransitionTo(transitionMusic, transitionDuration);
     }
 
     private IEnumerator SongTransition(float duration)
     {
+        transitionEventInstance.start();
         yield return StartCoroutine(VolumeTransition(duration));
         transitionPercent = 0.0f;
         swap();
@@ -47,7 +108,7 @@ public class MusicManager : MonoBehaviour
     private IEnumerator VolumeTransition(float duration)
     {
         float elapsed = 0.0f;
-        while (elapsed <= 1.0f)
+        while (elapsed <= duration)
         {
             elapsed += Time.deltaTime;
             float t = elapsed / duration;
@@ -61,31 +122,48 @@ public class MusicManager : MonoBehaviour
     private void swap()
     {
         // swap buses
-        if (music1Bus.Equals(currentBus))
+        if (busChoice == busOptions.music1)
         {
-            currentBus = music2Bus;
-            transitionBus = music1Bus;
+            busChoice = busOptions.music2;
         }
         else
         {
-            currentBus = music1Bus;
-            transitionBus = music2Bus;
+            busChoice = busOptions.music1;
         }
 
-        // delete current event, move transition -> current, delete old transition
-        currentEventInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-        currentEventInstance.release();
-        currentEventInstance = (EventInstance)transitionEventInstance;
-        transitionEventInstance = null;
+        if (transitionValid)
+        {
+            currentEventInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            currentEventInstance.release();
+            currentEventInstance = transitionEventInstance;
 
-        // same with EventReferences
-        currentMusic = (EventReference)transitionMusic;
-        transitionMusic = null;
+            // same with EventReferences
+            currentMusic = transitionMusic;
+            transitionMusic = "";
+
+            transitionValid = false;
+        }
+        updatePath();
     }
 
     private void setTransitionVolume()
     {
-        currentBus.setVolume(1.0f - transitionPercent);
-        transitionBus.setVolume(transitionPercent);
+        Debug.Log(getCurrentBus().setVolume(1.0f - transitionPercent));
+        getTransitionBus().setVolume(transitionPercent);
+        Debug.Log(transitionPercent * 100 + "%");
+    }
+
+    private void updatePath()
+    {
+        if (busChoice == busOptions.music1)
+        {
+            currentMusic = currentMusic.Replace("music2", "music1");
+            transitionMusic = transitionMusic.Replace("music1", "music2");
+        }
+        else
+        {
+            currentMusic = currentMusic.Replace("music1", "music2");
+            transitionMusic = transitionMusic.Replace("music2", "music1");
+        }
     }
 }
