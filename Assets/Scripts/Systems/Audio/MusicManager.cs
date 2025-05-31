@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using FMOD.Studio;
 using FMODUnity;
@@ -32,7 +33,7 @@ public class MusicManager : Singleton<MusicManager>
         transitionPercent = 0.0f;
         setTransitionVolume();
         updatePath();
-        currentEventInstance = RuntimeManager.CreateInstance(currentMusic);
+
         if (playOnStart)
         {
             Play();
@@ -66,6 +67,16 @@ public class MusicManager : Singleton<MusicManager>
     [ContextMenu("Play")]
     public void Play()
     {
+        try
+        {
+            currentEventInstance = RuntimeManager.CreateInstance(currentMusic);
+        }
+        catch (EventNotFoundException)
+        {
+            Debug.LogWarning($"Invalid music for '{currentMusic}': Skipping Play()");
+            return;
+        }
+
         currentEventInstance.start();
         if (transitionValid)
         {
@@ -101,6 +112,17 @@ public class MusicManager : Singleton<MusicManager>
     private void InspectorTransition()
     {
         TransitionTo(transitionMusic, transitionDuration);
+    }
+
+    public void SetVolume(float volume)
+    {
+        if (volume > 1.0 || volume < 0.0)
+        {
+            Debug.LogError("MusicManager volume must be set between 0.0 and 1.0");
+            return;
+        }
+
+        getCurrentBus().setVolume(volume);
     }
 
     private IEnumerator SongTransition(float duration)
