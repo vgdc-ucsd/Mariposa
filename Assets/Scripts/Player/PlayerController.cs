@@ -140,9 +140,9 @@ public class PlayerController : MonoBehaviour
         listeners.Remove(Listener);
     }
 
-    public void ToggleMovementLock()
+    public void SetMovementLock(bool lockMovement)
     {
-        IsLocked = !IsLocked;
+        IsLocked = lockMovement;
     }
 
     private void Update()
