@@ -63,7 +63,7 @@ public class ScalePuzzle : Puzzle
     public void GenerateSolution()
     {
         mysteryBox = Instantiate(mysteryBoxPrefab, selectionArea.transform).GetComponent<MysteryBox>();
-        Vector3 offset = Vector3.up * selectionArea.GetComponent<RectTransform>().rect.height / 2.5f;
+        Vector3 offset = Vector3.up * selectionArea.GetComponent<RectTransform>().rect.height / 3f;
         mysteryBox.transform.localPosition += offset;
         foreach (ScaleObject scaleObj in levels[level].objects)
         {
