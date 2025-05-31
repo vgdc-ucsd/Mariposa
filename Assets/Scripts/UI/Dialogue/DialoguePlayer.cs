@@ -46,13 +46,13 @@ public class DialoguePlayer : MonoBehaviour
     [SerializeField] private TextMeshProUGUI choiceText2;
 
     // dialogue control
-    private List<DialogueElement> conversation;
-    private int dialogueIndex;
+    private List<DialogueElement> conversation = new List<DialogueElement>();
+    private int dialogueIndex = 0;
     private bool awaitingChoice = false;
 
     // typewriter control
     private bool finishedTypewriter;
-    private const float DIALOGUE_SPEED = 0.025f;
+    private const float DIALOGUE_SPEED = 0.03f;
 
     // Regex
     private Regex tagPattern = new Regex(@"<\/?(i|b|color(=[^>]+)?)>"); // Matches rich text tags like <i>text</i>
@@ -120,7 +120,7 @@ public class DialoguePlayer : MonoBehaviour
         }
         else
         {
-            if (awaitingChoice) return;
+            if (awaitingChoice || dialogueIndex == conversation.Count) return;
             AdvanceDialogue();
         }
     }
@@ -252,7 +252,7 @@ public class DialoguePlayer : MonoBehaviour
         {
             i++;
             lineTarget.maxVisibleCharacters = i;
-            bool punctuation = taglessText[i - 1] == ',' || taglessText[i - 1] == '.' || taglessText[i - 1] == '?' || taglessText[i - 1] == '!';
+            bool punctuation = taglessText[i - 1] == ',' || taglessText[i - 1] == '.' || taglessText[i - 1] == '?' || taglessText[i - 1] == '!' || taglessText[i - 1] == ':' || taglessText[i - 1] == ';';
             if (punctuation) yield return new WaitForSeconds(DIALOGUE_SPEED * 10.0f);
             else yield return new WaitForSeconds(DIALOGUE_SPEED);
         }
