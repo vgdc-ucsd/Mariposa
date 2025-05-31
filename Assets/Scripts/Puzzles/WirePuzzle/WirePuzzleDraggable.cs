@@ -107,6 +107,7 @@ public class WirePuzzleDraggable : MonoBehaviour, IBeginDragHandler, IDragHandle
         if (ConnectedReceivers.Count > 0)
         {
             ConnectedReceivers[^1].ConnectedDraggable = null;
+            ConnectedReceivers[^1].GetComponent<Image>().raycastTarget = true;
             ConnectedReceivers.RemoveAt(ConnectedReceivers.Count - 1);
         }
         // Reset position of "draggable" game object
@@ -122,6 +123,9 @@ public class WirePuzzleDraggable : MonoBehaviour, IBeginDragHandler, IDragHandle
             // Set position of "draggable" game object
             transform.position = receiver.transform.position;
             wireVisuals.AddedNodeVisuals(receiver);
+
+            // Turn off raycast target for connected node
+            receiver.GetComponent<Image>().raycastTarget = false;
         }
         else
         {
