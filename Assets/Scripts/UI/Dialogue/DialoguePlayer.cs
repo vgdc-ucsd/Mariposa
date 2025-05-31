@@ -29,6 +29,10 @@ public class DialoguePlayer : MonoBehaviour
     [SerializeField] private Sprite mariRadio;
     [SerializeField] private Sprite unnRadio;
 
+    [SerializeField] private Image advanceIndicator;
+    [SerializeField] private Sprite mariAdvance;
+    [SerializeField] private Sprite unnAdvance;
+
     [SerializeField] private Image portrait;
     [SerializeField] private SpriteMap spriteMap;
 
@@ -75,6 +79,7 @@ public class DialoguePlayer : MonoBehaviour
         buttonDisplay.SetActive(false);
         portraitBG.gameObject.SetActive(false);
         radio.gameObject.SetActive(false);
+        advanceIndicator.gameObject.SetActive(false);
         speakerSprites = new Dictionary<string, Sprite>();
         endingEvents = new List<string>();
         awaitingChoice = false;
@@ -89,12 +94,14 @@ public class DialoguePlayer : MonoBehaviour
             nameplate.sprite = mariNameplate;
             textboxRect.sprite = mariRect;
             radio.sprite = mariRadio;
+            advanceIndicator.sprite = mariAdvance;
         }
         else
         {
             nameplate.sprite = unnNameplate;
             textboxRect.sprite = unnRect;
             radio.sprite = unnRadio;
+            advanceIndicator.sprite = unnAdvance;
         }
 
         AdvanceDialogue();
@@ -109,6 +116,7 @@ public class DialoguePlayer : MonoBehaviour
             StopAllCoroutines();
             finishedTypewriter = true;
             lineTarget.maxVisibleCharacters = taglessText.Length;
+            advanceIndicator.gameObject.SetActive(true);
         }
         else
         {
@@ -234,6 +242,7 @@ public class DialoguePlayer : MonoBehaviour
 
     private IEnumerator TypewriterEffect()
     {
+        advanceIndicator.gameObject.SetActive(false);
         finishedTypewriter = false;
         int length = taglessText.Length;
         
@@ -248,6 +257,7 @@ public class DialoguePlayer : MonoBehaviour
             else yield return new WaitForSeconds(DIALOGUE_SPEED);
         }
 
+        if(!awaitingChoice) advanceIndicator.gameObject.SetActive(true);
         finishedTypewriter = true;
     }
 }
