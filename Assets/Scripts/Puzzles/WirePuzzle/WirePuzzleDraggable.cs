@@ -104,9 +104,11 @@ public class WirePuzzleDraggable : MonoBehaviour, IBeginDragHandler, IDragHandle
     public void DisconnectWire()
     {
         ConnectedTail = null;
-        ConnectedReceivers[^1].ConnectedDraggable = null;
-        if (ConnectedReceivers.Count > 0) ConnectedReceivers.RemoveAt(ConnectedReceivers.Count - 1);
-
+        if (ConnectedReceivers.Count > 0)
+        {
+            ConnectedReceivers[^1].ConnectedDraggable = null;
+            ConnectedReceivers.RemoveAt(ConnectedReceivers.Count - 1);
+        }
         // Reset position of "draggable" game object
         SnapBackToPos();
     }
