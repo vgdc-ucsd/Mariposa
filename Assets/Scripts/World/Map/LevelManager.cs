@@ -30,7 +30,7 @@ public class LevelManager : MonoBehaviour
         // does this even work?
         if (SceneManager.GetActiveScene().buildIndex >= SceneManager.sceneCount - 1) return;
         NextLevelName = SceneManager.GetSceneByBuildIndex(SceneManager.GetActiveScene().buildIndex + 1).name;
-        
+
     }
 
     private void Start()
@@ -61,7 +61,7 @@ public class LevelManager : MonoBehaviour
         SublevelIndex %= CurrentLevel.Sublevels.Length;
         CurrentLevel.LoadSublevel(SublevelIndex);
         InitSublevel();
-        
+
     }
 
     public void GoToPreviousLevel()
@@ -77,13 +77,14 @@ public class LevelManager : MonoBehaviour
         InitSublevel();
     }
 
-    private void InitSublevel()
+    public void InitSublevel()
     {
         // teleport previous player (and bee, if applicable) off screen
         Player.ActivePlayer.transform.position = new Vector3(-1000, -1000, 0);
         if (Player.ActivePlayer.Ability is BeeControlAbility b)
         {
             b.BeeRef.transform.position = new Vector3(-1000, -1000, 0);
+            b.TurnOffBeeFlap();
         }
         PlayerController.Instance.SwitchTo(GetCurrentSublevel().SublevelCharacter);
         CameraController.ActiveCamera.SetBounds(GetCurrentSublevel().CameraBounds);

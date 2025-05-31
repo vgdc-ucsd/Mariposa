@@ -1,30 +1,29 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BlockPreview : MonoBehaviour
 {
     private const float BLOCK_PREVIEW_ALPHA = 0.25f;
-    private SpriteRenderer spriteRenderer;
+    private Image image;
+    private RectTransform rectTransform;
 
     void Awake()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        image = GetComponent<Image>();
+        rectTransform = GetComponent<RectTransform>();
         gameObject.SetActive(false);
     }
 
-    // public void SetSize(Vector2Int size)
-    // {
-    //     transform.localScale = new Vector3(size.x, size.y, 1);
-    // }
-
-    public void SetSprite(Sprite sprite, Color color)
+    public void SetSprite(Vector2 sizeDelta, Sprite sprite, Color color)
     {
-        spriteRenderer.sprite = sprite;
-        spriteRenderer.color = new Color(color.r, color.g, color.b, BLOCK_PREVIEW_ALPHA);
+        image.sprite = sprite;
+        image.color = new Color(color.r, color.g, color.b, BLOCK_PREVIEW_ALPHA);
+        rectTransform.sizeDelta = sizeDelta;
     }
 
-    public void SetPosition(Vector3 position)
+    public void SetPosition(Vector2 worldPos)
     {
-        transform.position = position;
+        rectTransform.anchoredPosition = worldPos;
     }
 
     public void Show()
