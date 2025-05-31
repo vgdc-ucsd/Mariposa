@@ -1001,6 +1001,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 64656932}
     m_Modifications:
+    - target: {fileID: 1584003138381846382, guid: 620f1be439cedac4a844de35aae98c28, type: 3}
+      propertyPath: followSpeed
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 4376665039875494354, guid: 620f1be439cedac4a844de35aae98c28, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.3
@@ -1041,9 +1045,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4412951178571148611, guid: 620f1be439cedac4a844de35aae98c28, type: 3}
+      propertyPath: followSpeed
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 4690785587804333328, guid: 620f1be439cedac4a844de35aae98c28, type: 3}
       propertyPath: m_Name
       value: ParallaxBackground_Mariposa
+      objectReference: {fileID: 0}
+    - target: {fileID: 4690785587804333328, guid: 620f1be439cedac4a844de35aae98c28, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5387981004250113173, guid: 620f1be439cedac4a844de35aae98c28, type: 3}
+      propertyPath: followSpeed
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 7819947497667371276, guid: 620f1be439cedac4a844de35aae98c28, type: 3}
+      propertyPath: followSpeed
+      value: 100
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3810,6 +3830,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -8.33
       objectReference: {fileID: 0}
+    - target: {fileID: 8834308824758920982, guid: f7ba4b11513a904409f499c05ca71649, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -15.299982
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -4050,22 +4074,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82d78ae2c517728419f9c3dfc78cdadf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DialogueWindow: {fileID: 1831804072}
-  rect: {fileID: 60195922}
-  mariRect: {fileID: 8088097820553177828, guid: e98854153251a124e89d2666e921b4a0, type: 3}
-  unnRect: {fileID: -1207560325795574624, guid: df74879661a354e43bbfe531a95251df, type: 3}
-  mariRadio: {fileID: 4233357771194665771, guid: 4db3d42c00360974e906e05e7b5af25d, type: 3}
-  unnRadio: {fileID: -6075865628540360912, guid: 03374d6fa2d8bff49ac14ac382b3dc1a, type: 3}
-  speakerTarget: {fileID: 560592855}
-  lineTarget: {fileID: 422443247}
-  frame: {fileID: 458722928}
-  mariFrame: {fileID: -6082742533581839185, guid: 646fbe2d453245d41b379dd427ad9db9, type: 3}
-  unnFrame: {fileID: 6586461156150141773, guid: 1158fcba1896f4e46a01e615fe278927, type: 3}
-  mask: {fileID: 1347713278}
-  portrait: {fileID: 1086265455}
-  DIALOGUE_SPEED: 0.025
-  finishedTypewriter: 0
-  IsPlayingDialogue: 0
+  dialoguePlayer: {fileID: 0}
 --- !u!114 &1831804076
 MonoBehaviour:
   m_ObjectHideFlags: 0
