@@ -90,11 +90,13 @@ public class DialogueManager : Singleton<DialogueManager>
     {
         inputs.Enable();
         inputs.Player.Interact.started += ctx => dialoguePlayer.TryAdvanceDialogue();
+        inputs.Player.Click.performed += ctx => dialoguePlayer.TryAdvanceDialogue();
     }
 
     private void OnDisable()
     {
         inputs.Player.Interact.started -= ctx => dialoguePlayer.TryAdvanceDialogue();
+        inputs.Player.Click.performed -= ctx => dialoguePlayer.TryAdvanceDialogue();
         inputs.Disable();
     }
 }

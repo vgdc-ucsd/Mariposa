@@ -11,6 +11,8 @@ public class Sublevel : MonoBehaviour
     public RespawnPoint StartingSpawn;
     public Collider2D CameraBounds;
 
+    public bool isAutoscrolling = false;
+
     private void Awake()
     {
         if (StartingSpawn == null) Debug.LogError("Starting Spawn Points not assigned");

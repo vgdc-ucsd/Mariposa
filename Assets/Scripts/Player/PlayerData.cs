@@ -25,6 +25,9 @@ public class PlayerData : ScriptableObject
     [Tooltip("The maximum fall velocity")]
     public float terminalVelocity;
 
+    [Tooltip("The maximum fall velocity when sliding")]
+    public float wallSlideTerminalVelocity = 10f;
+
     [Tooltip("The minimum angle in degrees a slope must make to the ground to cause slipping")]
     public float slipAngle = 45f;
 
@@ -72,4 +75,7 @@ public class PlayerData : ScriptableObject
 
     [Tooltip("The player's horizontal speed is set to this value on wall jump")]
     public float wallJumpHorizontalSpeed;
+
+    [Tooltip("The factor by which the player's jump velocity is scaled for a wall jump")]
+    public float wallJumpHeightScale = 1.5f;
 }
