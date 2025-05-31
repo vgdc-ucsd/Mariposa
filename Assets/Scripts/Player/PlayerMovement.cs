@@ -129,6 +129,11 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
         if (hitLeftWall) wallNormal = 1;
         else if (hitRightWall) wallNormal = -1;
         else wallNormal = 0;
+
+        if (State == BodyState.InAir && wallNormal != 0 && wallNormal + (int)moveDir.x == 0) 
+        {
+            Velocity.y = Mathf.Max(Velocity.y, -data.wallSlideTerminalVelocity);
+        }
     }
 
     // public method to send a move command
@@ -187,7 +192,7 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
 
         if (CanWallJump && wallNormal != 0 && State == BodyState.InAir)
         {
-            Velocity.y = jumpVelocity;
+            Velocity.y = jumpVelocity * data.wallJumpHeightScale;
             Velocity.x = data.wallJumpHorizontalSpeed * wallNormal;
             wallJumpMoveLockTimeRemaining = data.wallJumpMoveLockTime;
             RuntimeManager.PlayOneShot("event:/sfx/player/jump");
