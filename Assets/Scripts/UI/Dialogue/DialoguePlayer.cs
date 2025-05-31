@@ -29,6 +29,10 @@ public class DialoguePlayer : MonoBehaviour
     [SerializeField] private Sprite mariRadio;
     [SerializeField] private Sprite unnRadio;
 
+    [SerializeField] private Image advanceIndicator;
+    [SerializeField] private Sprite mariAdvance;
+    [SerializeField] private Sprite unnAdvance;
+
     [SerializeField] private Image portrait;
     [SerializeField] private SpriteMap spriteMap;
 
@@ -42,13 +46,13 @@ public class DialoguePlayer : MonoBehaviour
     [SerializeField] private TextMeshProUGUI choiceText2;
 
     // dialogue control
-    private List<DialogueElement> conversation;
-    private int dialogueIndex;
+    private List<DialogueElement> conversation = new List<DialogueElement>();
+    private int dialogueIndex = 0;
     private bool awaitingChoice = false;
 
     // typewriter control
     private bool finishedTypewriter;
-    private const float DIALOGUE_SPEED = 0.025f;
+    private const float DIALOGUE_SPEED = 0.03f;
 
     // Regex
     private Regex tagPattern = new Regex(@"<\/?(i|b|color(=[^>]+)?)>"); // Matches rich text tags like <i>text</i>
@@ -75,6 +79,7 @@ public class DialoguePlayer : MonoBehaviour
         buttonDisplay.SetActive(false);
         portraitBG.gameObject.SetActive(false);
         radio.gameObject.SetActive(false);
+        advanceIndicator.gameObject.SetActive(false);
         speakerSprites = new Dictionary<string, Sprite>();
         endingEvents = new List<string>();
         awaitingChoice = false;
@@ -89,12 +94,14 @@ public class DialoguePlayer : MonoBehaviour
             nameplate.sprite = mariNameplate;
             textboxRect.sprite = mariRect;
             radio.sprite = mariRadio;
+            advanceIndicator.sprite = mariAdvance;
         }
         else
         {
             nameplate.sprite = unnNameplate;
             textboxRect.sprite = unnRect;
             radio.sprite = unnRadio;
+            advanceIndicator.sprite = unnAdvance;
         }
 
         AdvanceDialogue();
@@ -109,10 +116,11 @@ public class DialoguePlayer : MonoBehaviour
             StopAllCoroutines();
             finishedTypewriter = true;
             lineTarget.maxVisibleCharacters = taglessText.Length;
+            advanceIndicator.gameObject.SetActive(true);
         }
         else
         {
-            if (awaitingChoice) return;
+            if (awaitingChoice || dialogueIndex == conversation.Count) return;
             AdvanceDialogue();
         }
     }
@@ -234,6 +242,7 @@ public class DialoguePlayer : MonoBehaviour
 
     private IEnumerator TypewriterEffect()
     {
+        advanceIndicator.gameObject.SetActive(false);
         finishedTypewriter = false;
         int length = taglessText.Length;
         
@@ -243,11 +252,12 @@ public class DialoguePlayer : MonoBehaviour
         {
             i++;
             lineTarget.maxVisibleCharacters = i;
-            bool punctuation = taglessText[i - 1] == ',' || taglessText[i - 1] == '.' || taglessText[i - 1] == '?' || taglessText[i - 1] == '!';
+            bool punctuation = taglessText[i - 1] == ',' || taglessText[i - 1] == '.' || taglessText[i - 1] == '?' || taglessText[i - 1] == '!' || taglessText[i - 1] == ':' || taglessText[i - 1] == ';';
             if (punctuation) yield return new WaitForSeconds(DIALOGUE_SPEED * 10.0f);
             else yield return new WaitForSeconds(DIALOGUE_SPEED);
         }
 
+        if(!awaitingChoice) advanceIndicator.gameObject.SetActive(true);
         finishedTypewriter = true;
     }
 }
