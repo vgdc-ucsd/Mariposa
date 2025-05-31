@@ -19,7 +19,7 @@ public class Robot : Enemy
     {
         if (collision.gameObject == Player.ActivePlayer.gameObject)
         {
-            Player.ActivePlayer.Respawn();
+            StartCoroutine(Player.ActivePlayer.Die());
         }
     }
 
