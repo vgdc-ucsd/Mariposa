@@ -12,10 +12,16 @@ public class VelocityField : MonoBehaviour
 
     private BeeMovement bee;
 
+    public bool inactiveOnStart = false;
+
     private void Awake()
     {
         fieldMaxSize = blowField.transform.localScale;
         RecomputeFieldCollider();
+        if (inactiveOnStart)
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     private void FixedUpdate()
@@ -44,7 +50,7 @@ public class VelocityField : MonoBehaviour
             : fieldMaxSize.x;
         blowField.transform.localScale = new(newLength, fieldMaxSize.y);
         blowField.transform.localPosition = new Vector2(newLength / 2f, 0f);
-        // Debug.Log(newLength);
+        // Debug.Log(newLength); 
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
