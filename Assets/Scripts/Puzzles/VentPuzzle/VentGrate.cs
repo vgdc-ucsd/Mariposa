@@ -2,13 +2,8 @@ using UnityEngine;
 
 public class VentGrate : MonoBehaviour
 {
-    public void OnGrateEnable()
+    public void OnGrateToggle()
     {
-        gameObject.SetActive(true);
-    }
-
-    public void OnGrateDisable()
-    {
-        gameObject.SetActive(false);
+        gameObject.SetActive(!gameObject.activeSelf);
     }
 }
