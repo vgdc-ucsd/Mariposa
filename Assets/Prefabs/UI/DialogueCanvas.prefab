@@ -688,6 +688,7 @@ GameObject:
   - component: {fileID: 451199859884670314}
   - component: {fileID: 2562829338393480843}
   - component: {fileID: 7442533668520530192}
+  - component: {fileID: 7365451149358231463}
   m_Layer: 5
   m_Name: DialogueCanvas
   m_TagString: Untagged
@@ -833,6 +834,35 @@ MonoBehaviour:
   choiceButton2: {fileID: 221183323974689225}
   choiceText1: {fileID: 8588698537553954424}
   choiceText2: {fileID: 5889709995337272934}
+--- !u!114 &7365451149358231463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3347464939432690982}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2562829338393480843}
+          m_TargetAssemblyTypeName: 
+          m_MethodName: 
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: 
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &3609757488567729105
 GameObject:
   m_ObjectHideFlags: 0
@@ -1743,6 +1773,66 @@ PrefabInstance:
     - target: {fileID: 2468336441562350833, guid: a4854ad6b4178994ba8ef891d1fc40b2, type: 3}
       propertyPath: m_Name
       value: SpriteMap
+      objectReference: {fileID: 0}
+    - target: {fileID: 3796102494374271922, guid: a4854ad6b4178994ba8ef891d1fc40b2, type: 3}
+      propertyPath: namedSprites.Array.size
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 3796102494374271922, guid: a4854ad6b4178994ba8ef891d1fc40b2, type: 3}
+      propertyPath: namedSprites.Array.data[4].Icon
+      value: 
+      objectReference: {fileID: 9210428998155498014, guid: db252c9be09f464419c1d73912eaa66c, type: 3}
+    - target: {fileID: 3796102494374271922, guid: a4854ad6b4178994ba8ef891d1fc40b2, type: 3}
+      propertyPath: namedSprites.Array.data[4].Name
+      value: MariposaBashful
+      objectReference: {fileID: 0}
+    - target: {fileID: 3796102494374271922, guid: a4854ad6b4178994ba8ef891d1fc40b2, type: 3}
+      propertyPath: namedSprites.Array.data[5].Icon
+      value: 
+      objectReference: {fileID: -6563270033672592774, guid: 9264341eabe76b345a2d9bae0712d05b, type: 3}
+    - target: {fileID: 3796102494374271922, guid: a4854ad6b4178994ba8ef891d1fc40b2, type: 3}
+      propertyPath: namedSprites.Array.data[5].Name
+      value: UnnamedNeutral
+      objectReference: {fileID: 0}
+    - target: {fileID: 3796102494374271922, guid: a4854ad6b4178994ba8ef891d1fc40b2, type: 3}
+      propertyPath: namedSprites.Array.data[6].Icon
+      value: 
+      objectReference: {fileID: -1727713614309592233, guid: 9591b5f5d5af20b46b2e814fe0c74084, type: 3}
+    - target: {fileID: 3796102494374271922, guid: a4854ad6b4178994ba8ef891d1fc40b2, type: 3}
+      propertyPath: namedSprites.Array.data[6].Name
+      value: UnnamedSurprised
+      objectReference: {fileID: 0}
+    - target: {fileID: 3796102494374271922, guid: a4854ad6b4178994ba8ef891d1fc40b2, type: 3}
+      propertyPath: namedSprites.Array.data[7].Icon
+      value: 
+      objectReference: {fileID: 8579899923523250409, guid: 170116c79bc4ef348bf49b4e46c73dc4, type: 3}
+    - target: {fileID: 3796102494374271922, guid: a4854ad6b4178994ba8ef891d1fc40b2, type: 3}
+      propertyPath: namedSprites.Array.data[7].Name
+      value: UnnamedSilhouette
+      objectReference: {fileID: 0}
+    - target: {fileID: 3796102494374271922, guid: a4854ad6b4178994ba8ef891d1fc40b2, type: 3}
+      propertyPath: namedSprites.Array.data[8].Icon
+      value: 
+      objectReference: {fileID: 9166500354650086436, guid: ef421d329fc9f7347a999fe4246006c4, type: 3}
+    - target: {fileID: 3796102494374271922, guid: a4854ad6b4178994ba8ef891d1fc40b2, type: 3}
+      propertyPath: namedSprites.Array.data[8].Name
+      value: UnnamedSad
+      objectReference: {fileID: 0}
+    - target: {fileID: 3796102494374271922, guid: a4854ad6b4178994ba8ef891d1fc40b2, type: 3}
+      propertyPath: namedSprites.Array.data[9].Icon
+      value: 
+      objectReference: {fileID: 8882012912974216419, guid: ea38f18e07178c3468efc4b9fc9abffa, type: 3}
+    - target: {fileID: 3796102494374271922, guid: a4854ad6b4178994ba8ef891d1fc40b2, type: 3}
+      propertyPath: namedSprites.Array.data[9].Name
+      value: BeeboNeutral
+      objectReference: {fileID: 0}
+    - target: {fileID: 3796102494374271922, guid: a4854ad6b4178994ba8ef891d1fc40b2, type: 3}
+      propertyPath: namedSprites.Array.data[10].Icon
+      value: 
+      objectReference: {fileID: -3035267990954120381, guid: 225636b4fba8c414fb784aedbb3c426e, type: 3}
+    - target: {fileID: 3796102494374271922, guid: a4854ad6b4178994ba8ef891d1fc40b2, type: 3}
+      propertyPath: namedSprites.Array.data[10].Name
+      value: BeeboHappy
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
