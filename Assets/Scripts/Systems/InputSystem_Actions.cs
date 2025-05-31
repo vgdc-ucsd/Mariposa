@@ -80,6 +80,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Click"",
+                    ""type"": ""Button"",
+                    ""id"": ""bcca764b-f21b-454c-b9eb-c0975d8455fc"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -410,6 +419,17 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""AltAbility"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2a927ce7-c6fd-4a38-b52c-80266bd6992e"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Click"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1003,6 +1023,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Escape = m_Player.FindAction("Escape", throwIfNotFound: true);
         m_Player_AltAbility = m_Player.FindAction("AltAbility", throwIfNotFound: true);
+        m_Player_Click = m_Player.FindAction("Click", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1088,6 +1109,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Escape;
     private readonly InputAction m_Player_AltAbility;
+    private readonly InputAction m_Player_Click;
     public struct PlayerActions
     {
         private @InputSystem_Actions m_Wrapper;
@@ -1098,6 +1120,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @Escape => m_Wrapper.m_Player_Escape;
         public InputAction @AltAbility => m_Wrapper.m_Player_AltAbility;
+        public InputAction @Click => m_Wrapper.m_Player_Click;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1125,6 +1148,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @AltAbility.started += instance.OnAltAbility;
             @AltAbility.performed += instance.OnAltAbility;
             @AltAbility.canceled += instance.OnAltAbility;
+            @Click.started += instance.OnClick;
+            @Click.performed += instance.OnClick;
+            @Click.canceled += instance.OnClick;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1147,6 +1173,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @AltAbility.started -= instance.OnAltAbility;
             @AltAbility.performed -= instance.OnAltAbility;
             @AltAbility.canceled -= instance.OnAltAbility;
+            @Click.started -= instance.OnClick;
+            @Click.performed -= instance.OnClick;
+            @Click.canceled -= instance.OnClick;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1335,6 +1364,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnEscape(InputAction.CallbackContext context);
         void OnAltAbility(InputAction.CallbackContext context);
+        void OnClick(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
