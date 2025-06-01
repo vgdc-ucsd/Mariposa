@@ -52,4 +52,9 @@ public class BeeControlAbility : MonoBehaviour, IAbility
     {
         BeeFlap = RuntimeManager.CreateInstance("event:/sfx/player/bee/flap");
     }
+
+    public void TurnOffBeeFlap()
+    {
+        BeeFlap.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+    }
 }

@@ -129,6 +129,11 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
         if (hitLeftWall) wallNormal = 1;
         else if (hitRightWall) wallNormal = -1;
         else wallNormal = 0;
+
+        if (State == BodyState.InAir && wallNormal != 0 && wallNormal + (int)moveDir.x == 0) 
+        {
+            Velocity.y = Mathf.Max(Velocity.y, -data.wallSlideTerminalVelocity);
+        }
     }
 
     // public method to send a move command
@@ -183,10 +188,11 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
             RaycastHit2D[] beeHits = Physics2D.BoxCastAll(beeCastCenter, beeCastSize, 0f, Vector2.down, COLLISION_CHECK_DISTANCE);
             foreach (var hit in beeHits) if (hit.collider.CompareTag("Bee")) onBee = true;
         }
+        
 
         if (CanWallJump && wallNormal != 0 && State == BodyState.InAir)
         {
-            Velocity.y = jumpVelocity;
+            Velocity.y = jumpVelocity * data.wallJumpHeightScale;
             Velocity.x = data.wallJumpHorizontalSpeed * wallNormal;
             wallJumpMoveLockTimeRemaining = data.wallJumpMoveLockTime;
             RuntimeManager.PlayOneShot("event:/sfx/player/jump");
@@ -227,7 +233,7 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
 
         float currentGravity = Velocity.y > 0 ? Gravity : Gravity * data.fallingGravityMultiplier;
         Velocity.y = Mathf.Max(Velocity.y - currentGravity * fdt, -TerminalVelocity);
-    }
+    } 
 
     protected override void OnGrounded(RaycastHit2D groundHit)
     {
