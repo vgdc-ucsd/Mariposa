@@ -170,7 +170,7 @@ public class GrappleAbility : MonoBehaviour, IAbility
         RaycastHit2D[] hit = new RaycastHit2D[10];
         Physics2D.Raycast(Player.ActivePlayer.transform.position, target.transform.position - Player.ActivePlayer.transform.position, filter, hit);
         Debug.DrawLine(Player.ActivePlayer.transform.position, hit[0].point);
-        if (hit[0].distance < Vector2.Distance(Player.ActivePlayer.transform.position, target.transform.position))
+        if (hit[0].collider != null && hit[0].distance < Vector2.Distance(Player.ActivePlayer.transform.position, target.transform.position))
         {
             return false;
         }
