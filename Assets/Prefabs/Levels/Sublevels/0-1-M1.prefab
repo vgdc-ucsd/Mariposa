@@ -2104,6 +2104,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: d1f0d802ab113464b804d2d077b1b628, type: 2}
     - target: {fileID: 4272534482237219656, guid: 14845b7f1c24c1a44974d7ef4f4d9ed2, type: 3}
+      propertyPath: guard
+      value: 
+      objectReference: {fileID: 9010483748867955342}
+    - target: {fileID: 4272534482237219656, guid: 14845b7f1c24c1a44974d7ef4f4d9ed2, type: 3}
       propertyPath: TurnstileSR
       value: 
       objectReference: {fileID: 2423781579093518531}
@@ -2759,16 +2763,45 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 6841771124000323871, guid: 570e8fd2807048345bf6e0feda57aed9, type: 3}
+      propertyPath: 'orderedDialogueNames.Array.data[1]'
+      value: interact_guard
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6841771124000323871, guid: 570e8fd2807048345bf6e0feda57aed9, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2241246726518532496, guid: 570e8fd2807048345bf6e0feda57aed9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 9010483748867955342}
   m_SourcePrefab: {fileID: 100100000, guid: 570e8fd2807048345bf6e0feda57aed9, type: 3}
 --- !u!4 &6595004855384360947 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2494567698999012763, guid: 570e8fd2807048345bf6e0feda57aed9, type: 3}
   m_PrefabInstance: {fileID: 8725818714157918824}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &7350674926609777656 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2241246726518532496, guid: 570e8fd2807048345bf6e0feda57aed9, type: 3}
+  m_PrefabInstance: {fileID: 8725818714157918824}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &9010483748867955342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7350674926609777656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab374509544d734438ed3a2c66fc8d05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  orderedDialogueNames:
+  - guard
+  - interact_guard
+  extraDialogue: guard_post_puzzle
 --- !u!1001 &8786449786052638146
 PrefabInstance:
   m_ObjectHideFlags: 0
