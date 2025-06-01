@@ -122,4 +122,23 @@ public class PauseMenuScript : MonoBehaviour
         ResumeGame();
         // respawn from level manager or something?
     }
+
+    public void RestartLevel()
+    {
+        Time.timeScale = 1.0f;
+        PauseGame();
+        if (LevelManager.Instance == null)
+        {
+            Debug.LogWarning("Pause manager attempting to restart level but LevelManager not found!");
+            return;
+        }
+        LevelManager.Instance.InitSublevel();
+    }
+
+    public void QuitLevel()
+    {
+        Time.timeScale = 1.0f;
+        SceneManager.LoadScene(0);
+    }
+
 }
