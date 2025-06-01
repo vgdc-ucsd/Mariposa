@@ -11,6 +11,8 @@ public class ScaleHand : MonoBehaviour
     [HideInInspector] public Vector3 initialPos;
     [SerializeField] private RectTransform platform;
     [SerializeField] private TMP_Text weightText;
+    [SerializeField] private GameObject arrow;
+    [SerializeField] private float arrowRotateScale;
     private Rect platformRect;
 
     private Vector3[] corners;
@@ -48,8 +50,9 @@ public class ScaleHand : MonoBehaviour
     public void UpdateWeightText()
     {
         weightText.text = totalWeight.ToString();
-        /*if (scaleObjects.Contains(ScalePuzzle.Instance.mysteryBox)) weightText.text = "???";
-        else weightText.text = (totalWeight == 0 ? string.Empty : totalWeight.ToString());*/
+        if (scaleObjects.Contains(ScalePuzzle.Instance.mysteryBox)) weightText.text = "???";
+        else weightText.text = (totalWeight == 0 ? string.Empty : totalWeight.ToString());
+        arrow.transform.eulerAngles = Mathf.Sqrt(totalWeight * arrowRotateScale) * Vector3.forward;
     }
 
     public void FitToPlatform(RectTransform objRect, bool print = false)
