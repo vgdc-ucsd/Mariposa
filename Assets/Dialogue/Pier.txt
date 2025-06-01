@@ -1,0 +1,689 @@
+﻿# Writer Name: Jordan Huynh
+# Edited by: Jess Yang, Lucas Ramirez
+
+
+# INT. GUTTER SYSTEMS - MORNING 
+
+
+# FADE IN. UNNAMED wakes up. 
+
+
+!name pier_arrival
+
+
+UNNAMED 
+(neutral)
+(Suppose I’ll start heading to the pier. There could be something useful, now that everything’s changing.)
+
+
+UNNAMED 
+(neutral)
+...
+
+
+UNNAMED
+(neutral)
+(Besides, maybe the ocean breeze will do me some good.)
+
+
+UNNAMED
+(neutral)
+(...Hah. As if.)
+
+
+UNNAMED 
+(neutral)
+(...)
+
+
+UNNAMED 
+(neutral)
+(Though this radio...)
+
+
+UNNAMED
+(neutral)
+(Ah. Never mind that for now. Best to get on with it.)
+
+
+#Walk to the pier stage. Faced with the terrain, they comment on the edge of the broken boardwalk, unable to proceed. 
+
+
+UNNAMED 
+(neutral)
+(Dead end. Nothing left here.)
+
+
+!e check_friendship
+________________
+
+
+# >If score >7
+# Radio crackles.
+
+
+!a radio-clip3-novoices.wav[a]
+!name pier_friends
+MARIPOSA 
+(neutral)
+Kairo? You there?
+
+
+UNNAMED 
+(happy)
+Mari.
+
+
+UNNAMED
+(neutral)
+Yes, I’m here.
+
+
+MARIPOSA
+(happy)
+Good news! I got a job at the pier. 
+
+
+MARIPOSA
+(neutral)
+Not usually in my line of work, but the automatons in the gutters need a check-up.
+
+
+MARIPOSA
+(happy)
+Ah, the breeze is so nice! 
+
+
+UNNAMED
+(neutral)
+I suppose so.
+
+
+UNNAMED
+(neutral)
+Do you mind...describing it to me? 
+
+
+UNNAMED
+(neutral)
+The pier, that is. What is it like?
+
+
+# SWITCH to Mariposa’s perspective.
+
+
+# EXT. PIER - DAY
+
+
+
+
+MARIPOSA
+(neutral)
+Well, it’s a bit early, so it’s not as busy as it usually is. The shops are opening up, and the seagulls are starting to wake up. 
+
+
+MARIPOSA
+(happy)
+The water’s really pretty too; the way the sun hits it, it’s like the tides are sparkling. 
+
+
+MARIPOSA
+(neutral)
+What’s it like for you?
+
+
+UNNAMED
+(neutral)
+It’s...different.
+
+
+# The radio crackles.
+!a radio-clip3-novoices.wav[b]
+
+
+
+
+MARIPOSA
+(neutral)
+You still there?
+
+
+UNNAMED
+(neutral)
+—-break—-connection—-?
+
+
+MARIPOSA
+(neutral)
+(Looks like I’ll have to try again later.)
+
+
+!event play_control_panel_from_pier_friends
+________________
+
+
+
+
+# >If score <7
+
+
+# SWITCH to Mariposa’s perspective.
+
+
+# EXT. PIER - DAY
+
+
+# Radio crackles.
+
+
+!name pier_job_not_friends
+MARIPOSA
+(neutral)
+Wonder if they’re still there. 
+
+
+MARIPOSA
+(neutral)
+Hello?
+
+
+UNNAMED
+(neutral)
+...
+
+
+MARIPOSA 
+(neutral)
+(Should’ve expected as much.)
+
+
+!event play_control_panel_from_pier_job_not_friends
+________________
+
+
+!name control_panel
+MARIPOSA
+(neutral)
+Well, I should get to work. The plumbing maintenance control panel is around here somewhere; it should be an easy fix to get it connected to the automaton in the pipes. 
+
+
+________________
+
+
+
+
+# [GAMEPLAY]- FIX THE CONTROL PANEL
+
+
+# >IF NOT YET FIXED
+!name control_panel_not_fixed
+MARIPOSA 
+(neutral) 
+I’ve got it this time. Let’s try again.
+
+
+# >AFTER FIX
+!name control_panel_fixed
+MARIPOSA 
+(happy)
+That should do it! 
+
+
+MARIPOSA
+(neutral)
+Hmm. Well, since I’m here, I could test it out to make sure everything is working well.
+
+
+________________
+
+
+
+
+# [GAMEPLAY]- FIX PIPES
+
+
+# >IF TRY TO LEAVE REGION:
+!name leave_attempt
+MARIPOSA
+(sad)
+I should really make sure that little automaton is working before I go...who knows what state those pipes are in.
+
+
+________________
+
+
+
+
+# >IF FAIL & NEED TO RESET: 
+!name pipe_fail
+MARIPOSA
+(neutral)
+You’ve got this little guy! Let’s try this again.
+
+
+________________
+
+
+
+
+# The pipe puzzle is mostly complete, but a piece is missing. Once a player successfully reaches this roadblock, MARIPOSA will comment on it, and the camera pans back to her. 
+
+
+!name pipe_missing
+
+
+MARIPOSA
+(neutral)
+Huh. Looks like there’s a piece missing.
+
+
+MARIPOSA
+(neutral)
+Maybe I can get that from someone here? Wouldn’t want to leave it unfinished. 
+
+
+MARIPOSA 
+(neutral)
+Beebo, is there some sort of plumbing store here?
+
+
+BEEBO
+(neutral)
+<The nearest supply warehouse is 2 hours away by public transit.>
+
+
+BEEBO
+(neutral)
+<Recommended route: A Scrap Hawker located down the pier could be selling the missing part, or a fitting alternative.>
+
+
+BEEBO
+(neutral)
+<Would you like to add this to your task list?> 
+
+
+MARIPOSA
+(happy)
+Sure, it’s worth a shot! 
+
+
+# SCRAP VENDOR location TBD. Interact with SCRAP VENDOR. 
+
+MARIPOSA
+(neutral)
+Hello?
+
+
+SCRAP VENDOR 
+Ah! Sorry, I didn’t realize you were standing there—
+
+
+SCRAP VENDOR
+Welcome, welcome—just let me tidy up–you caught me off guard, miss—
+
+
+SCRAP VENDOR
+Are you looking for something in particular?
+
+
+MARIPOSA
+(neutral)
+Yup, just looking for a certain pipe fitting.
+
+
+SCRAP VENDOR
+Hah, I have lots of junk here. Surely I've got something you need. 
+
+
+SCRAP VENDOR
+I just, uh, need to figure out where it all went. 
+
+
+SCRAP VENDOR
+My memory’s getting away from me nowadays. Place hasn’t been the same since the kid left for university. He did a lot of the organizing. Heh. Maybe it was about time to think about retiring...
+
+
+MARIPOSA
+(happy)
+If you’d like, I could help out a bit! 
+
+
+MARIPOSA 
+(neutral)
+I have some time.
+
+
+SCRAP VENDOR
+        Oh, I mean, if it’s not a bother—It’d sure mean a lot to me. Thanks, kid. 
+
+
+
+
+# [GAMEPLAY]- SCALE PUZZLE
+!name complete_scale_1
+SCRAP VENDOR
+        hjkasdvhjksdvhjklhvds
+[c]
+
+
+!name complete_scale_2
+SCRAP VENDOR
+        hjkasdvhjksdvhjklhvds
+
+
+!name complete_scale_3
+
+
+
+
+SCRAP VENDOR
+        That should be the last of it; I can’t thank you enough. 
+
+
+SCRAP VENDOR
+Here, kid. You needed this, right?  Take it. 
+
+
+MARIPOSA
+(startled)
+        Oh, no, you don’t need to do that! I shouldn’t—
+
+
+SCRAP VENDOR
+Nonsense. Was going to spend all day struggling with inventory; you really helped me out, kid. Heh, maybe I’ve got enough time to close up early and break out the dingy again. My boy used to love rides around the marina. 
+
+
+SCRAP VENDOR
+Ah. Hope he calls soon.
+
+
+MARIPOSA
+(happy)
+Well, thank you then!
+
+
+SCRAP VENDOR
+Take care, kid.
+
+
+# The radio crackles.
+
+
+MARIPOSA
+(neutral)
+        Kairo? I just finished up my gig. What are you up to?
+
+
+# SWITCH to Unnamed’s perspective. 
+
+# EXT. BROKEN PIER - DAY (?)
+
+
+# The pier is now repaired. 
+
+
+________________
+
+
+# > Respond (Text for option #1)\
+
+
+!choice1 respond positive_response + 
+Respond. 
+
+
+# Value pending
+
+
+!name response
+
+
+
+UNNAMED
+(neutral)
+Just...looking around.
+
+
+MARIPOSA
+(happy)
+Don’t leave me on a cliffhanger, I need details! What’s your world like?
+
+
+UNNAMED
+(neutral)
+Well. It’s—
+
+
+UNNAMED
+(neutral)
+...
+
+
+UNNAMED
+(neutral)
+It’s nothing like what you have. 
+
+
+UNNAMED
+(neutral)
+Sorry. I need a second. To think about something.
+
+
+MARIPOSA
+(happy)
+Alright, not a problem! 
+
+
+MARIPOSA
+(neutral)
+Just let me know if I can do anything for you. 
+
+
+UNNAMED
+(neutral)
+...sure. Will do.
+
+
+!event play_platform_friendship_check_from_response
+________________
+
+
+
+
+# > . . .
+
+
+!choice2 ignore negative_response - 
+Ignore. 
+
+
+# Value pending 
+
+
+!name dont_respond
+
+
+UNNAMED 
+…
+
+
+UNNAMED 
+(I’m watching the harbor morph before my eyes; twisting, churning, melting away—-time shifts with her every step.)
+
+
+MARIPOSA
+…
+
+
+MARIPOSA
+Well, I’ve still got work to do. I should get going. 
+
+
+________________
+
+
+
+
+# [GAMEPLAY]- PIER PLATFORM UNNAMED
+
+
+!event check_friendship
+________________
+
+
+# EXT. BOAT RIDE ON OCEAN - DAY (DARK)
+
+
+# >7
+
+
+!name future_friends
+
+
+UNNAMED
+(neutral)
+...Mari?
+
+
+MARIPOSA
+(neutral)
+Yes? I’m here.
+
+
+UNNAMED
+(neutral)
+(...there’s no good way to ask this.)
+
+
+UNNAMED
+(neutral)
+What do you think about the future?
+
+
+UNNAMED
+(neutral)
+Everyone, doing the same thing every day, chasing their dreams—-what do you think it’s all for?
+
+
+MARIPOSA 
+(neutral)
+What’s it all for? 
+
+
+MARIPOSA
+(neutral) 
+That’s a tough question. 
+
+
+MARIPOSA
+(happy)
+Kairo, I didn’t think you were the type to ask about these kinds of things! 
+
+
+UNNAMED
+(happy)
+Humor me.
+
+
+MARIPOSA
+(happy)
+Alright, alright. 
+
+
+MARIPOSA 
+(neutral)
+I think, maybe, deep down, everyone wants to save something. Someone they love, something they cherish—-maybe even the whole world.
+
+
+MARIPOSA 
+(neutral)
+As for me, I want to make automatons to help people. 
+
+
+MARIPOSA
+(neutral)
+There’s so much I wish I could do, but, come on, at the end of the day, I’m only one person. 
+
+
+MARIPOSA
+(happy)
+If I could make machines to make everyone’s lives easier, maybe people would get the chance to do what they really love. 
+
+
+MARIPOSA
+(happy)
+I’d like to help as many people as I can.
+
+
+UNNAMED
+...
+
+
+UNNAMED 
+And you really think you’ll be able to save the world?
+
+
+MARIPOSA
+(happy)
+Well, when you say it like that, you make me sound crazy.
+
+
+MARIPOSA 
+(neutral)
+But no, I guess not really.
+
+
+MARIPOSA 
+Maybe I’m just looking to save just one person. That’d be plenty enough for me.
+
+
+!event play_boat_scene_from_future_friends
+________________
+
+
+# <7
+
+
+!name future_not_friends
+
+
+UNNAMED 
+…
+
+
+UNNAMED 
+(A ghost. I’m talking to a ghost. Someone who was, is, and now always will be.)
+
+
+UNNAMED
+(What a sick joke...)
+
+
+UNNAMED
+(Still, if I want to keep going, I need her help. I’ve only gotten this far because of what she’s done. Whether she knows it or not.)
+
+
+UNNAMED
+(coughing)
+(...)
+
+
+UNNAMED
+(...maybe it’ll all be over anyway. What a waste.)
+
+
+!event play boat_scene_from_future_not_friends
+________________
+
+
+
+
+# Radio will, either way, make a sudden & horrible noise. 
+
+
+# CONTINUE
+
+
+[a]is there a shorter radio clip?
+[b]same comment as before
+[c]needs dialogue

@@ -15,6 +15,7 @@ public class ScaleObjectButton : MonoBehaviour
         GetComponent<Image>().sprite = scaleObject.GetComponent<Image>().sprite;
         GetComponentInChildren<TMP_Text>().text = scaleObject.weight.ToString();
         rectTransform = GetComponent<RectTransform>();
+        rectTransform.sizeDelta = scaleObject.GetComponent<RectTransform>().sizeDelta;
     }
     private void Update()
     {
