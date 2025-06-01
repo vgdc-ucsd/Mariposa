@@ -1,6 +1,10 @@
+using System;
+using System.Runtime.Serialization;
+using System.Collections;
 using FMODUnity;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Player : MonoBehaviour
 {
@@ -10,6 +14,7 @@ public class Player : MonoBehaviour
 
 	public static Player ActivePlayer => PlayerController.Instance.ControlledPlayer;
 
+    public static event Action OnDeath;
 
 	private bool playerDebug;
 	public PlayerCharacter Character;
@@ -46,6 +51,7 @@ public class Player : MonoBehaviour
 	{
 		RespawnPoint.OnRespawnPointInteract -= UpdateRespawn; // insures listener is empty
 		RespawnPoint.OnRespawnPointInteract += UpdateRespawn;
+        OnDeath += Respawn;
 		if (playerDebug) Debug.Log("Player is now listening for respawn interacts");
 	}
 
@@ -53,6 +59,7 @@ public class Player : MonoBehaviour
 	private void OnDisable()
 	{
 		RespawnPoint.OnRespawnPointInteract -= UpdateRespawn;
+        OnDeath -= Respawn;
 		if (playerDebug) Debug.Log("Player was cleaned up");
 	}
 
@@ -79,6 +86,7 @@ public class Player : MonoBehaviour
 		if (CurrentRespawnPoint == null)
 		{
 			transform.position = new Vector3(0f, 0f, transform.position.z);
+            Movement.ResolveInitialCollisions();
 			if (playerDebug) Debug.Log($"Player respawned to: {transform.position.ToString()}");
 		}
 		else
@@ -98,13 +106,37 @@ public class Player : MonoBehaviour
 		FacingDirection = dir;
 	}
 
-	public void Die()
+	public IEnumerator Die()
 	{
-		// TODO: there may be not that much delay between death and respawn, so remove the below line or add a delay after this line to prevent it overlapping with respawn sfx
+        // TODO: there may be not that much delay between death and respawn, so remove the below line or add a delay after this line to prevent it overlapping with respawn sfx
+        OnDeath.Invoke();
 		RuntimeManager.PlayOneShot("event:/sfx/player/death");
+		SetPlayerActive(false);
+		CameraController.ActiveCamera?.PauseCamera();
+		yield return FadeController.Instance.FadeOut();
 		Respawn();
+		SetPlayerActive(true);
+		CameraController.ActiveCamera?.ResumeCamera();
+		FadeController.Instance.FadeIn();
+	}
+	
+	private void SetPlayerActive(bool active)
+	{
+		foreach (var renderer in GetComponentsInChildren<Renderer>())
+			renderer.enabled = active;
+		foreach (var col in GetComponentsInChildren<Collider2D>())
+			col.enabled = active;
+		Movement.Velocity = Vector2.zero;
 	}
 
+
+	private IEnumerator FadeEffectAfterRespawn()
+	{
+		yield return FadeController.Instance.FadeOut();
+		yield return new WaitForSeconds(0.1f);
+		FadeController.Instance.FadeIn();
+	}
+	
 	public void ObtainCheckpoint(GameObject checkpoint)
 	{
 		UpdateRespawn(checkpoint.GetComponent<RespawnPoint>());
@@ -125,7 +157,7 @@ public class Player : MonoBehaviour
 	{
 		switch (collision.gameObject.tag)
 		{
-			case "Death": Die(); break;
+			case "Death": StartCoroutine(Die()); break;
 			case "Checkpoint": ObtainCheckpoint(collision.gameObject); break;
 		}
 	}

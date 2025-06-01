@@ -8,7 +8,7 @@ public class KeycardPickup : ItemPickup
     public Sprite UnlockedSprite;
     public SpriteRenderer TurnstileSR;
     private EventInstance KeycardPickupEvent;
-
+    public string fixedDoorDialogueName;
 
     public override void OnInteract(IControllable controllable)
     {
@@ -18,6 +18,7 @@ public class KeycardPickup : ItemPickup
         KeycardPickupEvent.start();
         KeycardPickupEvent.release();
         TurnstileSR.sprite = UnlockedSprite;
+        DialogueManager.Instance.PlayDialogue(fixedDoorDialogueName);
     }
 
     void Start()
