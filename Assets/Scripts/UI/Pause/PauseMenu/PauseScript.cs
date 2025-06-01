@@ -2,6 +2,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PauseScript : MonoBehaviour
 {
@@ -106,5 +107,19 @@ public class PauseScript : MonoBehaviour
         PauseMenu.SetActive(false);
         AudioSettingsMenu.SetActive(false);
         VideoSettingsMenu.SetActive(false);
+    }
+
+    public void GoToMainMenu()
+    {
+        CloseAllMenus();
+        ResumeGame();
+        SceneManager.LoadScene(0);
+    }
+
+    public void RestartFromCheckpoint()
+    {
+        CloseAllMenus();
+        ResumeGame();
+        // respawn from level manager or something?
     }
 }
