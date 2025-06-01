@@ -122,37 +122,41 @@ public class ScaleObject : MonoBehaviour
         dragging = false;
         ScalePuzzle.Instance.isDragging = false;
         ghostImage.enabled = false;
-        if (!isHand)
+
+        // Remove from old ScaleHand if it exists
+        if (dragTarget != null && dragTarget.TryGetComponent<ScaleHand>(out ScaleHand oldScaleHand))
         {
-            if (!(this is MysteryBox)) Despawn();
-            else
-            {
-                bool same = (target == dragTarget);
-                LeaveScaleHand();
-                dragTarget = target;
-                rectTransform.SetParent(target.transform, true);
-                if (!same) rectTransform.localPosition -= Vector3.up * rectTransform.sizeDelta.y * 0.75f;
-            }
+            oldScaleHand.RemoveObject(this);
+            ScalePuzzle.Instance.MoveHands();
         }
-        else if (target != dragTarget)
+
+        // Assign the new drag target
+        dragTarget = target;
+
+        if (isHand)
         {
-            LeaveScaleHand();
-            dragTarget = target;
-            if (isHand)
+            // Add to new ScaleHand
+            PlaceOnScaleHand(scaleHand);
+            rectTransform.SetParent(target.transform, true);
+            ScalePuzzle.Instance.MoveHands();
+        }
+        else
+        {
+            // If not a hand and not a MysteryBox, destroy the object
+            if (!(this is MysteryBox))
             {
-                PlaceOnScaleHand(scaleHand);
+                Despawn();
                 ScalePuzzle.Instance.MoveHands();
             }
             else
             {
+                bool same = (target == dragTarget);
                 rectTransform.SetParent(target.transform, true);
+                if (!same)
+                {
+                    rectTransform.localPosition -= Vector3.up * rectTransform.sizeDelta.y * 0.75f;
+                }
             }
-
-
-        }
-        else
-        {
-            rectTransform.position = oldPos;
         }
     }
     public void PlaceOnScaleHand(ScaleHand scaleHand)
