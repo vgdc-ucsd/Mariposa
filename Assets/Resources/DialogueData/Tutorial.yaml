@@ -63,7 +63,7 @@ guard:
   Events: []
   Choice1: 
   Choice2: 
-turnstyle_keycard:
+turnstile_keycard:
 - Speaker: Mariposa
   Line: Oh! Well.
   Icon: Surprised
@@ -84,7 +84,7 @@ turnstyle_keycard:
   Choice2: 
 - Speaker: Mariposa
   Line: Looks like this turnstile is giving me more trouble than I had anticipated...
-  Icon: 
+  Icon: Bashful
   Background: 
   FromRadio: 
   Sounds: []
@@ -92,7 +92,7 @@ turnstyle_keycard:
   Choice1: 
   Choice2: 
 - Speaker: Beebo
-  Line: '<Putting task: Get Keycard into task list. Task number 17. Would you like to prioritize this task?>'
+  Line: '<Putting task: <i>Get Keycard</i> into task list. Task number 17. Would you like to prioritize this task?>'
   Icon: 
   Background: 
   FromRadio: 
@@ -109,17 +109,17 @@ turnstyle_keycard:
   Events: []
   Choice1: 
   Choice2: 
-interact_mariposa:
+interact_turnstile_no_fix:
 - Speaker: Mariposa
   Line: I can’t access the interior without it...
-  Icon: 
+  Icon: Bashful
   Background: 
   FromRadio: 
   Sounds: []
   Events: []
   Choice1: 
   Choice2: 
-interact:
+interact_guard:
 - Speaker: Guard
   Line: When’s this girl going to be done...?
   Icon: 
@@ -129,7 +129,7 @@ interact:
   Events: []
   Choice1: 
   Choice2: 
-fix_turnstyle:
+fix_turnstile:
 - Speaker: Mariposa
   Line: There we go. Everything should be in order now!
   Icon: Happy
@@ -234,7 +234,7 @@ waiting_for_train:
   Choice2: 
 - Speaker: Unnamed
   Line: '---not much left around here. Might have to head back soon.'
-  Icon: 
+  Icon: Silhouette
   Background: 
   FromRadio: 
   Sounds: []
@@ -281,10 +281,20 @@ unnamed_start:
   Events: []
   Choice1: 
   Choice2: 
+subway_door_no_radio:
+- Speaker: Unnamed
+  Line: I should take another look around; I could’ve missed something.
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
 radio_pickup:
 - Speaker: Unnamed
   Line: The hell is this?
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds: []
@@ -310,6 +320,8 @@ radio_pickup:
   Sounds:
   - tunnel
   Events:
+  - EventName: hide_radio
+    TriggerAtEnd: false
   - EventName: screenshake
     TriggerAtEnd: false
   Choice1: 
@@ -381,7 +393,7 @@ door_jammed:
   Choice2: 
 - Speaker: Unnamed
   Line: Can’t backtrack. And I won’t be able to hold off those bots forever.
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds: []
@@ -408,7 +420,7 @@ door_jammed:
   Choice2: 
 - Speaker: Unnamed
   Line: Damn it, how do I get out of here?
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds: []

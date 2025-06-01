@@ -204,6 +204,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2526185562593359997, guid: e3d6da22aa66b9d42849965b6906f080, type: 3}
   m_PrefabInstance: {fileID: 33030075}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &464378393 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3146212019900129744, guid: 1ab7bc7f443708b46ae44f7ad95f4288, type: 3}
+  m_PrefabInstance: {fileID: 2024417727}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &649944923
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -261,6 +266,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 78315ad8d16df3346b09f3a14c466e95, type: 3}
+--- !u!1 &670892351 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7499488416964895225, guid: 1ab7bc7f443708b46ae44f7ad95f4288, type: 3}
+  m_PrefabInstance: {fileID: 2024417727}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &824576132 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5313605323863157013, guid: 5f08c41fa317eb14799986f4f664520a, type: 3}
@@ -696,6 +706,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5494261399983768293, guid: 5f08c41fa317eb14799986f4f664520a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8340282625084349799, guid: 5f08c41fa317eb14799986f4f664520a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -1100,6 +1118,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4999164217576564291, guid: f7ba4b11513a904409f499c05ca71649, type: 3}
   m_PrefabInstance: {fileID: 884917909}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1784330316 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5478275831822171384, guid: 1ab7bc7f443708b46ae44f7ad95f4288, type: 3}
+  m_PrefabInstance: {fileID: 2024417727}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1816309495
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1342,6 +1365,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1840998812629270762, guid: 1ab7bc7f443708b46ae44f7ad95f4288, type: 3}
+      propertyPath: DialogueName
+      value: subway_door_no_radio
+      objectReference: {fileID: 0}
     - target: {fileID: 5574249224141043270, guid: 1ab7bc7f443708b46ae44f7ad95f4288, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -1363,11 +1390,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1ab7bc7f443708b46ae44f7ad95f4288, type: 3}
---- !u!1 &2024417728 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5478275831822171384, guid: 1ab7bc7f443708b46ae44f7ad95f4288, type: 3}
-  m_PrefabInstance: {fileID: 2024417727}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2024417729 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1610614390993644796, guid: 1ab7bc7f443708b46ae44f7ad95f4288, type: 3}
@@ -1457,9 +1479,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3540147939522516968, guid: 603bdc6f95697ac4ba37e5bb7bd5ae2b, type: 3}
+      propertyPath: noRadioTrigger
+      value: 
+      objectReference: {fileID: 464378393}
+    - target: {fileID: 3540147939522516968, guid: 603bdc6f95697ac4ba37e5bb7bd5ae2b, type: 3}
       propertyPath: showRadioCanvas
       value: 
-      objectReference: {fileID: 2024417728}
+      objectReference: {fileID: 1784330316}
+    - target: {fileID: 3540147939522516968, guid: 603bdc6f95697ac4ba37e5bb7bd5ae2b, type: 3}
+      propertyPath: backtrackTrigger
+      value: 
+      objectReference: {fileID: 670892351}
     - target: {fileID: 5667053763817013573, guid: 603bdc6f95697ac4ba37e5bb7bd5ae2b, type: 3}
       propertyPath: m_Name
       value: Level

@@ -143,12 +143,7 @@ public class BlockPuzzle : Puzzle
     {
         if (lever.SwitchToggled)
         {
-            // FIXME
-            /* DialogueManager.Instance.PlayDialogue(dialogue, () =>
-            {
-                LevelManager.Instance.GoToNextSublevel();
-                DialogueManager.Instance.PlayDialogue(radioDialogue);
-            }); */
+            DialogueManager.Instance.PlayDialogue(TutorialManager.Instance.blockPuzzleCompleteDialogue);
         }
         OnComplete();
 
