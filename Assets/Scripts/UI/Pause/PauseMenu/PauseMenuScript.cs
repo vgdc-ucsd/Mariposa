@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class PauseScript : MonoBehaviour
+public class PauseMenuScript : MonoBehaviour
 {
     public GameObject PauseMenu;
     public GameObject VideoSettingsMenu;
