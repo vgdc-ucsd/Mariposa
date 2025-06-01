@@ -29,14 +29,14 @@ public class PauseMenuScript : MonoBehaviour
 
     void OnEnable()
     {
-        actions.Player.Pause.Enable();
-        actions.Player.Pause.started += HandlePause;
+        actions.Player.Escape.Enable();
+        actions.Player.Escape.started += HandlePause;
     }
 
     void OnDisable()
     {
-        actions.Player.Pause.started -= HandlePause;
-        actions.Player.Pause.Disable();
+        actions.Player.Escape.started -= HandlePause;
+        actions.Player.Escape.Disable();
     }
 
     private void HandlePause(InputAction.CallbackContext ctx)
