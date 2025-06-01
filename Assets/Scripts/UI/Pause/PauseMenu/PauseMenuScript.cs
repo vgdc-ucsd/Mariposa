@@ -1,0 +1,144 @@
+using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
+public class PauseMenuScript : MonoBehaviour
+{
+    public GameObject PauseMenu;
+    public GameObject VideoSettingsMenu;
+    public GameObject AudioSettingsMenu;
+    public GameObject BackgroundPanel;
+
+    private InputSystem_Actions actions;
+    public bool paused = false;
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    void Awake()
+    {
+        actions = new();
+    }
+
+    // void Start()
+    // {
+    //     VideoSettingsMenu.SetActive(false);
+    //     PauseMenu.SetActive(false);
+    //     Time.timeScale = 1.0f;
+    // }
+
+    void OnEnable()
+    {
+        actions.Player.Escape.Enable();
+        actions.Player.Escape.started += HandlePause;
+    }
+
+    void OnDisable()
+    {
+        actions.Player.Escape.started -= HandlePause;
+        actions.Player.Escape.Disable();
+    }
+
+    private void HandlePause(InputAction.CallbackContext ctx)
+    {
+        if (!paused)
+        {
+            PauseGame();
+            return;
+        }
+
+        if (PauseMenu.activeSelf)
+        {
+            ResumeGame();
+        }
+        else
+        {
+            OpenPauseMenu();
+        }
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        return;
+    }
+
+    public void PauseGame()
+    {
+        OpenPauseMenu();
+        BackgroundPanel.SetActive(true);
+        Time.timeScale = 0.0f;
+        paused = true;
+    }
+
+
+    public void ResumeGame()
+    {
+        CloseAllMenus();
+        BackgroundPanel.SetActive(false);
+        Time.timeScale = 1.0f;
+        paused = false;
+    }
+
+
+    public void OpenVideoSettings()
+    {
+        PauseMenu.SetActive(false);
+        AudioSettingsMenu.SetActive(false);
+        VideoSettingsMenu.SetActive(true);
+    }
+
+    public void OpenAudioSettings()
+    {
+        PauseMenu.SetActive(false);
+        AudioSettingsMenu.SetActive(true);
+        VideoSettingsMenu.SetActive(false);
+    }
+
+    public void OpenPauseMenu()
+    {
+        PauseMenu.SetActive(true);
+        AudioSettingsMenu.SetActive(false);
+        VideoSettingsMenu.SetActive(false);
+    }
+
+    public void CloseAllMenus()
+    {
+        PauseMenu.SetActive(false);
+        AudioSettingsMenu.SetActive(false);
+        VideoSettingsMenu.SetActive(false);
+    }
+
+    public void GoToMainMenu()
+    {
+        CloseAllMenus();
+        ResumeGame();
+        SceneManager.LoadScene(0);
+    }
+
+    public void RestartFromCheckpoint()
+    {
+        CloseAllMenus();
+        ResumeGame();
+        // respawn from level manager or something?
+    }
+
+    public void RestartLevel()
+    {
+        Time.timeScale = 1.0f;
+        PauseGame();
+        if (LevelManager.Instance == null)
+        {
+            Debug.LogWarning("Pause manager attempting to restart level but LevelManager not found!");
+            return;
+        }
+        LevelManager.Instance.InitSublevel();
+    }
+
+    public void QuitLevel()
+    {
+        Time.timeScale = 1.0f;
+        SceneManager.LoadScene(0);
+    }
+
+}
