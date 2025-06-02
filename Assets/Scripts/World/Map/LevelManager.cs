@@ -15,32 +15,33 @@
         public int SublevelIndex { get; private set; }
 
         public List<Enemy> ActiveEnemies;
+        public List<BreakablePlatform> Breakables;
 
 
         private void Awake()
+    {
+        if (Instance != null && Instance != this)
         {
-            if (Instance != null && Instance != this)
-            {
-                Destroy(gameObject);
-                return;
-            }
-            Instance = this;
-
-            foreach (var sl in CurrentLevel.Sublevels) sl.Unload();
-            SublevelIndex = GameManager.Instance.TargetSublevel;
-            CurrentLevel.LoadSublevel(SublevelIndex);
-
-            if (string.IsNullOrEmpty(NextLevelName))
-            {
-                var nextBuild = SceneManager.GetActiveScene().buildIndex + 1;
-                if (nextBuild < SceneManager.sceneCountInBuildSettings)
-                    NextLevelName = System.IO.Path.GetFileNameWithoutExtension(
-                        SceneUtility.GetScenePathByBuildIndex(nextBuild)
-                    );
-            }
-
-            SceneManager.sceneLoaded += OnSceneLoaded;
+            Destroy(gameObject);
+            return;
         }
+        Instance = this;
+
+        foreach (var sl in CurrentLevel.Sublevels) sl.Unload();
+        SublevelIndex = GameManager.Instance.TargetSublevel;
+        CurrentLevel.LoadSublevel(SublevelIndex);
+
+        if (string.IsNullOrEmpty(NextLevelName))
+        {
+            var nextBuild = SceneManager.GetActiveScene().buildIndex + 1;
+            if (nextBuild < SceneManager.sceneCountInBuildSettings)
+                NextLevelName = System.IO.Path.GetFileNameWithoutExtension(
+                    SceneUtility.GetScenePathByBuildIndex(nextBuild)
+                );
+        }
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
 
         
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -137,7 +138,17 @@
 
             Debug.Assert(GetCurrentSublevel().SublevelCharacter == Player.ActivePlayer.Data.characterID);
             ActiveEnemies = FindObjectsByType<Enemy>(FindObjectsInactive.Exclude, FindObjectsSortMode.None).ToList();
+            // update grapple targets every time player switches to an unnamed sublevel
+            GrappleAbility grappleAbility = Player.ActivePlayer.GetComponentInChildren<GrappleAbility>();
+            if (grappleAbility != null && Player.ActivePlayer.Data.characterID == CharID.Unnamed)
+            {
+                grappleAbility.UpdateGrappleTargets();
+            }
+
+            ActiveEnemies = FindObjectsByType<Enemy>(FindObjectsInactive.Exclude, FindObjectsSortMode.None).ToList();
+            Breakables = FindObjectsByType<BreakablePlatform>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList();
             ResetEnemies();
+            ResetBreakables();
         }
 
         public void ResetEnemies()
@@ -147,12 +158,20 @@
                 enemy.Init();
             }
         }
+        
+        public void ResetBreakables()
+        {
+            foreach (BreakablePlatform platform in Breakables)
+            {
+                platform.Reset();
+            }
+        }
 
         public void LoadNextLevel()
-        {
-            SceneManager.LoadScene(NextLevelName);
-            // Scene nextLevel = SceneManager.GetSceneByName(NextLevelName);
-        }
+    {
+        SceneManager.LoadScene(NextLevelName);
+        // Scene nextLevel = SceneManager.GetSceneByName(NextLevelName);
+    }
         
         public void SaveData(ref GameData data)
         {
