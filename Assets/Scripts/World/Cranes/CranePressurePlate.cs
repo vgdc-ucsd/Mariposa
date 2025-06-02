@@ -11,6 +11,6 @@ public class CranePressurePlate : PressurePlate
 
     protected override void OnRelease()
     {
-        crane.TriggerCrane();
+        crane.ReturnCrane();
     }
 }
