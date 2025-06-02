@@ -29,8 +29,17 @@ public class InventoryUIManager : MonoBehaviour
     [SerializeField] private Sprite unnamedCenterImage;
     [SerializeField] private Sprite mariposaSlotBackground;
     [SerializeField] private Sprite unnamedSlotBackground;
+    [SerializeField] private Sprite mariposaInventoryBackground;
+    [SerializeField] private Sprite unnamedInventoryBackground;
+    [SerializeField] private Sprite mariposaInfoPanel;
+    [SerializeField] private Sprite unnamedInfoPanel;
+    [SerializeField] private Sprite mariposaPermaSlot;
+    [SerializeField] private Sprite unnamedPermaSlot;
     
+    [Header("Themed UI Elements")]
     [SerializeField] private Image centerPanelImage;
+    [SerializeField] private Image inventoryBackgroundImage;
+    [SerializeField] private Image infoPanelImage;
 
     private bool isOpen = false;
 
@@ -140,24 +149,48 @@ public class InventoryUIManager : MonoBehaviour
         activeCharacterInventory = newActive;
         PopulateInventory();
     }
-    
+
     private void UpdateUITheme()
     {
-        if (centerPanelImage != null)
+        Sprite centerSprite = null;
+        Sprite bgSprite = null;
+        Sprite infoSprite = null;
+        Sprite slotBg = null;
+        Sprite permaSlot = null;
+
+        switch (activeCharacterInventory)
         {
-            if (activeCharacterInventory == InventoryType.Mariposa)
-                centerPanelImage.sprite = mariposaCenterImage;
-            else if (activeCharacterInventory == InventoryType.Unnamed)
-                centerPanelImage.sprite = unnamedCenterImage;
+            case InventoryType.Mariposa:
+                bgSprite = mariposaInventoryBackground;
+                infoSprite = mariposaInfoPanel;
+                slotBg = mariposaSlotBackground;
+                permaSlot = mariposaPermaSlot;
+                break;
+
+            case InventoryType.Unnamed:
+                bgSprite = unnamedInventoryBackground;
+                infoSprite = unnamedInfoPanel;
+                slotBg = unnamedSlotBackground;
+                permaSlot = unnamedPermaSlot;
+                break;
+
+            default:
+                Debug.LogWarning($"No UI theme defined for inventory type: {activeCharacterInventory}");
+                break;
         }
-        Sprite slotBg = (activeCharacterInventory == InventoryType.Mariposa) ? mariposaSlotBackground : unnamedSlotBackground;
+
         foreach (var slot in toolsSlots)
-        {
-            slot.SetSlotBackground(slotBg);
-        }
+            slot.SetPermaSlotGraphic(permaSlot);
+
         foreach (var slot in mementosSlots)
         {
             slot.SetSlotBackground(slotBg);
         }
+
+        if (inventoryBackgroundImage != null)
+            inventoryBackgroundImage.sprite = bgSprite;
+
+        if (infoPanelImage != null)
+            infoPanelImage.sprite = infoSprite;
     }
 }

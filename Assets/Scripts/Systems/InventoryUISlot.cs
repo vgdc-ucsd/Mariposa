@@ -11,6 +11,7 @@ public class InventoryUISlot : MonoBehaviour
     
     [Header("Slot UI")]
     [SerializeField] private Image slotBackgroundImage;
+    [SerializeField] private Image permaSlotImage;
 
     private InventoryItemSO currentItem;            
     private int currentCount;                       
@@ -56,6 +57,14 @@ public class InventoryUISlot : MonoBehaviour
         if (slotBackgroundImage != null)
         {
             slotBackgroundImage.sprite = newBackground;
+        }
+    }
+    
+    public void SetPermaSlotGraphic(Sprite newSprite)
+    {
+        if (permaSlotImage != null)
+        {
+            permaSlotImage.sprite = newSprite;
         }
     }
 }
