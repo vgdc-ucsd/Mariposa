@@ -14,7 +14,6 @@ public interface IBeeBehavior
         Vector2 direction2D = (Vector2)(Player.ActivePlayer.transform.position - Bee.Instance.transform.position);
         direction2D.Normalize();
         return direction2D;
-        
     }
 }
 
@@ -42,7 +41,8 @@ public class Follow : IBeeBehavior
     }
 
     // default: face player
-    public Vector2 GetDir() {
+    public Vector2 GetDir()
+    {
         Vector2 direction2D = (Vector2)(target.position - origin.position);
         direction2D.Normalize();
         return direction2D;
@@ -65,7 +65,7 @@ public class JumpAssist : IBeeBehavior
     private float timeRemaining = 0.15f;
 
     private Vector2 finalPos;
-    
+
     public JumpAssist()
     {
         origin = Bee.Instance.transform;

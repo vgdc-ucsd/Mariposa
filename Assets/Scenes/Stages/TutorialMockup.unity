@@ -175,6 +175,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8651251063056917191, guid: e3d6da22aa66b9d42849965b6906f080, type: 3}
+      propertyPath: <SublevelMusic>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8651251063056917191, guid: e3d6da22aa66b9d42849965b6906f080, type: 3}
+      propertyPath: <SublevelAmbience>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1198,10 +1206,11 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5548186048667376690, guid: 5f08c41fa317eb14799986f4f664520a, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 5313605323863157013, guid: 5f08c41fa317eb14799986f4f664520a, type: 3}
-      insertIndex: -1
+      insertIndex: 5
       addedObject: {fileID: 1042938437}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5f08c41fa317eb14799986f4f664520a, type: 3}
@@ -1369,6 +1378,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3529839200492878378, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
       propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3529839200492878378, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
+      propertyPath: <SublevelMusic>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3529839200492878378, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
+      propertyPath: <SublevelAmbience>k__BackingField
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3552367427401703280, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
@@ -1623,6 +1640,14 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4098008978971633477, guid: f0b2a4fe197120c43adaa5d5c2a61ec3, type: 3}
+      propertyPath: <SublevelMusic>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4098008978971633477, guid: f0b2a4fe197120c43adaa5d5c2a61ec3, type: 3}
+      propertyPath: <SublevelAmbience>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7196389467418377727, guid: f0b2a4fe197120c43adaa5d5c2a61ec3, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1763,6 +1788,7 @@ MonoBehaviour:
   CurrentLevel: {fileID: 5883707273069645461}
   NextLevelName: 
   ActiveEnemies: []
+  Breakables: []
 --- !u!4 &2022088644
 Transform:
   m_ObjectHideFlags: 0
@@ -1967,6 +1993,14 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5574249224141043270, guid: 1ab7bc7f443708b46ae44f7ad95f4288, type: 3}
+      propertyPath: <SublevelMusic>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5574249224141043270, guid: 1ab7bc7f443708b46ae44f7ad95f4288, type: 3}
+      propertyPath: <SublevelAmbience>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6172860703217113734, guid: 1ab7bc7f443708b46ae44f7ad95f4288, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -1985,7 +2019,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7700931678076625751, guid: 1ab7bc7f443708b46ae44f7ad95f4288, type: 3}
       propertyPath: EventPlayTrigger
-      value: 5
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 7700931678076625751, guid: 1ab7bc7f443708b46ae44f7ad95f4288, type: 3}
+      propertyPath: EventStopTrigger
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7700931678076625751, guid: 1ab7bc7f443708b46ae44f7ad95f4288, type: 3}
+      propertyPath: EventReference.Path
+      value: event:/sfx/item/radio/static
+      objectReference: {fileID: 0}
+    - target: {fileID: 7700931678076625751, guid: 1ab7bc7f443708b46ae44f7ad95f4288, type: 3}
+      propertyPath: EventReference.Guid.Data1
+      value: 121802912
+      objectReference: {fileID: 0}
+    - target: {fileID: 7700931678076625751, guid: 1ab7bc7f443708b46ae44f7ad95f4288, type: 3}
+      propertyPath: EventReference.Guid.Data2
+      value: 1206342435
+      objectReference: {fileID: 0}
+    - target: {fileID: 7700931678076625751, guid: 1ab7bc7f443708b46ae44f7ad95f4288, type: 3}
+      propertyPath: EventReference.Guid.Data3
+      value: -1298938221
+      objectReference: {fileID: 0}
+    - target: {fileID: 7700931678076625751, guid: 1ab7bc7f443708b46ae44f7ad95f4288, type: 3}
+      propertyPath: EventReference.Guid.Data4
+      value: 2005707069
       objectReference: {fileID: 0}
     - target: {fileID: 7717677624476085100, guid: 1ab7bc7f443708b46ae44f7ad95f4288, type: 3}
       propertyPath: m_LocalPosition.y
