@@ -68,8 +68,10 @@ public class BlockPuzzleBlock : MonoBehaviour, IBeginDragHandler, IDragHandler, 
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        
+        if (eventData.button != PointerEventData.InputButton.Left) return;
         if (isFixed) return;
-
+        BlockPuzzle.Instance.ClearBlockFromGrid(this);
         Vector2 pointerPos = eventData.position;
 
         Vector3 pointerWorldPos;
@@ -114,6 +116,7 @@ public class BlockPuzzleBlock : MonoBehaviour, IBeginDragHandler, IDragHandler, 
 
     public void OnDrag(PointerEventData eventData)
     {
+        if (eventData.button != PointerEventData.InputButton.Left) return;
         if (isFixed) return;
 
         Vector2 pointerPos = eventData.position;
@@ -153,6 +156,7 @@ public class BlockPuzzleBlock : MonoBehaviour, IBeginDragHandler, IDragHandler, 
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (eventData.button != PointerEventData.InputButton.Left) return;
         if (isFixed) return;
 
         canvasGroup.alpha = 1f;

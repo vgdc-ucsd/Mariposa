@@ -65,7 +65,7 @@ public class GrappleAbility : MonoBehaviour, IAbility
 
     private void Start()
     {
-        grappleTargets = FindObjectsByType<GrappleTarget>(FindObjectsSortMode.None).ToList();
+        UpdateGrappleTargets();
         hookProjectile.transform.SetParent(transform.parent);
     }
 
@@ -316,5 +316,9 @@ public class GrappleAbility : MonoBehaviour, IAbility
     public void RemoveGrappleTarget(GrappleTarget target)
     {
         grappleTargets.Remove(target);
+    }
+    public void UpdateGrappleTargets()
+    {
+        grappleTargets = FindObjectsByType<GrappleTarget>(FindObjectsSortMode.None).ToList();
     }
 }
