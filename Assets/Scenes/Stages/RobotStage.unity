@@ -4944,6 +4944,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &782299338 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5548186048667376690, guid: 5f08c41fa317eb14799986f4f664520a, type: 3}
+  m_PrefabInstance: {fileID: 1329853476}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &782299341
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 782299338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b0e04e2572f9a940a47465f6f3c2f00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  Parameter: s3_chase
+  TriggerEvent: 1
+  Value: 2
 --- !u!1 &795981203
 GameObject:
   m_ObjectHideFlags: 0
@@ -7876,22 +7897,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82d78ae2c517728419f9c3dfc78cdadf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DialogueWindow: {fileID: 1142881593}
-  rect: {fileID: 1401548587}
-  mariRect: {fileID: 8088097820553177828, guid: e98854153251a124e89d2666e921b4a0, type: 3}
-  unnRect: {fileID: -1207560325795574624, guid: df74879661a354e43bbfe531a95251df, type: 3}
-  mariRadio: {fileID: 4233357771194665771, guid: 4db3d42c00360974e906e05e7b5af25d, type: 3}
-  unnRadio: {fileID: -6075865628540360912, guid: 03374d6fa2d8bff49ac14ac382b3dc1a, type: 3}
-  speakerTarget: {fileID: 696762603}
-  lineTarget: {fileID: 1505093808}
-  frame: {fileID: 291087901}
-  mariFrame: {fileID: -6082742533581839185, guid: 646fbe2d453245d41b379dd427ad9db9, type: 3}
-  unnFrame: {fileID: 6586461156150141773, guid: 1158fcba1896f4e46a01e615fe278927, type: 3}
-  mask: {fileID: 2088076051}
-  portrait: {fileID: 122614146}
-  DIALOGUE_SPEED: 0.025
-  finishedTypewriter: 0
-  IsPlayingDialogue: 0
+  dialoguePlayer: {fileID: 0}
 --- !u!114 &1142881597
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8885,6 +8891,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Persistent
       objectReference: {fileID: 0}
+    - target: {fileID: 4846541995640839506, guid: 5f08c41fa317eb14799986f4f664520a, type: 3}
+      propertyPath: currentMusic
+      value: event:/music1/s3_industrial/theme_unnamed_BIGROBOT
+      objectReference: {fileID: 0}
     - target: {fileID: 5313605323863157013, guid: 5f08c41fa317eb14799986f4f664520a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -8931,7 +8941,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5313605323863157013, guid: 5f08c41fa317eb14799986f4f664520a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1042938437}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5548186048667376690, guid: 5f08c41fa317eb14799986f4f664520a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 782299341}
   m_SourcePrefab: {fileID: 100100000, guid: 5f08c41fa317eb14799986f4f664520a, type: 3}
 --- !u!1 &1343946794
 GameObject:
