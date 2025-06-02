@@ -9,7 +9,7 @@ public class KeycardPickup : ItemPickup
     public SpriteRenderer TurnstileSR;
     private EventInstance KeycardPickupEvent;
     public string fixedDoorDialogueName;
-
+    [SerializeField] private TutorialGuardNPC guard;
     public override void OnInteract(IControllable controllable)
     {
         base.OnInteract(controllable);
@@ -19,6 +19,7 @@ public class KeycardPickup : ItemPickup
         KeycardPickupEvent.release();
         TurnstileSR.sprite = UnlockedSprite;
         DialogueManager.Instance.PlayDialogue(fixedDoorDialogueName);
+        guard.AddNewDialogue();
     }
 
     void Start()
