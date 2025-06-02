@@ -288,9 +288,7 @@ public class GrappleAbility : MonoBehaviour, IAbility
 
     private void PlayGrappleThrow()
     {
-        EventInstance footstepInstance = RuntimeManager.CreateInstance("event:/sfx/player/grapple/impact");
-        footstepInstance.start();
-        footstepInstance.release();
+        RuntimeManager.PlayOneShot(AudioEvents.SFX.unnamed_grapple.GetPath());
     }
 
     private void ChangeGrappleState(GrappleState newState)

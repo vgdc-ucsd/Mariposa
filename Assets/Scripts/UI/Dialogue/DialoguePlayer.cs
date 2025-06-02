@@ -9,7 +9,7 @@ public class DialoguePlayer : MonoBehaviour
 {
     // object references
     public GameObject DialogueWindow;
-    
+
     [SerializeField] private TMP_Text speakerTarget;
     [SerializeField] private TMP_Text lineTarget;
 
@@ -87,7 +87,7 @@ public class DialoguePlayer : MonoBehaviour
         SetCinematicMode(false);
 
         DialogueWindow.SetActive(true);
-        if(PlayerController.Instance) PlayerController.Instance.SetMovementLock(true);
+        if (PlayerController.Instance) PlayerController.Instance.SetMovementLock(true);
 
         // check if Mariposa currently active
         if (!PlayerController.Instance || Player.ActivePlayer.Data.characterID == CharID.Mariposa)
@@ -134,14 +134,18 @@ public class DialoguePlayer : MonoBehaviour
         // check if conversation ended
         if (dialogueIndex >= conversation.Count)
         {
+            VoicelineManager.Instance.StopAllDialogueAudioEffects(FMOD.Studio.STOP_MODE.IMMEDIATE);
+
             foreach (string dialogueEvent in endingEvents)
             {
                 DialogueManager.Instance.TriggerEvent(dialogueEvent);
             }
             DialogueWindow.SetActive(false);
-            if(PlayerController.Instance) PlayerController.Instance.SetMovementLock(false);
+            if (PlayerController.Instance) PlayerController.Instance.SetMovementLock(false);
             return;
         }
+
+        VoicelineManager.Instance.StopAllDialogueAudioEffects(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
 
         DialogueElement element = conversation[dialogueIndex];
 
@@ -158,11 +162,11 @@ public class DialoguePlayer : MonoBehaviour
         // Play the dialogue
         foreach (string sound in element.Sounds)
         {
-            // TODO
+            VoicelineManager.Instance.PlayDialogueAudioEffect(sound);
         }
 
         foreach (DialogueEventElement dialogueEvent in element.Events)
-        {            
+        {
             if (dialogueEvent.triggerAtEnd)
             {
                 endingEvents.Add(dialogueEvent.eventName);
@@ -217,7 +221,7 @@ public class DialoguePlayer : MonoBehaviour
         }
 
         lineTarget.text = conversation[dialogueIndex].Line;
-        speakerTarget.text = speaker; 
+        speakerTarget.text = speaker;
         StartCoroutine(TypewriterEffect());
     }
 
@@ -247,7 +251,7 @@ public class DialoguePlayer : MonoBehaviour
         advanceIndicator.gameObject.SetActive(false);
         finishedTypewriter = false;
         int length = taglessText.Length;
-        
+
         int i = 0;
         lineTarget.maxVisibleCharacters = i;
         while (i < length)

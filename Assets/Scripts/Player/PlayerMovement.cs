@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
 using FMODUnity;
+using static AudioEvents;
 
 public class PlayerMovement : FreeBody, IInputListener, IControllable
 {
@@ -52,7 +53,7 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
     private void InitDerivedConsts()
     {
         if (Parent == null) Parent = GetComponent<Player>();
-        data =  Parent.Data;
+        data = Parent.Data;
 
         Gravity = data.gravity;
         TerminalVelocity = data.terminalVelocity;
@@ -130,7 +131,7 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
         else if (hitRightWall) wallNormal = -1;
         else wallNormal = 0;
 
-        if (State == BodyState.InAir && wallNormal != 0 && wallNormal + (int)moveDir.x == 0) 
+        if (State == BodyState.InAir && wallNormal != 0 && wallNormal + (int)moveDir.x == 0)
         {
             Velocity.y = Mathf.Max(Velocity.y, -data.wallSlideTerminalVelocity);
         }
@@ -188,20 +189,20 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
             RaycastHit2D[] beeHits = Physics2D.BoxCastAll(beeCastCenter, beeCastSize, 0f, Vector2.down, COLLISION_CHECK_DISTANCE);
             foreach (var hit in beeHits) if (hit.collider.CompareTag("Bee")) onBee = true;
         }
-        
+
 
         if (CanWallJump && wallNormal != 0 && State == BodyState.InAir)
         {
             Velocity.y = jumpVelocity * data.wallJumpHeightScale;
             Velocity.x = data.wallJumpHorizontalSpeed * wallNormal;
             wallJumpMoveLockTimeRemaining = data.wallJumpMoveLockTime;
-            RuntimeManager.PlayOneShot("event:/sfx/player/jump");
+            playJumpSFX();
         }
         else if (State == BodyState.OnGround || coyoteTimeRemaining > 0f)
         {
             Velocity.y = jumpVelocity;
             coyoteTimeRemaining = 0f;   // consume coyote time
-            RuntimeManager.PlayOneShot("event:/sfx/player/jump");
+            playJumpSFX();
         }
         else if (CanDoubleJump && airJumpAvailable && Bee.Instance.CanBeeJump())
         {
@@ -221,9 +222,9 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
         Velocity.y = jumpVelocity * data.DoubleJumpFactor;
         airJumpAvailable = false;
         coyoteTimeRemaining = 0f;
-        RuntimeManager.PlayOneShot("event:/sfx/player/jump");
-        RuntimeManager.PlayOneShot("event:/sfx/player/bee/double_jump");
-        
+        playJumpSFX();
+        RuntimeManager.PlayOneShot(SFX.bee_double_jump.GetPath());
+
     }
 
     // This override makes the player fall slower/faster when falling
@@ -233,7 +234,7 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
 
         float currentGravity = Velocity.y > 0 ? Gravity : Gravity * data.fallingGravityMultiplier;
         Velocity.y = Mathf.Max(Velocity.y - currentGravity * fdt, -TerminalVelocity);
-    } 
+    }
 
     protected override void OnGrounded(RaycastHit2D groundHit)
     {
@@ -243,7 +244,7 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
             {
                 currentMovingPlatform = groundHit.collider.GetComponentInParent<MovingPlatform>();
                 //if (currentMovingPlatform.currentMovement.y < 0) 
-                    //transform.position += currentMovingPlatform.currentMovement.y * Vector3.up;
+                //transform.position += currentMovingPlatform.currentMovement.y * Vector3.up;
                 currentMovingPlatform.adjacentFreeBody = this;
                 if (currentMovingPlatform is ControllableMovingPlatform) onControllableMovingPlatform = true;
             }
@@ -319,4 +320,24 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
         isDashing = false;
     }
     */
+
+    private void playJumpSFX()
+    {
+        // plays the active character's jump sound
+        if (Player.ActivePlayer.Data.characterID == CharID.Mariposa)
+        {
+            RuntimeManager.PlayOneShot(SFX.mariposa_jump.GetPath());
+        }
+        else if (Player.ActivePlayer.Data.characterID == CharID.Unnamed)
+        {
+            RuntimeManager.PlayOneShot(SFX.unnamed_jump.GetPath());
+        }
+        else
+        {
+            Debug.LogWarning("Tried to play jump sfx on an unknown character!");
+        }
+
+        // generic jump sfx
+        RuntimeManager.PlayOneShot(SFX.player_jump.GetPath());
+    }
 }

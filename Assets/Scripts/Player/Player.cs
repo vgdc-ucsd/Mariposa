@@ -5,6 +5,7 @@ using FMODUnity;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using static AudioEvents;
 
 public class Player : MonoBehaviour
 {
@@ -14,7 +15,7 @@ public class Player : MonoBehaviour
 
 	public static Player ActivePlayer => PlayerController.Instance.ControlledPlayer;
 
-    public static event Action OnDeath;
+	public static event Action OnDeath;
 
 	private bool playerDebug;
 	public PlayerCharacter Character;
@@ -51,7 +52,7 @@ public class Player : MonoBehaviour
 	{
 		RespawnPoint.OnRespawnPointInteract -= UpdateRespawn; // insures listener is empty
 		RespawnPoint.OnRespawnPointInteract += UpdateRespawn;
-        OnDeath += Respawn;
+		OnDeath += Respawn;
 		if (playerDebug) Debug.Log("Player is now listening for respawn interacts");
 	}
 
@@ -59,7 +60,7 @@ public class Player : MonoBehaviour
 	private void OnDisable()
 	{
 		RespawnPoint.OnRespawnPointInteract -= UpdateRespawn;
-        OnDeath -= Respawn;
+		OnDeath -= Respawn;
 		if (playerDebug) Debug.Log("Player was cleaned up");
 	}
 
@@ -86,7 +87,7 @@ public class Player : MonoBehaviour
 		if (CurrentRespawnPoint == null)
 		{
 			transform.position = new Vector3(0f, 0f, transform.position.z);
-            Movement.ResolveInitialCollisions();
+			Movement.ResolveInitialCollisions();
 			if (playerDebug) Debug.Log($"Player respawned to: {transform.position.ToString()}");
 		}
 		else
@@ -97,9 +98,9 @@ public class Player : MonoBehaviour
 			if (playerDebug) Debug.Log($"Player respawned to: {CurrentRespawnPoint.gameObject.name} @ {CurrentRespawnPoint.GetRespawnPosition().ToString()}");
 			RuntimeManager.PlayOneShot("event:/sfx/player/respawn");
 		}
-        // should be moved to level resetter
-        LevelManager.Instance.ResetEnemies();
-    }
+		// should be moved to level resetter
+		LevelManager.Instance.ResetEnemies();
+	}
 
 	public void TurnTowards(int dir)
 	{
@@ -108,9 +109,9 @@ public class Player : MonoBehaviour
 
 	public IEnumerator Die()
 	{
-        // TODO: there may be not that much delay between death and respawn, so remove the below line or add a delay after this line to prevent it overlapping with respawn sfx
-        OnDeath.Invoke();
-		RuntimeManager.PlayOneShot("event:/sfx/player/death");
+		// TODO: there may be not that much delay between death and respawn, so remove the below line or add a delay after this line to prevent it overlapping with respawn sfx
+		OnDeath.Invoke();
+		playPainSFX();
 		SetPlayerActive(false);
 		CameraController.ActiveCamera?.PauseCamera();
 		yield return FadeController.Instance.FadeOut();
@@ -119,7 +120,7 @@ public class Player : MonoBehaviour
 		CameraController.ActiveCamera?.ResumeCamera();
 		FadeController.Instance.FadeIn();
 	}
-	
+
 	private void SetPlayerActive(bool active)
 	{
 		foreach (var renderer in GetComponentsInChildren<Renderer>())
@@ -136,7 +137,7 @@ public class Player : MonoBehaviour
 		yield return new WaitForSeconds(0.1f);
 		FadeController.Instance.FadeIn();
 	}
-	
+
 	public void ObtainCheckpoint(GameObject checkpoint)
 	{
 		UpdateRespawn(checkpoint.GetComponent<RespawnPoint>());
@@ -159,6 +160,23 @@ public class Player : MonoBehaviour
 		{
 			case "Death": StartCoroutine(Die()); break;
 			case "Checkpoint": ObtainCheckpoint(collision.gameObject); break;
+		}
+	}
+
+	private void playPainSFX()
+	{
+		// plays the active character's pain sound
+		if (ActivePlayer.Data.characterID == CharID.Mariposa)
+		{
+			// currently none exists for Mariposa
+		}
+		else if (ActivePlayer.Data.characterID == CharID.Unnamed)
+		{
+			RuntimeManager.PlayOneShot(SFX.unnamed_pain.GetPath());
+		}
+		else
+		{
+			Debug.LogWarning("Tried to play pain sfx on an unknown character!");
 		}
 	}
 }
