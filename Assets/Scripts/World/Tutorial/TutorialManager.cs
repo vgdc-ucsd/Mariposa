@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 
@@ -32,11 +33,30 @@ using UnityEngine;
 public class TutorialManager : Singleton<TutorialManager>
 {
     [SerializeField] InventoryItemSO unnamedRadio;
+    [SerializeField] private GameObject showRadioCanvas;
+    private Object[] dialogueData;
+
+    private IEnumerator Start()
+    {
+        yield return new WaitForEndOfFrame();
+        DialogueManager.Instance.PlayDialogue("start");
+        ShowRadioEvent showRadioEvent = new ShowRadioEvent();
+    }
+    private void OnEnable()
+    {
+    }
 
     public bool UnnamedHasRadio()
     {
         return (InventoryManager.Instance.GetItemCount(InventoryType.Unnamed, unnamedRadio) > 0);
     }
 
-
+    public IEnumerator ShowRadio()
+    {
+        showRadioCanvas.SetActive(true);
+        yield return new WaitForSeconds(1f);
+        showRadioCanvas.SetActive(false);
+    }
 }
+
+
