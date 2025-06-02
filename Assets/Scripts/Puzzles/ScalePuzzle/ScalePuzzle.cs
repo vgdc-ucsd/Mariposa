@@ -88,13 +88,13 @@ public class ScalePuzzle : Puzzle
             {
                 ResetPuzzle();
                 TryHidePuzzle();
-                // FIXME
-                //DialogueManager.Instance.PlayDialogue(levels[level].dialogue);
+                DialogueManager.Instance.PlayDialogue(levels[level].dialogueName);
                 level++;
                 GenerateSolution();
             }
             else
             {
+                DialogueManager.Instance.PlayDialogue(levels[level].dialogueName);
                 OnComplete();
             }
         }
