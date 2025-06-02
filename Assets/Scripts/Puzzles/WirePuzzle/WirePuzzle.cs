@@ -47,6 +47,8 @@ public class WirePuzzle : Puzzle
         if (CheckSolution())
         {
             IsComplete = true;
+            PlayerController.Instance.IsSquidUnlocked = true;
+            SquidMovement.Instance.gameObject.SetActive(true);
             OnComplete();
         }
     }
@@ -55,12 +57,20 @@ public class WirePuzzle : Puzzle
     {
         foreach (WirePuzzleTail wpt in wireTails)
         {
-            if (!wpt.IsMatched) return false;
+            if (!wpt.IsMatched)
+            {
+                Debug.Log(wpt);
+                return false;
+            }
         }
 
         foreach (WirePuzzleNode wpn in wireNodes)
         {
-            if (!wpn.IsMatched) return false;
+            if (!wpn.IsMatched)
+            {
+                Debug.Log(wpn.gameObject);
+                return false;
+            }
         }
 
         return true;

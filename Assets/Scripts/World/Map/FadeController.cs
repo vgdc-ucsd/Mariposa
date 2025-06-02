@@ -13,10 +13,10 @@ public class FadeController : MonoBehaviour
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
         DontDestroyOnLoad(gameObject);
-        _blackImage.gameObject.SetActive(true);
+        _blackImage.enabled = true;
         _blackImage.color = new Color(0,0,0,1f);
     }
-    
+
     private void Start()
     {   
         StartCoroutine(Fade(1f, 0f));
@@ -31,7 +31,7 @@ public class FadeController : MonoBehaviour
     {
         return StartCoroutine(Fade(0f, 1f));
     }
-    
+
     private IEnumerator FadeCoroutine(System.Action onComplete)
     {
         yield return Fade(0f, 1f);

@@ -23,7 +23,7 @@ public class ScaleObject : MonoBehaviour
         image = GetComponent<Image>();
     }
 
-    private void Start()
+    protected void Start()
     {
         dragTarget = ScalePuzzle.Instance.selectionArea.GetComponent<RectTransform>();
         ghostRectTransform = ScalePuzzle.Instance.ghost.GetComponent<RectTransform>();
@@ -101,6 +101,11 @@ public class ScaleObject : MonoBehaviour
             }
             else
             {
+                if (dragTarget == null && this is MysteryBox)
+                {
+                    dragTarget = ScalePuzzle.Instance.selectionArea.GetComponent<RectTransform>();
+                    rectTransform.position = ((MysteryBox)this).defaultPos;
+                }
                 // if we drag onto nothing, put it back into old position
                 SnapToTarget(dragTarget);
                 rectTransform.position = oldPos;
@@ -108,44 +113,49 @@ public class ScaleObject : MonoBehaviour
         }
             
     }
-
-        
-
+    
     private void SnapToTarget(RectTransform target)
     {
-        bool fromHand = false;
-        bool toHand = false;
         bool isHand = target.TryGetComponent<ScaleHand>(out ScaleHand scaleHand);
         dragging = false;
         ScalePuzzle.Instance.isDragging = false;
         ghostImage.enabled = false;
-        if (!isHand)
+        if (dragTarget != null && dragTarget.TryGetComponent<ScaleHand>(out ScaleHand oldScaleHand))
         {
-            if (GetType() != typeof(MysteryBox)) Despawn();
-            else LeaveScaleHand();
+            oldScaleHand.RemoveObject(this);
+            ScalePuzzle.Instance.MoveHands();
         }
-        else if (target != dragTarget)
+        dragTarget = target;
+
+        if (isHand)
         {
-            LeaveScaleHand();
-            dragTarget = target;
-            if (isHand)
+            PlaceOnScaleHand(scaleHand);
+            rectTransform.SetParent(target.transform, true);
+            ScalePuzzle.Instance.MoveHands();
+        }
+        else
+        {
+            if (!(this is MysteryBox))
             {
-                PlaceOnScaleHand(scaleHand);
-                toHand = true;
+                Despawn();
+                ScalePuzzle.Instance.MoveHands();
             }
             else
             {
-                rectTransform.transform.position = mousePos;
                 rectTransform.SetParent(target.transform, true);
+                if (target == ScalePuzzle.Instance.selectionArea.GetComponent<RectTransform>())
+                {
+                    rectTransform.localPosition = ((MysteryBox)this).defaultPos;
+                }
+                else
+                {
+                    rectTransform.localPosition -= Vector3.up * rectTransform.sizeDelta.y * 0.75f;
+                }
             }
-            if (fromHand || toHand) ScalePuzzle.Instance.MoveHands();
-
-
         }
     }
     public void PlaceOnScaleHand(ScaleHand scaleHand)
     {
-        Debug.Log("plz");
         scaleHand.AddObject(this);
     }
 

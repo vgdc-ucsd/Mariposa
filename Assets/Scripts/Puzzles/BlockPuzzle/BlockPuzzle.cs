@@ -23,7 +23,8 @@ public class BlockPuzzle : Puzzle
     private BlockPuzzleSlot[,] slots;
     BlockPuzzleBlock[] blocks;
 
-    public Dialogue dialogue, radioDialogue; // played when puzzle is completed
+    // FIXME
+    //public Dialogue dialogue, radioDialogue; // played when puzzle is completed
     [SerializeField] private TutorialLever lever;
 
     void Awake()
@@ -47,7 +48,7 @@ public class BlockPuzzle : Puzzle
                 BlockPuzzleSlot temp = Instantiate(SlotPrefab, SlotContainer.transform).GetComponent<BlockPuzzleSlot>();
                 temp.GridPos = new Vector2Int(j, i);
                 temp.gameObject.name = $"Slot_{j}_{i}";
-                slots[j,i] = temp;
+                slots[j, i] = temp;
             }
         }
 
@@ -127,11 +128,12 @@ public class BlockPuzzle : Puzzle
 
     public bool CheckSolution()
     {
+        PrintGridState();
         for (int i = 0; i < GridWidth; ++i)
         {
             for (int j = 0; j < GridHeight; ++j)
             {
-                if (grid[i,j] == null) return false;
+                if (grid[i, j] == null) return false;
             }
         }
         return true;
@@ -141,13 +143,29 @@ public class BlockPuzzle : Puzzle
     {
         if (lever.SwitchToggled)
         {
-            DialogueManager.Instance.PlayDialogue(dialogue, () =>
+            // FIXME
+            /* DialogueManager.Instance.PlayDialogue(dialogue, () =>
             {
                 LevelManager.Instance.GoToNextSublevel();
                 DialogueManager.Instance.PlayDialogue(radioDialogue);
-            });
+            }); */
         }
         OnComplete();
-        
+
+    }
+    
+    private void PrintGridState()
+    {
+        string output = "\n";
+        for (int i = GridHeight - 1; i >= 0; i--)
+        {
+            for (int j = 0; j < GridWidth; j++)
+            {
+                if (grid[j,i] != null) output += "#";
+                else output += "-";
+            }
+            output += "\n";
+        }
+        Debug.Log(output);
     }
 }
