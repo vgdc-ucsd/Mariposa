@@ -193,7 +193,7 @@ public class Turret : MonoBehaviour
             if (hit.transform.TryGetComponent(out Player player))
             {
                 // Do something to the player
-                player.Die();
+                StartCoroutine(player.Die());
             }
             else if (hit.transform.TryGetComponent(out BreakablePlatform platform))
             {
