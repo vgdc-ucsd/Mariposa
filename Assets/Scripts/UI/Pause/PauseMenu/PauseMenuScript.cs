@@ -86,6 +86,8 @@ public class PauseMenuScript : MonoBehaviour
         PauseMenu.SetActive(false);
         AudioSettingsMenu.SetActive(false);
         VideoSettingsMenu.SetActive(true);
+        Settings.Instance.PauseSounds(true);
+        Settings.Instance.MuteTestSounds(true);
     }
 
     public void OpenAudioSettings()
@@ -93,6 +95,8 @@ public class PauseMenuScript : MonoBehaviour
         PauseMenu.SetActive(false);
         AudioSettingsMenu.SetActive(true);
         VideoSettingsMenu.SetActive(false);
+        Settings.Instance.PauseSounds(true);
+        Settings.Instance.MuteTestSounds(false);
     }
 
     public void OpenPauseMenu()
@@ -100,6 +104,8 @@ public class PauseMenuScript : MonoBehaviour
         PauseMenu.SetActive(true);
         AudioSettingsMenu.SetActive(false);
         VideoSettingsMenu.SetActive(false);
+        Settings.Instance.PauseSounds(true);
+        Settings.Instance.MuteTestSounds(true);
     }
 
     public void CloseAllMenus()
@@ -107,6 +113,8 @@ public class PauseMenuScript : MonoBehaviour
         PauseMenu.SetActive(false);
         AudioSettingsMenu.SetActive(false);
         VideoSettingsMenu.SetActive(false);
+        Settings.Instance.PauseSounds(false);
+        Settings.Instance.MuteTestSounds(true);
     }
 
     public void GoToMainMenu()

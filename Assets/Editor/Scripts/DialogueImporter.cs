@@ -79,10 +79,10 @@ public class DialogueImporter : EditorWindow
             }
             else choice.LinkedDialogue = words[1];
         }
-        else
+        else if (words.Length == 3)
         {
             choice.LinkedDialogue = words[1];
-            choice.Friendship = Int32.Parse(words[2]);
+            choice.Friendship = int.Parse(words[2]);
         }
 
         return choice;
@@ -112,6 +112,7 @@ public class DialogueImporter : EditorWindow
         string dialogueName = "";
         bool firstSpeaker = true;
         bool afterSpeaker = false;
+        int afterChoice = 0;
 
         for (int i = 0; i < lines.Length; i++)
         {
@@ -151,10 +152,12 @@ public class DialogueImporter : EditorWindow
             else if (Regex.IsMatch(line, @"^!(choice1|c1)\b")) // choice1
             {
                 element.Choice1 = ParseChoice(line);
+                afterChoice = 1;
             }
             else if (Regex.IsMatch(line, @"^!(choice2|c2)\b")) // choice2
             {
                 element.Choice2 = ParseChoice(line);
+                afterChoice = 2;
             }
             else if (Regex.IsMatch(line, @"^!(background|b)\b")) // background
             {
@@ -175,6 +178,16 @@ public class DialogueImporter : EditorWindow
             else if (afterSpeaker && hasLineNext && Regex.IsMatch(line, @"^\([^)]+\)")) // icon
             {
                 element.Icon = ParseIcon(line);
+            }
+            else if (afterChoice == 1)
+            {
+                element.Choice1.Response = line;
+                afterChoice = 0;
+            }
+            else if (afterChoice == 2)
+            {
+                element.Choice2.Response = line;
+                afterChoice = 0;
             }
             else // line
             {

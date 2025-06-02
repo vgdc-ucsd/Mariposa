@@ -30,6 +30,7 @@ public class DialoguePlayer : MonoBehaviour
     [SerializeField] private Sprite unnRadio;
 
     [SerializeField] private Image advanceIndicator;
+    [SerializeField] private Hoverer advanceHoverer;
     [SerializeField] private Sprite mariAdvance;
     [SerializeField] private Sprite unnAdvance;
 
@@ -116,6 +117,7 @@ public class DialoguePlayer : MonoBehaviour
             StopAllCoroutines();
             finishedTypewriter = true;
             lineTarget.maxVisibleCharacters = taglessText.Length;
+            advanceHoverer.Reset();
             advanceIndicator.gameObject.SetActive(true);
         }
         else
@@ -257,7 +259,11 @@ public class DialoguePlayer : MonoBehaviour
             else yield return new WaitForSeconds(DIALOGUE_SPEED);
         }
 
-        if(!awaitingChoice) advanceIndicator.gameObject.SetActive(true);
+        if (!awaitingChoice)
+        {
+            advanceHoverer.Reset();
+            advanceIndicator.gameObject.SetActive(true);
+        }
         finishedTypewriter = true;
     }
 }

@@ -6,8 +6,9 @@ public class WirePuzzleVisuals : MonoBehaviour
 {
     [Header("Wire Segment Settings")]
     public Color Color;
-    [SerializeField] Vector2 origSize;
-    [SerializeField] Vector2 origPos;
+    [SerializeField] Vector2 wireFillSize;
+    [SerializeField] Vector2 wireFillPos;
+    [SerializeField] float wireThickness;
 
     [Header("References")]
     [SerializeField] GameObject WireSegmentPrefab;
@@ -17,14 +18,14 @@ public class WirePuzzleVisuals : MonoBehaviour
     {
         // Instantiate prefab
         GameObject instantiated = Instantiate(WireSegmentPrefab, transform);
-        instantiated.GetComponent<RectTransform>().sizeDelta = origSize;
+        instantiated.GetComponent<RectTransform>().sizeDelta = wireFillSize;
         WireSegments.Add(instantiated);
 
         // Set Color
         instantiated.GetComponent<Image>().color = Color;
 
         // Set Starting Position
-        instantiated.GetComponent<RectTransform>().localPosition = origPos;
+        instantiated.GetComponent<RectTransform>().localPosition = wireFillPos;
     }
 
     public void BeginDragVisuals(WirePuzzleDraggable draggable)
@@ -46,7 +47,7 @@ public class WirePuzzleVisuals : MonoBehaviour
             GameObject instantiated = Instantiate(WireSegmentPrefab, transform);
             WireSegments.Add(instantiated);
             instantiated.GetComponent<Image>().color = Color;
-            instantiated.GetComponent<RectTransform>().localPosition = new(0, -50f);
+            instantiated.GetComponent<RectTransform>().localPosition = new(0, -70f);
         }
     }
 
@@ -56,7 +57,7 @@ public class WirePuzzleVisuals : MonoBehaviour
         Vector2 mousePos = Input.mousePosition;
 
         // Set length (By changing height of rect transform)
-        wireSegment.sizeDelta = new(origSize.x, Vector2.Distance(mousePos, wireSegment.position));
+        wireSegment.sizeDelta = new(wireThickness, Vector2.Distance(mousePos, wireSegment.position));
 
         // Add rotation
         float rotation = Mathf.Atan2(wireSegment.position.y - mousePos.y, wireSegment.position.x - mousePos.x) * Mathf.Rad2Deg - 90f;
@@ -68,7 +69,7 @@ public class WirePuzzleVisuals : MonoBehaviour
         RectTransform wireSegment = WireSegments[^1].GetComponent<RectTransform>();
 
         // Set size & rotation of visuals
-        wireSegment.sizeDelta = new(origSize.x, Vector2.Distance(receiver.transform.position, wireSegment.position));
+        wireSegment.sizeDelta = new(wireThickness, Vector2.Distance(receiver.transform.position, wireSegment.position));
 
         float rotation = Mathf.Atan2(wireSegment.position.y - receiver.transform.position.y,
                             wireSegment.position.x - receiver.transform.position.x) * Mathf.Rad2Deg - 90f;
@@ -78,7 +79,7 @@ public class WirePuzzleVisuals : MonoBehaviour
     public void SnapBackVisuals(WirePuzzleDraggable draggable)
     {
         RectTransform wireSegment = WireSegments[^1].GetComponent<RectTransform>();
-        
+
         if (WireSegments.Count > 1)
         {
             if (WireSegments.Count > draggable.ConnectedReceivers.Count)
@@ -90,7 +91,7 @@ public class WirePuzzleVisuals : MonoBehaviour
             {
                 WirePuzzleReceiver receiver = draggable.ConnectedReceivers[^1];
 
-                wireSegment.sizeDelta = new(origSize.x, Vector2.Distance(receiver.transform.position, wireSegment.position));
+                wireSegment.sizeDelta = new(wireThickness, Vector2.Distance(receiver.transform.position, wireSegment.position));
 
                 float rotation = Mathf.Atan2(wireSegment.position.y - receiver.transform.position.y,
                                     wireSegment.position.x - receiver.transform.position.x) * Mathf.Rad2Deg - 90f;
