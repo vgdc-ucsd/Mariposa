@@ -113,46 +113,45 @@ public class ScaleObject : MonoBehaviour
         }
             
     }
-
-        
-
+    
     private void SnapToTarget(RectTransform target)
     {
         bool isHand = target.TryGetComponent<ScaleHand>(out ScaleHand scaleHand);
         dragging = false;
         ScalePuzzle.Instance.isDragging = false;
         ghostImage.enabled = false;
-        if (!isHand)
+        if (dragTarget != null && dragTarget.TryGetComponent<ScaleHand>(out ScaleHand oldScaleHand))
         {
-            if (!(this is MysteryBox)) Despawn();
-            else
-            {
-                bool same = (target == dragTarget);
-                LeaveScaleHand();
-                dragTarget = target;
-                rectTransform.SetParent(target.transform, true);
-                if (!same) rectTransform.localPosition -= Vector3.up * rectTransform.sizeDelta.y * 0.75f;
-            }
+            oldScaleHand.RemoveObject(this);
+            ScalePuzzle.Instance.MoveHands();
         }
-        else if (target != dragTarget)
+        dragTarget = target;
+
+        if (isHand)
         {
-            LeaveScaleHand();
-            dragTarget = target;
-            if (isHand)
+            PlaceOnScaleHand(scaleHand);
+            rectTransform.SetParent(target.transform, true);
+            ScalePuzzle.Instance.MoveHands();
+        }
+        else
+        {
+            if (!(this is MysteryBox))
             {
-                PlaceOnScaleHand(scaleHand);
+                Despawn();
                 ScalePuzzle.Instance.MoveHands();
             }
             else
             {
                 rectTransform.SetParent(target.transform, true);
+                if (target == ScalePuzzle.Instance.selectionArea.GetComponent<RectTransform>())
+                {
+                    rectTransform.localPosition = ((MysteryBox)this).defaultPos;
+                }
+                else
+                {
+                    rectTransform.localPosition -= Vector3.up * rectTransform.sizeDelta.y * 0.75f;
+                }
             }
-
-
-        }
-        else
-        {
-            rectTransform.position = oldPos;
         }
     }
     public void PlaceOnScaleHand(ScaleHand scaleHand)
