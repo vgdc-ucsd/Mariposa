@@ -41,12 +41,12 @@ public class RespawnPoint : MonoBehaviour
             // trigger action which will affects all listening objects (hopefully the player object)
             OnRespawnPointInteract?.Invoke(this);
 
-            switch (Player.ActivePlayer.Character.Name)
+            switch (Player.ActivePlayer.Data.characterID)
             {
-                case "Mariposa":
+                case CharID.Mariposa:
                     RuntimeManager.PlayOneShot("event:/sfx/world/spawnpoint_activate/mariposa");
                     break;
-                case "Unnamed":
+                case CharID.Unnamed:
                     RuntimeManager.PlayOneShot("event:/sfx/world/spawnpoint_activate/unnamed");
                     break;
             }

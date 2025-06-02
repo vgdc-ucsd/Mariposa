@@ -12,13 +12,20 @@ public enum GrappleState
 
 public class GrappleAbility : MonoBehaviour, IAbility
 {
+    public static GrappleAbility Instance;
+
+    [SerializeField]
+    private GameObject hookProjectile;
+
+    [SerializeField] private float hookSpeed = 50f;
+
     [SerializeField]
     private GrappleTarget currentTarget;
     private List<GrappleTarget> grappleTargets;
 
 
     private GrappleState state;
-    private Vector2 lockedTarget;
+    private GrappleTarget lockedTarget;
     private LineRenderer lineRenderer;
 
     // when is the player considered "close"
@@ -39,7 +46,7 @@ public class GrappleAbility : MonoBehaviour, IAbility
     private float maxLaunchForce = 30f;
 
     [SerializeField]
-    private float storedMomentum;
+    private Vector2 storedMomentum;
     [SerializeField]
     private float retentionDuration = 1f;   // how long the player still keeps the speed boost when jumping, even after stopping
 
@@ -51,6 +58,7 @@ public class GrappleAbility : MonoBehaviour, IAbility
 
     private void Awake()
     {
+        Instance = this;
         state = GrappleState.Idle;
         lineRenderer = GetComponent<LineRenderer>();
     }
@@ -58,6 +66,7 @@ public class GrappleAbility : MonoBehaviour, IAbility
     private void Start()
     {
         grappleTargets = FindObjectsByType<GrappleTarget>(FindObjectsSortMode.None).ToList();
+        hookProjectile.transform.SetParent(transform.parent);
     }
 
     private void Update()
@@ -90,7 +99,7 @@ public class GrappleAbility : MonoBehaviour, IAbility
     {
         if (state == GrappleState.Idle && currentTarget != null)
         {
-            GrappleTowards(currentTarget.transform.position);
+            GrappleTowards(currentTarget);
         }
     }
 
@@ -120,15 +129,20 @@ public class GrappleAbility : MonoBehaviour, IAbility
 
         foreach (GrappleTarget target in grappleTargets)
         {
+            if (!target.isAvailable) continue;
+
             int targetDir = target.transform.position.x < Player.ActivePlayer.transform.position.x ? -1 : 1;
             float dist = Vector2.Distance(target.transform.position, Player.ActivePlayer.transform.position);
             if (dist <= grappleRange)
             {
-                if (dir == targetDir)
+                if (HasLineOfSightToTarget(target))
                 {
-                    potentialTargets.Add(target);
+                    if (dir == targetDir)
+                    {
+                        potentialTargets.Add(target);
+                    }
+                    else behindTargets.Add(target);
                 }
-                else behindTargets.Add(target);
             }
         }
 
@@ -149,12 +163,26 @@ public class GrappleAbility : MonoBehaviour, IAbility
 
     }
 
+    private bool HasLineOfSightToTarget(GrappleTarget target)
+    {
+        ContactFilter2D filter = new ContactFilter2D();
+        filter.SetLayerMask(LayerMask.GetMask("Barrier"));
+        RaycastHit2D[] hit = new RaycastHit2D[10];
+        Physics2D.Raycast(Player.ActivePlayer.transform.position, target.transform.position - Player.ActivePlayer.transform.position, filter, hit);
+        Debug.DrawLine(Player.ActivePlayer.transform.position, hit[0].point);
+        if (hit[0].collider != null && hit[0].distance < Vector2.Distance(Player.ActivePlayer.transform.position, target.transform.position))
+        {
+            return false;
+        }
+        return true;
+    }
+
     // fire the hook towards the target
-    private void GrappleTowards(Vector2 target)
+    private void GrappleTowards(GrappleTarget target)
     {
         Player player = Player.ActivePlayer;
         lockedTarget = target;
-        player.TurnTowards((int)Mathf.Sign(target.x - player.transform.position.x));
+        player.TurnTowards((int)Mathf.Sign(lockedTarget.transform.position.x - player.transform.position.x));
         player.Movement.Stop();
         player.Movement.ToggleGravity(false);
         ChangeGrappleState(GrappleState.Firing);
@@ -163,23 +191,27 @@ public class GrappleAbility : MonoBehaviour, IAbility
     // hook is travelling towards the target
     private void GrappleFire()
     {
-        // todo line firing animation
-        ChangeGrappleState(GrappleState.Pulling);
+        hookProjectile.transform.position = Vector2.MoveTowards(hookProjectile.transform.position, currentTarget.transform.position, hookSpeed * fdt);
+        if (Vector2.Distance(hookProjectile.transform.position, currentTarget.transform.position) < 1f)
+        {
+            ChangeGrappleState(GrappleState.Pulling);
+        }
+
     }
 
     // Acceelrating towards the grapple point
     private void GrapplePull()
     {
         Vector2 playerPos = Player.ActivePlayer.transform.position;
-        Player.ActivePlayer.Movement.Velocity += (lockedTarget - playerPos) * grappleForce * fdt;
+        Player.ActivePlayer.Movement.Velocity += ((Vector2)lockedTarget.transform.position - playerPos) * grappleForce * fdt;
         if (Player.ActivePlayer.Movement.Velocity.magnitude > maxSpeed)
         {
             Player.ActivePlayer.Movement.Velocity = Player.ActivePlayer.Movement.Velocity.normalized * maxSpeed;
         }
 
-        storedMomentum = Mathf.Abs(Player.ActivePlayer.Movement.Velocity.x);
+        storedMomentum = Player.ActivePlayer.Movement.Velocity;
 
-        if (Vector2.Distance(playerPos, lockedTarget) < STOP_DISTANCE)
+        if (Vector2.Distance(playerPos, (Vector2)lockedTarget.transform.position) < STOP_DISTANCE)
         {
             state = GrappleState.Stopped;
             retentionTimer = retentionDuration;
@@ -191,7 +223,7 @@ public class GrappleAbility : MonoBehaviour, IAbility
     {
         Vector2 playerPos = Player.ActivePlayer.transform.position;
         Player.ActivePlayer.Movement.Velocity -= Player.ActivePlayer.Movement.Velocity * reachedTargetDamping * fdt;
-        Vector2 r = (lockedTarget - playerPos);
+        Vector2 r = ((Vector2)lockedTarget.transform.position - playerPos);
         Player.ActivePlayer.Movement.Velocity += r * Mathf.Max(1, Mathf.Pow(r.magnitude, 2)) * closePullForce * fdt;
         if (retentionTimer > 0)
         {
@@ -199,7 +231,7 @@ public class GrappleAbility : MonoBehaviour, IAbility
         }
         else
         {
-            storedMomentum = 0;
+            storedMomentum = Vector2.zero;
         }
 
     }
@@ -209,8 +241,8 @@ public class GrappleAbility : MonoBehaviour, IAbility
     {
         if (!(state == GrappleState.Pulling || state == GrappleState.Stopped)) return;
 
-        Vector2 launchDir = new Vector2(Player.ActivePlayer.FacingDirection, 0.4f).normalized;
-        Player.ActivePlayer.Movement.Velocity = launchDir * Mathf.Clamp(storedMomentum + baseLaunchForce, baseLaunchForce, maxLaunchForce);
+        Vector2 launchDir = storedMomentum.normalized;
+        Player.ActivePlayer.Movement.Velocity = launchDir * Mathf.Clamp(storedMomentum.magnitude + baseLaunchForce, baseLaunchForce, maxLaunchForce);
 
         GrappleRelease();
 
@@ -220,8 +252,9 @@ public class GrappleAbility : MonoBehaviour, IAbility
     private void GrappleRelease()
     {
         state = GrappleState.Idle;
-        storedMomentum = 0;
+        storedMomentum = Vector2.zero;
         Player.ActivePlayer.Movement.ToggleGravity(true);
+        lockedTarget.ReleaseGrapple();
     }
 
 
@@ -230,11 +263,20 @@ public class GrappleAbility : MonoBehaviour, IAbility
     {
         if (new GrappleState[] { GrappleState.Pulling, GrappleState.Firing }.Contains(state))
         {
+            Vector2 pos2;
+            if (state == GrappleState.Firing)
+            {
+                pos2 = hookProjectile.transform.position;
+            }
+            else
+            {
+                pos2 = (Vector2)lockedTarget.transform.position;
+            }
             lineRenderer.enabled = true;
             lineRenderer.SetPositions(new Vector3[]
             {
                 gameObject.transform.position,
-                lockedTarget
+                pos2
             });
         }
         else
@@ -260,8 +302,19 @@ public class GrappleAbility : MonoBehaviour, IAbility
         {
             if (newState == GrappleState.Firing)
             {
+                hookProjectile.SetActive(true);
+                hookProjectile.transform.position = Player.ActivePlayer.transform.position;
                 PlayGrappleThrow();
             }
+            else
+            {
+                hookProjectile.SetActive(false);
+            }
         }
+    }
+
+    public void RemoveGrappleTarget(GrappleTarget target)
+    {
+        grappleTargets.Remove(target);
     }
 }

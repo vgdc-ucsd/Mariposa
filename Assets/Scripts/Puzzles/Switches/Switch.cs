@@ -18,6 +18,7 @@ public abstract class Switch : Interactable
     /// </summary>
     public abstract void TriggerSwitch();
 
+
     public override void OnInteract(IControllable controllable)
     {
         TriggerSwitch();

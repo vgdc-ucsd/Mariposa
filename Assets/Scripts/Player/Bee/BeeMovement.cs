@@ -6,10 +6,8 @@ using UnityEngine.Experimental.GlobalIllumination;
 
 public class BeeMovement : FreeBody, IInputListener, IControllable
 {
-    public static PlayerMovement Instance;
+    public static BeeMovement Instance;
     private Bee parent;
-
-    private Vector2 velocityFieldVelocity = Vector2.zero;
 
     [Header("Horizontal Parameters")]
 
@@ -35,7 +33,7 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
     private const float RADIUS_SLOWDOWN_BOUNDARY = 1f;  // how close to the max control radius to start slowing down
     private const float RESISTANCE_ADJUSTMENT = 0.3f;   // strength of the slowdown effect
 
-    private IBeeBehavior currentBehavior;    // Strategy, returns a vector for the bee to move towards in the next frame
+    public IBeeBehavior CurrentBehavior;    // Strategy, returns a vector for the bee to move towards in the next frame
 
     SpriteRenderer beeSprite;
 
@@ -43,8 +41,6 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
 
     // only activate triggers when it is being controlled
     public override bool ActivateTriggers => parent.IsControlled;
-
-    SpriteRenderer beeSprite;
 
     private void InitDerivedConsts()
     {
@@ -84,11 +80,11 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
         else
         {
             Velocity = Vector2.zero;
-            if (currentBehavior != null)
+            if (CurrentBehavior != null)
             {
                 AutoMove();
             }
-            
+
         }
 
         base.FixedUpdate();
@@ -101,7 +97,7 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
         // change where the bee faces when in being controlled
         if (dir.x > 0) {
             beeSprite.flipX = false;
-        } 
+        }
         else if (dir.x < 0) {
             beeSprite.flipX = true;
         }
@@ -109,7 +105,7 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
 
     public void SetBehavior(IBeeBehavior behavior)
     {
-        currentBehavior = behavior;
+        CurrentBehavior = behavior;
     }
 
     private void Move()
@@ -137,7 +133,7 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
         float acceleration = accelerationParam;
 
         Vector2 dv = acceleration * fdt * controlDir; // applied force
-        
+
 
         // on no inputs, slow down by drag
         if (neutral) dv = -Velocity * airDragDeceleration * fdt;
@@ -149,8 +145,6 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
         {
             tempVelocity *= MoveSpeed / tempVelocity.magnitude;
         }
-
-        tempVelocity += velocityFieldVelocity;
 
         Vector2 normalComp = Vector2.Dot(tempVelocity, r) / r.sqrMagnitude * r;
 
@@ -168,7 +162,7 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
             tempVelocity -= exceedingComp;
         }
 
-       
+
         // if moving more will cause the bee to come close to control radius, increase resistance in the normal direction
         else if (distanceToPlayer > adjustedControlRadius - RADIUS_SLOWDOWN_BOUNDARY)
         {
@@ -192,13 +186,13 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
 
     private void AutoMove()
     {
-        transform.position += (Vector3)currentBehavior.GetMoveStep(fdt);
+        transform.position += (Vector3)CurrentBehavior.GetMoveStep(fdt);
 
         // change where the bee faces when in AutoMove mode
-        if (currentBehavior.GetDir().x > 0) {
+        if (CurrentBehavior.GetDir().x > 0) {
             beeSprite.flipX = false;
-        } 
-        else if (currentBehavior.GetDir().x < 0) {
+        }
+        else if (CurrentBehavior.GetDir().x < 0) {
             beeSprite.flipX = true;
         }
     }
@@ -211,18 +205,12 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
     protected override void OnTriggerEnter2D(Collider2D collision)
     {
         base.OnTriggerEnter2D(collision);
-        if (collision.CompareTag("VelocityField"))
-        {
-            velocityFieldVelocity = collision.GetComponent<VelocityField>().velocity;
-        }
     }
 
     protected override void OnTriggerExit2D(Collider2D collision)
     {
         base.OnTriggerExit2D(collision);
-        if (collision.CompareTag("VelocityField"))
-        {
-            velocityFieldVelocity = Vector2.zero;
-        }
     }
+
+
 }

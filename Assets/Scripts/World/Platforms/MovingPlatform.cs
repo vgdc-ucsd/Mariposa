@@ -1,63 +1,132 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.IO.LowLevel.Unsafe;
+using Unity.VisualScripting;
 using UnityEngine;
+
 
 public abstract class MovingPlatform : MonoBehaviour
 {
-    protected Vector2[] pathNodes;
-    protected int nodeCount;
-    protected Rigidbody2D platformRb;
-
-    protected int currNodeIdx = 0;
-    protected int nextNodeIdx = 1;
-    public Vector2 velocity = Vector2.zero;
-
-    [SerializeField] protected float platformMoveSpeed;
-    [SerializeField] protected bool isLooping;
-
-    protected virtual void Awake()
+    public enum PlatformState
     {
-        platformRb = transform.GetChild(0).GetComponent<Rigidbody2D>();
-
-        Transform pathNodeContainer = transform.GetChild(1);
-
-        if (pathNodeContainer.childCount < 2) Debug.LogError(name + " is missing path nodes");
-
-        nodeCount = pathNodeContainer.childCount;
-        pathNodes = new Vector2[nodeCount];
-        int i = 0;
-        foreach (Transform child in pathNodeContainer) {
-            pathNodes[i] = child.position;
-            ++i;
-        }
-
-        nextNodeIdx = GetNextNodeIdx(currNodeIdx);
-
-        platformRb.MovePosition(pathNodes[0]);
+        Stopped,
+        Moving,
+        Resetting,
     }
 
-    protected int GetNextNodeIdx(int nodeIdx)
+    public Rigidbody2D rb { get; private set; }
+    public BoxCollider2D col { get; private set; }
+    public MovingPlatformManager manager;
+
+    public int initialNodeIndex;
+    public int currentNodeIdx;
+    public PlatformState state;
+    public FreeBody adjacentFreeBody;
+    public Vector2 currentMovement;
+
+    [SerializeField] protected LayerMask playerLayerMask;
+
+    [SerializeField] protected float platformMoveSpeed = 5f;
+    [SerializeField] protected int physicsFramesToPushPlayerOut = 4;
+
+    public virtual void Initialize()
     {
-        return (nodeIdx + 1) % nodeCount;
+        rb = GetComponent<Rigidbody2D>();
+        col = GetComponent<BoxCollider2D>();
+
+        state = PlatformState.Stopped;
+        adjacentFreeBody = null;
+        currentMovement = Vector2.zero;
+        initialNodeIndex = GetInitialNodeIndex();
+        currentNodeIdx = initialNodeIndex;
+    }
+
+    public virtual int GetInitialNodeIndex()
+    {
+        return manager.GetClosestNodeIndex(rb.position);
+    }
+
+
+    protected abstract Vector2 GetCurrentMovement();
+
+    protected Vector2 GetResettingMovement()
+    {
+        float fdt = Time.fixedDeltaTime;
+
+        manager.platforms[currentNodeIdx] = null;
+        manager.platforms[initialNodeIndex] = this;
+
+        Vector2 initialNode = manager.pathNodes[initialNodeIndex];
+        Vector2 separationToInitialNode = initialNode - rb.position;
+
+        if (separationToInitialNode.magnitude > platformMoveSpeed * fdt)
+        {
+            return platformMoveSpeed * fdt * separationToInitialNode.normalized;
+        }
+        else
+        {
+            StopMoving(initialNodeIndex);
+            return separationToInitialNode;
+        }
+    }
+
+    protected virtual void StopMoving(int stopNodeIdx)
+    {
+        state = PlatformState.Stopped;
+        for (int i = 0; i < manager.platforms.Length; ++i)
+        {
+            MovingPlatform platform = manager.platforms[i];
+            if (platform != null && platform == this) manager.platforms[i] = null;
+        }
+        manager.platforms[stopNodeIdx] = this;
+    }
+
+    protected virtual void PushPlayerOut()
+    {
+        Vector2 pushColOrigin = (Vector2)col.bounds.center + col.bounds.extents.y * Vector2.down;
+        Vector2 pushColSize = new(col.size.x, col.size.y / 2);
+        float pushFraction = 1 / (float)physicsFramesToPushPlayerOut;
+
+        Collider2D playerCol = Physics2D.OverlapBox(pushColOrigin, pushColSize, 0f, playerLayerMask);
+        if (!playerCol) return;
+
+        playerCol.transform.position += playerCol.transform.position.x > transform.position.x
+            ? (col.bounds.max.x - playerCol.bounds.min.x + FreeBody.CONTACT_OFFSET) * pushFraction * Vector3.right
+            : (playerCol.bounds.max.x - col.bounds.min.x + FreeBody.CONTACT_OFFSET) * pushFraction * Vector3.left;
     }
 
     protected virtual void FixedUpdate()
     {
         float fdt = Time.fixedDeltaTime;
-        Vector2 nextNode = pathNodes[nextNodeIdx];
-        Vector2 separationToNextNode = nextNode - platformRb.position;
 
-        Vector2 movement = platformMoveSpeed * fdt * separationToNextNode.normalized;
-        float distanceToNextNode = separationToNextNode.magnitude;
-        if (distanceToNextNode < platformMoveSpeed * fdt)
+        switch (state)
         {
-            currNodeIdx = nextNodeIdx;
-            nextNodeIdx = (currNodeIdx + 1) % nodeCount;
-            Vector2 nextNextNode = pathNodes[nextNodeIdx];
-            Vector2 newPosition = nextNode + (platformMoveSpeed * fdt - distanceToNextNode) * (nextNextNode - nextNode).normalized;
-            movement = newPosition - platformRb.position;
+            case PlatformState.Moving:
+                currentMovement = GetCurrentMovement();
+                break;
+            case PlatformState.Resetting:
+                currentMovement = GetResettingMovement();
+                break;
+            case PlatformState.Stopped:
+                return;
+            default:
+                Debug.LogError(rb.gameObject.name + " has an invalid state");
+                return;
         }
 
-        velocity = movement / fdt;
-        platformRb.MovePosition(platformRb.position + movement);
+        rb.transform.position += (Vector3)currentMovement;
+        Physics2D.SyncTransforms();
+
+        if (adjacentFreeBody != null)
+        {
+            Vector2 movementToApply = currentMovement;
+            if (currentMovement.y / fdt < -adjacentFreeBody.TerminalVelocity) 
+                movementToApply.y = -adjacentFreeBody.TerminalVelocity * fdt; // cap the free body's downward movement;
+            adjacentFreeBody.transform.position += (Vector3)movementToApply;
+        }
+
+        PushPlayerOut();
     }
 }

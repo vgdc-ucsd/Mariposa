@@ -40,7 +40,7 @@ public class ItemPickup : Interactable
             if (controllable is BeeMovement) type = InventoryType.Mariposa;
             else if (controllable is PlayerMovement pm)
             {
-                if (pm.Parent.Character.Id == CharID.Mariposa)
+                if (pm.Parent.Data.characterID == CharID.Mariposa)
                 {
                     type = InventoryType.Mariposa;
                 }
@@ -59,6 +59,12 @@ public class ItemPickup : Interactable
         else
         {
             Debug.LogError("InventoryManager.Instance or item is null!");
+        }
+
+        // play bee grab animation 
+        if (controllable is BeeMovement bee)
+        {
+            bee.GetComponentInChildren<BeeGrabAnimation>().runGrabAnimation();
         }
         //Destroy(gameObject);
     }
