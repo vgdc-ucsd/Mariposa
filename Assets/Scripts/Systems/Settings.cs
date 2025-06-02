@@ -30,16 +30,8 @@ public class Settings : Singleton<Settings>
         // play background test audio if audio debug is on to test volume slider functionality
         if (Debug.GetAudioDebug())
         {
-            //backgroundAudioTest();
+            backgroundAudioTest();
         }
-    }
-
-    private void Update()
-    {
-        // this is a band-aid to check to see if the menu is open or not
-        // should be moved into menu to prevent continuous sounds playing even after pause
-        // to prevent headaches later down the line, this function has been disabled until the settings menu is more fleshed out
-        //checkActive();
     }
 
     public void ResetVolumeSettings()
@@ -47,9 +39,7 @@ public class Settings : Singleton<Settings>
         if (ResetAudioValues != null)
         {
             ResetAudioValues.Invoke();
-            // may have to add delay or...
             audioSetting.ResetVolumeSettings();
-            // check verification here but prob later
         }
         else
         {
@@ -77,6 +67,11 @@ public class Settings : Singleton<Settings>
         checkSliderImport(AmbienceSlider);
     }
 
+    public float internalUsageGetSFXVolume()
+    {
+        return SFXSlider.value;
+    }
+
     private void checkSliderImport(Slider slider)
     {
         if (slider == null)
@@ -97,11 +92,11 @@ public class Settings : Singleton<Settings>
     private void backgroundAudioTest()
     {
         // test music (using mariposa's tutorial music)
-        EventInstance audioEvent = FMODUnity.RuntimeManager.CreateInstance("event:/music/s1_downtown_city1/theme_mariposa");
+        EventInstance audioEvent = FMODUnity.RuntimeManager.CreateInstance("event:/music1/s0_subway_tutorial/theme_mariposa");
         audioEvent.start();
 
         // test ambience
-        audioEvent = FMODUnity.RuntimeManager.CreateInstance("event:/ambience/s0_subway_tutorial/mariposa/mariposa");
+        audioEvent = FMODUnity.RuntimeManager.CreateInstance("event:/ambience/s0_subway_tutorial/mariposa");
         audioEvent.start();
 
         // test sfx (using bee flap sfx)
@@ -136,30 +131,15 @@ public class Settings : Singleton<Settings>
         AmbienceVolume.StartControl();
     }
 
-    private void checkActive()
-    {
-        if (MasterSlider == null) { return; }
-        if (MasterSlider.isActiveAndEnabled)
-        {
-            pauseSounds(true);
-            muteTestSounds(false);
-        }
-        else
-        {
-            pauseSounds(false);
-            muteTestSounds(true);
-        }
-    }
-
-    private void pauseSounds(bool pause)
+    public void PauseSounds(bool pause)
     {
         MusicVolume?.pauseBus(pause);
-        SFXVolume?.pauseBus(pause);
+        SFXVolume?.pauseBus(pause);     // TODO: there will be an issue with main menu sfx being muted
         DialogueVolume?.pauseBus(pause);
         AmbienceVolume?.pauseBus(pause);
     }
 
-    private void muteTestSounds(bool mute)
+    public void MuteTestSounds(bool mute)
     {
         Bus testBus = RuntimeManager.GetBus("bus:/Test");
         testBus.setMute(mute);

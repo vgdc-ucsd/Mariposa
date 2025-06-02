@@ -85,7 +85,10 @@ public class VolumeControl : MonoBehaviour
     {
         if (Math.Abs(Mathf.Floor(volume * 100) - Mathf.Floor(previousVolume * 100)) >= 4)
         {
-            RuntimeManager.PlayOneShot("event:/test/slider_click");
+            EventInstance slider_click = RuntimeManager.CreateInstance("event:/test/slider_click");
+            slider_click.setVolume(Settings.Instance.internalUsageGetSFXVolume());
+            slider_click.start();
+            slider_click.release();
             previousVolume = volume;
         }
     }
