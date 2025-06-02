@@ -1,10 +1,11 @@
 start:
 - Speaker: Mariposa
   Line: (Looks like I’ve got a bit of time before the job.)
-  Icon: Neutral
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Mariposa_Hmm8.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -19,10 +20,11 @@ start:
   Choice2: 
 - Speaker: Mariposa
   Line: Let’s get going, BEEBO!
-  Icon: Happy
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Mariposa_Alright1.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -47,10 +49,11 @@ guard:
   Choice2: 
 - Speaker: Mariposa
   Line: Got it! No worries, I’ll get this thing working in no time.
-  Icon: Neutral
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Mariposa_IPromise1.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -63,7 +66,7 @@ guard:
   Events: []
   Choice1: 
   Choice2: 
-turnstyle_keycard:
+turnstile_keycard:
 - Speaker: Mariposa
   Line: Oh! Well.
   Icon: Surprised
@@ -87,13 +90,23 @@ turnstyle_keycard:
   Icon: 
   Background: 
   FromRadio: 
+  Sounds:
+  - Mariposa_Giggle3.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Beebo
+  Line: '<Putting task: <i>Get Keycard</i> into task list. Task number 17.>'
+  Icon: Neutral
+  Background: 
+  FromRadio: 
   Sounds: []
   Events: []
   Choice1: 
   Choice2: 
 - Speaker: Beebo
-  Line: '<Putting task: Get Keycard into task list. Task number 17. Would you like to prioritize this task?>'
-  Icon: 
+  Line: Would you like to prioritize this task?>
+  Icon: Happy
   Background: 
   FromRadio: 
   Sounds: []
@@ -102,40 +115,44 @@ turnstyle_keycard:
   Choice2: 
 - Speaker: Mariposa
   Line: Please do. Thanks, BEEBO!
-  Icon: Neutral
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Mariposa_ThankYou1.wav
   Events: []
   Choice1: 
   Choice2: 
-interact_mariposa:
+interact_turnstile_no_fix:
 - Speaker: Mariposa
   Line: I can’t access the interior without it...
   Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Mariposa_Hmm5.wav
   Events: []
   Choice1: 
   Choice2: 
-interact:
+interact_guard:
 - Speaker: Guard
   Line: When’s this girl going to be done...?
   Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Luke_NPC_Well1.wav
   Events: []
   Choice1: 
   Choice2: 
-fix_turnstyle:
+fix_turnstile:
 - Speaker: Mariposa
   Line: There we go. Everything should be in order now!
-  Icon: Happy
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Mariposa_ReadyToGo3.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -144,16 +161,18 @@ fix_turnstyle:
   Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Luke_NPC_AppreciateIt2.wav
   Events: []
   Choice1: 
   Choice2: 
 - Speaker: Mariposa
   Line: See you around!
-  Icon: Neutral
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Mariposa_GladCouldHelp2.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -169,10 +188,11 @@ fix_turnstyle:
 catch_train:
 - Speaker: Mariposa
   Line: (I’m finally all done for the day.)
-  Icon: Neutral
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Mariposa_Hmm1.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -190,7 +210,8 @@ catch_train:
   Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Mariposa_Sigh2.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -200,7 +221,8 @@ guard_post_puzzle:
   Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Luke_NPC_Sigh2.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -216,15 +238,6 @@ waiting_for_train:
   Choice2: 
 - Speaker: Beebo
   Line: '<ETA: 12 Minutes>'
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Mariposa
-  Line: A static crackling noise echoes in the subway tunnel.
   Icon: Neutral
   Background: 
   FromRadio: 
@@ -232,9 +245,19 @@ waiting_for_train:
   Events: []
   Choice1: 
   Choice2: 
+- Speaker: Mariposa
+  Line: 'Hmm, I think I have some time then. Can you pull up my notes for Project #314? Let’s see if I can’t get this thing working...'
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Mariposa_Hmm7.wav
+  Events: []
+  Choice1: 
+  Choice2: 
 - Speaker: Unnamed
   Line: '---not much left around here. Might have to head back soon.'
-  Icon: 
+  Icon: Silhouette
   Background: 
   FromRadio: 
   Sounds: []
@@ -243,10 +266,11 @@ waiting_for_train:
   Choice2: 
 - Speaker: Mariposa
   Line: Hello? Is someone there?
-  Icon: Surprised
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Mariposa_Woah4.wav
   Events:
   - EventName: switch_to_unnamed1
     TriggerAtEnd: false
@@ -268,12 +292,23 @@ unnamed_start:
   Background: 
   FromRadio: 
   Sounds:
-  - cough_sfx
+  - Unnamed_Cough1.wav
   Events: []
   Choice1: 
   Choice2: 
 - Speaker: Unnamed
   Line: (...No time to rest now. Keep moving.)
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Unnamed_TimeToMoveOn4.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+subway_door_no_radio:
+- Speaker: Unnamed
+  Line: I should take another look around; I could’ve missed something.
   Icon: Neutral
   Background: 
   FromRadio: 
@@ -287,7 +322,8 @@ radio_pickup:
   Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Unnamed_Ugh3.wav
   Events:
   - EventName: show_radio
     TriggerAtEnd: false
@@ -310,6 +346,8 @@ radio_pickup:
   Sounds:
   - tunnel
   Events:
+  - EventName: hide_radio
+    TriggerAtEnd: false
   - EventName: screenshake
     TriggerAtEnd: false
   Choice1: 
@@ -319,12 +357,13 @@ radio_pickup:
   Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Mariposa_Woah4.wav
   Events: []
   Choice1: 
   Choice2: 
 - Speaker: Mariposa
-  Line: Can you hear me?
+  Line: Can anyone hear me?
   Icon: Neutral
   Background: 
   FromRadio: 
@@ -334,7 +373,7 @@ radio_pickup:
   Choice2: 
 - Speaker: Mariposa
   Line: Thought I already rewired this part...
-  Icon: 
+  Icon: Bashful
   Background: 
   FromRadio: 
   Sounds: []
@@ -343,7 +382,7 @@ radio_pickup:
   Choice2: 
 - Speaker: Unnamed
   Line: (How do I shut this thing off??)
-  Icon: Surprised
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds: []
@@ -381,7 +420,7 @@ door_jammed:
   Choice2: 
 - Speaker: Unnamed
   Line: Can’t backtrack. And I won’t be able to hold off those bots forever.
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds: []
@@ -398,7 +437,7 @@ door_jammed:
   Choice1: 
   Choice2: 
 - Speaker: Mariposa
-  Line: I could help you out if you tell me what’s wrong! Could you describe—--
+  Line: I could help you out if you tell me what’s wrong! Could you describe—
   Icon: Happy
   Background: 
   FromRadio: 
@@ -408,7 +447,7 @@ door_jammed:
   Choice2: 
 - Speaker: Unnamed
   Line: Damn it, how do I get out of here?
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds: []
@@ -416,7 +455,7 @@ door_jammed:
   Choice1: 
   Choice2: 
 - Speaker: Mariposa
-  Line: Um—--alright then.
+  Line: Um—alright then.
   Icon: Sad
   Background: 
   FromRadio: 
@@ -426,7 +465,16 @@ door_jammed:
   Choice2: 
 battery:
 - Speaker: Unnamed
-  Line: Which don’t want to kill me, that is.
+  Line: A battery with nothing to put it in. If only there were any of those maintenance bots still around...
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: Well, ones that don’t want to kill me, that is.
   Icon: Neutral
   Background: 
   FromRadio: 
@@ -447,15 +495,6 @@ battery:
   Choice2: 
 - Speaker: Mariposa
   Line: (I think I’ll give them a bit of space for now. Seems like they’re not interested in talking to me...)
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Mariposa
-  Line: But that reminds me...speaking of maintenance bots...
   Icon: Neutral
   Background: 
   FromRadio: 
@@ -464,8 +503,17 @@ battery:
   Choice1: 
   Choice2: 
 - Speaker: Mariposa
-  Line: There’s a charger for them right here. Though, honestly, it looks kind of scuffed...
+  Line: But that reminds me...speaking of maintenance bots, there’s a charger for them right here.
   Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: Though, honestly, it looks kind of scuffed...
+  Icon: Bashful
   Background: 
   FromRadio: 
   Sounds: []
@@ -482,7 +530,7 @@ battery:
   Choice1: 
   Choice2: 
 - Speaker: Mariposa
-  Line: Well, since I’m here...I’ll keep the bots running around here in good shape for a bit longer.
+  Line: Well, since I’m already here, I’ll keep the bots running around here in good shape for a bit longer.
   Icon: Happy
   Background: 
   FromRadio: 
@@ -493,7 +541,7 @@ battery:
 block_puzzle_incomplete_unnamed:
 - Speaker: Unnamed
   Line: No way out of this. I’m trapped here.
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds: []
@@ -503,7 +551,7 @@ block_puzzle_incomplete_unnamed:
 block_puzzle_incomplete_mariposa:
 - Speaker: Mariposa
   Line: (Let’s see here…)
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds: []
@@ -513,7 +561,7 @@ block_puzzle_incomplete_mariposa:
 block_puzzle_halfway_unnamed:
 - Speaker: Unnamed
   Line: (Maybe I can rig this thing up and...no. That won’t work.)
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds: []
@@ -522,7 +570,7 @@ block_puzzle_halfway_unnamed:
   Choice2: 
 - Speaker: Unnamed
   Line: (Urgh, my head...)
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds: []
@@ -532,7 +580,7 @@ block_puzzle_halfway_unnamed:
 block_puzzle_halfway_mariposa:
 - Speaker: Mariposa
   Line: (Just a bit more.)
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds: []
@@ -542,7 +590,7 @@ block_puzzle_halfway_mariposa:
 block_puzzle_complete:
 - Speaker: Mariposa
   Line: There we go! Everything’s in working order now.
-  Icon: 
+  Icon: Happy
   Background: 
   FromRadio: 
   Sounds: []
@@ -551,7 +599,7 @@ block_puzzle_complete:
   Choice2: 
 - Speaker: Beebo
   Line: '<ALERT: Train has been delayed. Estimated wait time: 1 hour. Recommended Route: Bus.>'
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds: []
@@ -560,7 +608,7 @@ block_puzzle_complete:
   Choice2: 
 - Speaker: Mariposa
   Line: Delayed? Again? That’s the second time this week...
-  Icon: 
+  Icon: Bashful
   Background: 
   FromRadio: 
   Sounds: []
@@ -569,7 +617,7 @@ block_puzzle_complete:
   Choice2: 
 - Speaker: Beebo
   Line: <Understood. Do you wish to file a complaint?>
-  Icon: 
+  Icon: Happy
   Background: 
   FromRadio: 
   Sounds: []
@@ -577,20 +625,20 @@ block_puzzle_complete:
   Choice1: 
   Choice2: 
 - Speaker: Mariposa
-  Line: No! No, I mean---Don’t send anything, BEEBO. Let’s just head to the bus stop. I don’t want to get back to town too late.
-  Icon: 
+  Line: No! No, I mean–Don’t send anything, BEEBO. Let’s just head to the bus stop. I don’t want to get back to town too late.
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds: []
   Events:
   - EventName: switch_unnamed2
-    TriggerAtEnd: false
+    TriggerAtEnd: true
   Choice1: 
   Choice2: 
 unnamed_stuck:
 - Speaker: Mariposa
   Line: So...How are things going for you there? Fixed your bot situation?
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds: []
@@ -607,8 +655,17 @@ unnamed_stuck:
   Choice1: 
   Choice2: 
 - Speaker: Mariposa
-  Line: Well, I fixed things on my end. I know a few things about bots if you need some help; If you just describe what you’re seeing...I could tell you what to do?
-  Icon: 
+  Line: Well, I fixed things on my end.
+  Icon: Happy
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: I know a few things about bots if you need some help; If you just describe what you’re seeing...I could tell you what to do?
+  Icon: Bashful
   Background: 
   FromRadio: 
   Sounds: []
@@ -616,7 +673,7 @@ unnamed_stuck:
   Choice1: 
   Choice2: 
 - Speaker: Narration
-  Line: '[You hear a faint clicking sound. The soft hum of electricity fills the room.]'
+  Line: <i>You hear a faint clicking sound. The soft hum of electricity fills the room.<i>
   Icon: 
   Background: 
   FromRadio: 
@@ -626,14 +683,14 @@ unnamed_stuck:
   Choice2: 
 - Speaker: Unnamed
   Line: (Maybe I missed something.)
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds: []
   Events: []
   Choice1: 
   Choice2: 
-unnamed_bot:
+unnamed_bot_appear:
 - Speaker: Unnamed
   Line: (Was this always here? I thought I checked this whole room.)
   Icon: Neutral
@@ -654,7 +711,7 @@ unnamed_bot:
   Choice2: 
 - Speaker: Unnamed
   Line: '...'
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds: []
@@ -663,7 +720,7 @@ unnamed_bot:
   Choice2: 
 - Speaker: Unnamed
   Line: You said you...fixed something. What did you do?
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds: []
@@ -724,6 +781,7 @@ unnamed_bot:
   Events: []
   Choice1: 
   Choice2: 
+success_put_battery_in_bot:
 - Speaker: Narration
   Line: <i>You slot the battery into the automaton. The charging station starts to churr. The automaton creaks to life. It barely moves, but its eyes begin to glow.</i>
   Icon: 
@@ -753,7 +811,686 @@ bot_interact_again:
   Choice1: 
   Choice2: 
 - Speaker: Narration
-  Line: <i>It's struggling to move. The charging station sounds like it's straining to keep it alive.</i>
+  Line: It's struggling to move. The charging station sounds like it's straining to keep it alive.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+Traveller1:
+- Speaker: Traveller
+  Line: What’s that you’re holding? A radio?
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Luke_NPC_IThink3.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Traveller
+  Line: You know, I used to have something cooler. It’s like, called a flip phone. It’s a projection, but you hold it, and it flips outwards. And then the screen is twice the size!
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Luke_NPC_Hey2.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Traveller
+  Line: Flip phone. It’s like super vintage. You wouldn’t know it.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Luke_NPC_Hey1.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+Traveller2:
+- Speaker: Traveller
+  Line: Bet you don’t know what a CD is. Heh.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Luke_NPC_Sigh2.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+YonCon1:
+- Speaker: Conductor
+  Line: Oh, I’m on my lunch break.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Conductor
+  Line: Why am I just standing here? That’s what I like to do on my lunch breaks, that’s all.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Conductor
+  Line: Just here, appreciating the infrastructure of the metro. The platform, the rush of wind, the light filling the tunnels—there’s nothing better.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+YonCon2:
+- Speaker: Conductor
+  Line: I love public transportation!
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+Bereweed1:
+- Speaker: Bereweed
+  Line: Aggh, work, work!
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+Bereweed2:
+- Speaker: Bereweed
+  Line: Don’t step any closer! It’ll sense your chakra and spook!
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Bereweed
+  Line: your way!
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_perfume_shop1:
+- Speaker: Perfumeshop
+  Line: It’s a fancy brand of perfume. Looks like the employees are on lunch break. The smell is almost overwhelming.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_perfume_shop2:
+- Speaker: Perfumeshop
+  Line: Smells like jasmine.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_butterfly_building1:
+- Speaker: Mariposa
+  Line: Looks like no one’s here right now…
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: Shops like these have a lockdown protocol when people are taking a break.
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: Someday, these shops might be completely automated…
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_butterfly_building2:
+- Speaker: Mariposa
+  Line: Looks like they’re closed for today.
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_gelato1:
+- Speaker: Gelato
+  Line: Fresh cappuccino and gelato; a pleasant smell wafts through the air.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_gelato2:
+- Speaker: Mariposa
+  Line: (...wish I wasn't on a budget...)
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_cleaning_bot1:
+- Speaker: Mariposa
+  Line: Aw, what an adorable automaton!
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: Sounds like you have a little rattle. Maybe I can fix that…
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: '...'
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: There we go!
+  Icon: Happy
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: All better now. Keep up the good work, little guy!
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_cleaning_bot2:
+- Speaker: Mariposa
+  Line: Keep up the good work, little guy!
+  Icon: Happy
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_corporate_poster1:
+- Speaker: Poster
+  Line: ‘Energy makes the world go round! We're determined to power YOUR world!'
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_corporate_poster2:
+- Speaker: Poster
+  Line: ‘No matter the cost!'
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_turnstile_no_key_or_fix:
+- Speaker: Turnstile
+  Line: Looks like it's not working. The barrier is stuck, and there's a quiet crackling sound coming from somewhere inside.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_turnstile_while_fixing_ejected_key:
+- Speaker: Mariposa
+  Line: (I can't access the interior panel without the keycard...)
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: (This is so embarrassing...)
+  Icon: Bashful
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_turnstile_after_fix:
+- Speaker: Mariposa
+  Line: Seems to be working just fine now. But the turnstile is one-way…
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: (I've got to catch my train...!)
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_train_car:
+- Speaker: Mariposa
+  Line: (The subway is never this quiet.)
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_battery1:
+- Speaker: Mariposa
+  Line: It's a battery! A lot of automatons have rechargeable ones nowadays. As long as they can get to a power source, some can run on for days without ever stopping!
+  Icon: Happy
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: '...eventually, though, they’ll run out of power...'
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_battery2:
+- Speaker: Mariposa
+  Line: Good thing these are recyclable!
+  Icon: Happy
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_charging_station_half_fix1:
+- Speaker: Mariposa
+  Line: (Everything inside is good, I just need a way to turn it on.)
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_charging_station_half_fix2:
+- Speaker: Mariposa
+  Line: (There has to be a switch or something around here.)
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_charging_station_fixed:
+- Speaker: Fixme
+  Line: It seems to be working now.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_cafe:
+- Speaker: Mariposa
+  Line: I’ve never seen this place without a line! It’s been all the rage lately. I’d love to try it!
+  Icon: Happy
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: If only I weren’t in a rush right now...
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_resting_lobby1:
+- Speaker: Lobby
+  Line: ‘Please keep this area CLEAN.’
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_resting_lobby2:
+- Speaker: Lobby
+  Line: ‘Please keep this area CLEAN.’
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_looted_shop1:
+- Speaker: Lootedshop
+  Line: There's nothing left on the counter but some loose batteries and an empty cash box.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_looted_shop2:
+- Speaker: Lootedshop
+  Line: Thoroughly looted.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_revolution_&_defense_remnants1:
+- Speaker: Remnants
+  Line: The rest of this is indecipherable.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_revolution_&_defense_remnants2:
+- Speaker: Remnants
+  Line: JOIN.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_dilapidated_shop1:
+- Speaker: Sadshop
+  Line: Whatever these things were, they're everywhere. There's never anything of use in them.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_dilapidated_shop2:
+- Speaker: Sadshop
+  Line: Perhaps it was always this way.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_dispensers/gas_tanks1:
+- Speaker: Gas
+  Line: They’re not working. You tap them. They make a hollow sound. Empty.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_dispensers/gas_tanks2:
+- Speaker: Gas
+  Line: Useless.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_scrap_heap1:
+- Speaker: Scrapmetal
+  Line: Just a pile of scrap metal. There seems to be a broom handle sticking out the top.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_scrap_heap2:
+- Speaker: Scrapmetal
+  Line: Useless scrap.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_ruined_poster1:
+- Speaker: Oldposter
+  Line: ‘No matter the cost.'
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_ruined_poster2:
+- Speaker: Oldposter
+  Line: ‘No matter the cost.'
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_turnstile_debris1:
+- Speaker: Debris
+  Line: It's an unrecognizable amalgamation of metal and concrete chunks. You nudge the pile with your foot. The concrete crumbles on contact and tumbles down in a cascade of dust.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_turnstile_debris2:
+- Speaker: Debris
+  Line: There's nothing useful here.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_door_before_fix1:
+- Speaker: Jamdoor
+  Line: It’s jammed. No way to get through. The keypad is unresponsive.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_door_before_fix2:
+- Speaker: Jamdoor
+  Line: The keypad is unresponsive.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_door_after_fix1:
+- Speaker: Botdoor
+  Line: Seems the door is working again. The keypad glows a faint blue. You enter the code. You hear a click.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_door_after_fix2:
+- Speaker: Botdoor
+  Line: It hums quietly.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_charging_station_before_fix1_unnamed:
+- Speaker: Charge
+  Line: It's a broken charging station. There's nothing to charge.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_charging_station_before_fix2_unnamed:
+- Speaker: Charge
+  Line: Nothing to charge.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_charging_station_use_without_fix1_unnamed:
+- Speaker: Chargenofix
+  Line: (You try to place the battery into the charging station. It doesn't fit anywhere.)
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_charging_station_use_without_fix2_unnamed:
+- Speaker: Chargenofix
+  Line: (There's nothing you can do.)
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_charging_station_fixed1:
+- Speaker: Bothere
+  Line: This wasn't here before.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_charging_station_fixed2:
+- Speaker: Bothere
+  Line: This wasn't here before.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_charging_station_use_after_fix1:
+- Speaker: Hetellsyousecretsithink
+  Line: DOOR...7...8...6...4...2...EMERGENCY...OVERRIDE.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_charging_station_use_after_fix2:
+- Speaker: Hetellsyousecretsithink
+  Line: It's struggling to move. The charging station sounds like it's straining to keep it alive.
   Icon: 
   Background: 
   FromRadio: 
