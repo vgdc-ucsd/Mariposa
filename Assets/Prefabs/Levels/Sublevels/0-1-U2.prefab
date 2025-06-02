@@ -95,6 +95,7 @@ GameObject:
   - component: {fileID: 3666553197499516627}
   - component: {fileID: 7647638449275692601}
   - component: {fileID: 3478667244224844584}
+  - component: {fileID: 7817557541693950263}
   m_Layer: 0
   m_Name: Jammed Door (1)
   m_TagString: Untagged
@@ -233,6 +234,20 @@ MonoBehaviour:
   jammedDialogue: 
   jammed: 0
   doneWithFirstDialogue: 0
+--- !u!114 &7817557541693950263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4425974150831675826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90d1f2f068ca91244b337391dbe44cc1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TriggerCollider: {fileID: 7647638449275692601}
+  LinkedInteractable: {fileID: 3478667244224844584}
 --- !u!1 &7169512464914843745
 GameObject:
   m_ObjectHideFlags: 0
@@ -260,7 +275,7 @@ Transform:
   m_GameObject: {fileID: 7169512464914843745}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 67.28, y: -6.4, z: 0}
+  m_LocalPosition: {x: 64.52, y: -6.4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

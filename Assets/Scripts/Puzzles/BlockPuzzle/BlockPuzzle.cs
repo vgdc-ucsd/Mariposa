@@ -23,8 +23,6 @@ public class BlockPuzzle : Puzzle
     private BlockPuzzleSlot[,] slots;
     BlockPuzzleBlock[] blocks;
 
-    // FIXME
-    //public Dialogue dialogue, radioDialogue; // played when puzzle is completed
     [SerializeField] private TutorialLever lever;
 
     void Awake()
