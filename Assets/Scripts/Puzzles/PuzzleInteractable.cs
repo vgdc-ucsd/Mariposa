@@ -2,15 +2,16 @@ using UnityEngine;
 
 public class PuzzleInteractable : Interactable
 {
-    public GameObject puzzleObject;
+    public Puzzle PuzzleInstance;
 
-    private Puzzle puzzle;
+    protected override void Start()
+    {
+        base.Start();
+        if (PuzzleInstance == null) Debug.LogWarning($"{gameObject.name} Puzzle not assigned in inspector!");
+    }
 
     public override void OnInteract(IControllable controllable)
     {
-        Debug.Log("Puzzle Interacted with!");
-        if (puzzle == null) puzzle = puzzleObject.GetComponent<Puzzle>();
-        if (puzzleObject == null) Debug.LogWarning($"{gameObject.name} Puzzle not assigned in inspector!");
-        if (!puzzle.IsComplete) PuzzlePopupManager.Instance.ActivePuzzle = puzzleObject;
+        if (!PuzzleInstance.IsComplete) PuzzlePopupManager.Instance.ActivePuzzle = PuzzleInstance.gameObject;
     }
 }

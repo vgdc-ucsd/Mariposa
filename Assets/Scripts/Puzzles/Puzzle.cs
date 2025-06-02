@@ -10,11 +10,6 @@ public abstract class Puzzle : MonoBehaviour
 {
     public bool IsComplete = false;
 
-    void Start()
-    {
-        gameObject.SetActive(false);
-    }
-
     /// <summary>
     /// Executes generic puzzle completion actions. Should be called from child 
     /// class when player completes the puzzle.
