@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class DialogueTrigger : Trigger
 {
-    public Dialogue DialogueEvent;
+    public string DialogueName;
 
     public override bool OnEnter(Body body)
     {
         if (!base.OnEnter(body)) return false;
-        DialogueManager.Instance.PlayDialogue(DialogueEvent);
+        DialogueManager.Instance.PlayDialogue(DialogueName);
         Destroy(this.gameObject);
         return true;
     }

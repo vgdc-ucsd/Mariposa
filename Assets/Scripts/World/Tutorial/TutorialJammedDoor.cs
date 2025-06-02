@@ -3,12 +3,14 @@ using UnityEngine.SceneManagement;
 
 public class TutorialJammedDoor : Interactable
 {
-    public Dialogue jammedDialogue, mariposaDialogue;
+    // FIXME
+    //public Dialogue jammedDialogue, mariposaDialogue;
     public bool jammed;
 
     public override void OnInteract(IControllable controllable)
     {
-        if (DialogueManager.Instance.IsPlayingDialogue || !TutorialManager.Instance.UnnamedHasRadio()) return;
+        // FIXME
+        /* if (DialogueManager.Instance.IsPlayingDialogue || !TutorialManager.Instance.UnnamedHasRadio()) return;
         if (jammed)
         {
             DialogueManager.Instance.PlayDialogue(jammedDialogue, () =>
@@ -20,6 +22,6 @@ public class TutorialJammedDoor : Interactable
         else
         {
             SceneManager.LoadScene(2); // city stage
-        }
+        } */
     }
 }
