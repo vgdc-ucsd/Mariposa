@@ -162,7 +162,9 @@ public class DialoguePlayer : MonoBehaviour
         // Play the dialogue
         foreach (string sound in element.Sounds)
         {
-            VoicelineManager.Instance.PlayDialogueAudioEffect(sound);
+            // removes ".wav" from end of sound string
+            string formatted = Regex.Replace(sound, @"\.wav$", "", RegexOptions.IgnoreCase);
+            VoicelineManager.Instance.PlayDialogueAudioEffect(formatted);
         }
 
         foreach (DialogueEventElement dialogueEvent in element.Events)
