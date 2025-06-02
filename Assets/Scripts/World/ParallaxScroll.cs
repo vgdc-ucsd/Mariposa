@@ -12,7 +12,7 @@ public class ParallaxScroll : MonoBehaviour
         length = GetComponent<SpriteRenderer>().bounds.size.x;
     }
 
-    void Update()
+    void FixedUpdate()
     {
         float distance = Camera.main.transform.position.x * parallaxEffect;
         float movement = Camera.main.transform.position.x * (1 - parallaxEffect);
