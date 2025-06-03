@@ -14,7 +14,10 @@ public class RadioPickup : ItemPickup
 
     private DialogueManager manager;
     private EventInstance RadioPickupEvent;
+    private EventInstance radioStatic;
+    private bool playRadioStatic = true;
     private bool playerDebug;
+
 
     [SerializeField] private string dialogueName;
 
@@ -23,7 +26,18 @@ public class RadioPickup : ItemPickup
         base.Start();
         manager = DialogueManager.Instance;
         RadioPickupEvent = RuntimeManager.CreateInstance("event:/sfx/item/pickup");
+        radioStatic = RuntimeManager.CreateInstance("event:/sfx/item/radio/static");
+        RuntimeManager.AttachInstanceToGameObject(radioStatic, gameObject);
         playerDebug = Settings.Instance.Debug.GetPlayerDebug();
+    }
+
+    void Update()
+    {
+        if (gameObject.activeInHierarchy && playRadioStatic)
+        {
+            radioStatic.start();
+            playRadioStatic = false;
+        }
     }
 
     /// <summary>
@@ -32,11 +46,10 @@ public class RadioPickup : ItemPickup
     /// </summary>
     public override void OnInteract(IControllable controllable)
     {
+        radioStatic.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        radioStatic.release();
+
         base.OnInteract(controllable);
         manager.PlayDialogue(dialogueName);
-
-        RadioPickupEvent.setParameterByNameWithLabel("ItemType", "Default");
-        RadioPickupEvent.start();
-        RadioPickupEvent.release();
     }
 }
