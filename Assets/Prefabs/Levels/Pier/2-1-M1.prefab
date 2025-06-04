@@ -732,6 +732,51 @@ Transform:
   - {fileID: 8833431203375576332}
   m_Father: {fileID: 4452845616537468013}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1016807523993412955
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1981925610068021408}
+  - component: {fileID: 3977320946343362175}
+  m_Layer: 0
+  m_Name: Unlock Squid Event
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1981925610068021408
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1016807523993412955}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 396695360532980172}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3977320946343362175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1016807523993412955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c28e3905f4f6b940bf247440dd13cc4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  squid: {fileID: 6454886736670176546}
 --- !u!1 &1213182733296557138
 GameObject:
   m_ObjectHideFlags: 0
@@ -955,6 +1000,8 @@ GameObject:
   - component: {fileID: 6553685341738304039}
   - component: {fileID: 6933995320796055508}
   - component: {fileID: 8532903716844199521}
+  - component: {fileID: 2548350200496491010}
+  - component: {fileID: 2197905013484798688}
   m_Layer: 12
   m_Name: SquidPierGround (1)
   m_TagString: Untagged
@@ -1123,6 +1170,98 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   m_Size: {x: 26.5055, y: 1.2694607}
+  m_EdgeRadius: 0
+--- !u!61 &2548350200496491010
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1593417384900952104}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: -54.5, y: 4.0359535}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 19.2, y: 3.93}
+    newSize: {x: 64.430984, y: 4.6979036}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 2
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 1.7900085, y: 8.628084}
+  m_EdgeRadius: 0
+--- !u!61 &2197905013484798688
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1593417384900952104}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 19, y: 6}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 19.2, y: 3.93}
+    newSize: {x: 64.430984, y: 4.6979036}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 2
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 3.2000046, y: 11.67}
   m_EdgeRadius: 0
 --- !u!1 &1964434402965169458
 GameObject:
@@ -2325,6 +2464,52 @@ Transform:
   - {fileID: 181861938254707519}
   m_Father: {fileID: 4452845616537468013}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4558623962219108094
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7914699167216635439}
+  - component: {fileID: 1325492484703002030}
+  m_Layer: 0
+  m_Name: Puzzle Complete
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7914699167216635439
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4558623962219108094}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 396695360532980172}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1325492484703002030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4558623962219108094}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0a040af56e726d4caefb1bcef04802d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: finish_wires
+  dialogueToPlay: control_panel_fixed
 --- !u!1 &4623556371846726717
 GameObject:
   m_ObjectHideFlags: 0
@@ -2438,7 +2623,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 2
-  m_Size: {x: 100, y: 10.8}
+  m_Size: {x: 100, y: 10.75}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -2483,7 +2668,7 @@ BoxCollider2D:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 19.2, y: 10.8}
-    newSize: {x: 100, y: 10.8}
+    newSize: {x: 100, y: 10.75}
     adaptiveTilingThreshold: 0.5
     drawMode: 2
     adaptiveTiling: 0
@@ -3562,6 +3747,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 9155830144702075499}
+  - {fileID: 7914699167216635439}
+  - {fileID: 1981925610068021408}
   m_Father: {fileID: 4452845616537468013}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7114448878116398072
@@ -4960,6 +5147,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3017647052850506962, guid: 0f72bc57d52e9a2458d90c211a6a25af, type: 3}
   m_PrefabInstance: {fileID: 274239756698561722}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &6454886736670176546 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6510541304896002456, guid: 0f72bc57d52e9a2458d90c211a6a25af, type: 3}
+  m_PrefabInstance: {fileID: 274239756698561722}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &624298317425252764
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5293,6 +5485,74 @@ PrefabInstance:
     - target: {fileID: 395872100674785538, guid: 95110d399c02fb246ae39493619a932b, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1210211503741885645, guid: 95110d399c02fb246ae39493619a932b, type: 3}
+      propertyPath: completionDialogue
+      value: 
+      objectReference: {fileID: 1325492484703002030}
+    - target: {fileID: 1210211503741885645, guid: 95110d399c02fb246ae39493619a932b, type: 3}
+      propertyPath: completionEvents.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1210211503741885645, guid: 95110d399c02fb246ae39493619a932b, type: 3}
+      propertyPath: completionEvent.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1210211503741885645, guid: 95110d399c02fb246ae39493619a932b, type: 3}
+      propertyPath: completionEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1210211503741885645, guid: 95110d399c02fb246ae39493619a932b, type: 3}
+      propertyPath: completionEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1210211503741885645, guid: 95110d399c02fb246ae39493619a932b, type: 3}
+      propertyPath: completionEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1325492484703002030}
+    - target: {fileID: 1210211503741885645, guid: 95110d399c02fb246ae39493619a932b, type: 3}
+      propertyPath: completionEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 3977320946343362175}
+    - target: {fileID: 1210211503741885645, guid: 95110d399c02fb246ae39493619a932b, type: 3}
+      propertyPath: completionEvent.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1210211503741885645, guid: 95110d399c02fb246ae39493619a932b, type: 3}
+      propertyPath: completionEvent.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1210211503741885645, guid: 95110d399c02fb246ae39493619a932b, type: 3}
+      propertyPath: completionEvents.Array.data[0].m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1210211503741885645, guid: 95110d399c02fb246ae39493619a932b, type: 3}
+      propertyPath: completionEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Trigger
+      objectReference: {fileID: 0}
+    - target: {fileID: 1210211503741885645, guid: 95110d399c02fb246ae39493619a932b, type: 3}
+      propertyPath: completionEvent.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: UnlockSquid
+      objectReference: {fileID: 0}
+    - target: {fileID: 1210211503741885645, guid: 95110d399c02fb246ae39493619a932b, type: 3}
+      propertyPath: completionEvent.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PlayDialogueEvent, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1210211503741885645, guid: 95110d399c02fb246ae39493619a932b, type: 3}
+      propertyPath: completionEvent.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: UnlockSquidEvent, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1210211503741885645, guid: 95110d399c02fb246ae39493619a932b, type: 3}
+      propertyPath: completionEvents.Array.data[0].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1210211503741885645, guid: 95110d399c02fb246ae39493619a932b, type: 3}
+      propertyPath: completionEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 1210211503741885645, guid: 95110d399c02fb246ae39493619a932b, type: 3}
+      propertyPath: completionEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 2484383790134323016, guid: 95110d399c02fb246ae39493619a932b, type: 3}
       propertyPath: m_Pivot.x

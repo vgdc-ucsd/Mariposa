@@ -44,16 +44,11 @@ public class PuzzlePopupManager : MonoBehaviour
     /// </summary>
     public void TryHidePuzzle()
     {
-        Debug.Log("Tried to hide puzzle");
-
-
         Collider2D[] collider2Ds = Physics2D.OverlapCircleAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), 0.001f);
         foreach (Collider2D col in collider2Ds)
         {
             if (col.gameObject.CompareTag("blocker"))
             {
-                Debug.Log("Clicked blocker");
-                Debug.Log(col.gameObject.name);
                 return;
             }
         }

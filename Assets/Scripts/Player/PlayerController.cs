@@ -35,6 +35,7 @@ public class PlayerController : MonoBehaviour
     public bool IsLocked { get; private set; }
 
     public bool IsSquidUnlocked;
+    private bool isSquidActive = false;
 
     private void Awake()
     {
@@ -58,9 +59,6 @@ public class PlayerController : MonoBehaviour
         inputs.Player.Ability.started += ctx => SendAbilityDown(ctx);
         inputs.Player.Ability.canceled += ctx => SendAbilityUp(ctx);
         inputs.Player.Jump.performed += ctx => SendJump(ctx);
-
-        // squid controls
-        inputs.Player.AltAbility.started += ctx => TryToggleSquid(ctx);
     }
 
     private void OnDisable()
@@ -68,9 +66,6 @@ public class PlayerController : MonoBehaviour
         inputs.Player.Ability.started -= ctx => SendAbilityDown(ctx);
         inputs.Player.Ability.canceled -= ctx => SendAbilityUp(ctx);
         inputs.Player.Jump.performed -= ctx => SendJump(ctx);
-
-        inputs.Player.AltAbility.started -= ctx => TryToggleSquid(ctx);
-
         inputs.Disable();
     }
 
@@ -190,13 +185,35 @@ public class PlayerController : MonoBehaviour
     {
         if (!IsSquidUnlocked || ControlledPlayer.Data.characterID == CharID.Unnamed) return;
 
-        if (CurrentControllable != SquidMovement.Instance) // could be a value vs ref check error
+        if (isSquidActive) // could be a value vs ref check error
         {
-            StartControlling(SquidMovement.Instance);
+            StartControlling(MariposaRef.Movement);            
         }
         else
         {
-            StartControlling(MariposaRef.Movement);
+            StartControlling(SquidMovement.Instance);
+        }
+        
+        isSquidActive = !isSquidActive;
+    }
+
+    public void EnableSquid(bool enable)
+    {
+        IsSquidUnlocked = enable;
+        
+        if (enable)
+        {
+            isSquidActive = true;
+            StartControlling(SquidMovement.Instance);
+            inputs.Player.Ability.started += ctx => TryToggleSquid(ctx);
+            inputs.Player.Ability.started -= ctx => SendAbilityDown(ctx);
+            inputs.Player.Ability.canceled -= ctx => SendAbilityUp(ctx);
+        }
+        else
+        {
+            inputs.Player.Ability.started -= ctx => TryToggleSquid(ctx);
+            inputs.Player.Ability.started += ctx => SendAbilityDown(ctx);
+            inputs.Player.Ability.canceled += ctx => SendAbilityUp(ctx);
         }
     }
 }
