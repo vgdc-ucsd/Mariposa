@@ -22,8 +22,6 @@ public class DialoguePlayer : MonoBehaviour
     [SerializeField] private Sprite unnNameplate;
 
     [SerializeField] private Image portraitBG;
-    [SerializeField] private Sprite mariBG;
-    [SerializeField] private Sprite unnBG;
 
     [SerializeField] private Image radio;
     [SerializeField] private Sprite mariRadio;
