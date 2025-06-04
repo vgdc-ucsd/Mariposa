@@ -1,5 +1,50 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &616283780323779760
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1453324243473429765}
+  - component: {fileID: 7533112001705146865}
+  m_Layer: 0
+  m_Name: SwitchSublevelsEvent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1453324243473429765
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 616283780323779760}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -36.244335, y: 3.203127, z: -12.355132}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5233437745150166635}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7533112001705146865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 616283780323779760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0675b10fcbad7841b35973da9503773, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: switch_sublevels
 --- !u!1 &1366290168582673266
 GameObject:
   m_ObjectHideFlags: 0
@@ -420,7 +465,6 @@ MonoBehaviour:
   pipeItemSO: {fileID: 11400000, guid: 64c1430344afb574d857097e37bb4dda, type: 2}
   pipeVisual: {fileID: 1366290168582673266}
   pipePickup: {fileID: 6393551332262013006}
-  duration: 7.5
 --- !u!1 &8368470146229188232
 GameObject:
   m_ObjectHideFlags: 0
@@ -595,6 +639,52 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &9062858185708901053
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5567149613742990617}
+  - component: {fileID: 3630795717321764860}
+  m_Layer: 0
+  m_Name: Pipes 3 Complete
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5567149613742990617
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9062858185708901053}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5233437745150166635}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3630795717321764860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9062858185708901053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0a040af56e726d4caefb1bcef04802d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: finish_pipes
+  dialogueToPlay: gig_done
 --- !u!1001 &2078239246707331001
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1307,6 +1397,50 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -3.831
       objectReference: {fileID: 0}
+    - target: {fileID: 9204363228736350518, guid: 1cef41894f5c986408cd821d8c573b54, type: 3}
+      propertyPath: completionEvent.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9204363228736350518, guid: 1cef41894f5c986408cd821d8c573b54, type: 3}
+      propertyPath: completionEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9204363228736350518, guid: 1cef41894f5c986408cd821d8c573b54, type: 3}
+      propertyPath: completionEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 9204363228736350518, guid: 1cef41894f5c986408cd821d8c573b54, type: 3}
+      propertyPath: completionEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 3630795717321764860}
+    - target: {fileID: 9204363228736350518, guid: 1cef41894f5c986408cd821d8c573b54, type: 3}
+      propertyPath: completionEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 9172972550297639408}
+    - target: {fileID: 9204363228736350518, guid: 1cef41894f5c986408cd821d8c573b54, type: 3}
+      propertyPath: completionEvent.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9204363228736350518, guid: 1cef41894f5c986408cd821d8c573b54, type: 3}
+      propertyPath: completionEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Trigger
+      objectReference: {fileID: 0}
+    - target: {fileID: 9204363228736350518, guid: 1cef41894f5c986408cd821d8c573b54, type: 3}
+      propertyPath: completionEvent.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: SetActive
+      objectReference: {fileID: 0}
+    - target: {fileID: 9204363228736350518, guid: 1cef41894f5c986408cd821d8c573b54, type: 3}
+      propertyPath: completionEvent.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PlayDialogueEvent, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 9204363228736350518, guid: 1cef41894f5c986408cd821d8c573b54, type: 3}
+      propertyPath: completionEvent.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: UnityEngine.GameObject, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 9204363228736350518, guid: 1cef41894f5c986408cd821d8c573b54, type: 3}
+      propertyPath: completionEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1545486156720581867, guid: 1cef41894f5c986408cd821d8c573b54, type: 3}
     m_RemovedGameObjects:
@@ -1327,6 +1461,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 396695360532980172, guid: 1cef41894f5c986408cd821d8c573b54, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8027044533709430542}
+    - targetCorrespondingSourceObject: {fileID: 396695360532980172, guid: 1cef41894f5c986408cd821d8c573b54, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5567149613742990617}
+    - targetCorrespondingSourceObject: {fileID: 396695360532980172, guid: 1cef41894f5c986408cd821d8c573b54, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1453324243473429765}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 3633646637906624087, guid: 1cef41894f5c986408cd821d8c573b54, type: 3}
       insertIndex: -1
