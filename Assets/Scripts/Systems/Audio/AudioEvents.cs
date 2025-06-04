@@ -7,6 +7,10 @@ public static class AudioEvents
         s0Tutorial_theme_unnamed,
         s1Downtown_theme_mariposa,
         s1Downtown_theme_unnamed,
+        s2Pier_theme_mariposa,
+        S2Pier_theme_unnamed,
+        s4Hometown_theme_mariposa,
+        s4Hometown_theme_unnamed,
         titlescreen_title_theme
     }
 
@@ -17,7 +21,11 @@ public static class AudioEvents
             Music.s0Tutorial_theme_mariposa => "event:/music1/s0_subway_tutorial/theme_mariposa",
             Music.s0Tutorial_theme_unnamed => "event:/music1/s0_subway_tutorial/theme_unnamed",
             Music.s1Downtown_theme_mariposa => "event:/music1/s1_downtown_city1/theme_mariposa",
-            Music.s1Downtown_theme_unnamed => null,
+            Music.s1Downtown_theme_unnamed => "event:/music1/s1_downtown_city1/theme_unnamed",
+            Music.s2Pier_theme_mariposa => "event:/music1/s2_pier/theme_mariposa",
+            Music.S2Pier_theme_unnamed => "event:/music1/s2_pier/theme_unnamed",
+            Music.s4Hometown_theme_mariposa => "event:/music1/s4_hometown/theme_mariposa",
+            Music.s4Hometown_theme_unnamed => "event:/music1/s4_hometown/theme_unnamed",
             Music.titlescreen_title_theme => "event:/music1/title_screen/title_theme",
             _ => null
         };
@@ -36,7 +44,8 @@ public static class AudioEvents
         s0Tutorial_unnamed,
         s1Downtown_mariposa,
         s1Downtown_unnamed,
-        s4Hometown_mariposa
+        s4Hometown_mariposa,
+        s4Hometown_unnamed
     }
 
     public static string GetPath(this Ambience ambienceEvent)
@@ -48,6 +57,7 @@ public static class AudioEvents
             Ambience.s1Downtown_mariposa => "event:/ambience/s1_downtown_city1/mariposa",
             Ambience.s1Downtown_unnamed => "event:/ambience/s1_downtown_city1/unnamed",
             Ambience.s4Hometown_mariposa => "PLACEHOLDER",
+            Ambience.s4Hometown_unnamed => "PLACEHOLDER",
             _ => null
         };
     }
@@ -68,7 +78,9 @@ public static class AudioEvents
         unnamed_pain,
         unnamed_grapple,
         mariposa_recall,
-        mariposa_send_out
+        mariposa_send_out,
+        squid_activation,
+        squid_footstep
 
     }
 
@@ -90,6 +102,8 @@ public static class AudioEvents
             SFX.unnamed_grapple => "event:/sfx/player/grapple/impact",
             SFX.mariposa_recall => "event:/dialogue/mariposa/recall/ALL",
             SFX.mariposa_send_out => "event:/dialogue/mariposa/send_out/ALL",
+            SFX.squid_activation => "event:/sfx/player/squid/activation",
+            SFX.squid_footstep => "event:/sfx/player/squid/footstep",
             _ => null
         };
     }
