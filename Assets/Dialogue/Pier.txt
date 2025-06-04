@@ -466,6 +466,9 @@ MARIPOSA
 
 # SWITCH to Unnamed’s perspective. 
 
+
+!e switch_sublevels end
+
 # EXT. BROKEN PIER - DAY (?)
 
 
@@ -478,9 +481,17 @@ ________________
 # > Respond
 
 
-!choice1 respond positive_response + 
+!name gig_done_choice
+
+
+UNNAMED
+(neutral)
+...
+
+
+!choice1 response +0
 Respond. 
-!choice2 ignore negative_response - 
+!choice2 dont_respond -0
 Ignore.
 
 

@@ -7,7 +7,6 @@ public class UnlockPipeEvent : MonoBehaviour
     [SerializeField] private InventoryItemSO pipeItemSO;
     [SerializeField] private GameObject pipeVisual;
     [SerializeField] private GameObject pipePickup;
-    [SerializeField] private float duration;
     private float initialY;
     private const float n1 = 7.5625f;
     private const float d1 = 2.75f;
@@ -22,7 +21,7 @@ public class UnlockPipeEvent : MonoBehaviour
         pipeVisual.SetActive(true);
         initialY = pipeVisual.transform.localPosition.y;
         float timer = 0;
-        while (timer < duration)
+        while (timer < 1f)
         {
             yield return null;
             timer += Time.deltaTime;
