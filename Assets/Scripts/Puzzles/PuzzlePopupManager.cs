@@ -72,6 +72,7 @@ public class PuzzlePopupManager : MonoBehaviour
     /// </summary>
     private void ShowPuzzle()
     {
+        if (InGameUI.Instance != null) InGameUI.Instance.InteractPrompt(false);
         if (PlayerController.Instance) PlayerController.Instance.SetMovementLock(true);
         activePuzzle.SetActive(true);
     }
