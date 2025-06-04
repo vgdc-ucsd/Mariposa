@@ -82,6 +82,7 @@ public class DialoguePlayer : MonoBehaviour
         speakerSprites = new Dictionary<string, Sprite>();
         endingEvents = new List<string>();
         awaitingChoice = false;
+        if (InGameUI.Instance) InGameUI.Instance.InteractPrompt(false);
         SetCinematicMode(false);
 
         DialogueWindow.SetActive(true);
