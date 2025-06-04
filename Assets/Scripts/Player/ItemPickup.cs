@@ -39,7 +39,7 @@ public class ItemPickup : Interactable
         if (InventoryManager.Instance != null && item != null)
         {
             InventoryType type;
-            if (controllable is BeeMovement) type = InventoryType.Mariposa;
+            if (controllable is BeeMovement || controllable is SquidMovement) type = InventoryType.Mariposa;
             else if (controllable is PlayerMovement pm)
             {
                 if (pm.Parent.Data.characterID == CharID.Mariposa)
