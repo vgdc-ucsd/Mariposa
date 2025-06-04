@@ -69,7 +69,7 @@ public class DialoguePlayer : MonoBehaviour
         DialogueWindow.SetActive(false);
     }
 
-    public void PlayDialogue(List<DialogueElement> dialogue)
+    public void PlayDialogue(List<DialogueElement> dialogue, bool initAdvance)
     {
         StopAllCoroutines();
         conversation = dialogue;
@@ -104,7 +104,7 @@ public class DialoguePlayer : MonoBehaviour
             advanceIndicator.sprite = unnAdvance;
         }
 
-        AdvanceDialogue();
+        if (initAdvance) AdvanceDialogue();
     }
 
     public void TryAdvanceDialogue()

@@ -44,14 +44,14 @@ public class DialogueManager : Singleton<DialogueManager>
     /// Begins the dialogue sequence with the matching name.
     /// </summary>
     /// <param name="dialogueName">The name of the dialogue sequence as written in the imported files</param>
-    public void PlayDialogue(string dialogueName)
+    public void PlayDialogue(string dialogueName, bool initAdvance = true)
     {
         if (!dialogueDictionary.ContainsKey(dialogueName))
         {
             Debug.LogError($"Could not find dialogue with the name \"{dialogueName}\"! Check that there's no typos and the dialogue file has been loaded!");
             return;
         }
-        dialoguePlayer.PlayDialogue(dialogueDictionary[dialogueName]);
+        dialoguePlayer.PlayDialogue(dialogueDictionary[dialogueName], initAdvance);
     }
 
     public void RegisterEvent(string name, DialogueEvent dialogueEvent)
