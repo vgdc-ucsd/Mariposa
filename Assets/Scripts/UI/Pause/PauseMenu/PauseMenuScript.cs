@@ -133,8 +133,8 @@ public class PauseMenuScript : MonoBehaviour
 
     public void RestartLevel()
     {
-        Time.timeScale = 1.0f;
-        PauseGame();
+        ResumeGame();
+        CloseAllMenus();
         if (LevelManager.Instance == null)
         {
             Debug.LogWarning("Pause manager attempting to restart level but LevelManager not found!");
