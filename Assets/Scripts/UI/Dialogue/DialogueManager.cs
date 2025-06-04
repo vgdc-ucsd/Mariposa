@@ -8,15 +8,8 @@ public class DialogueManager : Singleton<DialogueManager>
 {
     [SerializeField] private DialoguePlayer dialoguePlayer;
 
-    private InputSystem_Actions inputs;
     private Dictionary<string, List<DialogueElement>> dialogueDictionary = new Dictionary<string, List<DialogueElement>>();
     private Dictionary<string, DialogueEvent> eventDictionary = new Dictionary<string, DialogueEvent>();
-
-    public override void Awake()
-    {
-        base.Awake();
-        inputs = new InputSystem_Actions();
-    }
 
     /// <summary>
     /// Loads the dialogue data in the given yaml file.
@@ -86,17 +79,5 @@ public class DialogueManager : Singleton<DialogueManager>
         return dialogueDictionary;
     }
 
-    private void OnEnable()
-    {
-        inputs.Enable();
-        inputs.Player.Interact.started += ctx => dialoguePlayer.TryAdvanceDialogue();
-        inputs.Player.Click.performed += ctx => dialoguePlayer.TryAdvanceDialogue();
-    }
-
-    private void OnDisable()
-    {
-        inputs.Player.Interact.started -= ctx => dialoguePlayer.TryAdvanceDialogue();
-        inputs.Player.Click.performed -= ctx => dialoguePlayer.TryAdvanceDialogue();
-        inputs.Disable();
-    }
+    public void TryAdvanceDialogue() { dialoguePlayer.TryAdvanceDialogue(); }
 }

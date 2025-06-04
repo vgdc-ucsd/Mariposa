@@ -59,6 +59,8 @@ public class PlayerController : MonoBehaviour
         inputs.Player.Ability.started += ctx => SendAbilityDown(ctx);
         inputs.Player.Ability.canceled += ctx => SendAbilityUp(ctx);
         inputs.Player.Jump.performed += ctx => SendJump(ctx);
+        inputs.Player.Interact.started += ctx => SendInteract();
+        inputs.Player.Click.performed += ctx => DialogueManager.Instance.TryAdvanceDialogue();
     }
 
     private void OnDisable()
@@ -66,6 +68,8 @@ public class PlayerController : MonoBehaviour
         inputs.Player.Ability.started -= ctx => SendAbilityDown(ctx);
         inputs.Player.Ability.canceled -= ctx => SendAbilityUp(ctx);
         inputs.Player.Jump.performed -= ctx => SendJump(ctx);
+        inputs.Player.Interact.started -= ctx => SendInteract();
+        inputs.Player.Click.performed -= ctx => DialogueManager.Instance.TryAdvanceDialogue();
         inputs.Disable();
     }
 
@@ -83,7 +87,6 @@ public class PlayerController : MonoBehaviour
     {
         if (ControlledPlayer.Data.characterID == CharID.Mariposa) SwitchTo(CharID.Unnamed);
         else SwitchTo(CharID.Mariposa);
-
     }
 
     public void SwitchTo(CharID character)
@@ -140,14 +143,6 @@ public class PlayerController : MonoBehaviour
         IsLocked = lockMovement;
     }
 
-    private void Update()
-    {
-        // TODO: TEMPORARY AND SHOULD BE REMOVED IN ANY NON-TEST BUILD
-        if (Input.GetKeyDown(KeyCode.Tab)) SwitchCharacters();
-        if (Input.GetKeyDown(KeyCode.E)) SendInteract();
-
-    }
-
     public void SendAbilityDown(InputAction.CallbackContext ctx)
     {
         if (IsLocked) return;
@@ -167,8 +162,12 @@ public class PlayerController : MonoBehaviour
 
     public void SendInteract()
     {
-        if (IsLocked) return;
-        listeners.ForEachReverse(x => x.InteractInputDown());
+        if (!IsLocked)
+        {
+            listeners.ForEachReverse(x => x.InteractInputDown());            
+        }
+
+        DialogueManager.Instance.TryAdvanceDialogue();
     }
 
     private void FixedUpdate()
