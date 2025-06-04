@@ -8,11 +8,14 @@ public class PuzzlePopupManager : MonoBehaviour
     public static PuzzlePopupManager Instance;
 
     private GameObject activePuzzle;
+    private InputSystem_Actions inputs;
+
     public GameObject ActivePuzzle
     {
         get => activePuzzle;
-        set {
-            if(activePuzzle != null) HidePuzzle();
+        set
+        {
+            if (activePuzzle != null) HidePuzzle();
             activePuzzle = value;
             if (activePuzzle != null) ShowPuzzle();
         }
@@ -29,9 +32,11 @@ public class PuzzlePopupManager : MonoBehaviour
             Debug.LogWarning("Tried to create more than one instance of the PuzzleManager singleton!");
             Destroy(this);
         }
+        
+        inputs = new InputSystem_Actions();
     }
 
-    
+
 
     /// <summary>
     /// Try to hide the active puzzle when the player clicks on the screen.
@@ -43,9 +48,9 @@ public class PuzzlePopupManager : MonoBehaviour
 
 
         Collider2D[] collider2Ds = Physics2D.OverlapCircleAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), 0.001f);
-        foreach(Collider2D col in collider2Ds)
+        foreach (Collider2D col in collider2Ds)
         {
-            if(col.gameObject.CompareTag("blocker"))
+            if (col.gameObject.CompareTag("blocker"))
             {
                 Debug.Log("Clicked blocker");
                 Debug.Log(col.gameObject.name);
@@ -74,5 +79,17 @@ public class PuzzlePopupManager : MonoBehaviour
     {
         if (PlayerController.Instance) PlayerController.Instance.SetMovementLock(true);
         activePuzzle.SetActive(true);
+    }
+    
+    private void OnEnable()
+    {
+        inputs.Enable();
+        inputs.Player.DebugCompletePuzzle.performed += ctx => activePuzzle.GetComponent<Puzzle>().OnComplete();
+    }
+
+    private void OnDisable()
+    {
+        inputs.Player.DebugCompletePuzzle.performed -= ctx => activePuzzle.GetComponent<Puzzle>().OnComplete();
+        inputs.Disable();
     }
 }
