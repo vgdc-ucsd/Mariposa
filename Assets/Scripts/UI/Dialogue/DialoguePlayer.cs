@@ -82,7 +82,7 @@ public class DialoguePlayer : MonoBehaviour
         speakerSprites = new Dictionary<string, Sprite>();
         endingEvents = new List<string>();
         awaitingChoice = false;
-        if (InGameUI.Instance) InGameUI.Instance.InteractPrompt(false);
+        if (InGameUI.Instance != null) InGameUI.Instance.InteractPrompt(false);
         SetCinematicMode(false);
 
         DialogueWindow.SetActive(true);
@@ -134,13 +134,14 @@ public class DialoguePlayer : MonoBehaviour
         if (dialogueIndex >= conversation.Count)
         {
             VoicelineManager.Instance.StopAllDialogueAudioEffects(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            DialogueWindow.SetActive(false);
+            if (PlayerController.Instance) PlayerController.Instance.SetMovementLock(false);
 
             foreach (string dialogueEvent in endingEvents)
             {
                 DialogueManager.Instance.TriggerEvent(dialogueEvent);
             }
-            DialogueWindow.SetActive(false);
-            if (PlayerController.Instance) PlayerController.Instance.SetMovementLock(false);
+            
             return;
         }
 
