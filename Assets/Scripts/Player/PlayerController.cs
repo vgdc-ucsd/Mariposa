@@ -155,6 +155,7 @@ public class PlayerController : MonoBehaviour
 
     public void SendAbilityDown(InputAction.CallbackContext ctx)
     {
+        if (IsLocked) return;
         listeners.ForEachReverse(x => x.AbilityInputDown());
     }
 
@@ -165,11 +166,13 @@ public class PlayerController : MonoBehaviour
 
     public void SendJump(InputAction.CallbackContext ctx)
     {
+        if (IsLocked) return;
         listeners.ForEachReverse(x => x.JumpInputDown());
     }
 
     public void SendInteract()
     {
+        if (IsLocked) return;
         listeners.ForEachReverse(x => x.InteractInputDown());
     }
 

@@ -7,12 +7,13 @@ public class PlayerAnimation : MonoBehaviour
 {
     // SpriteRenderer playerSprite;
     Animator animator;
-    [SerializeField] String TerrainTag = "Default";
-    [SerializeField] String FootstepSoundEvent = "event:/sfx/player/footstep";
-    [SerializeField] String JumpSoundEvent = "event:/sfx/player/jump";
-    [SerializeField] String LandSoundEvent = "event:/sfx/player/land";
+    [SerializeField] string TerrainTag = "Default";
+    // NOTE: jump sfx is being handled by PlayerMovement.cs
 
-    Boolean WasRunning;
+    private bool willLand = false;
+    private const float LANDING_VELOCITY_THRESHOLD = -16.0f; // set slightly above the normal velocity when jumping and falling in place (aprox. -14.6)
+    // TODO: should it be set so that jump height triggers landing sfx or slightly above or below it
+
 
     void Start()
     {
@@ -34,14 +35,10 @@ public class PlayerAnimation : MonoBehaviour
 
     void FixedUpdate()
     {
+        PlayLand();
         // at rest
         if (Player.ActivePlayer.Movement.Velocity.sqrMagnitude <= 0.05f)
         {
-            if (WasRunning == true && Player.ActivePlayer.Movement.State == BodyState.OnGround)
-            {
-                PlayFootstep();
-                WasRunning = false;
-            }
             animator.SetBool("isJumping", false);
             animator.SetFloat("xVelocity", 0f);
             animator.SetFloat("yVelocity", 0f);
@@ -54,24 +51,16 @@ public class PlayerAnimation : MonoBehaviour
             animator.SetFloat("xVelocity", 1);
             animator.SetFloat("yVelocity", Player.ActivePlayer.Movement.Velocity.y);
             animator.SetFloat("faceLeft", 1);
-            WasRunning = true;
         }
         else
         {
             animator.SetFloat("xVelocity", 1);
             animator.SetFloat("yVelocity", Player.ActivePlayer.Movement.Velocity.y);
             animator.SetFloat("faceLeft", 0);
-            WasRunning = true;
-        }
-
-        // TODO: Landing is currently playing at the wrong time, waiting on jump animation to be implemented to time with animation change
-        if (Player.ActivePlayer.Movement.State == BodyState.OnGround && Player.ActivePlayer.Movement.Velocity.y < -5)    // if air->ground, play landing sound
-        {
-            //PlayLand();
         }
     }
 
-    String MaterialCheck()
+    private string MaterialCheck()
     {
         //TODO: need to be able to check what is on the ground
         // will be held off until later implementation of terrain checks
@@ -86,11 +75,12 @@ public class PlayerAnimation : MonoBehaviour
         }
     }
 
+    // function is called in the animator to match visual to audio
     public void PlayFootstep()
     {
         if (Player.ActivePlayer.Movement.State == BodyState.OnGround)
         {
-            EventInstance footstepInstance = RuntimeManager.CreateInstance(FootstepSoundEvent);
+            EventInstance footstepInstance = RuntimeManager.CreateInstance(AudioEvents.SFX.player_footstep.GetPath());
             footstepInstance.setParameterByNameWithLabel("Terrain", MaterialCheck());
             footstepInstance.start();
             footstepInstance.release();
@@ -99,8 +89,15 @@ public class PlayerAnimation : MonoBehaviour
 
     public void PlayLand()
     {
-        EventInstance footstepInstance = RuntimeManager.CreateInstance(LandSoundEvent);
-        footstepInstance.start();
-        footstepInstance.release();
+        if (Player.ActivePlayer.Movement.State == BodyState.InAir && Player.ActivePlayer.Movement.Velocity.y <= LANDING_VELOCITY_THRESHOLD)
+        {
+            //Debug.Log(Player.ActivePlayer.Movement.Velocity.y);
+            willLand = true;
+        }
+        else if (Player.ActivePlayer.Movement.State == BodyState.OnGround && willLand)
+        {
+            RuntimeManager.PlayOneShot(AudioEvents.SFX.player_landing.GetPath());
+            willLand = false;
+        }
     }
 }

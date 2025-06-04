@@ -152,6 +152,12 @@
 
         SquidMovement.Instance.gameObject.SetActive(false);
         PlayerController.Instance.IsSquidUnlocked = false;     
+        // Tell audio managers to change audio if PlayOnLoad is on in the current sublevel
+        if (GetCurrentSublevel().PlayOnLoad)
+        {
+            MusicManager.Instance.ChangeMusic(MusicManager.Instance.GetMusicToCurrentSublevel(), GetCurrentSublevel().MusicTransitionDuration);
+            AmbienceManager.Instance.ChangeAmbience(AmbienceManager.Instance.GetAmbienceToCurrentSublevel());
+        }
     }
 
         public void ResetEnemies()
