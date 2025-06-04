@@ -645,14 +645,26 @@ gig_done:
   Background: 
   FromRadio: 
   Sounds: []
+  Events:
+  - EventName: switch_sublevels
+    TriggerAtEnd: true
+  Choice1: 
+  Choice2: 
+gig_done_choice:
+- Speaker: Unnamed
+  Line: '...'
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
   Events: []
   Choice1:
     Response: Respond.
-    LinkedDialogue: 
+    LinkedDialogue: response
     Friendship: 0
   Choice2:
     Response: Ignore.
-    LinkedDialogue: 
+    LinkedDialogue: dont_respond
     Friendship: 0
 response:
 - Speaker: Unnamed
