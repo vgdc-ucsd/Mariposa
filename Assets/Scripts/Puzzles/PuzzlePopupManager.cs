@@ -63,6 +63,7 @@ public class PuzzlePopupManager : MonoBehaviour
     /// </summary>
     private void HidePuzzle()
     {
+        if (PlayerController.Instance) PlayerController.Instance.SetMovementLock(false);
         activePuzzle.SetActive(false);
     }
 
@@ -71,6 +72,7 @@ public class PuzzlePopupManager : MonoBehaviour
     /// </summary>
     private void ShowPuzzle()
     {
+        if (PlayerController.Instance) PlayerController.Instance.SetMovementLock(true);
         activePuzzle.SetActive(true);
     }
 }
