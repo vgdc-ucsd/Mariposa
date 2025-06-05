@@ -157,7 +157,7 @@ public class LevelManager : MonoBehaviour, IDataPersistence
             AmbienceManager.Instance.ChangeAmbience(AmbienceManager.Instance.GetAmbienceToCurrentSublevel());
         }
 
-        SquidMovement.Instance.gameObject.SetActive(false);
+        SquidMovement.Instance?.gameObject.SetActive(false);
         PlayerController.Instance.IsSquidUnlocked = false;
     }
 
