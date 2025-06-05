@@ -89,7 +89,7 @@ public class VoicelineManager : Singleton<VoicelineManager>
             "Earthquake Full Shortened" => "",
 
             "fix_radio" => "",
-            "radio-clip3-novoices" => "",              // they wanted a shorter radio clip
+            "radio-clip3-novoices" => "event:/sfx/item/radio/static_dialogue",              // they wanted a shorter radio clip
 
             // Default
             _ => ""
