@@ -49,7 +49,10 @@ public class BeeControlAbility : MonoBehaviour, IAbility
                 RuntimeManager.PlayOneShot(AudioEvents.SFX.mariposa_send_out.GetPath());
                 playSendOutSFX = false;
             }
-            BeeFlap.start();
+            if (!PlayerController.Instance.IsSquidUnlocked)
+            {
+                BeeFlap.start();                
+            }
         }
         else
         {
