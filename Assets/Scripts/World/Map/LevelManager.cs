@@ -1,24 +1,24 @@
-    using UnityEngine;
-    using System.Collections;
-    using NUnit.Framework;
-    using UnityEngine.SceneManagement;
-    using System.Collections.Generic;
-    using System.Linq;
-    using Unity.VisualScripting;
+using UnityEngine;
+using System.Collections;
+using NUnit.Framework;
+using UnityEngine.SceneManagement;
+using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 
-    public class LevelManager : MonoBehaviour, IDataPersistence
-    {
-        public static LevelManager Instance;
+public class LevelManager : MonoBehaviour, IDataPersistence
+{
+    public static LevelManager Instance;
 
-        public Level CurrentLevel;
-        public string NextLevelName;
-        public int SublevelIndex { get; private set; }
+    public Level CurrentLevel;
+    public string NextLevelName;
+    public int SublevelIndex { get; private set; }
 
-        public List<Enemy> ActiveEnemies;
-        public List<BreakablePlatform> Breakables;
+    public List<Enemy> ActiveEnemies;
+    public List<BreakablePlatform> Breakables;
 
 
-        private void Awake()
+    private void Awake()
     {
         if (Instance != null && Instance != this)
         {
@@ -43,57 +43,57 @@
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
-        
-        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-        {
-            FadeController.Instance.FadeIn();
 
-            if (scene.name == NextLevelName)
-            {
-                StartCoroutine(InitSublevelDelayed());
-            }
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        FadeController.Instance.FadeIn();
+
+        if (scene.name == NextLevelName)
+        {
+            StartCoroutine(InitSublevelDelayed());
         }
-        
-        private IEnumerator InitSublevelDelayed()
+    }
+
+    private IEnumerator InitSublevelDelayed()
+    {
+        while (
+            FindObjectOfType<Level>() == null ||
+            Player.ActivePlayer == null ||
+            CameraController.ActiveCamera == null
+        )
+            yield return null;
+
+        yield return null;
+
+        CurrentLevel = FindObjectOfType<Level>();
+        SublevelIndex = 0;
+
+        foreach (var sl in CurrentLevel.Sublevels) sl.Unload();
+        CurrentLevel.LoadSublevel(SublevelIndex);
+        InitSublevel();
+    }
+
+    private void Start()
+    {
+        InitSublevel();
+    }
+
+
+    private void Update()
+    {
+        // Swap worlds when the "F" key is pressed
+        if (Input.GetKeyDown(KeyCode.F))
         {
-            while (
-                FindObjectOfType<Level>() == null ||
-                Player.ActivePlayer == null ||
-                CameraController.ActiveCamera == null
-            )
-                yield return null;
-
-            yield return null;  
-
-            CurrentLevel = FindObjectOfType<Level>();
-            SublevelIndex = 0;
-
-            foreach (var sl in CurrentLevel.Sublevels) sl.Unload();
-            CurrentLevel.LoadSublevel(SublevelIndex);
-            InitSublevel();
-        }
-        
-        private void Start()
-        {
-            InitSublevel();
-        }
-        
-
-        private void Update()
-        {
-            // Swap worlds when the "F" key is pressed
-            if (Input.GetKeyDown(KeyCode.F))
-            {
-                GoToNextSublevel();
-            }
-
-            if (Input.GetKeyDown(KeyCode.M))
-            {
-                LoadNextLevel();
-            }
+            GoToNextSublevel();
         }
 
-        private Sublevel GetCurrentSublevel() => CurrentLevel.Sublevels[SublevelIndex];
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            LoadNextLevel();
+        }
+    }
+
+    private Sublevel GetCurrentSublevel() => CurrentLevel.Sublevels[SublevelIndex];
 
     public void GoToNextSublevel()
     {
@@ -105,18 +105,18 @@
 
     }
 
-        public void GoToPreviousLevel()
+    public void GoToPreviousLevel()
+    {
+        CurrentLevel.UnloadSublevel(SublevelIndex);
+        SublevelIndex--;
+        if (SublevelIndex <= 0)
         {
-            CurrentLevel.UnloadSublevel(SublevelIndex);
-            SublevelIndex--;
-            if (SublevelIndex <= 0)
-            {
-                Debug.LogWarning("no previous level; looping");
-                SublevelIndex += CurrentLevel.Sublevels.Length;
-            }
-            CurrentLevel.LoadSublevel(SublevelIndex);
-            InitSublevel();
+            Debug.LogWarning("no previous level; looping");
+            SublevelIndex += CurrentLevel.Sublevels.Length;
         }
+        CurrentLevel.LoadSublevel(SublevelIndex);
+        InitSublevel();
+    }
 
     public void InitSublevel()
     {
@@ -150,57 +150,58 @@
         ResetEnemies();
         ResetBreakables();
 
-        SquidMovement.Instance.gameObject.SetActive(false);
-        PlayerController.Instance.IsSquidUnlocked = false;     
         // Tell audio managers to change audio if PlayOnLoad is on in the current sublevel
         if (GetCurrentSublevel().PlayOnLoad)
         {
             MusicManager.Instance.ChangeMusic(MusicManager.Instance.GetMusicToCurrentSublevel(), GetCurrentSublevel().MusicTransitionDuration);
             AmbienceManager.Instance.ChangeAmbience(AmbienceManager.Instance.GetAmbienceToCurrentSublevel());
         }
+
+        SquidMovement.Instance.gameObject.SetActive(false);
+        PlayerController.Instance.IsSquidUnlocked = false;
     }
 
-        public void ResetEnemies()
+    public void ResetEnemies()
+    {
+        foreach (Enemy enemy in ActiveEnemies)
         {
-            foreach (Enemy enemy in ActiveEnemies)
-            {
-                enemy.Init();
-            }
+            enemy.Init();
         }
-        
-        public void ResetBreakables()
-        {
-            foreach (BreakablePlatform platform in Breakables)
-            {
-                platform.Reset();
-            }
-        }
+    }
 
-        public void LoadNextLevel()
+    public void ResetBreakables()
+    {
+        foreach (BreakablePlatform platform in Breakables)
+        {
+            platform.Reset();
+        }
+    }
+
+    public void LoadNextLevel()
     {
         SceneManager.LoadScene(NextLevelName);
         // Scene nextLevel = SceneManager.GetSceneByName(NextLevelName);
     }
-        
-        public void SaveData(ref GameData data)
-        {
-            data.currentSublevelIndex = SublevelIndex;
-            data.nextLevelScene       = NextLevelName;
-        }
-        
-        public void LoadData(GameData data)
-        {
-            SublevelIndex  = data.currentSublevelIndex;
-            NextLevelName  = data.nextLevelScene;
-        }
-        
-        private void CompleteLevel()
-        {
-            SublevelIndex = 0;
-            DataPersistenceManager.Instance.SaveGame(DataPersistenceManager.Instance.fileName);
-            FadeController.Instance.FadeOutAndDo(() =>
-            {
-                SceneManager.LoadScene(NextLevelName);
-            });
-        }
+
+    public void SaveData(ref GameData data)
+    {
+        data.currentSublevelIndex = SublevelIndex;
+        data.nextLevelScene = NextLevelName;
     }
+
+    public void LoadData(GameData data)
+    {
+        SublevelIndex = data.currentSublevelIndex;
+        NextLevelName = data.nextLevelScene;
+    }
+
+    private void CompleteLevel()
+    {
+        SublevelIndex = 0;
+        DataPersistenceManager.Instance.SaveGame(DataPersistenceManager.Instance.fileName);
+        FadeController.Instance.FadeOutAndDo(() =>
+        {
+            SceneManager.LoadScene(NextLevelName);
+        });
+    }
+}

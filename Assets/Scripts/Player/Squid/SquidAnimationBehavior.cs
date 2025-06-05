@@ -1,3 +1,4 @@
+using FMODUnity;
 using UnityEngine;
 
 public class SquidAnimationBehavior : MonoBehaviour
@@ -61,5 +62,10 @@ public class SquidAnimationBehavior : MonoBehaviour
             animator.SetBool("isMoving", true);
             wasRunning = true;
         }
+    }
+
+    public void PlaySquidFootstep()
+    {
+        RuntimeManager.PlayOneShot(AudioEvents.SFX.squid_footstep.GetPath());
     }
 }
