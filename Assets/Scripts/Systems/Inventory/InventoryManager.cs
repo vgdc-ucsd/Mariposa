@@ -10,6 +10,7 @@ public enum InventoryType
 
 public class InventoryManager : Singleton<InventoryManager>
 {
+    [SerializeField] private InventoryUIManager ui;
     private Inventory mariposaInventory;
     private Inventory unnamedInventory;
 
@@ -22,6 +23,16 @@ public class InventoryManager : Singleton<InventoryManager>
 
     public void OpenInventory(bool open)
     {
-        
+        if (Player.ActivePlayer.Character.Id == CharID.Mariposa)
+        {
+
+        }
+        //ui.OpenInventory()
+    }
+
+    public Inventory GetInventory()
+    {
+        if (Player.ActivePlayer.Character.Id == CharID.Mariposa) return mariposaInventory;
+        else return unnamedInventory;
     }
 }

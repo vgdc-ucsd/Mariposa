@@ -13,12 +13,12 @@ public class InventoryUISlot : MonoBehaviour
     [SerializeField] private Image slotBackgroundImage;
     [SerializeField] private Image permaSlotImage;
 
-    private InventoryItemSO currentItem;            
+    private ItemData currentItem;            
     private int currentCount;                       
     
-    public System.Action<InventoryItemSO> OnSlotClicked;
+    public System.Action<ItemData> OnSlotClicked;
     
-    public void SetSlot(InventoryItemSO item, int count)
+    public void SetSlot(ItemData item, int count)
     {
         currentItem = item;
         currentCount = count;

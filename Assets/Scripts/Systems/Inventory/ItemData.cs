@@ -9,7 +9,7 @@ public enum InventoryItemType
 
 
 [CreateAssetMenu(fileName = "InventoryItem", menuName = "InventoryItem")]
-public class InventoryItemSO : ScriptableObject
+public class ItemData : ScriptableObject
 {
 	public string Name;
 	public string FlavorText;

@@ -76,7 +76,7 @@ public class InventoryUIManager : MonoBehaviour
         }
     }
 
-    private void OnSlotClicked(InventoryItemSO item)
+    private void OnSlotClicked(ItemData item)
     {
         if (centerItemIcon != null)
         {

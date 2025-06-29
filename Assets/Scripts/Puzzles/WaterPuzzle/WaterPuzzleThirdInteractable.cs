@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class WaterPuzzleThirdInteractable : PuzzleInteractable
 {
-    [SerializeField] private InventoryItemSO pipeItemSO;
+    [SerializeField] private ItemData pipeItemSO;
     private bool isUnlocked = false;
 
     public override void OnInteract(IControllable controllable)
     {
-        if (InventoryManager.Instance.TryConsumeItem(InventoryType.Mariposa, pipeItemSO.ID) || isUnlocked)
+        if (InventoryManager.Instance.GetInventory().TryConsumeItem(pipeItemSO) || isUnlocked)
         {
             isUnlocked = true;
             base.OnInteract(controllable);

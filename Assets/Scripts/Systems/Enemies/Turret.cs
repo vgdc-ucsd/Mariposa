@@ -89,11 +89,11 @@ public class Turret : MonoBehaviour
             {
                 hasBattery = false;
                 bodyPart.GetComponent<SpriteRenderer>().color = Color.gray;
-                InventoryManager.Instance.AddItem(InventoryType.Mariposa, batteryItem);
+                InventoryManager.Instance.GetInventory().AddItem(batteryItem);
             }
             else
             {
-                InventoryManager.Instance.DeleteItem(InventoryType.Mariposa, batteryItem);
+                InventoryManager.Instance.GetInventory().TryConsumeItem(batteryItem);
                 hasBattery = true;
                 bodyPart.GetComponent<SpriteRenderer>().color = Color.green;
             }

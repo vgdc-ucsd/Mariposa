@@ -13,6 +13,10 @@ public class StateMachine<T>
     public StateMachine(T initState)
     {
         state = initState;
+        onEnterActions = new Dictionary<T, Action>();
+        onExitActions = new Dictionary<T, Action>();
+        transitions = new HashSet<Tuple<T, T>>();
+        transitionActions = new Dictionary<Tuple<T, T>, Action>();
     }
 
     public T GetState() { return state; }
