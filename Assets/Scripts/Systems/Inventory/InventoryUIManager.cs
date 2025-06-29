@@ -92,7 +92,7 @@ public class InventoryUIManager : MonoBehaviour
 
     public void PopulateInventory()
     {
-        foreach (var slot in toolsSlots)
+        /* foreach (var slot in toolsSlots)
             slot.SetSlot(null, 0);
         foreach (var slot in mementosSlots)
             slot.SetSlot(null, 0);
@@ -123,7 +123,7 @@ public class InventoryUIManager : MonoBehaviour
                 mementosSlots[rightSlotIndex].SetSlot(kvp.Key, kvp.Value);
                 rightSlotIndex++;
             }
-        }
+        } */
     }
 
     public void OpenInventory()

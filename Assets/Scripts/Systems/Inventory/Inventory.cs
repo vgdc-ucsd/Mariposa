@@ -1,30 +1,9 @@
 using UnityEngine;
-using System.Collections.Generic;
-using TMPro;
 
-public enum InventoryType
+public class Inventory
 {
-    Mariposa,
-    Unnamed,
-}
 
-public class InventoryManager : Singleton<InventoryManager>
-{
-    /// <summary>
-    /// REWRITE THIS PART
-    /// </summary>
-    private Dictionary<InventoryType, Dictionary<InventoryItemSO, int>> inventories = new Dictionary<InventoryType, Dictionary<InventoryItemSO, int>>();
-    [SerializeField] private TextMeshProUGUI batteryCounterText;
-
-    public override void Awake()
-    {
-        base.Awake();
-        // Initialize separate inventories for each type
-        inventories[InventoryType.Mariposa] = new Dictionary<InventoryItemSO, int>();
-        inventories[InventoryType.Unnamed] = new Dictionary<InventoryItemSO, int>();
-    }
-
-    /// <summary>
+   /*  /// <summary>
     /// Adds item to inventory
     /// </summary>
     /// <param name="type"></param>
@@ -120,41 +99,9 @@ public class InventoryManager : Singleton<InventoryManager>
         return false;
     }
 
-    /**
-     * Saving and loading from game data
-     */
-
-    /// <summary>
-    /// Loads the last saved game data from the GameData object
-    /// </summary>
-    /// <param name="data">GameData object</param>
-    public void LoadData(GameData data)
-    {
-
-    }
-
-    /// <summary>
-	/// Writes the current inventory to the GameData object
-	/// </summary>
-	/// <param name="data">GameData object</param>
-    public void SaveData(ref GameData data)
-    {
-
-    }
-
-    /*
-    private void UpdateBatteryUI()
-    {
-        if (batteryCounterText != null)
-        {
-            int count = GetItemCount(InventoryType.Mariposa, BatteryItem.Instance);
-            batteryCounterText.text = $"Batteries: {count}";
-        }
-    }
-    */
-
     public Dictionary<InventoryItemSO, int> GetAllItems(InventoryType type)
     {
         return inventories[type];
     }
-}
+*/
+} 
