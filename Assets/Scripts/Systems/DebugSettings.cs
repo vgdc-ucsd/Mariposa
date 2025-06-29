@@ -7,6 +7,7 @@ public class DebugSettings
     [SerializeField] private bool playerDebug = false;
     [SerializeField] private bool respawnDebug = false;
     [SerializeField] private bool audioDebug = false;
+    [SerializeField] private bool puzzleDebug = false;
 
     public bool GetPlayerDebug()
     {
@@ -21,5 +22,10 @@ public class DebugSettings
     public bool GetAudioDebug()
     {
         return enableDebug && audioDebug;
+    }
+
+    public bool GetPuzzleDebug()
+    {
+        return enableDebug && puzzleDebug;
     }
 }

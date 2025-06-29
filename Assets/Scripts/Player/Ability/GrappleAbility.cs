@@ -65,7 +65,7 @@ public class GrappleAbility : MonoBehaviour, IAbility
 
     private void Start()
     {
-        grappleTargets = FindObjectsByType<GrappleTarget>(FindObjectsSortMode.None).ToList();
+        UpdateGrappleTargets();
         hookProjectile.transform.SetParent(transform.parent);
     }
 
@@ -288,9 +288,7 @@ public class GrappleAbility : MonoBehaviour, IAbility
 
     private void PlayGrappleThrow()
     {
-        EventInstance footstepInstance = RuntimeManager.CreateInstance("event:/sfx/player/grapple/impact");
-        footstepInstance.start();
-        footstepInstance.release();
+        RuntimeManager.PlayOneShot(AudioEvents.SFX.unnamed_grapple.GetPath());
     }
 
     private void ChangeGrappleState(GrappleState newState)
@@ -316,5 +314,9 @@ public class GrappleAbility : MonoBehaviour, IAbility
     public void RemoveGrappleTarget(GrappleTarget target)
     {
         grappleTargets.Remove(target);
+    }
+    public void UpdateGrappleTargets()
+    {
+        grappleTargets = FindObjectsByType<GrappleTarget>(FindObjectsSortMode.None).ToList();
     }
 }

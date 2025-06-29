@@ -39,7 +39,7 @@ public class Settings : Singleton<Settings>
         if (ResetAudioValues != null)
         {
             ResetAudioValues.Invoke();
-            audioSetting.ResetVolumeSettings();
+            audioSetting.SetToDefaultVolume();
         }
         else
         {
@@ -110,23 +110,23 @@ public class Settings : Singleton<Settings>
 
     private void initializeVolumeSettings()
     {
-        MasterVolume = transform.Find("MasterVolume").gameObject.AddComponent<VolumeControl>();
+        MasterVolume = MasterSlider.gameObject.AddComponent<VolumeControl>();
         MasterVolume.Initialize(MasterSlider, "bus:/");
         MasterVolume.StartControl();
 
-        MusicVolume = transform.Find("MusicVolume").gameObject.AddComponent<VolumeControl>();
+        MusicVolume = MusicSlider.gameObject.AddComponent<VolumeControl>();
         MusicVolume.Initialize(MusicSlider, "bus:/Music", "event:/test/music");
         MusicVolume.StartControl();
 
-        SFXVolume = transform.Find("SFXVolume").gameObject.AddComponent<VolumeControl>();
+        SFXVolume = SFXSlider.gameObject.AddComponent<VolumeControl>();
         SFXVolume.Initialize(SFXSlider, "bus:/SFX", "event:/test/sfx");
         SFXVolume.StartControl();
 
-        DialogueVolume = transform.Find("DialogueVolume").gameObject.AddComponent<VolumeControl>();
+        DialogueVolume = DialogueSlider.gameObject.AddComponent<VolumeControl>();
         DialogueVolume.Initialize(DialogueSlider, "bus:/Dialogue", "event:/test/dialogue");
         DialogueVolume.StartControl();
 
-        AmbienceVolume = transform.Find("AmbienceVolume").gameObject.AddComponent<VolumeControl>();
+        AmbienceVolume = AmbienceSlider.gameObject.AddComponent<VolumeControl>();
         AmbienceVolume.Initialize(AmbienceSlider, "bus:/Ambience", "event:/test/ambience");
         AmbienceVolume.StartControl();
     }

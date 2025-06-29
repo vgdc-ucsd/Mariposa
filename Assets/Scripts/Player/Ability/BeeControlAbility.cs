@@ -1,17 +1,24 @@
 using UnityEngine;
 using FMODUnity;
 using FMOD.Studio;
+using FMOD;
 
 public class BeeControlAbility : MonoBehaviour, IAbility
 {
     public Bee BeeRef;
     EventInstance BeeFlap;
+    private bool playSendOutSFX = true;
 
 
     public void Update()
     {
         if (Input.GetKeyDown(KeyCode.R))
         {
+            if (Bee.Instance.Movement.CurrentBehavior is not Follow && !Bee.Instance.IsControlled)
+            {
+                RuntimeManager.PlayOneShot(AudioEvents.SFX.mariposa_recall.GetPath());
+                playSendOutSFX = true;
+            }
             BeeRef.StartFollow();
         }
     }
@@ -31,26 +38,33 @@ public class BeeControlAbility : MonoBehaviour, IAbility
     {
         if (BeeRef == null)
         {
-            Debug.LogError("Bee is not assigned");
+            UnityEngine.Debug.LogError("Bee is not assigned");
             return;
         }
         if (!BeeRef.IsControlled)
         {
             BeeRef.ToggleControl(true);
-            RuntimeManager.PlayOneShot("event:/sfx/player/bee/deploy");
-            BeeFlap.start();
+            if (playSendOutSFX)
+            {
+                RuntimeManager.PlayOneShot(AudioEvents.SFX.mariposa_send_out.GetPath());
+                playSendOutSFX = false;
+            }
+            if (!PlayerController.Instance.IsSquidUnlocked)
+            {
+                BeeFlap.start();                
+            }
         }
         else
         {
             BeeRef.ToggleControl(false);
-            RuntimeManager.PlayOneShot("event:/sfx/player/bee/recall");
+            RuntimeManager.PlayOneShot(AudioEvents.SFX.bee_recall.GetPath());
             BeeFlap.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         }
     }
 
     private void Start()
     {
-        BeeFlap = RuntimeManager.CreateInstance("event:/sfx/player/bee/flap");
+        BeeFlap = RuntimeManager.CreateInstance(AudioEvents.SFX.bee_flap.GetPath());
     }
 
     public void TurnOffBeeFlap()

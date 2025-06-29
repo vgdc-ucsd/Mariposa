@@ -7,6 +7,6 @@ public abstract class NPC : Interactable
 
 	public override void OnInteract(IControllable controllable)
 	{
-		DialogueManager.Instance.PlayDialogue(GetDialogue());
+		DialogueManager.Instance.PlayDialogue(GetDialogue(), false);
 	}
 }

@@ -26,6 +26,11 @@ public class AudioSetting : MonoBehaviour
 
     public void ResetVolumeSettings()
     {
+        Settings.Instance.ResetVolumeSettings();
+    }
+
+    public void SetToDefaultVolume()
+    {
         SfxSlider.value = defaultSFXVolumeValue;
         MusicSlider.value = defaultMusicVolumeValue;
         MasterSlider.value = defaultMasterVolumeValue;
