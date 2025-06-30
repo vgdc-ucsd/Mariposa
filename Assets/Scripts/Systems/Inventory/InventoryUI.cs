@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
 
-public class InventoryUIManager : MonoBehaviour
+public class InventoryUI : MonoBehaviour
 {
     [Header("Panels & Buttons")]
     [SerializeField] private GameObject inventoryPanel;
@@ -41,9 +41,7 @@ public class InventoryUIManager : MonoBehaviour
     [SerializeField] private Image inventoryBackgroundImage;
     [SerializeField] private Image infoPanelImage;
 
-    private bool isOpen = false;
-
-    private void Awake()
+/*     private void Awake()
     {
         if (closeButton != null)
             closeButton.onClick.AddListener(CloseInventory);
@@ -58,24 +56,7 @@ public class InventoryUIManager : MonoBehaviour
         if (centerItemDescription != null)
             centerItemDescription.text = "";    
     }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-            if (inventoryPanel.activeSelf)
-            {
-                Debug.Log("invevntory close");
-                CloseInventory();
-            }
-            else
-            {
-                Debug.Log("invevntory open");
-                OpenInventory();
-            }
-        }
-    }
-
+ */
     private void OnSlotClicked(ItemData item)
     {
         if (centerItemIcon != null)
@@ -128,20 +109,14 @@ public class InventoryUIManager : MonoBehaviour
 
     public void OpenInventory()
     {
-        isOpen = true;
-        inventoryPanel.SetActive(true);
-        if (toolsPanel != null)
-            toolsPanel.SetActive(true);
-        if (mementosPanel != null)
-            mementosPanel.SetActive(true);
-        UpdateUITheme();
+        gameObject.SetActive(true);
+        //UpdateUITheme();
         PopulateInventory();
     }
 
-    private void CloseInventory()
+    public void CloseInventory()
     {
-        isOpen = false;
-        inventoryPanel.SetActive(false);
+        gameObject.SetActive(false);
     }
     
     public void SetActiveCharacterInventory(InventoryType newActive)

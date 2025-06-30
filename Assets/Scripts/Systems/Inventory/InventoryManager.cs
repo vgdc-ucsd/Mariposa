@@ -10,7 +10,8 @@ public enum InventoryType
 
 public class InventoryManager : Singleton<InventoryManager>
 {
-    [SerializeField] private InventoryUIManager ui;
+    [SerializeField] private InventoryUI mariposaUI;
+    [SerializeField] private InventoryUI unnamedUI;
     private Inventory mariposaInventory;
     private Inventory unnamedInventory;
 
@@ -19,20 +20,29 @@ public class InventoryManager : Singleton<InventoryManager>
         // TODO load inventory data
         mariposaInventory = new Inventory();
         unnamedInventory = new Inventory();
+
+        GameManager.Instance.RegisterStartAction(GameState.INVENTORY, EnterInventory);
+        GameManager.Instance.RegisterExitAction(GameState.INVENTORY, ExitInventory);
+
+        ExitInventory();
     }
 
-    public void OpenInventory(bool open)
+    private void EnterInventory()
     {
-        if (Player.ActivePlayer.Character.Id == CharID.Mariposa)
-        {
+        Time.timeScale = 0.0f;
+        if (Player.ActivePlayer.Data.characterID == CharID.Mariposa) mariposaUI.OpenInventory();
+        else unnamedUI.OpenInventory();
+    }
 
-        }
-        //ui.OpenInventory()
+    private void ExitInventory()
+    {
+        mariposaUI.CloseInventory();
+        unnamedUI.CloseInventory();
     }
 
     public Inventory GetInventory()
     {
-        if (Player.ActivePlayer.Character.Id == CharID.Mariposa) return mariposaInventory;
+        if (Player.ActivePlayer.Data.characterID == CharID.Mariposa) return mariposaInventory;
         else return unnamedInventory;
     }
 }
