@@ -100,14 +100,34 @@ public class InventoryManager : Singleton<InventoryManager>
         }
     }
 
+    /// <summary>
+    /// Tries to use an item from inventory by ID
+    /// </summary>
+    /// <param name="type"></param>
+    /// <param name="id">Item ID</param>
+    /// <returns>True if item used successfully, false if item not found<\returns>
+    public bool TryConsumeItem(InventoryType type, uint id)
+    {
+        var inv = inventories[type];
+        foreach (InventoryItemSO item in new List<InventoryItemSO>(inv.Keys))
+        {
+            if (item.ID == id)
+            {
+                inv.Remove(item);
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * Saving and loading from game data
      */
 
     /// <summary>
-	/// Loads the last saved game data from the GameData object
-	/// </summary>
-	/// <param name="data">GameData object</param>
+    /// Loads the last saved game data from the GameData object
+    /// </summary>
+    /// <param name="data">GameData object</param>
     public void LoadData(GameData data)
     {
 

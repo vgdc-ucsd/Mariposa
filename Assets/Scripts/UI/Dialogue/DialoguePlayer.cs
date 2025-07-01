@@ -9,7 +9,7 @@ public class DialoguePlayer : MonoBehaviour
 {
     // object references
     public GameObject DialogueWindow;
-    
+
     [SerializeField] private TMP_Text speakerTarget;
     [SerializeField] private TMP_Text lineTarget;
 
@@ -22,8 +22,6 @@ public class DialoguePlayer : MonoBehaviour
     [SerializeField] private Sprite unnNameplate;
 
     [SerializeField] private Image portraitBG;
-    [SerializeField] private Sprite mariBG;
-    [SerializeField] private Sprite unnBG;
 
     [SerializeField] private Image radio;
     [SerializeField] private Sprite mariRadio;
@@ -71,7 +69,7 @@ public class DialoguePlayer : MonoBehaviour
         DialogueWindow.SetActive(false);
     }
 
-    public void PlayDialogue(List<DialogueElement> dialogue)
+    public void PlayDialogue(List<DialogueElement> dialogue, bool initAdvance)
     {
         StopAllCoroutines();
         conversation = dialogue;
@@ -84,10 +82,11 @@ public class DialoguePlayer : MonoBehaviour
         speakerSprites = new Dictionary<string, Sprite>();
         endingEvents = new List<string>();
         awaitingChoice = false;
+        if (InGameUI.Instance != null) InGameUI.Instance.InteractPrompt(false);
         SetCinematicMode(false);
 
         DialogueWindow.SetActive(true);
-        if(PlayerController.Instance) PlayerController.Instance.SetMovementLock(true);
+        if (PlayerController.Instance) PlayerController.Instance.SetMovementLock(true);
 
         // check if Mariposa currently active
         if (!PlayerController.Instance || Player.ActivePlayer.Data.characterID == CharID.Mariposa)
@@ -105,7 +104,7 @@ public class DialoguePlayer : MonoBehaviour
             advanceIndicator.sprite = unnAdvance;
         }
 
-        AdvanceDialogue();
+        if (initAdvance) AdvanceDialogue();
     }
 
     public void TryAdvanceDialogue()
@@ -134,14 +133,19 @@ public class DialoguePlayer : MonoBehaviour
         // check if conversation ended
         if (dialogueIndex >= conversation.Count)
         {
+            VoicelineManager.Instance.StopAllDialogueAudioEffects(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            DialogueWindow.SetActive(false);
+            if (PlayerController.Instance) PlayerController.Instance.SetMovementLock(false);
+
             foreach (string dialogueEvent in endingEvents)
             {
                 DialogueManager.Instance.TriggerEvent(dialogueEvent);
             }
-            DialogueWindow.SetActive(false);
-            if(PlayerController.Instance) PlayerController.Instance.SetMovementLock(false);
+            
             return;
         }
+
+        VoicelineManager.Instance.StopAllDialogueAudioEffects(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
 
         DialogueElement element = conversation[dialogueIndex];
 
@@ -158,11 +162,13 @@ public class DialoguePlayer : MonoBehaviour
         // Play the dialogue
         foreach (string sound in element.Sounds)
         {
-            // TODO
+            // removes ".wav" from end of sound string
+            string formatted = Regex.Replace(sound, @"\.wav$", "", RegexOptions.IgnoreCase);
+            VoicelineManager.Instance.PlayDialogueAudioEffect(formatted);
         }
 
         foreach (DialogueEventElement dialogueEvent in element.Events)
-        {            
+        {
             if (dialogueEvent.triggerAtEnd)
             {
                 endingEvents.Add(dialogueEvent.eventName);
@@ -217,7 +223,7 @@ public class DialoguePlayer : MonoBehaviour
         }
 
         lineTarget.text = conversation[dialogueIndex].Line;
-        speakerTarget.text = speaker; 
+        speakerTarget.text = speaker;
         StartCoroutine(TypewriterEffect());
     }
 
@@ -247,7 +253,7 @@ public class DialoguePlayer : MonoBehaviour
         advanceIndicator.gameObject.SetActive(false);
         finishedTypewriter = false;
         int length = taglessText.Length;
-        
+
         int i = 0;
         lineTarget.maxVisibleCharacters = i;
         while (i < length)

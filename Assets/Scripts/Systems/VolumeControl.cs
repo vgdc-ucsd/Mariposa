@@ -3,8 +3,9 @@ using UnityEngine.UI;
 using FMODUnity;
 using System;
 using FMOD.Studio;
+using UnityEngine.EventSystems;
 
-public class VolumeControl : MonoBehaviour
+public class VolumeControl : MonoBehaviour, IPointerUpHandler
 {
     [SerializeField] private Slider VolumeSlider;
     [SerializeField] private string VolumeBusPath;
@@ -15,8 +16,10 @@ public class VolumeControl : MonoBehaviour
     private Bus VolumeBus;
     private EventInstance testAudio;
     [SerializeField] private float testAudioTimer = -1.0f;
+    private const float TEST_AUDIO_AFK_DURATION = 2.0f;
     private bool isTestAudioPlaying = false;
     private bool isResetting = false;
+    private bool needsSaving = false;
     PLAYBACK_STATE testAudioState;
 
     void Update()
@@ -41,13 +44,19 @@ public class VolumeControl : MonoBehaviour
         Settings.Instance.ResetAudioValues += resetVolume;
         if (testAudioPath != null) { testAudio = RuntimeManager.CreateInstance(testAudioPath); }
 
-        if (false) // check if player preference exists
+        if (VolumeSlider == null)
         {
-            // TODO: Load Player Preferences to grab saved volume value
+            Debug.LogError($"No slider detected for {VolumeBusPath}! Failed to start volume control!");
+            return;
         }
 
+        // check if player preference exists and updates slider value and internal values
+        volume = PlayerPrefs.GetFloat(VolumeBusPath, 1.0f);
+        previousVolume = volume;
+        VolumeSlider.value = volume;
+
         // calls OnSliderChanged with new value whenever the slider changes
-        VolumeSlider?.onValueChanged.AddListener(OnSliderChanged);
+        VolumeSlider.onValueChanged.AddListener(OnSliderChanged);
     }
     public void Initialize(Slider slider, string busPath, string testAudioPath = null)
     {
@@ -58,27 +67,49 @@ public class VolumeControl : MonoBehaviour
 
     private void OnSliderChanged(float value)
     {
-        if (isResetting)
-        {
-            previousVolume = value;
-            volume = value;
-            VolumeBus.setVolume(value);
-            isResetting = false;
-            return;
-        }
         if (VolumeBus.isValid())
         {
-            VolumeBus.setVolume(value);
-            VolumeBus.getVolume(out volume);
-            playSliderClick();
-            Settings.Instance.ChangeTestAudio?.Invoke(VolumeBusPath);
-            if (testAudio.isValid()) { testAudio.setVolume(volume); }
+            needsSaving = true;
+            updateVolume(value);
+
+            if (isResetting)
+            {
+                previousVolume = value;
+                saveVolumeToPlayerPrefs();
+                isResetting = false;
+            }
+            else
+            {
+                playSliderClick();
+                if (testAudio.isValid()) { testAudio.setVolume(volume); }
+                Settings.Instance.ChangeTestAudio?.Invoke(VolumeBusPath);
+            }
         }
         else
         {
             Debug.LogError("Bus is not initialized!");
         }
-        //if (Settings.Instance.Debug.GetAudioDebug()) { Debug.Log(VolumeBusPath + " new volume: " + Math.Round(volume, 5) * 100 + "%"); }
+    }
+
+    private void updateVolume(float value)
+    {
+        VolumeBus.setVolume(value);
+        VolumeBus.getVolume(out volume);
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        if (needsSaving)
+        {
+            saveVolumeToPlayerPrefs();
+            needsSaving = false;
+        }
+    }
+
+    private void saveVolumeToPlayerPrefs()
+    {
+        PlayerPrefs.SetFloat(VolumeBusPath, volume);
+        PlayerPrefs.Save();
     }
 
     private void playSliderClick()
@@ -110,11 +141,11 @@ public class VolumeControl : MonoBehaviour
     {
         if (invokerBusName.Equals("bus:/"))
         {
-            testAudioTimer = 3.0f;
+            testAudioTimer = TEST_AUDIO_AFK_DURATION;
         }
         else if (invokerBusName.Equals(VolumeBusPath))
         {
-            testAudioTimer = 3.0f;
+            testAudioTimer = TEST_AUDIO_AFK_DURATION;
         }
         else
         {
@@ -134,7 +165,7 @@ public class VolumeControl : MonoBehaviour
     {
         if ((testAudioState != PLAYBACK_STATE.STOPPING) && (testAudioState != PLAYBACK_STATE.STOPPED))
         {
-            testAudio.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            testAudio.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         }
     }
 

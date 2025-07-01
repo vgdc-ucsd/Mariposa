@@ -89,6 +89,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DebugCompletePuzzle"",
+                    ""type"": ""Button"",
+                    ""id"": ""5c0dd2c9-d65e-46fc-ba45-f394229aa411"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -430,6 +439,17 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""Click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0b98d7ea-dde4-43bb-a82a-d04c6c496f2f"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""DebugCompletePuzzle"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1024,6 +1044,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_Escape = m_Player.FindAction("Escape", throwIfNotFound: true);
         m_Player_AltAbility = m_Player.FindAction("AltAbility", throwIfNotFound: true);
         m_Player_Click = m_Player.FindAction("Click", throwIfNotFound: true);
+        m_Player_DebugCompletePuzzle = m_Player.FindAction("DebugCompletePuzzle", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1110,6 +1131,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Escape;
     private readonly InputAction m_Player_AltAbility;
     private readonly InputAction m_Player_Click;
+    private readonly InputAction m_Player_DebugCompletePuzzle;
     public struct PlayerActions
     {
         private @InputSystem_Actions m_Wrapper;
@@ -1121,6 +1143,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         public InputAction @Escape => m_Wrapper.m_Player_Escape;
         public InputAction @AltAbility => m_Wrapper.m_Player_AltAbility;
         public InputAction @Click => m_Wrapper.m_Player_Click;
+        public InputAction @DebugCompletePuzzle => m_Wrapper.m_Player_DebugCompletePuzzle;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1151,6 +1174,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Click.started += instance.OnClick;
             @Click.performed += instance.OnClick;
             @Click.canceled += instance.OnClick;
+            @DebugCompletePuzzle.started += instance.OnDebugCompletePuzzle;
+            @DebugCompletePuzzle.performed += instance.OnDebugCompletePuzzle;
+            @DebugCompletePuzzle.canceled += instance.OnDebugCompletePuzzle;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1176,6 +1202,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Click.started -= instance.OnClick;
             @Click.performed -= instance.OnClick;
             @Click.canceled -= instance.OnClick;
+            @DebugCompletePuzzle.started -= instance.OnDebugCompletePuzzle;
+            @DebugCompletePuzzle.performed -= instance.OnDebugCompletePuzzle;
+            @DebugCompletePuzzle.canceled -= instance.OnDebugCompletePuzzle;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1365,6 +1394,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         void OnEscape(InputAction.CallbackContext context);
         void OnAltAbility(InputAction.CallbackContext context);
         void OnClick(InputAction.CallbackContext context);
+        void OnDebugCompletePuzzle(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

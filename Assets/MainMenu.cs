@@ -11,7 +11,7 @@ public class MainMenu : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
+        MusicManager.Instance.ChangeMusic(AudioEvents.Music.titlescreen_title_theme);
     }
 
     // Update is called once per frame
