@@ -1,7 +1,6 @@
 using System.Collections;
 using FMOD.Studio;
 using FMODUnity;
-using Unity.VisualScripting;
 using UnityEngine;
 
 /*
@@ -13,7 +12,7 @@ public class ItemPickup : Interactable
 {
 
     [Header("Pickup Settings")]
-    [SerializeField] protected InventoryItemSO item;
+    [SerializeField] protected ItemData item;
     [SerializeField] protected SpriteRenderer spriteRenderer;
 
     public override bool DestroyOnInteract => true;
@@ -35,28 +34,9 @@ public class ItemPickup : Interactable
     /// </summary>
     public override void OnInteract(IControllable controllable)
     {
-        Debug.Log("picked up");
         if (InventoryManager.Instance != null && item != null)
         {
-            InventoryType type;
-            if (controllable is BeeMovement || controllable is SquidMovement) type = InventoryType.Mariposa;
-            else if (controllable is PlayerMovement pm)
-            {
-                if (pm.Parent.Data.characterID == CharID.Mariposa)
-                {
-                    type = InventoryType.Mariposa;
-                }
-                else
-                {
-                    type = InventoryType.Unnamed;
-                }
-            }
-            else
-            {
-                Debug.LogError("No suitable Inventory to add item to");
-                return;
-            }
-            InventoryManager.Instance.AddItem(type, item);
+            InventoryManager.Instance.GetInventory().AddItem(item);
         }
         else
         {

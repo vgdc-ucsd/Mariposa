@@ -33,7 +33,7 @@ using UnityEngine;
 /// </summary>
 public class TutorialManager : Singleton<TutorialManager>
 {
-    [SerializeField] InventoryItemSO unnamedRadio;
+    [SerializeField] ItemData unnamedRadio;
     [SerializeField] private GameObject showRadioCanvas;
     public string blockPuzzleCompleteDialogue;
     private Object[] dialogueData;
@@ -46,7 +46,7 @@ public class TutorialManager : Singleton<TutorialManager>
 
     public bool UnnamedHasRadio()
     {
-        return (InventoryManager.Instance.GetItemCount(InventoryType.Unnamed, unnamedRadio) > 0);
+        return InventoryManager.Instance.GetInventory().HasItem(unnamedRadio);
     }
 
     public void ShowRadio()

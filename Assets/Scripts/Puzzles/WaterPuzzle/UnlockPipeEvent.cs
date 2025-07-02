@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class UnlockPipeEvent : MonoBehaviour
 {
-    [SerializeField] private InventoryItemSO pipeItemSO;
+    [SerializeField] private ItemData pipeItemSO;
     [SerializeField] private GameObject pipeVisual;
     [SerializeField] private GameObject pipePickup;
     private float initialY;

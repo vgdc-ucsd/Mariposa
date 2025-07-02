@@ -11,56 +11,10 @@ public class PauseMenuScript : MonoBehaviour
     public GameObject AudioSettingsMenu;
     public GameObject BackgroundPanel;
 
-    private InputSystem_Actions actions;
-    public bool paused = false;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-
-    void Awake()
+    void Start()
     {
-        actions = new();
-    }
-
-    // void Start()
-    // {
-    //     VideoSettingsMenu.SetActive(false);
-    //     PauseMenu.SetActive(false);
-    //     Time.timeScale = 1.0f;
-    // }
-
-    void OnEnable()
-    {
-        actions.Player.Escape.Enable();
-        actions.Player.Escape.started += HandlePause;
-    }
-
-    void OnDisable()
-    {
-        actions.Player.Escape.started -= HandlePause;
-        actions.Player.Escape.Disable();
-    }
-
-    private void HandlePause(InputAction.CallbackContext ctx)
-    {
-        if (!paused)
-        {
-            PauseGame();
-            return;
-        }
-
-        if (PauseMenu.activeSelf)
-        {
-            ResumeGame();
-        }
-        else
-        {
-            OpenPauseMenu();
-        }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        return;
+        GameManager.Instance.RegisterStartAction(GameState.PAUSE, PauseGame);
+        GameManager.Instance.RegisterExitAction(GameState.PAUSE, ResumeGame);
     }
 
     public void PauseGame()
@@ -68,18 +22,13 @@ public class PauseMenuScript : MonoBehaviour
         OpenPauseMenu();
         BackgroundPanel.SetActive(true);
         Time.timeScale = 0.0f;
-        paused = true;
     }
-
 
     public void ResumeGame()
     {
         CloseAllMenus();
         BackgroundPanel.SetActive(false);
-        Time.timeScale = 1.0f;
-        paused = false;
     }
-
 
     public void OpenVideoSettings()
     {
@@ -148,5 +97,4 @@ public class PauseMenuScript : MonoBehaviour
         Time.timeScale = 1.0f;
         SceneManager.LoadScene(0);
     }
-
 }
