@@ -1,0 +1,1115 @@
+﻿# Writer Name: Jordan Huynh
+# Edited by: Jess Yang, Lucas Ramirez
+
+
+# INT. GUTTER SYSTEMS - MORNING 
+
+
+# FADE IN. UNNAMED wakes up. 
+
+
+!name pier_arrival
+
+
+UNNAMED 
+(neutral)
+(Suppose I’ll start heading to the pier. There could be something useful, now that everything’s changing.)
+
+
+UNNAMED 
+(neutral)
+...
+
+
+UNNAMED
+(neutral)
+(Besides, maybe the ocean breeze will do me some good.)
+
+
+UNNAMED
+(neutral)
+(...Hah. As if.)
+
+
+UNNAMED 
+(neutral)
+(...)
+
+
+UNNAMED 
+(neutral)
+(Though this radio...)
+
+
+UNNAMED
+(neutral)
+(Ah. Never mind that for now. Best to get on with it.)
+
+
+#Walk to the pier stage. Faced with the terrain, they comment on the edge of the broken boardwalk, unable to proceed. 
+
+
+!name pier_dead_end
+UNNAMED 
+(neutral)
+(Dead end. Nothing left here.)
+
+
+!e check_friendship end
+________________
+
+
+# >If score >7
+# Radio crackles.
+
+
+!a radio-clip3-novoices.wav
+!name pier_friends
+MARIPOSA 
+(neutral)
+Kairo? You there?
+
+
+UNNAMED 
+(neutral)
+Mari.
+
+
+UNNAMED
+(neutral)
+Yes, I’m here.
+
+
+MARIPOSA
+(happy)
+Good news! I got a job at the pier. 
+
+
+MARIPOSA
+(neutral)
+Not usually in my line of work, but the automatons in the gutters need a check-up.
+
+
+MARIPOSA
+(happy)
+Ah, the breeze is so nice! 
+
+
+UNNAMED
+(neutral)
+I suppose so.
+
+
+UNNAMED
+(neutral)
+Do you mind...describing it to me? 
+
+
+UNNAMED
+(neutral)
+The pier, that is. What is it like?
+
+
+# SWITCH to Mariposa’s perspective.
+
+
+!e switch_sublevels end
+
+
+# EXT. PIER - DAY
+
+
+!name pier_friends_part2
+
+
+
+
+MARIPOSA
+(neutral)
+Well, it’s a bit early, so it’s not as busy as it usually is. The shops are opening up, and the seagulls are starting to wake up. 
+
+
+MARIPOSA
+(happy)
+The water’s really pretty too; the way the sun hits it, it’s like the tides are sparkling. 
+
+
+MARIPOSA
+(neutral)
+What’s it like for you?
+
+
+UNNAMED
+(neutral)
+It’s...different.
+
+
+# The radio crackles.
+!a radio-clip3-novoices.wav
+
+
+
+
+MARIPOSA
+(neutral)
+You still there?
+
+
+UNNAMED
+(neutral)
+—break—connection—?
+
+
+MARIPOSA
+(neutral)
+(Looks like I’ll have to try again later.)
+
+
+!event play_control_panel_from_pier_friends
+________________
+
+
+
+
+# >If score <7
+
+
+# SWITCH to Mariposa’s perspective.
+
+
+# EXT. PIER - DAY
+
+
+# Radio crackles.
+
+
+!name pier_job_not_friends
+MARIPOSA
+(neutral)
+Wonder if they’re still there. 
+
+
+MARIPOSA
+(neutral)
+Hello?
+
+
+UNNAMED
+(neutral)
+...
+
+
+MARIPOSA 
+(neutral)
+(Should’ve expected as much.)
+
+
+!event play_control_panel_from_pier_job_not_friends
+________________
+
+
+!name control_panel
+MARIPOSA
+(neutral)
+Well, I should get to work. The plumbing maintenance control panel is around here somewhere; it should be an easy fix to get it connected to the automaton in the pipes. 
+
+
+________________
+
+
+
+
+# [GAMEPLAY]- FIX THE CONTROL PANEL
+
+
+# >IF NOT YET FIXED
+!name control_panel_not_fixed
+MARIPOSA 
+(neutral) 
+I’ve got it this time. Let’s try again.
+
+
+# >AFTER FIX
+!name control_panel_fixed
+MARIPOSA 
+(happy)
+That should do it! 
+
+
+MARIPOSA
+(neutral)
+Hmm. Well, since I’m here, I could test it out to make sure everything is working well.
+________________
+
+
+
+
+# [GAMEPLAY]- FIX PIPES
+
+
+# >IF TRY TO LEAVE REGION:
+!name leave_attempt
+MARIPOSA
+(sad)
+I should really make sure that little automaton is working before I go...who knows what state those pipes are in.
+
+
+________________
+
+
+
+
+# >IF FAIL & NEED TO RESET: 
+!name pipe_fail
+MARIPOSA
+(neutral)
+You’ve got this little guy! Let’s try this again.
+
+
+________________
+
+
+
+
+# The pipe puzzle is mostly complete, but a piece is missing. Once a player successfully reaches this roadblock, MARIPOSA will comment on it, and the camera pans back to her. 
+
+
+!name pipe_missing
+
+
+MARIPOSA
+(neutral)
+Huh. Looks like there’s a piece missing.
+
+
+MARIPOSA
+(neutral)
+Maybe I can get that from someone here? Wouldn’t want to leave it unfinished. 
+
+
+MARIPOSA 
+(neutral)
+Beebo, is there some sort of plumbing store here?
+
+
+BEEBO
+(neutral)
+<The nearest supply warehouse is 2 hours away by public transit.>
+
+
+BEEBO
+(neutral)
+<Recommended route: A Scrap Hawker located down the pier could be selling the missing part, or a fitting alternative.>
+
+
+BEEBO
+(neutral)
+<Would you like to add this to your task list?> 
+
+
+MARIPOSA
+(happy)
+Sure, it’s worth a shot! 
+
+
+# SCRAP VENDOR location TBD. Interact with SCRAP VENDOR. 
+
+
+!name scrap_vendor
+
+MARIPOSA
+(neutral)
+Hello?
+
+
+CARL
+Ah! Sorry, I didn’t realize you were standing there—
+
+
+CARL
+Welcome, welcome—just let me tidy up–you caught me off guard, miss—
+
+
+CARL
+Are you looking for something in particular?
+
+
+MARIPOSA
+(neutral)
+Yup, just looking for a certain pipe fitting.
+
+
+CARL
+Hah, I have lots of junk here. Surely I've got something you need. 
+
+
+CARL
+I just, uh, need to figure out where it all went. 
+
+
+CARL
+My memory’s getting away from me nowadays. Place hasn’t been the same since the kid left for university. He did a lot of the organizing. Heh. Maybe it was about time to think about retiring...
+
+
+MARIPOSA
+(happy)
+If you’d like, I could help out a bit! 
+
+
+MARIPOSA 
+(neutral)
+I have some time.
+
+
+CARL
+        Oh, I mean, if it’s not a bother—It’d sure mean a lot to me. Thanks, kid. 
+
+
+
+
+# [GAMEPLAY]- SCALE PUZZLE
+
+
+!name complete_scale_1
+MARIPOSA 
+(happy)
+I think I get it now!
+
+
+CARL
+Looks promising, kid! Keep it up.
+
+
+!name complete_scale_2
+MARIPOSA 
+(happy)
+We got it!
+
+
+CARL
+Looks like it’s almost fixed! You’re a miracle, kid. 
+
+
+!name complete_scale_3
+
+
+CARL
+        That should be the last of it; I can’t thank you enough. 
+
+
+CARL
+Here, kid. You needed this, right?  Take it. 
+
+
+MARIPOSA
+(surprised)
+        Oh, no, you don’t need to do that! I shouldn’t—
+
+
+CARL
+Nonsense. Was going to spend all day struggling with inventory; you really helped me out, kid. Heh, maybe I’ve got enough time to close up early and break out the dingy again. My boy used to love rides around the marina. 
+
+
+CARL
+Ah. Hope he calls soon.
+
+
+MARIPOSA
+(happy)
+Well, thank you then!
+
+
+CARL
+Take care, kid.
+
+
+!name complete_carl
+CARL 
+Take care, kid.
+
+
+!name Izote1
+
+
+IZOTE
+a! Ruby_NPC_Mariposa4.wav
+Mariposa, my sweetpea, it has been a while since I saw you! It seems like just yesterday you were just a little sprout; look how big you’ve grown!
+
+
+MARIPOSA
+a! Mariposa_Woah3.wav
+(happy)
+Mrs. Izote! How’s life in the city treating you?
+
+
+IZOTE
+a! Ruby_NPC_Hm2.wav
+Oh, you know how the hustle and bustle is, sweetheart. It’s no small town community, but it’s worth it to be with my precious Daisy and my new grandson. 
+!name Izote2
+IZOTE
+a! Ruby_NPC_Giggle-Laugh1.wav
+Stop by if you ever need floral arrangements! I’ll be sure to have your favorites, sweetpea; I know how much you adore those peonies and carnations!
+
+
+
+
+# The radio crackles.
+
+
+!name gig_done
+
+
+MARIPOSA
+(neutral)
+        Kairo? I just finished up my gig. What are you up to?
+
+
+# SWITCH to Unnamed’s perspective. 
+
+
+!e switch_sublevels end
+
+# EXT. BROKEN PIER - DAY (?)
+
+
+# The pier is now repaired. 
+
+
+________________
+
+
+# > Respond
+
+
+!name gig_done_choice
+
+
+UNNAMED
+(neutral)
+...
+
+
+!choice1 response +0
+Respond. 
+!choice2 dont_respond -0
+Ignore.
+
+
+# Value pending
+
+
+!name response
+
+
+
+UNNAMED
+(neutral)
+Just...looking around.
+
+
+MARIPOSA
+(happy)
+Don’t leave me on a cliffhanger, I need details! What’s your world like?
+
+
+UNNAMED
+(neutral)
+Well. It’s—
+
+
+UNNAMED
+(neutral)
+...
+
+
+UNNAMED
+(neutral)
+It’s nothing like what you have. 
+
+
+UNNAMED
+(neutral)
+Sorry. I need a second. To think about something.
+
+
+MARIPOSA
+(happy)
+Alright, not a problem! 
+
+
+MARIPOSA
+(neutral)
+Just let me know if I can do anything for you. 
+
+
+UNNAMED
+(neutral)
+...sure. Will do.
+
+
+!event play_pier_friendship_check_from_response
+________________
+
+
+
+
+# > . . .
+
+
+# Value pending 
+
+
+!name dont_respond
+
+
+UNNAMED 
+(neutral)
+…
+
+
+UNNAMED 
+(neutral)
+(I’m watching the harbor morph before my eyes; twisting, churning, melting away—-time shifts with her every step.)
+
+
+MARIPOSA
+(neutral)
+…
+
+
+MARIPOSA
+(sad)
+Well, I’ve still got work to do. I should get going. 
+
+!event play_pier_friendship_check_from_dont_respond
+________________
+
+
+
+
+# [GAMEPLAY]- PIER PLATFORM UNNAMED
+
+
+!name pier_friendship_check
+
+
+UNNAMED 
+(neutral)
+...
+
+
+
+
+!event check_friendship_boat
+________________
+
+
+# EXT. BOAT RIDE ON OCEAN - DAY (DARK)
+
+
+# >7
+
+
+!name future_friends
+
+
+UNNAMED
+(neutral)
+...Mari?
+
+
+MARIPOSA
+(neutral)
+Yes? I’m here.
+
+
+UNNAMED
+(neutral)
+(...there’s no good way to ask this.)
+
+
+UNNAMED
+(neutral)
+What do you think about the future?
+
+
+UNNAMED
+(neutral)
+Everyone, doing the same thing every day, chasing their dreams—-what do you think it’s all for?
+
+
+MARIPOSA 
+(neutral)
+What’s it all for? 
+
+
+MARIPOSA
+(neutral) 
+That’s a tough question. 
+
+
+MARIPOSA
+(happy)
+Kairo, I didn’t think you were the type to ask about these kinds of things! 
+
+
+UNNAMED
+(neutral)
+Humor me.
+
+
+MARIPOSA
+(happy)
+Alright, alright. 
+
+
+MARIPOSA 
+(neutral)
+I think, maybe, deep down, everyone wants to save something. Someone they love, something they cherish—-maybe even the whole world.
+
+
+MARIPOSA 
+(neutral)
+As for me, I want to make automatons to help people. 
+
+
+MARIPOSA
+(neutral)
+There’s so much I wish I could do, but, come on, at the end of the day, I’m only one person. 
+
+
+MARIPOSA
+(happy)
+If I could make machines to make everyone’s lives easier, maybe people would get the chance to do what they really love. 
+
+
+MARIPOSA
+(happy)
+I’d like to help as many people as I can.
+
+
+UNNAMED
+(neutral)
+...
+
+
+UNNAMED 
+(neutral)
+And you really think you’ll be able to save the world?
+
+
+MARIPOSA
+(happy)
+Well, when you say it like that, you make me sound crazy.
+
+
+MARIPOSA 
+(neutral)
+But no, I guess not really.
+
+
+MARIPOSA 
+(neutral)
+Maybe I’m just looking to save just one person. That’d be plenty enough for me.
+
+
+!event play_boat_scene_from_future_friends
+________________
+
+
+# <7
+
+
+!name future_not_friends
+
+
+UNNAMED 
+(neutral)
+…
+
+
+UNNAMED 
+(neutral)
+(A ghost. I’m talking to a ghost. Someone who was, is, and now always will be.)
+
+
+UNNAMED
+(neutral)
+(What a sick joke...)
+
+
+UNNAMED
+(neutral)
+(Still, if I want to keep going, I need her help. I’ve only gotten this far because of what she’s done. Whether she knows it or not.)
+
+
+UNNAMED
+a! Unnamed_Cough1.wav
+(neutral)
+(...)
+
+
+UNNAMED
+(neutral)
+(...maybe it’ll all be over anyway. What a waste.)
+
+
+!event play boat_scene_from_future_not_friends
+________________
+
+
+
+
+# Radio will, either way, make a sudden & horrible noise. 
+
+
+# CONTINUE
+
+
+#PIER NPCs
+#Young Girl
+
+
+!name Candy1
+CANDY
+a! Ruby_NPC_HiThere2.wav
+Hi. Do you like candy? I like candy! 
+
+
+!name Candy2
+CANDY
+There's so many reasons to love candy - it's sweet, gives you energy, and it's cheap! The way it melts in your mouth, how they bring sugar all the way across the world for it.
+
+
+!name Candy3
+CANDY
+a! Ruby_NPC_YouOkay1.wav
+Hey, are you listening? Are you listening?
+
+
+
+
+#Laddie, Young Boy Behind Counter
+
+
+!name Laddie1
+LADDIE
+!a Regine_NPC_Okay1.wav
+H-hello! Would you like donuts - or, was it peanuts? 
+
+
+LADDIE
+What do we sell here?
+
+
+!name Laddie2
+LADDIE
+My mom left me here while she goes and gets something. She said I'm in charge 'til she's back...
+
+
+!name Laddie3
+LADDIE
+!a Regine_NPC_Hm4.wav
+...I hope she's coming back soon…
+
+
+
+
+!name Peddler1
+PEDDLER
+!a Luke_NPC_LetsThinkAboutThis1.wav
+Someone told me of the guy that sells arms.
+
+
+PEDDLER
+!a Luke_NPC_LetsThinkAboutThis1.wav
+An arm and a leg is what it costs to live in the city nowadays.
+
+
+!name Peddler2
+
+
+PEDDLER
+A bird lives here. It snaps and sings in an iron cage. It flutters with metal sheet feathers. Its heart pumps with oil through hollow bones. 
+
+
+PEDDLER
+I bought it at the carnival.  
+
+
+!name Peddler3
+PEDDLER
+Flutter away, little thing. There are better things to do with your time. 
+
+
+!name fishermen1
+MARLON
+We haven’t caught as many fish as we did last week…
+
+
+SAMON
+That’s okay, it's still a sizable amount! We can definitely make it through the week with this catch.
+
+
+MARLON
+Are you sure? Fish sell out really quickly here.
+
+
+SAMON
+Oh, I am very sure! Besides, we had gotten less fish in the past and we were able to get by fine.
+
+
+!name fishermen2
+MARLON
+I know you said I shouldn’t worry, but I can’t help but wonder if our catches will go down as the weeks go by...
+
+
+SAMON
+Well getting less fish isn’t completely bad. We don’t want to take away too many fish from the ocean, do we?
+
+
+SAMON
+I can see why you’re concerned. It would be hard to imagine that our next catch would get any better if this pattern were to continue.
+
+
+SAMON
+But I’m sure we won’t be stuck in this situation for long!
+
+
+SAMON
+It’s good that you’re thinking about these kinds of things, but it’s also nice to hope that the future will be better for us, don’t you think?
+
+
+MARLON
+I...I guess that is true! I’m sorry for rambling, I tend to get worried often...
+
+
+SAMON
+Don’t worry about it! It’s nice to talk about these kinds of things from time to time. Now let's take our catches to the market.
+
+
+!name fishermen3
+
+
+SAMON
+Let’s gather up all our things now!
+
+#PIER Flavor Text
+#[Poster]
+
+
+# Interacting with the City Poster 
+!name interact_city_poster_1
+MARIPOSA
+(happy)
+The city’s 100th anniversary is coming up? I can’t wait!
+
+
+!name interact_city_poster_2
+MARIPOSA
+(happy)
+The city always feels so lively with all the decorations up. 
+#[Puddle] 
+
+
+# Interacting with the Puddle(my baby)
+!name interact_puddle_1
+PUDDLE
+A puddle of fresh rainwater. It’s a bit dirty from the concrete, but still mostly clear. Wouldn’t hurt to splash around a bit.
+!name interact_puddle_2
+PUDDLE
+A pleasant temptation.
+#[Newspaper Store] 
+
+
+# Interacting with the Newspaper Store
+!name interact_newspaper_store_1
+NEWS
+“Breaking News: Country buzzing over the looming election! Reports of the new candidate plan’s for the future sparks debate over…’”
+!name interact_newspaper_store_2
+NEWS
+“Breaking News: Extend your cat’s life by 50 years! Researchers say…” 
+#[Statue] 
+
+
+# Interacting with the Statue
+!name interact_statue_1
+STATUE
+This statue was made in honor of William Kwolek for his contributions to modern medicine. 
+!name interact_statue_2
+STATUE
+An inventor, leader, and father. May he rest in peace.
+#[Bus Stop] 
+
+
+# Interacting with the Bus Stop
+!name interact_bus_stop_1
+MARIPOSA
+(neutral)
+I could take the bus, but today is such a nice day.
+
+
+MARIPOSA
+(happy)
+It would be a shame not to walk!
+
+
+!name interact_bus_stop_2
+BUSTOP
+The bus seems to be running on time. 
+#[Food Stand] 
+# Interacting with the Food Stand
+!name interact_food_stand_1
+MARIPOSA
+(happy)
+Smells delicious! I’ll have to stop by some other time...
+
+
+!name interact_food_stand_2
+MARIPOSA
+(neutral)
+Nothing wrong with an occasional sweet treat…
+#[Merchant Stand] 
+
+
+# Interacting with the Merchant Stand
+
+
+!name interact_merchant_stand_1
+MARIPOSA
+(neutral)
+So much to look at…
+
+
+MARIPOSA
+(neutral)
+But mum would kill me if I brought back more decorations. The trinket shelf is almost bursting... 
+
+
+!name interact_merchant_stand_2
+KNICKERS
+Tchotchkes & knickknacks.
+#[Funnel Cake Shop] 
+# Interacting with the Funnel Cake Shop
+!name interact_funnel_cake_shop_1
+
+
+MARIPOSA
+(happy)
+Ah, I thought they only sold these at the county fair! 
+
+
+MARIPOSA
+(neutral)
+I’ll have to come back for this…
+
+
+!name interact_funnel_cake_shop_2
+FUNNEL
+Funnel cake. A light, airy mass of deep fried batter drenched in powdered sugar. Best with soft serve ice cream and berry jam. 
+
+
+#[Seashell Stand] 
+# Interacting with the Seashell Stand
+!name interact_seashell_stand_1
+MARIPOSA
+(neutral)
+‘She Sells Seashells by the Seashore: A Starting Guide to the Law of Supply and Demand.’ A seashell stand that only sells books and not actual seashells? These indie authors are getting creative, huh?
+
+
+MARIPOSA
+(neutral)
+I’ll find a pdf online somewhere...
+
+
+!name interact_seashell_stand_2
+MARIPOSA
+(neutral)
+What a weird book...
+#[Dystopian Slogan]
+# Interacting with the Dystopian Slogan
+!name interact_dystopian_slogan_1
+SLOG
+Work is Purpose. Purpose is Fulfillment. Fulfillment is Happiness.
+
+
+!name interact_dystopian_slogan_2
+SLOG
+(...it’s almost motivating.)
+#[Toxic Puddle] 
+# Interacting with the Toxic Puddle (yay!)
+!name interact_toxic_puddle_1
+TOXIC
+Untreated rainwater. Too hazardous to touch; any form of contact risks acid burns. 
+!name interact_toxic_puddle_2
+TOXIC
+Burbling with danger. Best to move on.
+#[Newspaper Store] 
+# Interacting with the Newspaper Store Stagnant 
+!name interact_newspaper_store_stagnant_1
+NEWNEWNEW
+It’s the news headline from 3 years ago. It hasn’t changed since. 
+!name interact_newspaper_store_stagnant_2
+NEWNEWNEW
+‘Breaking news: Technology that can allow one to work even in their dreams? Economists believe this will revolutionize the market. Potential shareholders looking to increase profits…’
+...
+No solace, not even in sleep.
+!name interact_newspaper_store_stagnant_3
+NEWNEWNEW
+Not exactly ‘news’ anymore, is it?
+#[Statue] 
+# Interacting with the Statue of the Revealed Madman
+!name interact_statue_revealed_1
+KWOLEK
+William Kwolek. Genius weapons maker. The Father of Modern Biological Warfare. 
+His legacy is stained with blood.
+!name interact_statue_revealed_2
+KWOLEK
+His legacy is stained with blood. 
+#[Bus Stop] 
+# Interacting with the Destroyed Bus Stop
+!name interact_destroyed_bus_stop_1
+BUSWOO
+Transportation and shelter. Destroyed now. 
+!name interact_destroyed_bus_stop_2
+BUSWOO
+Public transportation; never quite appreciated enough. 
+#[Food Stand] 
+# Interacting with the Rotting Food Stand
+!name interact_rotting_food_stand_1
+ROT
+It smells of rot. Grease coats the remnants. 
+!name interact_rotting_food_stand_2
+ROT
+It makes your stomach churn. 
+#[Merchant Stand] 
+# Interacting with the Remains of the Merchant Stand
+!name interact_remains_merchant_stand_1
+PLASTIC
+What remains of a merchant stand. Plastic baubles are smashed on the floor.
+!name interact_remains_merchant_stand_2 
+PLASTIC
+A waste of resources. Pretty, but useless. 
+#[Busted Funnel Cake Shop] 
+# Interacting with the Busted Funnel Cake Shop
+!name interact_busted_funnel_cake_shop_1
+CAKE
+Empty powdered sugar containers litter around this wreckage. 
+!name interact_busted_funnel_cake_shop_2
+CAKE
+If you close your eyes, it almost smells sweet. 
+
+
+#[Seashell Stand] 
+# Interacting with the Seashell Stand (Ascended or Abandoned?)
+!name interact_seashell_stand_abandoned_1
+SHESHELLS
+It’s long been abandoned. Torn pages are mashed into the crevices of what remains of the structure. 
+
+
+!name interact_seashell_stand_abandoned_2
+SHESHELLS
+Can’t even tell what this was. Just smells like rust and salt. 
+
+
+#Writer Name: Lucas Ramirez
