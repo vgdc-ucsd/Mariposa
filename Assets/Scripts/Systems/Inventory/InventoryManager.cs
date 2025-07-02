@@ -30,8 +30,14 @@ public class InventoryManager : Singleton<InventoryManager>
     private void EnterInventory()
     {
         Time.timeScale = 0.0f;
-        if (Player.ActivePlayer.Data.characterID == CharID.Mariposa) mariposaUI.OpenInventory();
-        else unnamedUI.OpenInventory();
+        if (Player.ActivePlayer.Data.characterID == CharID.Mariposa)
+        {
+            mariposaUI.OpenInventory(mariposaInventory);
+        }
+        else
+        {
+            unnamedUI.OpenInventory(unnamedInventory);
+        }
     }
 
     private void ExitInventory()

@@ -2,9 +2,10 @@ using UnityEngine;
 
 public enum InventoryItemType
 {
-	Permanent,
-	Single_Use,
-	Memento
+	SPECIAL,
+	PERMANENT,
+	SINGLE_USE,
+	MEMENTO
 }
 
 

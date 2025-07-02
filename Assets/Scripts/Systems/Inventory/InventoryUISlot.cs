@@ -1,70 +1,42 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
 
-public class InventoryUISlot : MonoBehaviour
+public class InventoryUISlot : MonoBehaviour, IPointerEnterHandler
 {
     [Header("UI References")]
     [SerializeField] private Image iconImage;       
     [SerializeField] private UnityEngine.UI.Button slotButton;    
-    [SerializeField] private TextMeshProUGUI countText; 
-    
-    [Header("Slot UI")]
-    [SerializeField] private Image slotBackgroundImage;
-    [SerializeField] private Image permaSlotImage;
+    [SerializeField] private TextMeshProUGUI countText;
 
-    private ItemData currentItem;            
-    private int currentCount;                       
-    
-    public System.Action<ItemData> OnSlotClicked;
-    
-    public void SetSlot(ItemData item, int count)
+    private ItemData item;
+    private InventoryUI ui;
+
+    public void Set(ItemData item, int count)
     {
-        currentItem = item;
-        currentCount = count;
-
-        if (item != null)
-        {
-            iconImage.enabled = true;
-            iconImage.sprite = item.lowResSprite;
-            if (countText != null)
-                countText.text = count > 1 ? count.ToString() : "";
-        }
-        else
-        {
-            iconImage.enabled = false;
-            if (countText != null)
-                countText.text = "";
-        }   
+        this.item = item;
+        countText.text = count.ToString();
+        iconImage.sprite = item.lowResSprite;
+        iconImage.gameObject.SetActive(true);
     }
 
-    private void Awake()
+    public void Clear()
     {
-        if (slotButton != null)
-            slotButton.onClick.AddListener(HandleClick);
+        item = null;
+        countText.text = "";
+        iconImage.sprite = null;
+        iconImage.gameObject.SetActive(false);
     }
 
-    private void HandleClick()
+    public void SetUI(InventoryUI ui)
     {
-        if (currentItem != null && OnSlotClicked != null)
-        {
-            OnSlotClicked.Invoke(currentItem);
-        }
+        this.ui = ui;
     }
-    
-    public void SetSlotBackground(Sprite newBackground)
+
+    public void OnPointerEnter(PointerEventData eventData)
     {
-        if (slotBackgroundImage != null)
-        {
-            slotBackgroundImage.sprite = newBackground;
-        }
-    }
-    
-    public void SetPermaSlotGraphic(Sprite newSprite)
-    {
-        if (permaSlotImage != null)
-        {
-            permaSlotImage.sprite = newSprite;
-        }
+        if (item == null) return;
+        ui.Display(item);
     }
 }

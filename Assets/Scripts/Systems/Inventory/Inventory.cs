@@ -1,9 +1,15 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Inventory
 {
     private Dictionary<ItemData, int> items;
+
+    public Inventory()
+    {
+        items = new Dictionary<ItemData, int>();
+    }
 
     /// <summary>
     /// Adds item to inventory
@@ -39,5 +45,10 @@ public class Inventory
             return true;
         }
         else return false;
+    }
+
+    public IEnumerable<KeyValuePair<ItemData, int>> GetItems()
+    {
+        return items.AsEnumerable();
     }
 } 

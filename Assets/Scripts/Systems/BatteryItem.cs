@@ -10,6 +10,6 @@ public class BatteryItem : ItemData
         Instance = this;
         Name = "Battery";
         ID = 1;
-        Type = InventoryItemType.Single_Use;
+        Type = InventoryItemType.SINGLE_USE;
     }
 }

@@ -5,167 +5,81 @@ using System.Collections.Generic;
 
 public class InventoryUI : MonoBehaviour
 {
-    [Header("Panels & Buttons")]
-    [SerializeField] private GameObject inventoryPanel;
-    [SerializeField] private UnityEngine.UI.Button closeButton;
-    
-    [Header("Panels for Inventory Sections")]
-    [SerializeField] private GameObject toolsPanel;
-    [SerializeField] private GameObject mementosPanel;
+    [Header("Item Slots")]
+    [SerializeField] private InventoryUISlot[] specialItems;
+    [SerializeField] private InventoryUISlot[] basicItems;
 
     [Header("Item Details UI")]
     [SerializeField] private Image centerItemIcon;
     [SerializeField] private TextMeshProUGUI centerItemDescription;
-    
-    [Header("Slots")]
-    [SerializeField] private InventoryUISlot[] toolsSlots;
-    [SerializeField] private InventoryUISlot[] mementosSlots;
-    
-    [Header("Active Character Inventory")]
-    [SerializeField] private InventoryType activeCharacterInventory = InventoryType.Mariposa;
-    
-    [Header("UI Themes")]
-    [SerializeField] private Sprite mariposaCenterImage;
-    [SerializeField] private Sprite unnamedCenterImage;
-    [SerializeField] private Sprite mariposaSlotBackground;
-    [SerializeField] private Sprite unnamedSlotBackground;
-    [SerializeField] private Sprite mariposaInventoryBackground;
-    [SerializeField] private Sprite unnamedInventoryBackground;
-    [SerializeField] private Sprite mariposaInfoPanel;
-    [SerializeField] private Sprite unnamedInfoPanel;
-    [SerializeField] private Sprite mariposaPermaSlot;
-    [SerializeField] private Sprite unnamedPermaSlot;
-    
-    [Header("Themed UI Elements")]
-    [SerializeField] private Image centerPanelImage;
-    [SerializeField] private Image inventoryBackgroundImage;
-    [SerializeField] private Image infoPanelImage;
 
-/*     private void Awake()
+    void Start()
     {
-        if (closeButton != null)
-            closeButton.onClick.AddListener(CloseInventory);
-
-        foreach (var slot in toolsSlots)
-            slot.OnSlotClicked = OnSlotClicked;
-        foreach (var slot in mementosSlots)
-            slot.OnSlotClicked = OnSlotClicked;
-        inventoryPanel.SetActive(false);
-        if (centerItemIcon != null)
-            centerItemIcon.enabled = false;
-        if (centerItemDescription != null)
-            centerItemDescription.text = "";    
-    }
- */
-    private void OnSlotClicked(ItemData item)
-    {
-        if (centerItemIcon != null)
+        foreach (InventoryUISlot slot in specialItems)
         {
-            centerItemIcon.sprite = item.highResSprite;
-            centerItemIcon.enabled = true;
+            slot.SetUI(this);
         }
 
-        if (centerItemDescription != null)
+        foreach (InventoryUISlot slot in basicItems)
         {
-            centerItemDescription.text = $"{item.Name}\n\n{item.FlavorText}";
+            slot.SetUI(this);
         }
     }
 
-    public void PopulateInventory()
+    public void PopulateInventory(Inventory inventory)
     {
-        /* foreach (var slot in toolsSlots)
-            slot.SetSlot(null, 0);
-        foreach (var slot in mementosSlots)
-            slot.SetSlot(null, 0);
-        var activeInv = InventoryManager.Instance.GetAllItems(activeCharacterInventory);
-        List<KeyValuePair<InventoryItemSO, int>> leftItems = new List<KeyValuePair<InventoryItemSO, int>>();
-        List<KeyValuePair<InventoryItemSO, int>> rightItems = new List<KeyValuePair<InventoryItemSO, int>>();
-        foreach (var kvp in activeInv)
+        List<KeyValuePair<ItemData, int>> specialItemInfo = new List<KeyValuePair<ItemData, int>>();
+        List<KeyValuePair<ItemData, int>> basicItemInfo = new List<KeyValuePair<ItemData, int>>();
+
+        foreach (KeyValuePair<ItemData, int> itemInfo in inventory.GetItems())
         {
-            if (kvp.Key.Type == InventoryItemType.Single_Use)
-                leftItems.Add(kvp);
-            else if (kvp.Key.Type == InventoryItemType.Permanent || kvp.Key.Type == InventoryItemType.Memento)
-                rightItems.Add(kvp);
+            if (itemInfo.Key.Type == InventoryItemType.SPECIAL) specialItemInfo.Add(itemInfo);
+            else basicItemInfo.Add(itemInfo);
         }
-        int leftSlotIndex = 0;
-        foreach (var kvp in leftItems)
-        {
-            if (leftSlotIndex < toolsSlots.Length)
-            {
-                toolsSlots[leftSlotIndex].SetSlot(kvp.Key, kvp.Value);
-                leftSlotIndex++;
-            }
-        }
-        int rightSlotIndex = 0;
-        foreach (var kvp in rightItems)
-        {
-            if (rightSlotIndex < mementosSlots.Length)
-            {
-                mementosSlots[rightSlotIndex].SetSlot(kvp.Key, kvp.Value);
-                rightSlotIndex++;
-            }
-        } */
+
+        PopulateSlots(specialItems, specialItemInfo);
+        PopulateSlots(basicItems, basicItemInfo);
     }
 
-    public void OpenInventory()
+    public void OpenInventory(Inventory inventory)
     {
         gameObject.SetActive(true);
-        //UpdateUITheme();
-        PopulateInventory();
+        PopulateInventory(inventory);
+        centerItemDescription.text = "";
+        centerItemIcon.gameObject.SetActive(false);
     }
 
     public void CloseInventory()
     {
         gameObject.SetActive(false);
     }
-    
-    public void SetActiveCharacterInventory(InventoryType newActive)
+
+    public void CloseButton()
     {
-        activeCharacterInventory = newActive;
-        PopulateInventory();
+        GameManager.Instance.HandleInventory();
     }
 
-    private void UpdateUITheme()
+    public void Display(ItemData item)
     {
-        Sprite centerSprite = null;
-        Sprite bgSprite = null;
-        Sprite infoSprite = null;
-        Sprite slotBg = null;
-        Sprite permaSlot = null;
+        centerItemDescription.text = item.FlavorText;
+        centerItemIcon.sprite = item.highResSprite;
+        centerItemIcon.gameObject.SetActive(true);
+    }
 
-        switch (activeCharacterInventory)
+    private void PopulateSlots(InventoryUISlot[] slots, List<KeyValuePair<ItemData, int>> itemInfoList)
+    {
+        for (int i = 0; i < slots.Length; i++)
         {
-            case InventoryType.Mariposa:
-                bgSprite = mariposaInventoryBackground;
-                infoSprite = mariposaInfoPanel;
-                slotBg = mariposaSlotBackground;
-                permaSlot = mariposaPermaSlot;
-                break;
-
-            case InventoryType.Unnamed:
-                bgSprite = unnamedInventoryBackground;
-                infoSprite = unnamedInfoPanel;
-                slotBg = unnamedSlotBackground;
-                permaSlot = unnamedPermaSlot;
-                break;
-
-            default:
-                Debug.LogWarning($"No UI theme defined for inventory type: {activeCharacterInventory}");
-                break;
+            InventoryUISlot slot = slots[i];
+            if (i < itemInfoList.Count)
+            {
+                KeyValuePair<ItemData, int> itemInfo = itemInfoList[i];
+                slot.Set(itemInfo.Key, itemInfo.Value);
+            }
+            else
+            {
+                slot.Clear();
+            }
         }
-
-        foreach (var slot in toolsSlots)
-            slot.SetPermaSlotGraphic(permaSlot);
-
-        foreach (var slot in mementosSlots)
-        {
-            slot.SetSlotBackground(slotBg);
-        }
-
-        if (inventoryBackgroundImage != null)
-            inventoryBackgroundImage.sprite = bgSprite;
-
-        if (infoPanelImage != null)
-            infoPanelImage.sprite = infoSprite;
     }
 }

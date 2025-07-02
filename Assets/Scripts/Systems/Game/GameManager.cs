@@ -51,13 +51,13 @@ public class GameManager : Singleton<GameManager>
         gameState.AddExitAction(state, action);        
     }
 
-    private void HandlePause()
+    public void HandlePause()
     {
         if (gameState.GetState() == GameState.PAUSE) gameState.Transition(GameState.GAME);
         else gameState.Transition(GameState.PAUSE);
     }
 
-    private void HandleInventory()
+    public void HandleInventory()
     {
         if (gameState.GetState() == GameState.GAME) gameState.Transition(GameState.INVENTORY);
         else if (gameState.GetState() == GameState.INVENTORY) gameState.Transition(GameState.GAME);
