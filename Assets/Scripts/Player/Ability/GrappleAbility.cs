@@ -65,7 +65,7 @@ public class GrappleAbility : MonoBehaviour, IAbility
 
     private void Start()
     {
-        grappleTargets = FindObjectsByType<GrappleTarget>(FindObjectsSortMode.None).ToList();
+        UpdateGrappleTargets();
         hookProjectile.transform.SetParent(transform.parent);
     }
 
@@ -170,7 +170,7 @@ public class GrappleAbility : MonoBehaviour, IAbility
         RaycastHit2D[] hit = new RaycastHit2D[10];
         Physics2D.Raycast(Player.ActivePlayer.transform.position, target.transform.position - Player.ActivePlayer.transform.position, filter, hit);
         Debug.DrawLine(Player.ActivePlayer.transform.position, hit[0].point);
-        if (hit[0].distance < Vector2.Distance(Player.ActivePlayer.transform.position, target.transform.position))
+        if (hit[0].collider != null && hit[0].distance < Vector2.Distance(Player.ActivePlayer.transform.position, target.transform.position))
         {
             return false;
         }
@@ -288,9 +288,7 @@ public class GrappleAbility : MonoBehaviour, IAbility
 
     private void PlayGrappleThrow()
     {
-        EventInstance footstepInstance = RuntimeManager.CreateInstance("event:/sfx/player/grapple/impact");
-        footstepInstance.start();
-        footstepInstance.release();
+        RuntimeManager.PlayOneShot(AudioEvents.SFX.unnamed_grapple.GetPath());
     }
 
     private void ChangeGrappleState(GrappleState newState)
@@ -316,5 +314,9 @@ public class GrappleAbility : MonoBehaviour, IAbility
     public void RemoveGrappleTarget(GrappleTarget target)
     {
         grappleTargets.Remove(target);
+    }
+    public void UpdateGrappleTargets()
+    {
+        grappleTargets = FindObjectsByType<GrappleTarget>(FindObjectsSortMode.None).ToList();
     }
 }

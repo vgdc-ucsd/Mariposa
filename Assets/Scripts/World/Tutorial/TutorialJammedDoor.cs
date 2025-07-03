@@ -3,23 +3,21 @@ using UnityEngine.SceneManagement;
 
 public class TutorialJammedDoor : Interactable
 {
-    public Dialogue jammedDialogue, mariposaDialogue;
-    public bool jammed;
+    [SerializeField] private string jammedDialogue;
+    public bool jammed, doneWithFirstDialogue;
 
     public override void OnInteract(IControllable controllable)
     {
-        if (DialogueManager.Instance.IsPlayingDialogue || !TutorialManager.Instance.UnnamedHasRadio()) return;
-        if (jammed)
+        if (jammed && !doneWithFirstDialogue)
         {
-            DialogueManager.Instance.PlayDialogue(jammedDialogue, () =>
-            {
-                LevelManager.Instance.GoToNextSublevel();
-                DialogueManager.Instance.PlayDialogue(mariposaDialogue);
-            });
+            DialogueManager.Instance.PlayDialogue(jammedDialogue);
+            doneWithFirstDialogue = true;
         }
-        else
+
+        if (!jammed)
         {
-            SceneManager.LoadScene(2); // city stage
+            SceneManager.LoadScene(2);
         }
+
     }
 }

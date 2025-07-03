@@ -23,10 +23,7 @@ public class TutorialLever : Switch
 
             if (BlockPuzzle.Instance.IsComplete)
             {
-                DialogueManager.Instance.PlayDialogue(BlockPuzzle.Instance.dialogue, () =>
-                {
-                    LevelManager.Instance.GoToNextSublevel();
-                });
+                DialogueManager.Instance.PlayDialogue(TutorialManager.Instance.blockPuzzleCompleteDialogue);
             }
         }
     }

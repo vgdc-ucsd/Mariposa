@@ -42,9 +42,27 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Escape",
+                    "name": "AltAbility",
                     "type": "Button",
-                    "id": "23820a18-2523-4a38-b586-2799ed3eb498",
+                    "id": "8e00b12e-bef2-402d-90f5-347eb9e3b324",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Click",
+                    "type": "Button",
+                    "id": "bcca764b-f21b-454c-b9eb-c0975d8455fc",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "DebugCompletePuzzle",
+                    "type": "Button",
+                    "id": "5c0dd2c9-d65e-46fc-ba45-f394229aa411",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -340,23 +358,45 @@
                 },
                 {
                     "name": "",
-                    "id": "07916685-8b88-4d24-8575-2560967eac28",
-                    "path": "<Keyboard>/escape",
+                    "id": "f6a4267f-4afd-4449-8ee2-c54857fd097a",
+                    "path": "<Keyboard>/z",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Keyboard&Mouse",
-                    "action": "Escape",
+                    "groups": "",
+                    "action": "AltAbility",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "ebd45f07-af15-4a9d-8a08-9088070c08b0",
-                    "path": "<Gamepad>/start",
+                    "id": "f5d52287-3efc-4edc-9baf-f3b9097c6879",
+                    "path": "<Gamepad>/buttonWest",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Gamepad",
-                    "action": "Escape",
+                    "groups": "",
+                    "action": "AltAbility",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2a927ce7-c6fd-4a38-b52c-80266bd6992e",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0b98d7ea-dde4-43bb-a82a-d04c6c496f2f",
+                    "path": "<Keyboard>/p",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "DebugCompletePuzzle",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -873,6 +913,65 @@
                     "processors": "",
                     "groups": "XR",
                     "action": "TrackedDeviceOrientation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Control",
+            "id": "df5ee929-d41d-493f-91ef-d1958e977219",
+            "actions": [
+                {
+                    "name": "Escape",
+                    "type": "Button",
+                    "id": "1ec8f063-dd34-4d9b-8b31-5425052afe12",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Inventory",
+                    "type": "Button",
+                    "id": "b7c4e777-9e6b-49ae-b950-0ddfaa94d90f",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "1deec8bb-14ad-4a82-95b6-22992634a7cb",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Escape",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3897e81f-dc98-4cb1-a110-67849ab13eba",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "Escape",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f9e79142-f5bf-4728-a44d-847787242d6b",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Inventory",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

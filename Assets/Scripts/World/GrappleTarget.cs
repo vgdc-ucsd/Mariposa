@@ -2,10 +2,12 @@ using UnityEngine;
 
 public class GrappleTarget : MonoBehaviour
 {
-    [SerializeField] private SpriteRenderer sr;
+    [SerializeField] private GameObject targetedGO;
+    [SerializeField] private GameObject untargetedGO;
     [SerializeField] bool oneUse;
     [SerializeField] private float respawnTime = 3.0f;
     private float respawn_t = 0;
+    private bool isTargeted;
 
     public bool isAvailable = true;
 
@@ -13,23 +15,26 @@ public class GrappleTarget : MonoBehaviour
     {
         respawn_t -= Time.deltaTime;
 
-        if (respawn_t <= 0)
+        if (respawn_t <= 0 && !isTargeted)
         {
-            sr.enabled = true;
+            untargetedGO.SetActive(true);
             isAvailable = true;
         }
     }
 
     public void ToggleHighlight(bool toggle)
     {
-        sr.color = toggle ? Color.green : Color.yellow;
+        isTargeted = toggle;
+        targetedGO.SetActive(toggle);
+        untargetedGO.SetActive(!toggle);
     }
 
     public virtual void ReleaseGrapple()
     {
         if (oneUse)
         {
-            sr.enabled = false;
+            targetedGO.SetActive(false);
+            untargetedGO.SetActive(false);
             isAvailable = false;
             respawn_t = respawnTime;
         }

@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "BatteryItem", menuName = "Inventory/BatteryItem")]
-public class BatteryItem : InventoryItemSO
+public class BatteryItem : ItemData
 {
     public static BatteryItem Instance { get; private set; }
 
@@ -10,6 +10,6 @@ public class BatteryItem : InventoryItemSO
         Instance = this;
         Name = "Battery";
         ID = 1;
-        Type = InventoryItemType.Single_Use;
+        Type = InventoryItemType.SINGLE_USE;
     }
 }

@@ -21,10 +21,10 @@ public class Bee : MonoBehaviour
 
     public void ToggleControl(bool toggle)
     {
-        if (toggle && DialogueManager.Instance != null && DialogueManager.Instance.IsPlayingDialogue)
+        /*if (toggle && DialogueManager.Instance != null && DialogueManager.Instance.IsPlayingDialogue)
         {
             return;
-        }
+        }*/
         IsControlled = toggle;
         Movement.ToggleCollisions(toggle);
         if (toggle)

@@ -3,6 +3,13 @@ using System.Collections;
 
 public class Turret : MonoBehaviour
 {
+
+    public enum TurretType
+    {
+        Projectile,
+        Laser,
+    }
+
     public bool IsOn { get => isOn; set => isOn = value;}
 	public bool IsCharging {get => isCharging; set => isCharging = value;}
 	public bool IsFiring  {get => isFiring; set => isFiring = value;}
@@ -14,6 +21,7 @@ public class Turret : MonoBehaviour
     public GameObject bodyPart;
     public GameObject chargingPoint;
     public GameObject laser;
+    public TurretType type;
 	ITurretBehaviour turretBehaviour;
 
     // -------- private variables --------
@@ -44,11 +52,11 @@ public class Turret : MonoBehaviour
 
     // -------- IEnumerator --------
     IEnumerator chargingCO; // Have this so that we can stop the charging when take off the battery
+    private float maxLaserLength;
 
     private void Start()
     {
-		turretBehaviour = GetComponent<ITurretBehaviour>();
-        bodyPart.GetComponent<SpriteRenderer>().color = Color.green; // For battery test
+        turretBehaviour = GetComponent<ITurretBehaviour>();
         chargingPoint.SetActive(false);
         laser.SetActive(false);
         SetLaserMaxLength();
@@ -66,6 +74,7 @@ public class Turret : MonoBehaviour
         isOn = rangeDetectorForAttack.IsTargetInRange();
         canRemoveBattery = rangeDetectorForBattery.IsTargetInRange();
         turretBehaviour.Act(this);
+
         if (!hasBattery && chargingCO != null)
         {
             StopCoroutine(chargingCO);
@@ -73,23 +82,22 @@ public class Turret : MonoBehaviour
             chargingCO = null;
         }
 
-
         // Remove Battery
-		if (canRemoveBattery && Input.GetKeyDown(KeyCode.K))
-		{
-			if (hasBattery)
-			{
-				hasBattery = false;
-				bodyPart.GetComponent<SpriteRenderer>().color = Color.gray;
-				InventoryManager.Instance.AddItem(InventoryType.Mariposa, batteryItem);	
-			}
-			else
-			{ 
-				InventoryManager.Instance.DeleteItem(InventoryType.Mariposa, batteryItem);
-				hasBattery = true;
-				bodyPart.GetComponent<SpriteRenderer>().color = Color.green;
-			}
-		}
+        if (canRemoveBattery && Input.GetKeyDown(KeyCode.K))
+        {
+            if (hasBattery)
+            {
+                hasBattery = false;
+                bodyPart.GetComponent<SpriteRenderer>().color = Color.gray;
+                InventoryManager.Instance.GetInventory().AddItem(batteryItem);
+            }
+            else
+            {
+                InventoryManager.Instance.GetInventory().TryConsumeItem(batteryItem);
+                hasBattery = true;
+                bodyPart.GetComponent<SpriteRenderer>().color = Color.green;
+            }
+        }
     }
 
     public void RemoveBattery()
@@ -97,16 +105,17 @@ public class Turret : MonoBehaviour
         hasBattery = false;
 	}
 
-    
+
 
     // ---------- private functions ----------
 
     private void SetLaserMaxLength()
     {
-        float lengthX = rangeDetectorForAttack.SizeX / 2 + rangeDetectorForAttack.OffsetX;
-        float lengthY = rangeDetectorForAttack.SizeY / 2 + rangeDetectorForAttack.OffsetY;
-        float maxLength = Mathf.Sqrt(Mathf.Pow(lengthX, 2) + Mathf.Pow(lengthY, 2));
-        laser.SetLocalScaleX(maxLength);
+        float laserOffset = transform.position.y - laser.transform.position.y;
+        float lengthX = rangeDetectorForAttack.SizeX / 2 - rangeDetectorForAttack.OffsetX;
+        float lengthY = rangeDetectorForAttack.SizeY / 2 - rangeDetectorForAttack.OffsetY - laserOffset;
+        maxLaserLength = Mathf.Sqrt(Mathf.Pow(lengthX, 2) + Mathf.Pow(lengthY, 2));
+        laser.SetLocalScaleX(maxLaserLength);
 	}
 
     public void TurnToTarget()
@@ -117,10 +126,25 @@ public class Turret : MonoBehaviour
         transform.rotation = Quaternion.LerpUnclamped(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
     }
 
-	public void StartFireRoutine()
-	{
+    public RaycastHit2D GetHit()
+    {
+        Vector3 laserOriginScale = laser.transform.localScale;
+        Vector2 upward = transform.TransformDirection(Vector2.up);
+        RaycastHit2D hit = Physics2D.Raycast(chargingPoint.transform.position, upward, maxLaserLength, hitLayer);
+
+        return hit;
+    }
+
+    public bool IsLookingAtPlayer()
+    {
+        RaycastHit2D hit = GetHit();
+        return  hit && hit.transform.TryGetComponent(out Player player);
+    }
+
+    public void StartFireRoutine()
+    {
         StartCoroutine(FireRoutine());
-	}
+    }
 
 	public void StartChargingRoutine()
 	{
@@ -139,7 +163,7 @@ public class Turret : MonoBehaviour
         float chargePointGrowingRate = chargePointSize / chargeTime;
         while (chargingPoint.transform.localScale.magnitude < chargePointSize)
         {
-            RaycastHit2D aimHit = Physics2D.Raycast(chargingPoint.transform.position, transform.TransformDirection(Vector2.up), 10f);
+            RaycastHit2D aimHit = Physics2D.Raycast(chargingPoint.transform.position, transform.TransformDirection(Vector2.up), maxLaserLength);
             if (aimHit) Debug.DrawLine(chargingPoint.transform.position, aimHit.transform.position, Color.red);
             chargingPoint.transform.localScale += chargePointGrowingRate * Time.deltaTime * Vector3.one;
 
@@ -156,44 +180,58 @@ public class Turret : MonoBehaviour
         // Firing
         isFiring = true;
         Vector3 laserOriginScale = laser.transform.localScale;
-        Vector2 upward = transform.TransformDirection(Vector2.up);
-        RaycastHit2D hit = Physics2D.Raycast(chargingPoint.transform.position, upward, laserOriginScale.x, hitLayer);
+        RaycastHit2D hit = GetHit();
         laser.SetActive(true);
+
+        float laserLength = maxLaserLength;
+
         if (hit)
         {
-            laser.SetLocalScaleX(hit.distance);
+            laserLength = Vector2.Distance(chargingPoint.transform.position, hit.point);
+
             Debug.Log("Turret hit: " + hit.transform.name);
             if (hit.transform.TryGetComponent(out Player player))
             {
                 // Do something to the player
+                StartCoroutine(player.Die());
             }
-            else
+            else if (hit.transform.TryGetComponent(out BreakablePlatform platform))
             {
-                // Do something to the breakable
+                // Do something to the BreakablePlatform (only object in game affected by turrets)
+                platform.BeenShot();
             }
         }
+        
+        laser.transform.localScale = new Vector3(
+            laserLength,
+            laser.transform.localScale.y,
+            laser.transform.localScale.z
+        );
 
-        // Laser shrinking
-        float laserScaleY = laser.transform.localScale.y;
-        float laserShrinkingRate = laserScaleY / laserShrinkTime;
-        while (laserScaleY > 0)
+        if (type == TurretType.Projectile)
         {
-            laserScaleY -= laserShrinkingRate * Time.deltaTime;
-            laser.SetLocalScaleY(laserScaleY);
-            yield return null;
-		}
-        laser.SetActive(false);
-        laser.transform.localScale = laserOriginScale;
-        isFiring = false;
+            // Laser shrinking
+            float laserScaleY = laser.transform.localScale.y;
+            float laserShrinkingRate = laserScaleY / laserShrinkTime;
+            while (laserScaleY > 0)
+            {
+                laserScaleY -= laserShrinkingRate * Time.deltaTime;
+                laser.SetLocalScaleY(laserScaleY);
+                yield return null;
+            }
+            laser.SetActive(false);
+            laser.transform.localScale = laserOriginScale;
+            isFiring = false;
 
-        isCoolingDown = true;
-        yield return new WaitForSeconds(fireTimeInterval);
-        isCoolingDown = false;
+            isCoolingDown = true;
+            yield return new WaitForSeconds(fireTimeInterval);
+            isCoolingDown = false;
+        }
 	}
 
     IEnumerator ShutdownRoutine()
     {
-        Debug.Log("Shotdown Routine");
+        Debug.Log("Shutdown Routine");
         float chargePointShrinkingRate = (chargePointSize / chargeTime) * 2;
         while (chargingPoint.transform.localScale.x > 0)
         {
