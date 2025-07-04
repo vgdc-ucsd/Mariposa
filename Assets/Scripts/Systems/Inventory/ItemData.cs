@@ -2,14 +2,15 @@ using UnityEngine;
 
 public enum InventoryItemType
 {
-	Permanent,
-	Single_Use,
-	Memento
+	SPECIAL,
+	PERMANENT,
+	SINGLE_USE,
+	MEMENTO
 }
 
 
 [CreateAssetMenu(fileName = "InventoryItem", menuName = "InventoryItem")]
-public class InventoryItemSO : ScriptableObject
+public class ItemData : ScriptableObject
 {
 	public string Name;
 	public string FlavorText;

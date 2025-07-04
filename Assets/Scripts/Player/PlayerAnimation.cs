@@ -18,45 +18,42 @@ public class PlayerAnimation : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
-        // playerSprite = GetComponent<SpriteRenderer>();
     }
 
     void Update()
     {
-        if (Player.ActivePlayer.Movement.State == BodyState.InAir)
-        {
-            animator.SetBool("isJumping", true);
-        }
-        else
-        {
-            animator.SetBool("isJumping", false);
-        }
+        // Jumping
+        bool isJumping = Player.ActivePlayer.Movement.State == BodyState.InAir;
+        animator.SetBool("isJumping", isJumping);
     }
 
     void FixedUpdate()
     {
+        // Landing SFX
         PlayLand();
-        // at rest
-        if (Player.ActivePlayer.Movement.Velocity.sqrMagnitude <= 0.05f)
+
+        // Idle, not moving
+        if (Player.ActivePlayer.Movement.Velocity.sqrMagnitude <= 0.00f)
         {
             animator.SetBool("isJumping", false);
             animator.SetFloat("xVelocity", 0f);
             animator.SetFloat("yVelocity", 0f);
-            return;
         }
-
-        int dir = Player.ActivePlayer.FacingDirection;
-        if (dir == -1)
-        {
-            animator.SetFloat("xVelocity", 1);
-            animator.SetFloat("yVelocity", Player.ActivePlayer.Movement.Velocity.y);
-            animator.SetFloat("faceLeft", 1);
-        }
+        // Running
         else
         {
             animator.SetFloat("xVelocity", 1);
             animator.SetFloat("yVelocity", Player.ActivePlayer.Movement.Velocity.y);
-            animator.SetFloat("faceLeft", 0);
+
+            int dir = Player.ActivePlayer.FacingDirection;
+            if (dir == -1)
+            {
+                animator.SetFloat("faceLeft", 1);
+            }
+            else
+            {
+                animator.SetFloat("faceLeft", 0);
+            }
         }
     }
 
