@@ -191,7 +191,10 @@ public class GrappleAbility : MonoBehaviour, IAbility
     // hook is travelling towards the target
     private void GrappleFire()
     {
+        Vector2 direction = (currentTarget.transform.position - hookProjectile.transform.position).normalized;
         hookProjectile.transform.position = Vector2.MoveTowards(hookProjectile.transform.position, currentTarget.transform.position, hookSpeed * fdt);
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        hookProjectile.transform.rotation = Quaternion.Euler(0, 0, angle);
         if (Vector2.Distance(hookProjectile.transform.position, currentTarget.transform.position) < 1f)
         {
             ChangeGrappleState(GrappleState.Pulling);
