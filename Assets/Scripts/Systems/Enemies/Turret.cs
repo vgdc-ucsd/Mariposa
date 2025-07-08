@@ -35,8 +35,10 @@ public class Turret : MonoBehaviour
     [SerializeField][Range(0.1f, 10)] float fireTimeInterval;
 
     [Header("Children Range Detector")]
-    [SerializeField] InRangeDetector rangeDetectorForAttack;
-    [SerializeField] InRangeDetector rangeDetectorForBattery;
+    [SerializeField] GameObject attackRangeDetectorObject;
+    [SerializeField] GameObject batteryRangeDetectorObject;
+    private IRangeDetector rangeDetectorForAttack;
+    private IRangeDetector rangeDetectorForBattery;
     
     [SerializeField] private BatteryItem batteryItem;
     // -------- private variables --------
@@ -52,14 +54,14 @@ public class Turret : MonoBehaviour
 
     // -------- IEnumerator --------
     IEnumerator chargingCO; // Have this so that we can stop the charging when take off the battery
-    private float maxLaserLength;
 
     private void Start()
     {
         turretBehaviour = GetComponent<ITurretBehaviour>();
+        rangeDetectorForAttack = attackRangeDetectorObject.GetComponent<IRangeDetector>();
+        rangeDetectorForBattery = batteryRangeDetectorObject.GetComponent<IRangeDetector>();
         chargingPoint.SetActive(false);
         laser.SetActive(false);
-        SetLaserMaxLength();
         hasBattery = true;
 
         // setup rangeDetector's target to the player
@@ -109,18 +111,9 @@ public class Turret : MonoBehaviour
 
     // ---------- private functions ----------
 
-    private void SetLaserMaxLength()
-    {
-        float laserOffset = transform.position.y - laser.transform.position.y;
-        float lengthX = rangeDetectorForAttack.SizeX / 2 - rangeDetectorForAttack.OffsetX;
-        float lengthY = rangeDetectorForAttack.SizeY / 2 - rangeDetectorForAttack.OffsetY - laserOffset;
-        maxLaserLength = Mathf.Sqrt(Mathf.Pow(lengthX, 2) + Mathf.Pow(lengthY, 2));
-        laser.SetLocalScaleX(maxLaserLength);
-	}
-
     public void TurnToTarget()
     {
-        Vector2 lookDir = rangeDetectorForAttack.Target.transform.position - transform.position;
+        Vector2 lookDir = target.transform.position - transform.position;
         float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;
         Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, angle));
         transform.rotation = Quaternion.LerpUnclamped(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
@@ -129,8 +122,9 @@ public class Turret : MonoBehaviour
     public RaycastHit2D GetHit()
     {
         Vector3 laserOriginScale = laser.transform.localScale;
-        Vector2 upward = transform.TransformDirection(Vector2.up);
-        RaycastHit2D hit = Physics2D.Raycast(chargingPoint.transform.position, upward, maxLaserLength, hitLayer);
+        Vector2 direction = transform.TransformDirection(Vector2.up);
+        float maxLength = rangeDetectorForAttack.GetMaxLength(direction);
+        RaycastHit2D hit = Physics2D.Raycast(chargingPoint.transform.position, direction, maxLength, hitLayer);
 
         return hit;
     }
@@ -163,7 +157,8 @@ public class Turret : MonoBehaviour
         float chargePointGrowingRate = chargePointSize / chargeTime;
         while (chargingPoint.transform.localScale.magnitude < chargePointSize)
         {
-            RaycastHit2D aimHit = Physics2D.Raycast(chargingPoint.transform.position, transform.TransformDirection(Vector2.up), maxLaserLength);
+            Vector2 aimDirection = transform.TransformDirection(Vector2.up);
+            RaycastHit2D aimHit = Physics2D.Raycast(chargingPoint.transform.position, aimDirection, rangeDetectorForAttack.GetMaxLength(aimDirection));
             if (aimHit) Debug.DrawLine(chargingPoint.transform.position, aimHit.transform.position, Color.red);
             chargingPoint.transform.localScale += chargePointGrowingRate * Time.deltaTime * Vector3.one;
 
@@ -183,13 +178,12 @@ public class Turret : MonoBehaviour
         RaycastHit2D hit = GetHit();
         laser.SetActive(true);
 
-        float laserLength = maxLaserLength;
+        float laserLength = rangeDetectorForAttack.GetMaxLength(transform.TransformDirection(Vector2.up));
 
         if (hit)
         {
             laserLength = Vector2.Distance(chargingPoint.transform.position, hit.point);
 
-            Debug.Log("Turret hit: " + hit.transform.name);
             if (hit.transform.TryGetComponent(out Player player))
             {
                 // Do something to the player
@@ -231,7 +225,6 @@ public class Turret : MonoBehaviour
 
     IEnumerator ShutdownRoutine()
     {
-        Debug.Log("Shutdown Routine");
         float chargePointShrinkingRate = (chargePointSize / chargeTime) * 2;
         while (chargingPoint.transform.localScale.x > 0)
         {
