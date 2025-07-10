@@ -15,6 +15,6 @@ public class KeycardPickup : ItemPickup
         TurnstileCollision.SetActive(false);
         TurnstileSR.sprite = UnlockedSprite;
         DialogueManager.Instance.PlayDialogue(fixedDoorDialogueName);
-        guard.AddNewDialogue();
+        guard.ReplaceDialogue();
     }
 }

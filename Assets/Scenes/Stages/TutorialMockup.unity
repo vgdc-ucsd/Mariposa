@@ -178,13 +178,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2921155554407902851, guid: e3d6da22aa66b9d42849965b6906f080, type: 3}
+      propertyPath: 'orderedDialogueNames.Array.data[0]'
+      value: success_put_battery_in_bot
+      objectReference: {fileID: 0}
+    - target: {fileID: 3478667244224844584, guid: e3d6da22aa66b9d42849965b6906f080, type: 3}
+      propertyPath: jammed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3478667244224844584, guid: e3d6da22aa66b9d42849965b6906f080, type: 3}
+      propertyPath: jammedDialogue
+      value: success_put_battery_in_bot
+      objectReference: {fileID: 0}
     - target: {fileID: 4777631326997127755, guid: e3d6da22aa66b9d42849965b6906f080, type: 3}
       propertyPath: m_Name
       value: 0-1-U2
       objectReference: {fileID: 0}
     - target: {fileID: 4777631326997127755, guid: e3d6da22aa66b9d42849965b6906f080, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8651251063056917191, guid: e3d6da22aa66b9d42849965b6906f080, type: 3}
       propertyPath: <SublevelMusic>k__BackingField
@@ -317,6 +329,24 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 3.58, y: 5.45}
   m_EdgeRadius: 0
+--- !u!1 &184317951 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5578997326271944185, guid: 1ab7bc7f443708b46ae44f7ad95f4288, type: 3}
+  m_PrefabInstance: {fileID: 2024417727}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &184317957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 184317951}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fd06cb817c6bd14e81761f27800a3df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: switch_mariposa1
 --- !u!1 &211734726
 GameObject:
   m_ObjectHideFlags: 0
@@ -1399,7 +1429,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 774169905530092198, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 871195840007370438, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
       propertyPath: m_Enabled
@@ -1855,7 +1885,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CurrentLevel: {fileID: 5883707273069645461}
-  NextLevelName: 
+  NextLevelName: Scenes/Stages/DowntownStage
   ActiveEnemies: []
   Breakables: []
 --- !u!4 &2022088644
@@ -2126,6 +2156,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 8485264092450101539, guid: 1ab7bc7f443708b46ae44f7ad95f4288, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8581982111406700234, guid: 1ab7bc7f443708b46ae44f7ad95f4288, type: 3}
       propertyPath: m_Name
       value: 0-1-U1
@@ -2153,6 +2187,9 @@ PrefabInstance:
     - {fileID: 2457415956577449768, guid: 1ab7bc7f443708b46ae44f7ad95f4288, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5578997326271944185, guid: 1ab7bc7f443708b46ae44f7ad95f4288, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 184317957}
     - targetCorrespondingSourceObject: {fileID: 3885511523155865106, guid: 1ab7bc7f443708b46ae44f7ad95f4288, type: 3}
       insertIndex: -1
       addedObject: {fileID: 322370085}

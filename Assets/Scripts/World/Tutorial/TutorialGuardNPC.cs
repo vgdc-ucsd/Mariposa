@@ -22,8 +22,9 @@ public class TutorialGuardNPC : NPC
     /// <summary>
     /// Called when the player fixes the turnstile
     /// </summary>
-    public void AddNewDialogue()
+    public void ReplaceDialogue()
     {
+		dialogueQueue.Clear();
         dialogueQueue.Enqueue(extraDialogue);
     }
 }
