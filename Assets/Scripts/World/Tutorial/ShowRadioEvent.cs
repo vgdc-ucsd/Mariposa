@@ -4,6 +4,6 @@ public class ShowRadioEvent : DialogueEvent
 {
     public override void Trigger()
     {
-        StartCoroutine(TutorialManager.Instance.ShowRadio());
+        TutorialManager.Instance.ShowRadio();
     }
 }

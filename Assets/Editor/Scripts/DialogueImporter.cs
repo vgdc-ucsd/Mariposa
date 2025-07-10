@@ -4,10 +4,22 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.IO;
+using System.Net;
+
+enum DialogueFile
+{
+    TUTORIAL,
+    DOWNTOWN,
+    PIER,
+    ROBOT,
+    HOMETOWN,
+    NPCS,
+    FLAVOR_TEXT_AND_ITEMS
+}
 
 public class DialogueImporter : EditorWindow
 {
-    private TextAsset txtFile;
+    private DialogueFile dialogueFile;
 
     [MenuItem("Dialogue/Import Dialogue")]
     public static void ShowWindow()
@@ -18,19 +30,57 @@ public class DialogueImporter : EditorWindow
     void OnGUI()
     {
         GUILayout.Label(".txt file", EditorStyles.boldLabel);
-        txtFile = (TextAsset)EditorGUILayout.ObjectField(".txt file", txtFile, typeof(TextAsset), false);
+        dialogueFile = (DialogueFile)EditorGUILayout.EnumPopup("Dialogue File", dialogueFile);
 
-        if (GUILayout.Button("Import"))
+        if (GUILayout.Button("Download & Import"))
         {
-            if (txtFile != null)
-            {
-                ImportDialogue(txtFile);
-            }
-            else
-            {
-                Debug.LogWarning("No file selected");
-            }
+            DownloadDialogue(dialogueFile);
         }
+    }
+
+    private void DownloadDialogue(DialogueFile file)
+    {
+        string tabName = file.ToString().ToLower();
+        WebClient client = new WebClient();
+        client.DownloadFileCompleted += (sender, e) => ImportDialogue(tabName);
+        client.DownloadFileAsync(GetDownloadURI(file), $"Assets/Dialogue/{tabName}.txt");
+        Debug.Log($"Downloaded {tabName} successfully!");
+    }
+
+    private Uri GetDownloadURI(DialogueFile file)
+    {
+        string tab;
+        switch (file)
+        {
+            case DialogueFile.TUTORIAL:
+                tab = "t.0";
+                break;
+            case DialogueFile.DOWNTOWN:
+                tab = "t.8u8ieea7akhd";
+                break;
+            case DialogueFile.PIER:
+                tab = "t.2m9mur9dcbl0";
+                break;
+            case DialogueFile.ROBOT:
+                tab = "t.1cv3585e0pa5";
+                break;
+            case DialogueFile.HOMETOWN:
+                tab = "t.tpr04jqm3k88";
+                break;
+            case DialogueFile.NPCS:
+                tab = "t.u7eieeoq9sbc";
+                break;
+            case DialogueFile.FLAVOR_TEXT_AND_ITEMS:
+                tab = "t.k4tf1r7jez5h";
+                break;
+            default:
+                tab = "";
+                Debug.LogError($"No tab could be found for {file}");
+                break;
+        }
+
+        string docBase = "https://docs.google.com/document/d/1s3rxKYcyUe-Ht71nyzD3D2npwpcDnx-PVLWIkDtFlDk/";
+        return new Uri(docBase + "export?tab=" + tab + "&format=txt");
     }
 
     private string ParseLabel(string line)
@@ -39,7 +89,7 @@ public class DialogueImporter : EditorWindow
         if (words.Length < 2) throw new Exception($"Error parsing file! The command {line} is missing a label!");
         return words[1];
     }
-    
+
     private DialogueEventElement ParseEvent(string line)
     {
         string[] words = line.Split(" ");
@@ -102,11 +152,18 @@ public class DialogueImporter : EditorWindow
     // !audio/!a - sound effect
     // !event/!e - arbitrary code
     // default text - dialogue line
-    void ImportDialogue(TextAsset dialogue)
+    void ImportDialogue(string tabName)
     {
-        string[] lines = dialogue.text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
+        string filePath = $"Assets/Dialogue/{tabName}.txt";
+        if (!File.Exists(filePath))
+        {
+            Debug.LogError($"Could not fine file at {filePath}!");
+            return;
+        }
+
+        string[] lines = File.ReadAllLines(filePath);
         Dictionary<string, string> speakerPortrait = new Dictionary<string, string>();
-        
+
         Dictionary<string, List<DialogueElement>> dd = new Dictionary<string, List<DialogueElement>>(); // dialogue dictionary
         DialogueElement element = new DialogueElement();
         string dialogueName = "";
@@ -199,7 +256,7 @@ public class DialogueImporter : EditorWindow
 
         dd[dialogueName].Add(element);
         DialogueParser.Validate(dd);
-        string assetName = dialogue.name.Replace(" ", "_").Replace("\"", "") + ".yaml";
+        string assetName = tabName.Replace(" ", "_").Replace("\"", "") + ".yaml";
         string yaml = DialogueParser.ToYaml(dd);
         string assetPath = Path.Combine("Resources/DialogueData", assetName);
         string fullPath = Path.Combine(Application.dataPath, assetPath);

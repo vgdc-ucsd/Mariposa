@@ -1,5 +1,6 @@
 using System.Collections;
-using Unity.VisualScripting;
+using FMOD.Studio;
+using FMODUnity;
 using UnityEngine;
 
 /*
@@ -11,7 +12,7 @@ public class ItemPickup : Interactable
 {
 
     [Header("Pickup Settings")]
-    [SerializeField] protected InventoryItemSO item;
+    [SerializeField] protected ItemData item;
     [SerializeField] protected SpriteRenderer spriteRenderer;
 
     public override bool DestroyOnInteract => true;
@@ -26,35 +27,16 @@ public class ItemPickup : Interactable
             spriteRenderer.sprite = item.lowResSprite;
         }
     }
-    
+
     /// <summary>
     /// Called when this item is picked up.
     /// Adds the item to the specified inventory and then destroys this pickup.
     /// </summary>
     public override void OnInteract(IControllable controllable)
     {
-        Debug.Log("picked up");
         if (InventoryManager.Instance != null && item != null)
         {
-            InventoryType type;
-            if (controllable is BeeMovement) type = InventoryType.Mariposa;
-            else if (controllable is PlayerMovement pm)
-            {
-                if (pm.Parent.Data.characterID == CharID.Mariposa)
-                {
-                    type = InventoryType.Mariposa;
-                }
-                else
-                {
-                    type = InventoryType.Unnamed;
-                }
-            }
-            else
-            {
-                Debug.LogError("No suitable Inventory to add item to");
-                return;
-            }
-            InventoryManager.Instance.AddItem(type, item);
+            InventoryManager.Instance.GetInventory().AddItem(item);
         }
         else
         {
@@ -66,6 +48,27 @@ public class ItemPickup : Interactable
         {
             bee.GetComponentInChildren<BeeGrabAnimation>().runGrabAnimation();
         }
+        playPickupSFX();
         //Destroy(gameObject);
+    }
+
+    private void playPickupSFX()
+    {
+        string itemSFX = item.ItemSFXType.ToString();
+        EventInstance itemPickupSFX = RuntimeManager.CreateInstance(AudioEvents.SFX.item_pickup.GetPath());
+        itemPickupSFX.setParameterByNameWithLabel("ItemType", itemSFX);
+        itemPickupSFX.start();
+        itemPickupSFX.release();
+    }
+
+    public enum ItemSFXType
+    {
+        Default,
+        MetalicLeather,
+        Rustle,
+        Papery,
+        Metalic,
+        Cloth,
+        MetalWood
     }
 }

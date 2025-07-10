@@ -18,6 +18,8 @@ public class WaterPuzzle : Puzzle
     [SerializeField] private GameObject tilePrefab;
     private List<WaterPuzzleTile> tilesInSolution;
     [SerializeField] private GameObject backgroundParent;
+    [SerializeField] private float puzzleScale;
+    [SerializeField] private Transform content;
 
     public float RandomTurnChance; // odds from 0 to 1 for the solution generator to make a random turn between tiles.
     public float TileWidth, TileHeight; // width and height of one tile in the scene
@@ -73,13 +75,15 @@ public class WaterPuzzle : Puzzle
 
         int seed = (int)System.DateTime.Now.Ticks;
         if (usingSeedBank) seed = seedBank[Random.Range(0, seedBank.Length)];
-        Debug.Log(gameObject.name + " seed: " + seed);
         Random.InitState(seed);
         GenerateSolution();
         UsedPipeSplitter = false;
     }
 
-
+    void Start()
+    {
+        content.localScale = Vector3.one * puzzleScale;
+    }
 
 
     public void ResetPuzzle()

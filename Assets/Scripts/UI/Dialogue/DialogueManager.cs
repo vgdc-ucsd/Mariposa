@@ -8,15 +8,8 @@ public class DialogueManager : Singleton<DialogueManager>
 {
     [SerializeField] private DialoguePlayer dialoguePlayer;
 
-    private InputSystem_Actions inputs;
     private Dictionary<string, List<DialogueElement>> dialogueDictionary = new Dictionary<string, List<DialogueElement>>();
     private Dictionary<string, DialogueEvent> eventDictionary = new Dictionary<string, DialogueEvent>();
-
-    public override void Awake()
-    {
-        base.Awake();
-        inputs = new InputSystem_Actions();
-    }
 
     /// <summary>
     /// Loads the dialogue data in the given yaml file.
@@ -51,14 +44,14 @@ public class DialogueManager : Singleton<DialogueManager>
     /// Begins the dialogue sequence with the matching name.
     /// </summary>
     /// <param name="dialogueName">The name of the dialogue sequence as written in the imported files</param>
-    public void PlayDialogue(string dialogueName)
+    public void PlayDialogue(string dialogueName, bool initAdvance = true)
     {
         if (!dialogueDictionary.ContainsKey(dialogueName))
         {
             Debug.LogError($"Could not find dialogue with the name \"{dialogueName}\"! Check that there's no typos and the dialogue file has been loaded!");
             return;
         }
-        dialoguePlayer.PlayDialogue(dialogueDictionary[dialogueName]);
+        dialoguePlayer.PlayDialogue(dialogueDictionary[dialogueName], initAdvance);
     }
 
     public void RegisterEvent(string name, DialogueEvent dialogueEvent)
@@ -86,17 +79,5 @@ public class DialogueManager : Singleton<DialogueManager>
         return dialogueDictionary;
     }
 
-    private void OnEnable()
-    {
-        inputs.Enable();
-        inputs.Player.Interact.started += ctx => dialoguePlayer.TryAdvanceDialogue();
-        inputs.Player.Click.performed += ctx => dialoguePlayer.TryAdvanceDialogue();
-    }
-
-    private void OnDisable()
-    {
-        inputs.Player.Interact.started -= ctx => dialoguePlayer.TryAdvanceDialogue();
-        inputs.Player.Click.performed -= ctx => dialoguePlayer.TryAdvanceDialogue();
-        inputs.Disable();
-    }
+    public void TryAdvanceDialogue() { dialoguePlayer.TryAdvanceDialogue(); }
 }

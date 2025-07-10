@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -32,29 +33,30 @@ using UnityEngine;
 /// </summary>
 public class TutorialManager : Singleton<TutorialManager>
 {
-    [SerializeField] InventoryItemSO unnamedRadio;
+    [SerializeField] ItemData unnamedRadio;
     [SerializeField] private GameObject showRadioCanvas;
+    public string blockPuzzleCompleteDialogue;
     private Object[] dialogueData;
-
+    public GameObject backtrackTrigger, noRadioTrigger;
     private IEnumerator Start()
     {
         yield return new WaitForEndOfFrame();
         DialogueManager.Instance.PlayDialogue("start");
-        ShowRadioEvent showRadioEvent = new ShowRadioEvent();
-    }
-    private void OnEnable()
-    {
     }
 
     public bool UnnamedHasRadio()
     {
-        return (InventoryManager.Instance.GetItemCount(InventoryType.Unnamed, unnamedRadio) > 0);
+        return InventoryManager.Instance.GetInventory().HasItem(unnamedRadio);
     }
 
-    public IEnumerator ShowRadio()
+    public void ShowRadio()
     {
+        noRadioTrigger.SetActive(false);
         showRadioCanvas.SetActive(true);
-        yield return new WaitForSeconds(1f);
+    }
+
+    public void HideRadio()
+    {
         showRadioCanvas.SetActive(false);
     }
 }
