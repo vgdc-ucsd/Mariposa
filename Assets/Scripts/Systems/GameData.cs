@@ -14,15 +14,20 @@ public class GameData
     public Inventory mariposaInventory;
     public Inventory unnamedInventory;
 
-    //Settings
+    // Settings
     public AudioSetting audioSetting;
     // Video Settings
     public int width;
     public int height;
     public WindowType windowType;
 
+    // Level Manager
+    public Level curLevel;
     public int currentSublevelIndex;
     public string nextLevelScene;
+    public List<Enemy> ActiveEnemies;
+    public List<BreakablePlatform> Breakables;
+
     /// <summary>
     /// Constructor for the GameData object
     /// Creates a new object with the default values
@@ -39,6 +44,10 @@ public class GameData
         this.windowType = WindowType.Windowed;
 
         this.TEST_keyStrokeCount = 0;
+
+        this.curLevel = new Level(); //Default Nothing
+        this.ActiveEnemies = new List<Enemy>();
+        this.Breakables = new List<BreakablePlatform>();
         this.currentSublevelIndex = 0;
         this.nextLevelScene       = "TutorialMockup";
     }

@@ -102,7 +102,7 @@ public class LevelManager : MonoBehaviour, IDataPersistence
         SublevelIndex %= CurrentLevel.Sublevels.Length;
         CurrentLevel.LoadSublevel(SublevelIndex);
         InitSublevel();
-
+        DataPersistenceManager.Instance.SaveGame(DataPersistenceManager.Instance.fileName);
     }
 
     public void GoToPreviousLevel()
@@ -180,6 +180,7 @@ public class LevelManager : MonoBehaviour, IDataPersistence
     public void LoadNextLevel()
     {
         SceneManager.LoadScene(NextLevelName);
+        DataPersistenceManager.Instance.SaveGame(DataPersistenceManager.Instance.fileName);
         // Scene nextLevel = SceneManager.GetSceneByName(NextLevelName);
     }
 
@@ -187,15 +188,22 @@ public class LevelManager : MonoBehaviour, IDataPersistence
     {
         data.currentSublevelIndex = SublevelIndex;
         data.nextLevelScene = NextLevelName;
+        data.curLevel = CurrentLevel;
+        data.ActiveEnemies = ActiveEnemies;
+        data.Breakables = Breakables;
     }
 
     public void LoadData(GameData data)
     {
         SublevelIndex = data.currentSublevelIndex;
         NextLevelName = data.nextLevelScene;
+        CurrentLevel = data.curLevel;
+        ActiveEnemies = data.ActiveEnemies;
+        Breakables = data.Breakables;
         // TODO: Check if it works and if needed call a function to apply the changes
     }
 
+    //Dead Code?
     private void CompleteLevel()
     {
         SublevelIndex = 0;

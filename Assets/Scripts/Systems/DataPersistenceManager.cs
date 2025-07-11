@@ -10,7 +10,7 @@ using System.Linq;
 public class DataPersistenceManager : Singleton<DataPersistenceManager>
 {
     [Header("File Storage Config")]
-    public string fileName = "";
+    public string fileName = "Save";
 
     private GameData gameData;
     private List<IDataPersistence> dataPersistenceObjects;
