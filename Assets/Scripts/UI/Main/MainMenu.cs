@@ -29,6 +29,7 @@ public class MainMenu : MonoBehaviour
     public void LoadGameBtn()
     {
         Debug.Log("Load button clicked");
+        DataPersistenceManager.Instance.LoadGame(DataPersistenceManager.Instance.fileName);
 
     }
 

@@ -30,6 +30,7 @@ public class LevelManager : MonoBehaviour, IDataPersistence
         foreach (var sl in CurrentLevel.Sublevels) sl.Unload();
         SublevelIndex = 0;
         CurrentLevel.LoadSublevel(SublevelIndex);
+        CurrentLevel.CurLevelIndex = SceneManager.GetActiveScene().buildIndex;
 
         if (string.IsNullOrEmpty(NextLevelName))
         {
@@ -186,11 +187,13 @@ public class LevelManager : MonoBehaviour, IDataPersistence
 
     public void SaveData(ref GameData data)
     {
+        CurrentLevel.CurLevelIndex = SceneManager.GetActiveScene().buildIndex;
         data.currentSublevelIndex = SublevelIndex;
         data.nextLevelScene = NextLevelName;
         data.curLevel = CurrentLevel;
         data.ActiveEnemies = ActiveEnemies;
         data.Breakables = Breakables;
+
     }
 
     public void LoadData(GameData data)
@@ -200,6 +203,9 @@ public class LevelManager : MonoBehaviour, IDataPersistence
         CurrentLevel = data.curLevel;
         ActiveEnemies = data.ActiveEnemies;
         Breakables = data.Breakables;
+
+        SceneManager.LoadScene(CurrentLevel.CurLevelIndex);
+        CurrentLevel.LoadSublevel(SublevelIndex);
         // TODO: Check if it works and if needed call a function to apply the changes
     }
 

@@ -5,6 +5,8 @@ public class Level : MonoBehaviour
     [SerializeField]
     public Sublevel[] Sublevels;
 
+    public int CurLevelIndex;
+
     
 
     public void LoadSublevel(int level)
