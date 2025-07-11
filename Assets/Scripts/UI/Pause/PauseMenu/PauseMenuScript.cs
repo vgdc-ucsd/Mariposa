@@ -28,6 +28,7 @@ public class PauseMenuScript : MonoBehaviour
     {
         CloseAllMenus();
         BackgroundPanel.SetActive(false);
+        Time.timeScale = 1.0f;
     }
 
     public void OpenVideoSettings()
