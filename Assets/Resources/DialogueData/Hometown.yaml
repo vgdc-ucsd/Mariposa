@@ -1,33 +1,19 @@
-pier_arrival:
+spat_out:
 - Speaker: Unnamed
-  Line: (Suppose I’ll start heading to the pier. There could be something useful, now that everything’s changing.)
-  Icon: Neutral
+  Line: (...!)
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
-  Events: []
+  Sounds:
+  - Unnamed_Cough2.wav
+  Events:
+  - EventName: check_friendship
+    TriggerAtEnd: true
   Choice1: 
   Choice2: 
+broken_rib:
 - Speaker: Unnamed
-  Line: '...'
-  Icon: Neutral
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Unnamed
-  Line: (Besides, maybe the ocean breeze will do me some good.)
-  Icon: Neutral
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Unnamed
-  Line: (...Hah. As if.)
+  Line: (Something’s broken. Every breath I take, something pops in and out of place. Can’t see, can’t think—-)
   Icon: Neutral
   Background: 
   FromRadio: 
@@ -45,7 +31,7 @@ pier_arrival:
   Choice1: 
   Choice2: 
 - Speaker: Unnamed
-  Line: (Though this radio...)
+  Line: (Just...tired.)
   Icon: Neutral
   Background: 
   FromRadio: 
@@ -54,7 +40,17 @@ pier_arrival:
   Choice1: 
   Choice2: 
 - Speaker: Unnamed
-  Line: (Ah. Never mind that for now. Best to get on with it.)
+  Line: (...!)
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Unnamed_Cough1.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: (...but still, there are better places to die. I’ll walk until there’s nowhere else to go.)
   Icon: Neutral
   Background: 
   FromRadio: 
@@ -62,22 +58,58 @@ pier_arrival:
   Events: []
   Choice1: 
   Choice2: 
-pier_dead_end:
+reach:
 - Speaker: Unnamed
-  Line: (Dead end. Nothing left here.)
+  Line: I wonder if fate is still watching. If she's laughing at what we’ve all become.
+  Icon: Neutral
+  Background: silica_heart
+  FromRadio: 
+  Sounds: []
+  Events:
+  - EventName: end_game
+    TriggerAtEnd: false
+  Choice1: 
+  Choice2: 
+check_on_her:
+- Speaker: Unnamed
+  Line: (Maybe there’s no way out of it this time...)
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: (Still, before I go, I’d like to make sure that she’s alright.)
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: (What if I—?)
   Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
-  - radio-clip3-novoices.wav
-  Events:
-  - EventName: check_friendship
-    TriggerAtEnd: true
+  - fix_radio
+  Events: []
   Choice1: 
   Choice2: 
-pier_friends:
+- Speaker: Unnamed
+  Line: (...)
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
 - Speaker: Mariposa
-  Line: Kairo? You there?
+  Line: -ello? Kairo? Kairo, are you there?
   Icon: Neutral
   Background: 
   FromRadio: 
@@ -94,8 +126,8 @@ pier_friends:
   Events: []
   Choice1: 
   Choice2: 
-- Speaker: Unnamed
-  Line: Yes, I’m here.
+- Speaker: Mariposa
+  Line: Oh, thank goodness! I thought this thing was done for!
   Icon: Neutral
   Background: 
   FromRadio: 
@@ -104,131 +136,45 @@ pier_friends:
   Choice1: 
   Choice2: 
 - Speaker: Mariposa
-  Line: Good news! I got a job at the pier.
+  Line: You know something funny? I still haven’t been able to figure out why this radio works. Sure, the two-way is technically operable; but I haven't been able to figure out where exactly I’m receiving your frequency from.
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: It’s almost like it doesn’t exist!
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: '...I see.'
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: Ah, I’ve gotten so used to this little radio though, I kinda missed hearing your voice! Made it all the way home before I got it working again.
   Icon: Happy
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Mariposa
-  Line: Not usually in my line of work, but the automatons in the gutters need a check-up.
-  Icon: Neutral
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Mariposa
-  Line: Ah, the breeze is so nice!
-  Icon: Happy
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Unnamed
-  Line: I suppose so.
-  Icon: Neutral
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Unnamed
-  Line: Do you mind...describing it to me?
-  Icon: Neutral
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Unnamed
-  Line: The pier, that is. What is it like?
-  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds: []
   Events:
-  - EventName: switch_sublevels
-    TriggerAtEnd: true
-  Choice1: 
-  Choice2: 
-pier_friends_part2:
-- Speaker: Mariposa
-  Line: Well, it’s a bit early, so it’s not as busy as it usually is. The shops are opening up, and the seagulls are starting to wake up.
-  Icon: Neutral
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Mariposa
-  Line: The water’s really pretty too; the way the sun hits it, it’s like the tides are sparkling.
-  Icon: Happy
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Mariposa
-  Line: What’s it like for you?
-  Icon: Neutral
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Unnamed
-  Line: It’s...different.
-  Icon: Neutral
-  Background: 
-  FromRadio: 
-  Sounds:
-  - radio-clip3-novoices.wav
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Mariposa
-  Line: You still there?
-  Icon: Neutral
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Unnamed
-  Line: —break—connection—?
-  Icon: Neutral
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Mariposa
-  Line: (Looks like I’ll have to try again later.)
-  Icon: Neutral
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events:
-  - EventName: play_control_panel_from_pier_friends
+  - EventName: walking_sim
     TriggerAtEnd: false
   Choice1: 
   Choice2: 
-pier_job_not_friends:
 - Speaker: Mariposa
-  Line: Wonder if they’re still there.
+  Line: Hey, maybe someday you might stumble onto my little hometown!
   Icon: Neutral
   Background: 
   FromRadio: 
@@ -237,7 +183,7 @@ pier_job_not_friends:
   Choice1: 
   Choice2: 
 - Speaker: Mariposa
-  Line: Hello?
+  Line: It’s nothing much, but I’d like to show you around. As much as I gush about the big city or the pier, there really is nothing like home.
   Icon: Neutral
   Background: 
   FromRadio: 
@@ -245,8 +191,9 @@ pier_job_not_friends:
   Events: []
   Choice1: 
   Choice2: 
-- Speaker: Unnamed
-  Line: '...'
+walk_trees:
+- Speaker: Mariposa
+  Line: The lushness of the trees, or the soft glow of our streetlights…
   Icon: Neutral
   Background: 
   FromRadio: 
@@ -254,40 +201,9 @@ pier_job_not_friends:
   Events: []
   Choice1: 
   Choice2: 
+walk_automatons:
 - Speaker: Mariposa
-  Line: (Should’ve expected as much.)
-  Icon: Neutral
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events:
-  - EventName: play_control_panel_from_pier_job_not_friends
-    TriggerAtEnd: false
-  Choice1: 
-  Choice2: 
-control_panel:
-- Speaker: Mariposa
-  Line: Well, I should get to work. The plumbing maintenance control panel is around here somewhere; it should be an easy fix to get it connected to the automaton in the pipes.
-  Icon: Neutral
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-control_panel_not_fixed:
-- Speaker: Mariposa
-  Line: I’ve got it this time. Let’s try again.
-  Icon: Neutral
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-control_panel_fixed:
-- Speaker: Mariposa
-  Line: That should do it!
+  Line: Our neighbors bickering about the laundry, and the toy automatons hopping around in the streets...
   Icon: Happy
   Background: 
   FromRadio: 
@@ -295,8 +211,18 @@ control_panel_fixed:
   Events: []
   Choice1: 
   Choice2: 
+walk_door:
 - Speaker: Mariposa
-  Line: Hmm. Well, since I’m here, I could test it out to make sure everything is working well.
+  Line: I think you’d like it, Kairo.
+  Icon: Happy
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: '...yeah. I’m sure I would.'
   Icon: Neutral
   Background: 
   FromRadio: 
@@ -304,371 +230,51 @@ control_panel_fixed:
   Events: []
   Choice1: 
   Choice2: 
-leave_attempt:
 - Speaker: Mariposa
-  Line: I should really make sure that little automaton is working before I go...who knows what state those pipes are in.
+  Line: Are you alright?
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: You’re quiet. What’s wrong?
   Icon: Sad
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-pipe_fail:
-- Speaker: Mariposa
-  Line: You’ve got this little guy! Let’s try this again.
-  Icon: Neutral
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-pipe_missing:
-- Speaker: Mariposa
-  Line: Huh. Looks like there’s a piece missing.
-  Icon: Neutral
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Mariposa
-  Line: Maybe I can get that from someone here? Wouldn’t want to leave it unfinished.
-  Icon: Neutral
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Mariposa
-  Line: Beebo, is there some sort of plumbing store here?
-  Icon: Neutral
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Beebo
-  Line: <The nearest supply warehouse is 2 hours away by public transit.>
-  Icon: Neutral
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Beebo
-  Line: '<Recommended route: A Scrap Hawker located down the pier could be selling the missing part, or a fitting alternative.>'
-  Icon: Neutral
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Beebo
-  Line: <Would you like to add this to your task list?>
-  Icon: Neutral
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Mariposa
-  Line: Sure, it’s worth a shot!
-  Icon: Happy
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-scrap_vendor:
-- Speaker: Mariposa
-  Line: Hello?
-  Icon: Neutral
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Carl
-  Line: Ah! Sorry, I didn’t realize you were standing there—
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Carl
-  Line: Welcome, welcome—just let me tidy up–you caught me off guard, miss—
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Carl
-  Line: Are you looking for something in particular?
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Mariposa
-  Line: Yup, just looking for a certain pipe fitting.
-  Icon: Neutral
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Carl
-  Line: Hah, I have lots of junk here. Surely I've got something you need.
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Carl
-  Line: I just, uh, need to figure out where it all went.
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Carl
-  Line: My memory’s getting away from me nowadays. Place hasn’t been the same since the kid left for university. He did a lot of the organizing. Heh. Maybe it was about time to think about retiring...
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Mariposa
-  Line: If you’d like, I could help out a bit!
-  Icon: Happy
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Mariposa
-  Line: I have some time.
-  Icon: Neutral
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Carl
-  Line: Oh, I mean, if it’s not a bother—It’d sure mean a lot to me. Thanks, kid.
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-complete_scale_1:
-- Speaker: Mariposa
-  Line: I think I get it now!
-  Icon: Happy
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Carl
-  Line: Looks promising, kid! Keep it up.
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-complete_scale_2:
-- Speaker: Mariposa
-  Line: We got it!
-  Icon: Happy
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Carl
-  Line: Looks like it’s almost fixed! You’re a miracle, kid.
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-complete_scale_3:
-- Speaker: Carl
-  Line: That should be the last of it; I can’t thank you enough.
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Carl
-  Line: Here, kid. You needed this, right?  Take it.
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Mariposa
-  Line: Oh, no, you don’t need to do that! I shouldn’t—
-  Icon: Surprised
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Carl
-  Line: Nonsense. Was going to spend all day struggling with inventory; you really helped me out, kid. Heh, maybe I’ve got enough time to close up early and break out the dingy again. My boy used to love rides around the marina.
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Carl
-  Line: Ah. Hope he calls soon.
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Mariposa
-  Line: Well, thank you then!
-  Icon: Happy
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Carl
-  Line: Take care, kid.
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-complete_carl:
-- Speaker: Carl
-  Line: Take care, kid.
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-Izote1:
-- Speaker: Izote
-  Line: Mariposa, my sweetpea, it has been a while since I saw you! It seems like just yesterday you were just a little sprout; look how big you’ve grown!
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Mariposa
-  Line: Mrs. Izote! How’s life in the city treating you?
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Izote
-  Line: Oh, you know how the hustle and bustle is, sweetheart. It’s no small town community, but it’s worth it to be with my precious Daisy and my new grandson.
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-Izote2:
-- Speaker: Izote
-  Line: Stop by if you ever need floral arrangements! I’ll be sure to have your favorites, sweetpea; I know how much you adore those peonies and carnations!
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-gig_done:
-- Speaker: Mariposa
-  Line: Kairo? I just finished up my gig. What are you up to?
-  Icon: Neutral
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events:
-  - EventName: switch_sublevels
-    TriggerAtEnd: true
-  Choice1: 
-  Choice2: 
-gig_done_choice:
-- Speaker: Unnamed
-  Line: '...'
-  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds: []
   Events: []
   Choice1:
-    Response: Respond.
-    LinkedDialogue: response
+    Response: Nothing’s wrong.
+    LinkedDialogue: pretend_nothings_wrong
     Friendship: 0
   Choice2:
-    Response: Ignore.
-    LinkedDialogue: dont_respond
+    Response: The future.
+    LinkedDialogue: talk_about_the_future
     Friendship: 0
-response:
+pretend_nothings_wrong:
 - Speaker: Unnamed
-  Line: Just...looking around.
+  Line: (She doesn’t have to know.)
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: (After all this, I couldn’t tell her now.)
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: I’m alright. I just have to go now. It was nice to meet you, though.
   Icon: Neutral
   Background: 
   FromRadio: 
@@ -677,7 +283,7 @@ response:
   Choice1: 
   Choice2: 
 - Speaker: Mariposa
-  Line: Don’t leave me on a cliffhanger, I need details! What’s your world like?
+  Line: Oh, you're leaving? Well, I’m glad I got to talk to you! Maybe I’ll meet you someday, Kairo. Don’t be a stranger!
   Icon: Happy
   Background: 
   FromRadio: 
@@ -686,7 +292,43 @@ response:
   Choice1: 
   Choice2: 
 - Speaker: Unnamed
-  Line: Well. It’s—
+  Line: Wouldn’t dream of it.
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: Will I hear from you tomorrow?
+  Icon: Happy
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: Sure.
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: Well, see you, then!
+  Icon: Happy
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: Yeah.
   Icon: Neutral
   Background: 
   FromRadio: 
@@ -704,7 +346,17 @@ response:
   Choice1: 
   Choice2: 
 - Speaker: Unnamed
-  Line: It’s nothing like what you have.
+  Line: See you.
+  Icon: Neutral
+  Background: silica_heart
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+talk_about_the_future:
+- Speaker: Unnamed
+  Line: There’s something you have to know about your radio, Mariposa.
   Icon: Neutral
   Background: 
   FromRadio: 
@@ -713,7 +365,7 @@ response:
   Choice1: 
   Choice2: 
 - Speaker: Unnamed
-  Line: Sorry. I need a second. To think about something.
+  Line: You said you modified it. It was an old two-way; you rearranged it. Gave it a new shell and fixed it up. Didn’t think it would work. And it receives a signal you cannot trace.
   Icon: Neutral
   Background: 
   FromRadio: 
@@ -722,16 +374,7 @@ response:
   Choice1: 
   Choice2: 
 - Speaker: Mariposa
-  Line: Alright, not a problem!
-  Icon: Happy
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Mariposa
-  Line: Just let me know if I can do anything for you.
+  Line: Well, yes? Actually, I can track it, it’s just spitting out a result that doesn’t make any sense. Says it’s actually not picking up a signal at all, and it’s coming from—
   Icon: Neutral
   Background: 
   FromRadio: 
@@ -740,19 +383,7 @@ response:
   Choice1: 
   Choice2: 
 - Speaker: Unnamed
-  Line: '...sure. Will do.'
-  Icon: Neutral
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events:
-  - EventName: play_pier_friendship_check_from_response
-    TriggerAtEnd: false
-  Choice1: 
-  Choice2: 
-dont_respond:
-- Speaker: Unnamed
-  Line: …
+  Line: –right where you are, correct?
   Icon: Neutral
   Background: 
   FromRadio: 
@@ -761,7 +392,7 @@ dont_respond:
   Choice1: 
   Choice2: 
 - Speaker: Unnamed
-  Line: (I’m watching the harbor morph before my eyes; twisting, churning, melting away—-time shifts with her every step.)
+  Line: It’s because that signal is from itself. It’s picking up its own transmissions and relaying them back into the same place; just a different time.
   Icon: Neutral
   Background: 
   FromRadio: 
@@ -770,49 +401,16 @@ dont_respond:
   Choice1: 
   Choice2: 
 - Speaker: Mariposa
-  Line: …
-  Icon: Neutral
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Mariposa
-  Line: Well, I’ve still got work to do. I should get going.
+  Line: '...Kairo, what are you saying?'
   Icon: Sad
   Background: 
   FromRadio: 
   Sounds: []
-  Events:
-  - EventName: play_pier_friendship_check_from_dont_respond
-    TriggerAtEnd: false
-  Choice1: 
-  Choice2: 
-pier_friendship_check:
-- Speaker: Unnamed
-  Line: '...'
-  Icon: Neutral
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events:
-  - EventName: check_friendship_boat
-    TriggerAtEnd: false
-  Choice1: 
-  Choice2: 
-future_friends:
-- Speaker: Unnamed
-  Line: '...Mari?'
-  Icon: Neutral
-  Background: 
-  FromRadio: 
-  Sounds: []
   Events: []
   Choice1: 
   Choice2: 
-- Speaker: Mariposa
-  Line: Yes? I’m here.
+- Speaker: Unnamed
+  Line: You said it yourself. It’s an antique; it doesn’t have self-interference cancellation, and it certainly didn’t when you tried to install your upgraded transmitters.
   Icon: Neutral
   Background: 
   FromRadio: 
@@ -821,7 +419,7 @@ future_friends:
   Choice1: 
   Choice2: 
 - Speaker: Unnamed
-  Line: (...there’s no good way to ask this.)
+  Line: Somehow, your modification is allowing you to safely project signals faster than what should be possible—and it’s coming back down to Earth a hundred years too late.
   Icon: Neutral
   Background: 
   FromRadio: 
@@ -830,107 +428,8 @@ future_friends:
   Choice1: 
   Choice2: 
 - Speaker: Unnamed
-  Line: What do you think about the future?
+  Line: '...and receive signals a hundred years too early.'
   Icon: Neutral
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Unnamed
-  Line: Everyone, doing the same thing every day, chasing their dreams—-what do you think it’s all for?
-  Icon: Neutral
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Mariposa
-  Line: What’s it all for?
-  Icon: Neutral
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Mariposa
-  Line: That’s a tough question.
-  Icon: Neutral
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Mariposa
-  Line: Kairo, I didn’t think you were the type to ask about these kinds of things!
-  Icon: Happy
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Unnamed
-  Line: Humor me.
-  Icon: Neutral
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Mariposa
-  Line: Alright, alright.
-  Icon: Happy
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Mariposa
-  Line: I think, maybe, deep down, everyone wants to save something. Someone they love, something they cherish—-maybe even the whole world.
-  Icon: Neutral
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Mariposa
-  Line: As for me, I want to make automatons to help people.
-  Icon: Neutral
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Mariposa
-  Line: There’s so much I wish I could do, but, come on, at the end of the day, I’m only one person.
-  Icon: Neutral
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Mariposa
-  Line: If I could make machines to make everyone’s lives easier, maybe people would get the chance to do what they really love.
-  Icon: Happy
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Mariposa
-  Line: I’d like to help as many people as I can.
-  Icon: Happy
   Background: 
   FromRadio: 
   Sounds: []
@@ -947,7 +446,7 @@ future_friends:
   Choice1: 
   Choice2: 
 - Speaker: Unnamed
-  Line: And you really think you’ll be able to save the world?
+  Line: Do you understand what I’m saying?
   Icon: Neutral
   Background: 
   FromRadio: 
@@ -956,7 +455,25 @@ future_friends:
   Choice1: 
   Choice2: 
 - Speaker: Mariposa
-  Line: Well, when you say it like that, you make me sound crazy.
+  Line: '...'
+  Icon: Sad
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: '...'
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: '...you asked me once about the future. The future, Kairo? The future?'
   Icon: Happy
   Background: 
   FromRadio: 
@@ -965,7 +482,7 @@ future_friends:
   Choice1: 
   Choice2: 
 - Speaker: Mariposa
-  Line: But no, I guess not really.
+  Line: Are you kidding me? This is—
   Icon: Neutral
   Background: 
   FromRadio: 
@@ -974,466 +491,7 @@ future_friends:
   Choice1: 
   Choice2: 
 - Speaker: Mariposa
-  Line: Maybe I’m just looking to save just one person. That’d be plenty enough for me.
-  Icon: Neutral
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events:
-  - EventName: play_boat_scene_from_future_friends
-    TriggerAtEnd: false
-  Choice1: 
-  Choice2: 
-future_not_friends:
-- Speaker: Unnamed
-  Line: …
-  Icon: Neutral
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Unnamed
-  Line: (A ghost. I’m talking to a ghost. Someone who was, is, and now always will be.)
-  Icon: Neutral
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Unnamed
-  Line: (What a sick joke...)
-  Icon: Neutral
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Unnamed
-  Line: (Still, if I want to keep going, I need her help. I’ve only gotten this far because of what she’s done. Whether she knows it or not.)
-  Icon: Neutral
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Unnamed
-  Line: (...)
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Unnamed
-  Line: (...maybe it’ll all be over anyway. What a waste.)
-  Icon: Neutral
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events:
-  - EventName: play
-    TriggerAtEnd: false
-  Choice1: 
-  Choice2: 
-Candy1:
-- Speaker: Candy
-  Line: Hi. Do you like candy? I like candy!
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-Candy2:
-- Speaker: Candy
-  Line: There's so many reasons to love candy - it's sweet, gives you energy, and it's cheap! The way it melts in your mouth, how they bring sugar all the way across the world for it.
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-Candy3:
-- Speaker: Candy
-  Line: Hey, are you listening? Are you listening?
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-Laddie1:
-- Speaker: Laddie
-  Line: H-hello! Would you like donuts - or, was it peanuts?
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds:
-  - Regine_NPC_Okay1.wav
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Laddie
-  Line: What do we sell here?
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-Laddie2:
-- Speaker: Laddie
-  Line: My mom left me here while she goes and gets something. She said I'm in charge 'til she's back...
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-Laddie3:
-- Speaker: Laddie
-  Line: "...I hope she's coming back soon…"
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds:
-  - Regine_NPC_Hm4.wav
-  Events: []
-  Choice1: 
-  Choice2: 
-Peddler1:
-- Speaker: Peddler
-  Line: Someone told me of the guy that sells arms.
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds:
-  - Luke_NPC_LetsThinkAboutThis1.wav
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Peddler
-  Line: An arm and a leg is what it costs to live in the city nowadays.
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds:
-  - Luke_NPC_LetsThinkAboutThis1.wav
-  Events: []
-  Choice1: 
-  Choice2: 
-Peddler2:
-- Speaker: Peddler
-  Line: A bird lives here. It snaps and sings in an iron cage. It flutters with metal sheet feathers. Its heart pumps with oil through hollow bones.
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Peddler
-  Line: I bought it at the carnival.
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-Peddler3:
-- Speaker: Peddler
-  Line: Flutter away, little thing. There are better things to do with your time.
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-fishermen1:
-- Speaker: Marlon
-  Line: We haven’t caught as many fish as we did last week…
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Samon
-  Line: That’s okay, it's still a sizable amount! We can definitely make it through the week with this catch.
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Marlon
-  Line: Are you sure? Fish sell out really quickly here.
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Samon
-  Line: Oh, I am very sure! Besides, we had gotten less fish in the past and we were able to get by fine.
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-fishermen2:
-- Speaker: Marlon
-  Line: I know you said I shouldn’t worry, but I can’t help but wonder if our catches will go down as the weeks go by...
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Samon
-  Line: Well getting less fish isn’t completely bad. We don’t want to take away too many fish from the ocean, do we?
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Samon
-  Line: I can see why you’re concerned. It would be hard to imagine that our next catch would get any better if this pattern were to continue.
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Samon
-  Line: But I’m sure we won’t be stuck in this situation for long!
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Samon
-  Line: It’s good that you’re thinking about these kinds of things, but it’s also nice to hope that the future will be better for us, don’t you think?
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Marlon
-  Line: I...I guess that is true! I’m sorry for rambling, I tend to get worried often...
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Samon
-  Line: Don’t worry about it! It’s nice to talk about these kinds of things from time to time. Now let's take our catches to the market.
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-fishermen3:
-- Speaker: Samon
-  Line: Let’s gather up all our things now!
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-interact_city_poster_1:
-- Speaker: Mariposa
-  Line: The city’s 100th anniversary is coming up? I can’t wait!
-  Icon: Happy
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-interact_city_poster_2:
-- Speaker: Mariposa
-  Line: The city always feels so lively with all the decorations up.
-  Icon: Happy
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-interact_puddle_1:
-- Speaker: Puddle
-  Line: A puddle of fresh rainwater. It’s a bit dirty from the concrete, but still mostly clear. Wouldn’t hurt to splash around a bit.
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-interact_puddle_2:
-- Speaker: Puddle
-  Line: A pleasant temptation.
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-interact_newspaper_store_1:
-- Speaker: News
-  Line: '“Breaking News: Country buzzing over the looming election! Reports of the new candidate plan’s for the future sparks debate over…’”'
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-interact_newspaper_store_2:
-- Speaker: News
-  Line: '“Breaking News: Extend your cat’s life by 50 years! Researchers say…”'
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-interact_statue_1:
-- Speaker: Statue
-  Line: This statue was made in honor of William Kwolek for his contributions to modern medicine.
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-interact_statue_2:
-- Speaker: Statue
-  Line: An inventor, leader, and father. May he rest in peace.
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-interact_bus_stop_1:
-- Speaker: Mariposa
-  Line: I could take the bus, but today is such a nice day.
-  Icon: Neutral
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Mariposa
-  Line: It would be a shame not to walk!
-  Icon: Happy
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-interact_bus_stop_2:
-- Speaker: Bustop
-  Line: The bus seems to be running on time.
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-interact_food_stand_1:
-- Speaker: Mariposa
-  Line: Smells delicious! I’ll have to stop by some other time...
-  Icon: Happy
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-interact_food_stand_2:
-- Speaker: Mariposa
-  Line: Nothing wrong with an occasional sweet treat…
-  Icon: Neutral
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-interact_merchant_stand_1:
-- Speaker: Mariposa
-  Line: So much to look at…
-  Icon: Neutral
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Mariposa
-  Line: But mum would kill me if I brought back more decorations. The trinket shelf is almost bursting...
-  Icon: Neutral
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-interact_merchant_stand_2:
-- Speaker: Knickers
-  Line: Tchotchkes & knickknacks.
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-interact_funnel_cake_shop_1:
-- Speaker: Mariposa
-  Line: Ah, I thought they only sold these at the county fair!
+  Line: -this is amazing!
   Icon: Happy
   Background: 
   FromRadio: 
@@ -1442,27 +500,7 @@ interact_funnel_cake_shop_1:
   Choice1: 
   Choice2: 
 - Speaker: Mariposa
-  Line: I’ll have to come back for this…
-  Icon: Neutral
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-interact_funnel_cake_shop_2:
-- Speaker: Funnel
-  Line: Funnel cake. A light, airy mass of deep fried batter drenched in powdered sugar. Best with soft serve ice cream and berry jam.
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-interact_seashell_stand_1:
-- Speaker: Mariposa
-  Line: '‘She Sells Seashells by the Seashore: A Starting Guide to the Law of Supply and Demand.’ A seashell stand that only sells books and not actual seashells? These indie authors are getting creative, huh?'
+  Line: I can’t believe you didn’t tell me sooner! I mean—-maybe you didn’t know—-I certainly didn’t—--
   Icon: Neutral
   Background: 
   FromRadio: 
@@ -1471,17 +509,42 @@ interact_seashell_stand_1:
   Choice1: 
   Choice2: 
 - Speaker: Mariposa
-  Line: I’ll find a pdf online somewhere...
-  Icon: Neutral
+  Line: You’ve—-I’ve—-we’ve done something incredible! Kairo, this is a dream come true!
+  Icon: Happy
   Background: 
   FromRadio: 
   Sounds: []
   Events: []
   Choice1: 
   Choice2: 
-interact_seashell_stand_2:
 - Speaker: Mariposa
-  Line: What a weird book...
+  Line: You’ve got to tell me more. Gosh, I—-I have so many questions!
+  Icon: Happy
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1:
+    Response: Lie.
+    LinkedDialogue: tell_a_lie
+    Friendship: 0
+  Choice2:
+    Response: Truth.
+    LinkedDialogue: tell_the_truth
+    Friendship: 0
+tell_a_lie:
+- Speaker: Unnamed
+  Line: Mari...
+  Icon: Neutral
+  Background: orange_sunset
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+tell_the_truth:
+- Speaker: Unnamed
+  Line: '...'
   Icon: Neutral
   Background: 
   FromRadio: 
@@ -1489,9 +552,108 @@ interact_seashell_stand_2:
   Events: []
   Choice1: 
   Choice2: 
-interact_dystopian_slogan_1:
-- Speaker: Slog
-  Line: Work is Purpose. Purpose is Fulfillment. Fulfillment is Happiness.
+- Speaker: Unnamed
+  Line: Mariposa, you’re the first person I’ve spoken to in years.
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: I don’t know if anyone else is left, but...
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: '...'
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: You can’t tell if it’s day or night; the sky is always dark with red clouds. Everything is too quiet.
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: Every breath tastes like ash, even through a filter. Even with an oxygen tank.
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: If you scream, the sound echoes for miles without a response.
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: '...'
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: '...Part of me hopes you don’t believe me.'
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: But I have to thank you. For everything.
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: For giving me a little comfort before I go.
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: '...'
+  Icon: Neutral
+  Background: goodnight_mariposa
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_inventory_radio_mariposa:
+- Speaker: Inven
+  Line: It's an antique two-way radio. It's been taken apart, modified, and put back together. The dials are custom made. A labor of love.
   Icon: 
   Background: 
   FromRadio: 
@@ -1499,9 +661,9 @@ interact_dystopian_slogan_1:
   Events: []
   Choice1: 
   Choice2: 
-interact_dystopian_slogan_2:
-- Speaker: Slog
-  Line: (...it’s almost motivating.)
+interact_inventory_battery_mariposa:
+- Speaker: Invenbat
+  Line: A battery. Used to power things and can be recharged. The humming hearts of automatons.
   Icon: 
   Background: 
   FromRadio: 
@@ -1509,9 +671,9 @@ interact_dystopian_slogan_2:
   Events: []
   Choice1: 
   Choice2: 
-interact_toxic_puddle_1:
-- Speaker: Toxic
-  Line: Untreated rainwater. Too hazardous to touch; any form of contact risks acid burns.
+interact_inventory_keycard_mariposa:
+- Speaker: Ivenkey
+  Line: A gilded, plastic keycard. Used to access the interiors of certain machines.
   Icon: 
   Background: 
   FromRadio: 
@@ -1519,9 +681,9 @@ interact_toxic_puddle_1:
   Events: []
   Choice1: 
   Choice2: 
-interact_toxic_puddle_2:
-- Speaker: Toxic
-  Line: Burbling with danger. Best to move on.
+interact_inventory_pipe_mariposa:
+- Speaker: Ivenpip
+  Line: A piece from the scrap vendor, well-taken care of. It’ll fit just fine.
   Icon: 
   Background: 
   FromRadio: 
@@ -1529,9 +691,9 @@ interact_toxic_puddle_2:
   Events: []
   Choice1: 
   Choice2: 
-interact_newspaper_store_stagnant_1:
-- Speaker: Newnewnew
-  Line: It’s the news headline from 3 years ago. It hasn’t changed since.
+interact_inventory_beebo_mariposa:
+- Speaker: Ivenbeeeeee
+  Line: B33B0. A personalized automaton assistant. Mariposa’s pride and joy.
   Icon: 
   Background: 
   FromRadio: 
@@ -1539,9 +701,9 @@ interact_newspaper_store_stagnant_1:
   Events: []
   Choice1: 
   Choice2: 
-interact_newspaper_store_stagnant_2:
-- Speaker: Newnewnew
-  Line: No solace, not even in sleep.
+interact_inventory_radio_unnamed:
+- Speaker: Ivenradsad
+  Line: An old radio. It looks like it's been patched over and parts have been replaced several times. Almost worthless.
   Icon: 
   Background: 
   FromRadio: 
@@ -1549,9 +711,9 @@ interact_newspaper_store_stagnant_2:
   Events: []
   Choice1: 
   Choice2: 
-interact_newspaper_store_stagnant_3:
-- Speaker: Newnewnew
-  Line: Not exactly ‘news’ anymore, is it?
+interact_inventory_battery_unnamed:
+- Speaker: Ivenbatsad
+  Line: A battery. Used to power things and can be recharged. An automaton's only life force.
   Icon: 
   Background: 
   FromRadio: 
@@ -1559,119 +721,9 @@ interact_newspaper_store_stagnant_3:
   Events: []
   Choice1: 
   Choice2: 
-interact_statue_revealed_1:
-- Speaker: Kwolek
-  Line: His legacy is stained with blood.
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-interact_statue_revealed_2:
-- Speaker: Kwolek
-  Line: His legacy is stained with blood.
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-interact_destroyed_bus_stop_1:
-- Speaker: Buswoo
-  Line: Transportation and shelter. Destroyed now.
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-interact_destroyed_bus_stop_2:
-- Speaker: Buswoo
-  Line: Public transportation; never quite appreciated enough.
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-interact_rotting_food_stand_1:
-- Speaker: Rot
-  Line: It smells of rot. Grease coats the remnants.
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-interact_rotting_food_stand_2:
-- Speaker: Rot
-  Line: It makes your stomach churn.
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-interact_remains_merchant_stand_1:
-- Speaker: Plastic
-  Line: What remains of a merchant stand. Plastic baubles are smashed on the floor.
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-interact_remains_merchant_stand_2:
-- Speaker: Plastic
-  Line: A waste of resources. Pretty, but useless.
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-interact_busted_funnel_cake_shop_1:
-- Speaker: Cake
-  Line: Empty powdered sugar containers litter around this wreckage.
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-interact_busted_funnel_cake_shop_2:
-- Speaker: Cake
-  Line: If you close your eyes, it almost smells sweet.
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-interact_seashell_stand_abandoned_1:
-- Speaker: Sheshells
-  Line: It’s long been abandoned. Torn pages are mashed into the crevices of what remains of the structure.
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-interact_seashell_stand_abandoned_2:
-- Speaker: Sheshells
-  Line: Can’t even tell what this was. Just smells like rust and salt.
+interact_inventory_grappling_hook_unnamed:
+- Speaker: Jacky
+  Line: A makeshift grappling hook. It’s held out so far, but the rope is starting to fray.
   Icon: 
   Background: 
   FromRadio: 

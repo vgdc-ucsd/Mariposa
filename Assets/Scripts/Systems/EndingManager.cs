@@ -15,6 +15,7 @@ public enum EndingType
 public class EndingManager : Singleton<EndingManager>
 {
     public EndingType Ending = EndingType.UNKNOWN;
+    public List<GameObject> DialogueTriggers;
     public List<SpriteRenderer> MariposaTrees;
     public List<SpriteRenderer> MariposaAutomatons;
     public float FadeDuration;
@@ -24,10 +25,12 @@ public class EndingManager : Singleton<EndingManager>
         if (FriendshipManager.Instance.IsGoodScore())
         {
             Ending = EndingType.SILENT;
+            foreach (GameObject obj in DialogueTriggers) obj.SetActive(false);
         }
         else
         {
             Ending = EndingType.NOT_SILENT;
+            foreach (GameObject obj in DialogueTriggers) obj.SetActive(true);
             // TODO: play dialogue, implement music/art switching
         }
     }
