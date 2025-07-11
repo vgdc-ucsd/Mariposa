@@ -196,6 +196,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4777631326997127755, guid: e3d6da22aa66b9d42849965b6906f080, type: 3}
       propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8651251063056917191, guid: e3d6da22aa66b9d42849965b6906f080, type: 3}
+      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8651251063056917191, guid: e3d6da22aa66b9d42849965b6906f080, type: 3}
@@ -217,7 +221,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 33030075}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3617df70f439e964db71e891206774dc, type: 3}
   m_Name: 
@@ -552,6 +556,30 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 3.8909833, y: 5.9530287}
   m_EdgeRadius: 0
+--- !u!1 &478908977 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7518917310915214825, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
+  m_PrefabInstance: {fileID: 1582879385}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &478908981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 478908977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12dc39969b8af098fa0380f1455e3131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  door: {fileID: 1771848944}
+  hasAttemptedFix: 0
+  KeycardLocation: {fileID: 782516182}
+  orderedDialogueNames:
+  - turnstile_keycard
+  - interact_turnstile_no_fix
+  lastDialogue: fix_turnstile
 --- !u!1001 &649944923
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -609,6 +637,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 78315ad8d16df3346b09f3a14c466e95, type: 3}
+--- !u!1 &782516182 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8019036800154056352, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
+  m_PrefabInstance: {fileID: 1582879385}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &804827214
 GameObject:
   m_ObjectHideFlags: 0
@@ -1429,10 +1462,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 774169905530092198, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 871195840007370438, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
       propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2347924522766897885, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
+      propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2443801893135480152, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
@@ -1442,6 +1479,30 @@ PrefabInstance:
     - target: {fileID: 2443801893135480152, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3342664612873029888, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3342664612873029888, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
+      propertyPath: lastDialogue
+      value: fix_turnstile
+      objectReference: {fileID: 0}
+    - target: {fileID: 3342664612873029888, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
+      propertyPath: KeycardLocation
+      value: 
+      objectReference: {fileID: 782516182}
+    - target: {fileID: 3342664612873029888, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
+      propertyPath: orderedDialogueNames.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3342664612873029888, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
+      propertyPath: 'orderedDialogueNames.Array.data[0]'
+      value: turnstile_keycard
+      objectReference: {fileID: 0}
+    - target: {fileID: 3342664612873029888, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
+      propertyPath: 'orderedDialogueNames.Array.data[1]'
+      value: interact_turnstile_no_fix
       objectReference: {fileID: 0}
     - target: {fileID: 3529839200492878378, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
       propertyPath: m_Enabled
@@ -1531,9 +1592,17 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7416488192904547015, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7457721568493458118, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7518917310915214825, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7753135360343134313, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
       propertyPath: m_Size.y
@@ -1579,6 +1648,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8019036800154056352, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8027196166998261258, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
       propertyPath: m_LocalPosition.y
       value: -6.9453
@@ -1593,6 +1666,9 @@ PrefabInstance:
     - {fileID: 6325229465814451215, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7518917310915214825, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 478908981}
     - targetCorrespondingSourceObject: {fileID: 4948897164641346864, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 55001013}
@@ -1691,6 +1767,17 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 121.66, y: 4.75}
   m_EdgeRadius: 0
+--- !u!114 &1771848944 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 605561901267320206, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
+  m_PrefabInstance: {fileID: 1582879385}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bf291a968d867e45b0fd848b720cc86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1816309495
 PrefabInstance:
   m_ObjectHideFlags: 0
