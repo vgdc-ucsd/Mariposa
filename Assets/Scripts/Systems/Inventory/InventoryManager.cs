@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.Overlays;
 
 public enum InventoryType
 {
@@ -8,7 +9,7 @@ public enum InventoryType
     Unnamed,
 }
 
-public class InventoryManager : Singleton<InventoryManager>
+public class InventoryManager : Singleton<InventoryManager>, IDataPersistence
 {
     [SerializeField] private InventoryUI mariposaUI;
     [SerializeField] private InventoryUI unnamedUI;
@@ -50,5 +51,17 @@ public class InventoryManager : Singleton<InventoryManager>
     {
         if (Player.ActivePlayer.Data.characterID == CharID.Mariposa) return mariposaInventory;
         else return unnamedInventory;
+    }
+
+    public void SaveData(ref GameData data)
+    {
+        data.mariposaInventory = mariposaInventory;
+        data.unnamedInventory = unnamedInventory;
+    }
+
+    public void LoadData(GameData data)
+    {
+        mariposaInventory = data.mariposaInventory;
+        unnamedInventory = data.unnamedInventory;
     }
 }

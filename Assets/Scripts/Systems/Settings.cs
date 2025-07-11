@@ -7,7 +7,7 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 
 [System.Serializable]
-public class Settings : Singleton<Settings>
+public class Settings : Singleton<Settings>, IDataPersistence
 {
     public DebugSettings Debug;
     private AudioSetting audioSetting;
@@ -143,5 +143,14 @@ public class Settings : Singleton<Settings>
     {
         Bus testBus = RuntimeManager.GetBus("bus:/Test");
         testBus.setMute(mute);
+    }
+    
+    public void SaveData(ref GameData data)
+    {
+        data.audioSetting = audioSetting;
+    }
+    public void LoadData(GameData data)
+    {
+        audioSetting = data.audioSetting;
     }
 }

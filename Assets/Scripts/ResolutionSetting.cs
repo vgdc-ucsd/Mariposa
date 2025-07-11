@@ -13,7 +13,7 @@ public enum WindowType
     WindowedFullscreen
 }
 
-public class ResolutionSetting : MonoBehaviour
+public class ResolutionSetting : MonoBehaviour, IDataPersistence
 {
 
     private readonly int[,] resolutions = {{640, 360}, {1280, 720}, {1600, 900}, {1920, 1080}, {2560, 1440}, {3840, 2160}};
@@ -65,5 +65,19 @@ public class ResolutionSetting : MonoBehaviour
             case WindowType.Fullscreen: Screen.SetResolution(Width, Height, FullScreenMode.ExclusiveFullScreen); return;
             case WindowType.WindowedFullscreen: Screen.SetResolution(Width, Height, FullScreenMode.FullScreenWindow); return;
         }
+    }
+
+    public void SaveData(ref GameData data)
+    {
+        data.height = Height;
+        data.width = Width;
+        data.windowType = ResolutionType;
+    }
+    public void LoadData(GameData data)
+    {
+        Height = data.height;
+        Width = data.width;
+        ResolutionType = data.windowType;
+        ApplyResolutionChanges();
     }
 }

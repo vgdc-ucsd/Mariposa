@@ -22,7 +22,6 @@ public class DataPersistenceManager : Singleton<DataPersistenceManager>
         // Initialize the file data manager with the default file path and the file name given by the serialize field
         this.dataManager = new FileDataManager(Application.persistentDataPath);
         this.dataPersistenceObjects = FindAllDataPersistenceObjects();
-
     }
 
     /// <summary>

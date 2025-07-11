@@ -45,7 +45,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DefaultInteractionTrigger: {fileID: 8177593007865399550, guid: 9dbea955106dfe147bebdc30d1a2b889, type: 3}
-  TargetSublevel: 0
 --- !u!1 &529366318882169012
 GameObject:
   m_ObjectHideFlags: 0
@@ -56,6 +55,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5313605323863157013}
   - component: {fileID: 8699332573102971731}
+  - component: {fileID: 8411605473794719869}
   m_Layer: 0
   m_Name: Persistent
   m_TagString: Untagged
@@ -96,6 +96,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 350444d7d748eee4c8bd045b54305245, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8411605473794719869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 529366318882169012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19c4ee8a54522f94381b99ed4ed16f4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fileName: 
 --- !u!1 &931249634012057893
 GameObject:
   m_ObjectHideFlags: 0
@@ -931,6 +944,7 @@ MonoBehaviour:
     playerDebug: 0
     respawnDebug: 0
     audioDebug: 0
+    puzzleDebug: 1
   ChangeTestAudio:
     m_PersistentCalls:
       m_Calls: []

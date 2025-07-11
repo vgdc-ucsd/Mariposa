@@ -193,6 +193,7 @@ public class LevelManager : MonoBehaviour, IDataPersistence
     {
         SublevelIndex = data.currentSublevelIndex;
         NextLevelName = data.nextLevelScene;
+        // TODO: Check if it works and if needed call a function to apply the changes
     }
 
     private void CompleteLevel()
