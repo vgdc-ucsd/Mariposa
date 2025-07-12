@@ -9,12 +9,15 @@ public class KeycardPickup : ItemPickup
     public SpriteRenderer TurnstileSR;
     public string fixedDoorDialogueName;
     [SerializeField] private TutorialGuardNPC guard;
+    [SerializeField] private ItemData keycardData;
+
     public override void OnInteract(IControllable controllable)
     {
         base.OnInteract(controllable);
-        TurnstileCollision.SetActive(false);
-        TurnstileSR.sprite = UnlockedSprite;
-        DialogueManager.Instance.PlayDialogue(fixedDoorDialogueName);
-        guard.ReplaceDialogue();
+		InventoryManager.Instance.GetInventory().AddItem(keycardData);
+        // TurnstileCollision.SetActive(false);
+        // TurnstileSR.sprite = UnlockedSprite;
+        // DialogueManager.Instance.PlayDialogue(fixedDoorDialogueName);
+        // guard.ReplaceDialogue();
     }
 }

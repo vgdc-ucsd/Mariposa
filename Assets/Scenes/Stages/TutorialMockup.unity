@@ -576,10 +576,12 @@ MonoBehaviour:
   door: {fileID: 1771848944}
   hasAttemptedFix: 0
   KeycardLocation: {fileID: 782516182}
+  keyData: {fileID: 11400000, guid: d1f0d802ab113464b804d2d077b1b628, type: 2}
   orderedDialogueNames:
   - turnstile_keycard
   - interact_turnstile_no_fix
   lastDialogue: fix_turnstile
+  guard: {fileID: 1561175169}
 --- !u!1001 &649944923
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1456,6 +1458,22 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 605561901267320206, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
+      propertyPath: guard
+      value: 
+      objectReference: {fileID: 1561175169}
+    - target: {fileID: 605561901267320206, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
+      propertyPath: TurnstileSR
+      value: 
+      objectReference: {fileID: 1771848943}
+    - target: {fileID: 605561901267320206, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
+      propertyPath: UnlockedSprite
+      value: 
+      objectReference: {fileID: 2965997025286732880, guid: 62c1fdf807e148443923e7e1a13e586e, type: 3}
+    - target: {fileID: 605561901267320206, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
+      propertyPath: TurnstileCollision
+      value: 
+      objectReference: {fileID: 1817129013}
     - target: {fileID: 774169905530092198, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
       propertyPath: m_Name
       value: 0-1-M1
@@ -1580,6 +1598,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6279922852608326950, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
+      propertyPath: TurnstileSR
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6279922852608326950, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
+      propertyPath: keycardData
+      value: 
+      objectReference: {fileID: 11400000, guid: d1f0d802ab113464b804d2d077b1b628, type: 2}
     - target: {fileID: 6325229465814451215, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -1656,6 +1682,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -6.9453
       objectReference: {fileID: 0}
+    - target: {fileID: 9010483748867955342, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
+      propertyPath: itemToGive
+      value: 
+      objectReference: {fileID: 11400000, guid: d1f0d802ab113464b804d2d077b1b628, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 4637593924994736452, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
@@ -1767,6 +1797,11 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 121.66, y: 4.75}
   m_EdgeRadius: 0
+--- !u!212 &1771848943 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 2423781579093518531, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
+  m_PrefabInstance: {fileID: 1582879385}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1771848944 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 605561901267320206, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
@@ -1879,6 +1914,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f0b2a4fe197120c43adaa5d5c2a61ec3, type: 3}
+--- !u!1 &1817129013 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7416488192904547015, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
+  m_PrefabInstance: {fileID: 1582879385}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1947003424 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4970271869579777329, guid: 1ab7bc7f443708b46ae44f7ad95f4288, type: 3}
