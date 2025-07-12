@@ -177,15 +177,25 @@ It’s nothing much, but I’d like to show you around. As much as I gush about 
 
 
 !name walk_trees
+#!event walk_show_trees_start
 MARIPOSA
 (neutral)
 The lushness of the trees, or the soft glow of our streetlights…
 
 
+!event walk_show_trees_start
+#!event walk_show_trees_end end
+
+
 !name walk_automatons
+!event walk_show_automatons_start
 MARIPOSA
 (happy)
 Our neighbors bickering about the laundry, and the toy automatons hopping around in the streets...
+
+
+!event walk_show_automatons_start
+#!event walk_show_trees_end end
 
 
 !name walk_door

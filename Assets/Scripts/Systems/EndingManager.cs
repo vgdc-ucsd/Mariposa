@@ -16,22 +16,22 @@ public class EndingManager : Singleton<EndingManager>
 {
     public EndingType Ending = EndingType.UNKNOWN;
     public List<GameObject> DialogueTriggers;
-    public List<SpriteRenderer> MariposaTrees;
-    public List<SpriteRenderer> MariposaAutomatons;
     public float FadeDuration;
 
     void Start()
     {
-        if (FriendshipManager.Instance.IsGoodScore())
-        {
-            Ending = EndingType.SILENT;
-            foreach (GameObject obj in DialogueTriggers) obj.SetActive(false);
-        }
-        else
+        // TODO: for testing, remove before building
+        FriendshipManager.Instance.SetScore(8);
+        // TODO: replace with dialogue events for each branch that sets ending and active triggers
+        if (FriendshipManager.Instance.CompareScore(7))
         {
             Ending = EndingType.NOT_SILENT;
             foreach (GameObject obj in DialogueTriggers) obj.SetActive(true);
-            // TODO: play dialogue, implement music/art switching
+        }
+        else
+        {
+            Ending = EndingType.SILENT;
+            foreach (GameObject obj in DialogueTriggers) obj.SetActive(false);
         }
     }
 
@@ -47,29 +47,7 @@ public class EndingManager : Singleton<EndingManager>
     public void SetEnding(EndingType ending) => Ending = ending;
     public void SetEnding(int endingID) => Ending = (EndingType)endingID;
 
-    // VISUAL FADING
-    
-    public void ShowTrees()
-    {
-        StartCoroutine(FadeSprites(MariposaTrees));
-    }
-
-    public void HideTrees()
-    {
-        StartCoroutine(FadeSprites(MariposaTrees));
-    }
-
-    public void ShowAutomatons()
-    {
-        StartCoroutine(FadeSprites(MariposaAutomatons));
-    }
-
-    public void HideAutomatons()
-    {
-        StartCoroutine(FadeSprites(MariposaAutomatons));
-    }
-
-    IEnumerator FadeSprites(List<SpriteRenderer> sprites)
+    public IEnumerator FadeSprites(List<SpriteRenderer> sprites, bool fadeIn)
     {
         float timer = 0;
         while (timer < FadeDuration)
@@ -77,9 +55,14 @@ public class EndingManager : Singleton<EndingManager>
             timer += Time.deltaTime;
             foreach (SpriteRenderer sr in sprites)
             {
-                sr.color = new(sr.color.r, sr.color.g, sr.color.b, timer / FadeDuration);
+                sr.color = new(sr.color.r, sr.color.g, sr.color.b, fadeIn ? timer / FadeDuration : (FadeDuration - timer) / FadeDuration);
             }
             yield return new WaitForEndOfFrame();
+        }
+
+        foreach (SpriteRenderer sr in sprites)
+        {
+            sr.color = new(sr.color.r, sr.color.g, sr.color.b, fadeIn ? 1f : 0f);
         }
     }
 }

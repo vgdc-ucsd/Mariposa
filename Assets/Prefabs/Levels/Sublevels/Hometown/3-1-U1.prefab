@@ -432,7 +432,7 @@ SpriteRenderer:
   m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 670911524, guid: 7d11256fce4fd0347b491d67e1022108, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -743,7 +743,7 @@ SpriteRenderer:
   m_SortingLayer: 2
   m_SortingOrder: 5
   m_Sprite: {fileID: 5168589081191000619, guid: 1f8505d90d75b014c8345ad7d252a9e4, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -917,7 +917,7 @@ SpriteRenderer:
   m_SortingLayer: 2
   m_SortingOrder: -2
   m_Sprite: {fileID: 463404647510081514, guid: 3bfec30aac7dc1e43a81c242ade39502, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1004,7 +1004,7 @@ SpriteRenderer:
   m_SortingLayer: 2
   m_SortingOrder: 2
   m_Sprite: {fileID: 463404647510081514, guid: 3bfec30aac7dc1e43a81c242ade39502, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1178,7 +1178,7 @@ SpriteRenderer:
   m_SortingLayer: 2
   m_SortingOrder: 2
   m_Sprite: {fileID: 5487431239890662603, guid: b99b9795d19f6ae4eb803f03cf34cb68, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1393,7 +1393,9 @@ Transform:
   m_Children:
   - {fileID: 6041682680030307489}
   - {fileID: 7776342696267283810}
+  - {fileID: 2796418289900129248}
   - {fileID: 7870119309501657433}
+  - {fileID: 1690997876422962298}
   - {fileID: 7952427966106533959}
   m_Father: {fileID: 5384814496559900006}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1571,6 +1573,75 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &5104852532918696138
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1690997876422962298}
+  - component: {fileID: 3892472297125574322}
+  - component: {fileID: 1485268818463436535}
+  m_Layer: 0
+  m_Name: ShowAutomatonsEvents
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1690997876422962298
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5104852532918696138}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 38.9, y: 0.87, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3254068239507715714}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3892472297125574322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5104852532918696138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94696cd29e5909a40a5868e8d54fa397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: walk_show_automatons_start
+  forward: 1
+  mariposaSprites:
+  - {fileID: 1372958133278487808}
+  - {fileID: 5679936093626943487}
+  - {fileID: 3197176973705292266}
+  - {fileID: 4132596253993092573}
+  musicTransitionDuration: 1.5
+--- !u!114 &1485268818463436535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5104852532918696138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94696cd29e5909a40a5868e8d54fa397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: walk_show_automatons_end
+  forward: 0
+  mariposaSprites: []
+  musicTransitionDuration: 1.5
 --- !u!1 &5164754906845083235
 GameObject:
   m_ObjectHideFlags: 0
@@ -2080,7 +2151,7 @@ SpriteRenderer:
   m_SortingLayer: 2
   m_SortingOrder: 3
   m_Sprite: {fileID: 3056607054633208750, guid: b480bbe4aa6500a4c9141dd3ec85472a, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -2168,7 +2239,7 @@ SpriteRenderer:
   m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 670911524, guid: 7d11256fce4fd0347b491d67e1022108, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -2308,8 +2379,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: check_friendship
   friendshipThreshold: 0
-  goodBranch: broken_rib
-  badBranch: check_on_her
+  goodBranch: check_on_her
+  badBranch: broken_rib
 --- !u!1 &7178928546630502256
 GameObject:
   m_ObjectHideFlags: 0
@@ -2462,7 +2533,7 @@ SpriteRenderer:
   m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 670911524, guid: 7d11256fce4fd0347b491d67e1022108, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -2571,7 +2642,7 @@ SpriteRenderer:
   m_SortingLayer: 2
   m_SortingOrder: 2
   m_Sprite: {fileID: 5487431239890662603, guid: b99b9795d19f6ae4eb803f03cf34cb68, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -2668,6 +2739,81 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &7860574389215997260
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2796418289900129248}
+  - component: {fileID: 8333904702158161372}
+  - component: {fileID: 3704493501900865178}
+  m_Layer: 0
+  m_Name: ShowTreesEvents
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2796418289900129248
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7860574389215997260}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 18.49, y: 0.87, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3254068239507715714}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8333904702158161372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7860574389215997260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94696cd29e5909a40a5868e8d54fa397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: walk_show_trees_start
+  forward: 1
+  mariposaSprites:
+  - {fileID: 5945625777712180816}
+  - {fileID: 7825832130334093203}
+  - {fileID: 2558137725711073770}
+  - {fileID: 8863647076775558612}
+  - {fileID: 1032418639609118843}
+  - {fileID: 8129981204730628736}
+  - {fileID: 8192791871010095081}
+  - {fileID: 1795532269829271836}
+  - {fileID: 8395893203027540113}
+  - {fileID: 4022812170403598004}
+  musicTransitionDuration: 1.5
+--- !u!114 &3704493501900865178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7860574389215997260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94696cd29e5909a40a5868e8d54fa397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: walk_show_trees_end
+  forward: 0
+  mariposaSprites: []
+  musicTransitionDuration: 1.5
 --- !u!1 &8497042250219873734
 GameObject:
   m_ObjectHideFlags: 0
@@ -2746,7 +2892,7 @@ SpriteRenderer:
   m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 670911524, guid: 7d11256fce4fd0347b491d67e1022108, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -2931,7 +3077,7 @@ SpriteRenderer:
   m_SortingLayer: 2
   m_SortingOrder: 2
   m_Sprite: {fileID: 3056607054633208750, guid: b480bbe4aa6500a4c9141dd3ec85472a, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -3188,23 +3334,7 @@ MonoBehaviour:
   DialogueTriggers:
   - {fileID: 5641268440397663724}
   - {fileID: 38247372484654961}
-  MariposaTrees:
-  - {fileID: 5945625777712180816}
-  - {fileID: 7825832130334093203}
-  - {fileID: 2558137725711073770}
-  - {fileID: 8863647076775558612}
-  - {fileID: 1032418639609118843}
-  - {fileID: 8129981204730628736}
-  - {fileID: 8192791871010095081}
-  - {fileID: 1795532269829271836}
-  - {fileID: 8395893203027540113}
-  - {fileID: 4022812170403598004}
-  MariposaAutomatons:
-  - {fileID: 1372958133278487808}
-  - {fileID: 5679936093626943487}
-  - {fileID: 3197176973705292266}
-  - {fileID: 4132596253993092573}
-  FadeDuration: 2
+  FadeDuration: 3
 --- !u!4 &5384814496559900006 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1869090358146382852, guid: 29fbe75e81630c947b2cf4ab50a47961, type: 3}
@@ -3226,6 +3356,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 050dfb6d9585df0488246936e4570beb, type: 3}
+    - target: {fileID: 846715601336455815, guid: d29601e1f658b944096edd37f8433a93, type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 846715601336455815, guid: d29601e1f658b944096edd37f8433a93, type: 3}
       propertyPath: m_Color.b
       value: 1
@@ -3292,7 +3426,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4494465479417609096, guid: d29601e1f658b944096edd37f8433a93, type: 3}
       propertyPath: yOffset
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4690785587804333328, guid: d29601e1f658b944096edd37f8433a93, type: 3}
       propertyPath: m_Name
@@ -3302,6 +3436,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 050dfb6d9585df0488246936e4570beb, type: 3}
+    - target: {fileID: 5230914895941477538, guid: d29601e1f658b944096edd37f8433a93, type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5230914895941477538, guid: d29601e1f658b944096edd37f8433a93, type: 3}
       propertyPath: m_Color.b
       value: 1
@@ -3394,7 +3532,7 @@ SpriteRenderer:
   m_SortingLayer: 1
   m_SortingOrder: 3
   m_Sprite: {fileID: 21300000, guid: 050dfb6d9585df0488246936e4570beb, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
