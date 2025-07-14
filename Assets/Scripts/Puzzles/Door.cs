@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Door : MonoBehaviour
+public abstract class Door : Interactable
 {
     private BoxCollider2D boxCollider;
     private SpriteRenderer spriteRenderer;
@@ -13,8 +13,10 @@ public class Door : MonoBehaviour
     /// Box collider subject to change depending on how doors will open and close.
     /// (i.e. if it moves up and down or trigger is enabled and disabled) 
     /// </summary>
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         if (GetComponent<Collider2D>() == null)
         {
             Debug.Log("No Collider was found!");
@@ -68,12 +70,9 @@ public class Door : MonoBehaviour
     /// Opens the door allowing the player to pass through.
     /// Currently, the door opens by updating its LayerMask to not be Barrier.
     /// </summary>
-    private void Open()
-    {
-        Debug.Log("Open");
-        
+    public virtual void Open()
+    {        
         if (boxCollider == null) return;
-
         gameObject.layer = LayerMask.NameToLayer("Default");
     }
 
@@ -82,11 +81,8 @@ public class Door : MonoBehaviour
     /// Currently, the door closes by updating its LyaerMask to be Barrier.
     /// </summary>
     private void Close()
-    {
-        Debug.Log("Close");
-        
+    {        
         if (boxCollider == null) return;
-
         gameObject.layer = LayerMask.NameToLayer("Barrier");
     }
     
