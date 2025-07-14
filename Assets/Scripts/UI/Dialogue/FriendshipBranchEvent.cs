@@ -8,7 +8,7 @@ public class FriendshipBranchEvent : DialogueEvent
 
     public override void Trigger()
     {
-        if (true) DialogueManager.Instance.PlayDialogue(goodBranch);
+        if (FriendshipManager.Instance.CompareScore(friendshipThreshold)) DialogueManager.Instance.PlayDialogue(goodBranch);
         else DialogueManager.Instance.PlayDialogue(badBranch);
     }
 }

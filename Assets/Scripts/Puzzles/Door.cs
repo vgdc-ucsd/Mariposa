@@ -2,8 +2,8 @@ using UnityEngine;
 
 public abstract class Door : Interactable
 {
-    private BoxCollider2D boxCollider;
-    private SpriteRenderer spriteRenderer;
+    [SerializeField] private BoxCollider2D boxCollider;
+    [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private bool isOpen;
     [SerializeField] private bool isLocked;
     [SerializeField] private Sprite openSprite, closedSprite;
@@ -16,15 +16,6 @@ public abstract class Door : Interactable
     protected override void Awake()
     {
         base.Awake();
-
-        if (GetComponent<Collider2D>() == null)
-        {
-            Debug.Log("No Collider was found!");
-            return;
-        }
-
-        boxCollider = GetComponent<BoxCollider2D>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
         if (isOpen) Open();
         SetSprite();
     }
@@ -65,15 +56,16 @@ public abstract class Door : Interactable
         
         if (!isLocked) Debug.Log("Door is unlocked");
     }
-    
+
     /// <summary>
     /// Opens the door allowing the player to pass through.
     /// Currently, the door opens by updating its LayerMask to not be Barrier.
     /// </summary>
     public virtual void Open()
-    {        
+    {
         if (boxCollider == null) return;
-        gameObject.layer = LayerMask.NameToLayer("Default");
+        boxCollider.gameObject.layer = LayerMask.NameToLayer("Default");
+        SetSprite();
     }
 
     /// <summary>
@@ -81,9 +73,10 @@ public abstract class Door : Interactable
     /// Currently, the door closes by updating its LyaerMask to be Barrier.
     /// </summary>
     private void Close()
-    {        
+    {
         if (boxCollider == null) return;
-        gameObject.layer = LayerMask.NameToLayer("Barrier");
+        boxCollider.gameObject.layer = LayerMask.NameToLayer("Barrier");
+        SetSprite();
     }
     
     /// <summary>

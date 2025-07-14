@@ -9,9 +9,10 @@ public static class BasicAnimations
         float startTime = Time.time;
         onStart?.Invoke();
 
-        float elapsedTime = Time.time - startTime; 
+        float elapsedTime = 0; 
         while (elapsedTime < duration)
         {
+            elapsedTime = Time.time - startTime; 
             t = elapsedTime / duration;
             tween.Invoke(t);
             yield return null;

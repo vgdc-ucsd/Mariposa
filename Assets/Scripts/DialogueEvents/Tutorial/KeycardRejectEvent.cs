@@ -12,6 +12,7 @@ public class KeycardRejectEvent : DialogueEvent
 
     private IEnumerator KeycardAnimation()
     {
+        Vector3 origin = path.transform.position;
         float3 pos;
         float3 tangent;
         float3 up;
@@ -23,7 +24,7 @@ public class KeycardRejectEvent : DialogueEvent
             (float t) =>
             {
                 path.Spline.Evaluate<Spline>(t, out pos, out tangent, out up);
-                keycard.position = pos;
+                keycard.position = origin + new Vector3(pos.x, pos.y, pos.z);
             },
             null,
             0.5f
