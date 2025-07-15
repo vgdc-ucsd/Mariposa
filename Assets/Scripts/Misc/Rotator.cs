@@ -11,14 +11,14 @@ public class Rotator : MonoBehaviour
 
     void Start()
     {
-        origin = transform.rotation;
-        max = transform.rotation * Quaternion.AngleAxis(angle / 2f, rotationAxis);
-        min = transform.rotation * Quaternion.AngleAxis(-angle / 2f, rotationAxis);
+        origin = transform.localRotation;
+        max = transform.localRotation * Quaternion.AngleAxis(angle / 2f, rotationAxis);
+        min = transform.localRotation * Quaternion.AngleAxis(-angle / 2f, rotationAxis);
     }
 
     void Update()
     {
         float t = (Mathf.Sin(Time.time * speed) + 1f) / 2f;
-        transform.rotation = origin * Quaternion.Slerp(min, max, t);        
+        transform.localRotation = origin * Quaternion.Slerp(min, max, t);        
     }
 }

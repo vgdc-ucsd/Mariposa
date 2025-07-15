@@ -15,6 +15,7 @@ public class ChaseRobot : MonoBehaviour
 
     [Header("Params")]
     public float baseMovementSpeed = 4.0f;
+    private float intialBaseMovementSpeed;
     [SerializeField] private float movementStartDelay = 1.0f;
     [SerializeField] private float catchupDistanceThreshold = 5.0f;
     [SerializeField] private float maxSpeed = 40.0f;
@@ -22,7 +23,7 @@ public class ChaseRobot : MonoBehaviour
     [SerializeField] private float perpendicularCatchupRate = 5.0f;
 
     [Header("Entering")]
-    [SerializeField] private Transform chasePoint;
+    [SerializeField] private float enterDelay;
     [SerializeField] private float timeToEnter;
     [SerializeField] private float enterStartOffset;
 
@@ -30,31 +31,21 @@ public class ChaseRobot : MonoBehaviour
     [SerializeField] private Transform retreatPoint;
     [SerializeField] private float retreatDistance;
     [SerializeField] private float timeToRetreat;
-    [SerializeField] private ChaseRobot nextRobot;
 
     [Header("State")]
     public Vector2 moveDir;
     private float currentSpeed;
+    private bool hasPreviouslyEntered;
     public RobotWallState state;
 
 
     private Vector2 startPos;
 
-    void Start()
+    private void Start()
     {
         startPos = transform.position;
-
-        ResetRobot();
-    }
-
-    private void OnEnable()
-    {
-        Player.OnDeath += ResetRobot;
-    }
-
-    private void OnDisable()
-    {
-        Player.OnDeath -= ResetRobot;
+        hasPreviouslyEntered = false;
+        intialBaseMovementSpeed = baseMovementSpeed;
     }
 
     private IEnumerator StartMoving()
@@ -66,14 +57,15 @@ public class ChaseRobot : MonoBehaviour
         state = RobotWallState.MOVING;
     }
 
-    private IEnumerator Enter()
+    public IEnumerator Enter()
     {
-        yield return new WaitForEndOfFrame();
-
         float enterTime = 0.0f;
         float enterMoveSpeed = enterStartOffset / timeToEnter;
-        transform.position = startPos - moveDir * enterStartOffset + (Vector2)GetPerpCorrection();
+        transform.position = startPos - moveDir * enterStartOffset;
         state = RobotWallState.ENTERING;
+        hasPreviouslyEntered = true;
+
+        if (!hasPreviouslyEntered) yield return new WaitForSeconds(enterDelay);
 
         while (enterTime < timeToEnter)
         {
@@ -86,7 +78,7 @@ public class ChaseRobot : MonoBehaviour
         StartCoroutine(StartMoving());
     }
 
-    private IEnumerator Retreat()
+    public IEnumerator Retreat()
     {
         float retreatTime = 0.0f;
         float retreatMoveSpeed = retreatDistance / timeToRetreat;
@@ -101,7 +93,6 @@ public class ChaseRobot : MonoBehaviour
         }
 
         state = RobotWallState.IDLE;
-        if (nextRobot != null) nextRobot.gameObject.SetActive(true);
         gameObject.SetActive(false);
     }
 
@@ -119,7 +110,7 @@ public class ChaseRobot : MonoBehaviour
             float distError = Helper.Vec2Proj(playerPos - (Vector2)transform.position, moveDir).magnitude - catchupDistanceThreshold;
             if (distError > 0)
             {
-                float catchUpMul = Mathf.Clamp(distError / catchupDistanceThreshold, 0f, 2f);
+                float catchUpMul = Mathf.Clamp01(distError / catchupDistanceThreshold);
                 targetSpeed = Mathf.Lerp(baseMovementSpeed, maxSpeed, catchUpMul);
             }
             else
@@ -146,12 +137,20 @@ public class ChaseRobot : MonoBehaviour
         return -correction;
     }
 
-    public void ResetRobot()
+    public IEnumerator ResetRobot()
     {
+        state = RobotWallState.IDLE;
         transform.position = startPos;
+        baseMovementSpeed = intialBaseMovementSpeed;
         currentSpeed = baseMovementSpeed;
 
+        yield return new WaitForSeconds(FadeController.Instance._fadeDuration);
+
         StartCoroutine(Enter());
+        /*
+        if (hasPreviouslyEntered) StartCoroutine(StartMoving());
+        else StartCoroutine(Enter());
+        */
     }
 
     private bool DidPassRetreatPoint() => Vector2.Dot(retreatPoint.position - transform.position, moveDir) <= 0;
