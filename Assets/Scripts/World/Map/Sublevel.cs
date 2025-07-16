@@ -19,8 +19,6 @@ public class Sublevel : MonoBehaviour
     [field: SerializeField] public float MusicTransitionDuration { get; private set; } = 1.5f;
     [field: SerializeField] public bool PlayOnLoad { get; private set; } = true;
 
-    public bool isAutoscrolling = false;
-
     private void Awake()
     {
         if (StartingSpawn == null) Debug.LogError("Starting Spawn Points not assigned");

@@ -1,4 +1,5 @@
 using FMOD.Studio;
+using FMODUnity;
 using System;
 using System.Collections;
 using System.Runtime.CompilerServices;
@@ -33,6 +34,7 @@ public class BigRobotCutscene : MonoBehaviour, IInputListener
         if (currentLoopCount >= loopCount)
         {
             animator.SetTrigger("EndIdleLoop");
+            RuntimeManager.StudioSystem.setParameterByName(BigRobotLevel.MUSIC_PARAM, (int)BigRobotLevel.MusicSection.CUTSCENE_END);
         }
     }
 

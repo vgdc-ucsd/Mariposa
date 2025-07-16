@@ -1,3 +1,4 @@
+using FMODUnity;
 using System;
 using System.Collections;
 using Unity.VisualScripting;
@@ -23,6 +24,14 @@ public class BigRobotLevel : MonoBehaviour
     };
     public CurrentSection currentSection;
 
+    public enum MusicSection
+    {
+        CUTSCENE_START,
+        CUTSCENE_END,
+        PLAYER_DEATH
+    };
+    public const string MUSIC_PARAM = "s3_chase";
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -42,6 +51,7 @@ public class BigRobotLevel : MonoBehaviour
         Player.ActivePlayer.gameObject.SetActive(false);
         cutscene.gameObject.SetActive(true);
         cutscene.PlayCutscene(onCutsceneEnd: StartLevel);
+        RuntimeManager.StudioSystem.setParameterByName(MUSIC_PARAM, (int)MusicSection.CUTSCENE_START);
     }
 
     private void StartLevel()
@@ -63,6 +73,9 @@ public class BigRobotLevel : MonoBehaviour
     private void OnPlayerDeath()
     {
         DisableAllRobots();
+        RuntimeManager.StudioSystem.setParameterByName(MUSIC_PARAM, (int)MusicSection.PLAYER_DEATH);
+        MusicManager.Instance.Stop();
+        MusicManager.Instance.Play();
         if (Player.ActivePlayer.CurrentRespawnPoint == checkpoints[0])
         {
             currentSection = CurrentSection.START;
