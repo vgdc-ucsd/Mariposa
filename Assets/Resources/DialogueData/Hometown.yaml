@@ -14,10 +14,11 @@ spat_out:
 broken_rib:
 - Speaker: Unnamed
   Line: (Something’s broken. Every breath I take, something pops in and out of place. Can’t see, can’t think—-)
-  Icon: Neutral
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Unnamed_Pain1.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -32,10 +33,11 @@ broken_rib:
   Choice2: 
 - Speaker: Unnamed
   Line: (Just...tired.)
-  Icon: Neutral
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Unnamed_Pain5.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -50,7 +52,7 @@ broken_rib:
   Choice1: 
   Choice2: 
 - Speaker: Unnamed
-  Line: (...but still, there are better places to die. I’ll walk until there’s nowhere else to go.)
+  Line: (...there are better places to die. I’ll walk until there’s nowhere else to go.)
   Icon: Neutral
   Background: 
   FromRadio: 
@@ -59,6 +61,16 @@ broken_rib:
   Choice1: 
   Choice2: 
 reach:
+- Speaker: Unnamed
+  Line: I was right all along. It was inevitable. Unsalvageable. I was never meant to be saved.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Unnamed_RightAllAlong2.wav
+  Events: []
+  Choice1: 
+  Choice2: 
 - Speaker: Unnamed
   Line: I wonder if fate is still watching. If she's laughing at what we’ve all become.
   Icon: Neutral
@@ -73,10 +85,11 @@ reach:
 check_on_her:
 - Speaker: Unnamed
   Line: (Maybe there’s no way out of it this time...)
-  Icon: Neutral
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Unnamed_NowhereToRun1.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -91,10 +104,11 @@ check_on_her:
   Choice2: 
 - Speaker: Unnamed
   Line: (What if I—?)
-  Icon: Neutral
+  Icon: 
   Background: 
   FromRadio: 
   Sounds:
+  - Unnamed_WhatIf1.wav
   - fix_radio
   Events: []
   Choice1: 
@@ -119,10 +133,11 @@ check_on_her:
   Choice2: 
 - Speaker: Unnamed
   Line: Mari.
-  Icon: Neutral
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Unnamed_Mari4.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -146,10 +161,11 @@ check_on_her:
   Choice2: 
 - Speaker: Mariposa
   Line: It’s almost like it doesn’t exist!
-  Icon: Neutral
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Mariposa_Giggle1.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -168,9 +184,7 @@ check_on_her:
   Background: 
   FromRadio: 
   Sounds: []
-  Events:
-  - EventName: walking_sim
-    TriggerAtEnd: false
+  Events: []
   Choice1: 
   Choice2: 
 - Speaker: Mariposa
@@ -201,6 +215,8 @@ walk_trees:
   Events:
   - EventName: walk_show_trees_start
     TriggerAtEnd: false
+  - EventName: walk_show_trees_end
+    TriggerAtEnd: true
   Choice1: 
   Choice2: 
 walk_automatons:
@@ -213,6 +229,8 @@ walk_automatons:
   Events:
   - EventName: walk_show_automatons_start
     TriggerAtEnd: false
+  - EventName: walk_show_trees_end
+    TriggerAtEnd: true
   Choice1: 
   Choice2: 
 walk_door:
@@ -227,19 +245,21 @@ walk_door:
   Choice2: 
 - Speaker: Unnamed
   Line: '...yeah. I’m sure I would.'
-  Icon: Neutral
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Unnamed_Maybe4.wav
   Events: []
   Choice1: 
   Choice2: 
 - Speaker: Mariposa
-  Line: Are you alright?
-  Icon: Neutral
+  Line: You okay?
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Mariposa_YouOk1.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -270,10 +290,11 @@ pretend_nothings_wrong:
   Choice2: 
 - Speaker: Unnamed
   Line: (After all this, I couldn’t tell her now.)
-  Icon: Neutral
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Unnamed_Ugh1.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -314,20 +335,22 @@ pretend_nothings_wrong:
   Choice1: 
   Choice2: 
 - Speaker: Unnamed
-  Line: Sure.
-  Icon: Neutral
+  Line: '...yeah, of course.'
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Unnamed_DryLaugh3.wav
   Events: []
   Choice1: 
   Choice2: 
 - Speaker: Mariposa
-  Line: Well, see you, then!
-  Icon: Happy
+  Line: Alright, well, see you then!
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Mariposa_Alright3.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -361,10 +384,11 @@ pretend_nothings_wrong:
 talk_about_the_future:
 - Speaker: Unnamed
   Line: There’s something you have to know about your radio, Mariposa.
-  Icon: Neutral
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Unnamed_Sigh1.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -379,10 +403,11 @@ talk_about_the_future:
   Choice2: 
 - Speaker: Mariposa
   Line: Well, yes? Actually, I can track it, it’s just spitting out a result that doesn’t make any sense. Says it’s actually not picking up a signal at all, and it’s coming from—
-  Icon: Neutral
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Mariposa_Well3.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -486,11 +511,12 @@ talk_about_the_future:
   Choice1: 
   Choice2: 
 - Speaker: Mariposa
-  Line: Are you kidding me? This is—
-  Icon: Neutral
+  Line: Seriously? This is—
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Mariposa_Seriously5.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -513,7 +539,7 @@ talk_about_the_future:
   Choice1: 
   Choice2: 
 - Speaker: Mariposa
-  Line: You’ve—-I’ve—-we’ve done something incredible! Kairo, this is a dream come true!
+  Line: You’ve—I’ve—we’ve done something incredible! Kairo, this is a dream come true!
   Icon: Happy
   Background: 
   FromRadio: 
@@ -522,7 +548,16 @@ talk_about_the_future:
   Choice1: 
   Choice2: 
 - Speaker: Mariposa
-  Line: You’ve got to tell me more. Gosh, I—-I have so many questions!
+  Line: You’ve got to tell me more. Gosh, I—
+  Icon: Happy
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: I have so many questions!
   Icon: Happy
   Background: 
   FromRadio: 
@@ -558,10 +593,11 @@ tell_the_truth:
   Choice2: 
 - Speaker: Unnamed
   Line: Mariposa, you’re the first person I’ve spoken to in years.
-  Icon: Neutral
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Unnamed_Mariposa3.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -576,10 +612,11 @@ tell_the_truth:
   Choice2: 
 - Speaker: Unnamed
   Line: '...'
-  Icon: Neutral
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Unnamed_Ugh1.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -621,10 +658,11 @@ tell_the_truth:
   Choice2: 
 - Speaker: Unnamed
   Line: '...Part of me hopes you don’t believe me.'
-  Icon: Neutral
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Unnamed_ImSorry1.wav
   Events: []
   Choice1: 
   Choice2: 

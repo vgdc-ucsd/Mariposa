@@ -233,9 +233,9 @@ public class DialoguePlayer : MonoBehaviour
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(() =>
         {
-            // TODO adjust friendship
             if (choice.LinkedDialogue != null)
             {
+                FriendshipManager.Instance.ChangeScore(choice.Friendship);
                 DialogueManager.Instance.PlayDialogue(choice.LinkedDialogue);
             }
             buttonDisplay.SetActive(false);

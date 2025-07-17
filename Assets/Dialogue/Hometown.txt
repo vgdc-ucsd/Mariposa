@@ -21,7 +21,7 @@ UNNAMED
 ________________
 
 
-#<7
+#< 16
 
 #If the score at this point is less than 7, the walk to the house will be silent. They’ll die alone and won’t speak to Mari at the end. 
 
@@ -30,6 +30,7 @@ ________________
 
 
 UNNAMED 
+!a Unnamed_Pain1.wav
 (neutral)
 (Something’s broken. Every breath I take, something pops in and out of place. Can’t see, can’t think—-)
 
@@ -40,6 +41,7 @@ UNNAMED
 
 
 UNNAMED
+!a Unnamed_Pain5.wav
 (neutral)
 (Just...tired.)
 
@@ -52,7 +54,7 @@ UNNAMED
 
 UNNAMED
 (neutral)
-(...but still, there are better places to die. I’ll walk until there’s nowhere else to go.)
+(...there are better places to die. I’ll walk until there’s nowhere else to go.)
  
 #[GAMEPLAY]- WALK HOME 
 #UNNAMED reaches the door. 
@@ -61,6 +63,10 @@ UNNAMED
 !name reach door
 
 
+UNNAMED 
+(neutral)
+!a Unnamed_RightAllAlong2.wav
+I was right all along. It was inevitable. Unsalvageable. I was never meant to be saved. 
 
 
 UNNAMED
@@ -98,13 +104,14 @@ I wonder if fate is still watching. If she's laughing at what we’ve all become
 ________________
 
 
-#>7 
+#> or equal to 16
 
 
 !name check_on_her
 
 
 UNNAMED
+!a Unnamed_NowhereToRun1.wav
 (neutral)
 (Maybe there’s no way out of it this time...)
 
@@ -115,6 +122,7 @@ UNNAMED
 
 
 UNNAMED
+!a Unnamed_WhatIf1.wav
 (neutral)
 (What if I—?)
 
@@ -133,6 +141,7 @@ MARIPOSA
 
 
 UNNAMED 
+!a Unnamed_Mari4.wav
 (neutral)
 Mari. 
 
@@ -148,7 +157,8 @@ You know something funny? I still haven’t been able to figure out why this rad
 
 
 MARIPOSA 
-(neutral)
+!a Mariposa_Giggle1.wav
+(happy)
 It’s almost like it doesn’t exist!
 
 
@@ -163,7 +173,6 @@ Ah, I’ve gotten so used to this little radio though, I kinda missed hearing yo
 
 
 #[GAMEPLAY: BEGIN THE WALKING SIM PART]
-!event walking_sim
 
 
 MARIPOSA 
@@ -177,25 +186,23 @@ It’s nothing much, but I’d like to show you around. As much as I gush about 
 
 
 !name walk_trees
-#!event walk_show_trees_start
 MARIPOSA
 (neutral)
 The lushness of the trees, or the soft glow of our streetlights…
 
 
 !event walk_show_trees_start
-#!event walk_show_trees_end end
+!event walk_show_trees_end end
 
 
 !name walk_automatons
-!event walk_show_automatons_start
 MARIPOSA
 (happy)
 Our neighbors bickering about the laundry, and the toy automatons hopping around in the streets...
 
 
 !event walk_show_automatons_start
-#!event walk_show_trees_end end
+!event walk_show_trees_end end
 
 
 !name walk_door
@@ -205,13 +212,15 @@ I think you’d like it, Kairo.
 
 
 UNNAMED
+!a Unnamed_Maybe4.wav
 (neutral)
 ...yeah. I’m sure I would. 
 
 
 MARIPOSA 
+!a Mariposa_YouOk1.wav
 (neutral)
-Are you alright?
+You okay?
 
 
 #REACH DOOR DON’T GO IN EXPLODE
@@ -240,6 +249,7 @@ UNNAMED
 
 
 UNNAMED
+!a Unnamed_Ugh1.wav
 (neutral)
 (After all this, I couldn’t tell her now.)
 
@@ -265,13 +275,15 @@ Will I hear from you tomorrow?
 
 
 UNNAMED
+!a Unnamed_DryLaugh3.wav
 (neutral)
-Sure.
+...yeah, of course.
 
 
 MARIPOSA
+!a Mariposa_Alright3.wav
 (happy)
-Well, see you, then!
+Alright, well, see you then!
 
 
 UNNAMED
@@ -319,6 +331,7 @@ ________________
 
 !name talk_about_the_future
 UNNAMED
+!a Unnamed_Sigh1.wav
 (neutral)
 There’s something you have to know about your radio, Mariposa.
 
@@ -329,6 +342,7 @@ You said you modified it. It was an old two-way; you rearranged it. Gave it a ne
 
 
 MARIPOSA
+!a Mariposa_Well3.wav
 (neutral)
 Well, yes? Actually, I can track it, it’s just spitting out a result that doesn’t make any sense. Says it’s actually not picking up a signal at all, and it’s coming from—
 
@@ -389,8 +403,9 @@ MARIPOSA
 
 
 MARIPOSA
+!a Mariposa_Seriously5.wav
 (neutral)
-Are you kidding me? This is—
+Seriously? This is—
 
 
 MARIPOSA
@@ -405,12 +420,17 @@ I can’t believe you didn’t tell me sooner! I mean—-maybe you didn’t know
 
 MARIPOSA
 (happy)
-You’ve—-I’ve—-we’ve done something incredible! Kairo, this is a dream come true!
+You’ve—I’ve—we’ve done something incredible! Kairo, this is a dream come true!
 
 
 MARIPOSA 
 (happy)
-You’ve got to tell me more. Gosh, I—-I have so many questions!
+You’ve got to tell me more. Gosh, I—
+
+
+MARIPOSA 
+(happy)
+I have so many questions!
 
 
 ________________
@@ -490,6 +510,7 @@ UNNAMED
 
 
 UNNAMED
+!a Unnamed_Mariposa3.wav
 (neutral)
 Mariposa, you’re the first person I’ve spoken to in years.
 
@@ -500,6 +521,7 @@ I don’t know if anyone else is left, but...
 
 
 UNNAMED
+!a Unnamed_Ugh1.wav
 (neutral)
 ...
 
@@ -525,6 +547,7 @@ UNNAMED
 
 
 UNNAMED
+!a Unnamed_ImSorry1.wav
 (neutral)
 ...Part of me hopes you don’t believe me. 
 
@@ -574,7 +597,7 @@ UNNAMED
 
 
 #MARIPOSA
-#Is it always going to be this way? There’s—-nothing I can do? #Nothing’s changed, even though I—-
+#Is it always going to be this way? There’s—nothing I can do? #Nothing’s changed, even though I—
 
 
 #UNNAMED
