@@ -28,7 +28,7 @@ public class LevelManager : MonoBehaviour, IDataPersistence
         Instance = this;
 
         foreach (var sl in CurrentLevel.Sublevels) sl.Unload();
-        SublevelIndex = GameManager.Instance.TargetSublevel;
+        SublevelIndex = 0;
         CurrentLevel.LoadSublevel(SublevelIndex);
 
         if (string.IsNullOrEmpty(NextLevelName))

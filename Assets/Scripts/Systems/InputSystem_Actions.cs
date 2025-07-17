@@ -64,15 +64,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Escape"",
-                    ""type"": ""Button"",
-                    ""id"": ""23820a18-2523-4a38-b586-2799ed3eb498"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""AltAbility"",
                     ""type"": ""Button"",
                     ""id"": ""8e00b12e-bef2-402d-90f5-347eb9e3b324"",
@@ -384,28 +375,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Ability"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""07916685-8b88-4d24-8575-2560967eac28"",
-                    ""path"": ""<Keyboard>/escape"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Escape"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""ebd45f07-af15-4a9d-8a08-9088070c08b0"",
-                    ""path"": ""<Gamepad>/start"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Gamepad"",
-                    ""action"": ""Escape"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -970,6 +939,65 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Control"",
+            ""id"": ""df5ee929-d41d-493f-91ef-d1958e977219"",
+            ""actions"": [
+                {
+                    ""name"": ""Escape"",
+                    ""type"": ""Button"",
+                    ""id"": ""1ec8f063-dd34-4d9b-8b31-5425052afe12"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Inventory"",
+                    ""type"": ""Button"",
+                    ""id"": ""b7c4e777-9e6b-49ae-b950-0ddfaa94d90f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""1deec8bb-14ad-4a82-95b6-22992634a7cb"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Escape"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3897e81f-dc98-4cb1-a110-67849ab13eba"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Escape"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f9e79142-f5bf-4728-a44d-847787242d6b"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Inventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -1041,7 +1069,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         m_Player_Ability = m_Player.FindAction("Ability", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
-        m_Player_Escape = m_Player.FindAction("Escape", throwIfNotFound: true);
         m_Player_AltAbility = m_Player.FindAction("AltAbility", throwIfNotFound: true);
         m_Player_Click = m_Player.FindAction("Click", throwIfNotFound: true);
         m_Player_DebugCompletePuzzle = m_Player.FindAction("DebugCompletePuzzle", throwIfNotFound: true);
@@ -1057,12 +1084,17 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_UI_ScrollWheel = m_UI.FindAction("ScrollWheel", throwIfNotFound: true);
         m_UI_TrackedDevicePosition = m_UI.FindAction("TrackedDevicePosition", throwIfNotFound: true);
         m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
+        // Control
+        m_Control = asset.FindActionMap("Control", throwIfNotFound: true);
+        m_Control_Escape = m_Control.FindAction("Escape", throwIfNotFound: true);
+        m_Control_Inventory = m_Control.FindAction("Inventory", throwIfNotFound: true);
     }
 
     ~@InputSystem_Actions()
     {
         UnityEngine.Debug.Assert(!m_Player.enabled, "This will cause a leak and performance issues, InputSystem_Actions.Player.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_UI.enabled, "This will cause a leak and performance issues, InputSystem_Actions.UI.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_Control.enabled, "This will cause a leak and performance issues, InputSystem_Actions.Control.Disable() has not been called.");
     }
 
     public void Dispose()
@@ -1128,7 +1160,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Interact;
     private readonly InputAction m_Player_Ability;
     private readonly InputAction m_Player_Jump;
-    private readonly InputAction m_Player_Escape;
     private readonly InputAction m_Player_AltAbility;
     private readonly InputAction m_Player_Click;
     private readonly InputAction m_Player_DebugCompletePuzzle;
@@ -1140,7 +1171,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
         public InputAction @Ability => m_Wrapper.m_Player_Ability;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
-        public InputAction @Escape => m_Wrapper.m_Player_Escape;
         public InputAction @AltAbility => m_Wrapper.m_Player_AltAbility;
         public InputAction @Click => m_Wrapper.m_Player_Click;
         public InputAction @DebugCompletePuzzle => m_Wrapper.m_Player_DebugCompletePuzzle;
@@ -1165,9 +1195,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
-            @Escape.started += instance.OnEscape;
-            @Escape.performed += instance.OnEscape;
-            @Escape.canceled += instance.OnEscape;
             @AltAbility.started += instance.OnAltAbility;
             @AltAbility.performed += instance.OnAltAbility;
             @AltAbility.canceled += instance.OnAltAbility;
@@ -1193,9 +1220,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
-            @Escape.started -= instance.OnEscape;
-            @Escape.performed -= instance.OnEscape;
-            @Escape.canceled -= instance.OnEscape;
             @AltAbility.started -= instance.OnAltAbility;
             @AltAbility.performed -= instance.OnAltAbility;
             @AltAbility.canceled -= instance.OnAltAbility;
@@ -1340,6 +1364,60 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         }
     }
     public UIActions @UI => new UIActions(this);
+
+    // Control
+    private readonly InputActionMap m_Control;
+    private List<IControlActions> m_ControlActionsCallbackInterfaces = new List<IControlActions>();
+    private readonly InputAction m_Control_Escape;
+    private readonly InputAction m_Control_Inventory;
+    public struct ControlActions
+    {
+        private @InputSystem_Actions m_Wrapper;
+        public ControlActions(@InputSystem_Actions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Escape => m_Wrapper.m_Control_Escape;
+        public InputAction @Inventory => m_Wrapper.m_Control_Inventory;
+        public InputActionMap Get() { return m_Wrapper.m_Control; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(ControlActions set) { return set.Get(); }
+        public void AddCallbacks(IControlActions instance)
+        {
+            if (instance == null || m_Wrapper.m_ControlActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_ControlActionsCallbackInterfaces.Add(instance);
+            @Escape.started += instance.OnEscape;
+            @Escape.performed += instance.OnEscape;
+            @Escape.canceled += instance.OnEscape;
+            @Inventory.started += instance.OnInventory;
+            @Inventory.performed += instance.OnInventory;
+            @Inventory.canceled += instance.OnInventory;
+        }
+
+        private void UnregisterCallbacks(IControlActions instance)
+        {
+            @Escape.started -= instance.OnEscape;
+            @Escape.performed -= instance.OnEscape;
+            @Escape.canceled -= instance.OnEscape;
+            @Inventory.started -= instance.OnInventory;
+            @Inventory.performed -= instance.OnInventory;
+            @Inventory.canceled -= instance.OnInventory;
+        }
+
+        public void RemoveCallbacks(IControlActions instance)
+        {
+            if (m_Wrapper.m_ControlActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IControlActions instance)
+        {
+            foreach (var item in m_Wrapper.m_ControlActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_ControlActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public ControlActions @Control => new ControlActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     public InputControlScheme KeyboardMouseScheme
     {
@@ -1391,7 +1469,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         void OnInteract(InputAction.CallbackContext context);
         void OnAbility(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
-        void OnEscape(InputAction.CallbackContext context);
         void OnAltAbility(InputAction.CallbackContext context);
         void OnClick(InputAction.CallbackContext context);
         void OnDebugCompletePuzzle(InputAction.CallbackContext context);
@@ -1408,5 +1485,10 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         void OnScrollWheel(InputAction.CallbackContext context);
         void OnTrackedDevicePosition(InputAction.CallbackContext context);
         void OnTrackedDeviceOrientation(InputAction.CallbackContext context);
+    }
+    public interface IControlActions
+    {
+        void OnEscape(InputAction.CallbackContext context);
+        void OnInventory(InputAction.CallbackContext context);
     }
 }
