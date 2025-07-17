@@ -9,6 +9,7 @@ public static class AudioEvents
         s1Downtown_theme_unnamed,
         s2Pier_theme_mariposa,
         S2Pier_theme_unnamed,
+        s3BigRobot_theme_unnamed,
         s4Hometown_theme_mariposa,
         s4Hometown_theme_unnamed,
         titlescreen_title_theme
@@ -24,6 +25,7 @@ public static class AudioEvents
             Music.s1Downtown_theme_unnamed => "event:/music1/s1_downtown_city1/theme_unnamed",
             Music.s2Pier_theme_mariposa => "event:/music1/s2_pier/theme_mariposa",
             Music.S2Pier_theme_unnamed => "event:/music1/s2_pier/theme_unnamed",
+            Music.s3BigRobot_theme_unnamed => "event:/music1/s3_industrial/theme_unnamed_BIGROBOT",
             Music.s4Hometown_theme_mariposa => "event:/music1/s4_hometown/theme_mariposa",
             Music.s4Hometown_theme_unnamed => "event:/music1/s4_hometown/theme_unnamed",
             Music.titlescreen_title_theme => "event:/music1/title_screen/title_theme",
