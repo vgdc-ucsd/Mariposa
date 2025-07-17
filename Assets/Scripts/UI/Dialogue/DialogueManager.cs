@@ -7,6 +7,7 @@ using System.Collections.Generic;
 public class DialogueManager : Singleton<DialogueManager>
 {
     [SerializeField] private DialoguePlayer dialoguePlayer;
+    public bool isPlayingDialogue;
 
     private Dictionary<string, List<DialogueElement>> dialogueDictionary = new Dictionary<string, List<DialogueElement>>();
     private Dictionary<string, DialogueEvent> eventDictionary = new Dictionary<string, DialogueEvent>();
@@ -52,6 +53,7 @@ public class DialogueManager : Singleton<DialogueManager>
             return;
         }
         dialoguePlayer.PlayDialogue(dialogueDictionary[dialogueName], initAdvance);
+        isPlayingDialogue = true;
     }
 
     public void RegisterEvent(string name, DialogueEvent dialogueEvent)
