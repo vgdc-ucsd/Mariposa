@@ -63,9 +63,10 @@ public abstract class Door : Interactable
     /// </summary>
     public virtual void Open()
     {
+        isOpen = true;
+        SetSprite();
         if (boxCollider == null) return;
         boxCollider.gameObject.layer = LayerMask.NameToLayer("Default");
-        SetSprite();
     }
 
     /// <summary>
@@ -74,9 +75,10 @@ public abstract class Door : Interactable
     /// </summary>
     private void Close()
     {
+        isOpen = false;
+        SetSprite();
         if (boxCollider == null) return;
         boxCollider.gameObject.layer = LayerMask.NameToLayer("Barrier");
-        SetSprite();
     }
     
     /// <summary>

@@ -18,6 +18,9 @@ public class KeycardRejectEvent : DialogueEvent
         float3 up;
         keycard.gameObject.SetActive(true);
 
+        Collider2D collider = keycard.GetComponentInChildren<Collider2D>();
+        collider.enabled = false;
+
         yield return BasicAnimations.Interpolate
         (
             null,
@@ -30,6 +33,7 @@ public class KeycardRejectEvent : DialogueEvent
             0.5f
         );
 
+        collider.enabled = true;
         DialogueManager.Instance.PlayDialogue(DIALOGUE);
     }
 
