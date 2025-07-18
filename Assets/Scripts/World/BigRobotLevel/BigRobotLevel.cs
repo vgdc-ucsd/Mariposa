@@ -1,8 +1,5 @@
 using FMODUnity;
-using System;
 using System.Collections;
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class BigRobotLevel : MonoBehaviour
@@ -27,8 +24,8 @@ public class BigRobotLevel : MonoBehaviour
     public enum MusicSection
     {
         CUTSCENE_START,
-        CUTSCENE_END,
-        PLAYER_DEATH
+        CHASE_START,
+        DROP
     };
     public const string MUSIC_PARAM = "s3_chase";
 
@@ -49,8 +46,10 @@ public class BigRobotLevel : MonoBehaviour
         yield return new WaitForEndOfFrame();
 
         Player.ActivePlayer.gameObject.SetActive(false);
+
         cutscene.gameObject.SetActive(true);
         cutscene.PlayCutscene(onCutsceneEnd: StartLevel);
+
         RuntimeManager.StudioSystem.setParameterByName(MUSIC_PARAM, (int)MusicSection.CUTSCENE_START);
     }
 
@@ -59,9 +58,12 @@ public class BigRobotLevel : MonoBehaviour
         Player.ActivePlayer.gameObject.SetActive(true);
         Player.ActivePlayer.CurrentRespawnPoint = checkpoints[0];
         Player.OnDeath += OnPlayerDeath;
-        DisableAllRobots();
-        cutscene.gameObject.SetActive(false);
+
         currentSection = CurrentSection.START;
+
+        RuntimeManager.StudioSystem.setParameterByName(BigRobotLevel.MUSIC_PARAM, (int)MusicSection.CHASE_START);
+
+        DisableAllRobots();
         SendRobot(0);
     }
 
@@ -72,10 +74,11 @@ public class BigRobotLevel : MonoBehaviour
 
     private void OnPlayerDeath()
     {
-        DisableAllRobots();
-        RuntimeManager.StudioSystem.setParameterByName(MUSIC_PARAM, (int)MusicSection.PLAYER_DEATH);
         MusicManager.Instance.Stop();
+        RuntimeManager.StudioSystem.setParameterByName(MUSIC_PARAM, (int)MusicSection.DROP);
         MusicManager.Instance.Play();
+
+        DisableAllRobots();
         if (Player.ActivePlayer.CurrentRespawnPoint == checkpoints[0])
         {
             currentSection = CurrentSection.START;
