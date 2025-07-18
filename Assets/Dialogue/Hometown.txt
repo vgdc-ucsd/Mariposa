@@ -1,0 +1,683 @@
+﻿#Writer Name: Jess Yang
+#Edited by: Joshua Nolasco, Jordan Huynh
+
+
+#EXT. HOMETOWN - NIGHT 
+
+
+#UNNAMED is spat out on the other side of the WORLD MACHINE. You know. Like a loser. 
+
+
+!name spat_out
+
+
+UNNAMED
+(neutral)
+!a Unnamed_Cough2.wav
+(...!)
+
+
+!event check_friendship end
+________________
+
+
+#< 16
+
+#If the score at this point is less than 7, the walk to the house will be silent. They’ll die alone and won’t speak to Mari at the end. 
+
+
+!name broken_rib
+
+
+UNNAMED 
+!a Unnamed_Pain1.wav
+(neutral)
+(Something’s broken. Every breath I take, something pops in and out of place. Can’t see, can’t think—-)
+
+
+UNNAMED
+(neutral)
+(...)
+
+
+UNNAMED
+!a Unnamed_Pain5.wav
+(neutral)
+(Just...tired.)
+
+
+UNNAMED
+(neutral)
+!a Unnamed_Cough1.wav
+(...!)
+
+
+UNNAMED
+(neutral)
+(...there are better places to die. I’ll walk until there’s nowhere else to go.)
+ 
+#[GAMEPLAY]- WALK HOME 
+#UNNAMED reaches the door. 
+
+
+!name reach_door
+
+
+UNNAMED 
+(neutral)
+!a Unnamed_RightAllAlong2.wav
+I was right all along. It was inevitable. Unsalvageable. I was never meant to be saved. 
+
+
+UNNAMED
+(neutral)
+I wonder if fate is still watching. If she's laughing at what we’ve all become.
+
+
+!background silica_heart
+!event silica_heart end
+
+
+#[PLAY LOW FRIENDSHIP CUTSCENE - PLUM VINEGAR]
+
+
+#INT. MARIPOSA’S HOME (FUTURE) - EVENING
+
+
+#NO DIALOGUE DON’T INTERACT WITH HER
+
+
+#Red light streaks through dusty and broken windows. THE UNNAMED stumbles through the door, breathing heavily and wounded. Dragging their feet out, they leave lines in the grime as they move sluggishly and look around. 
+
+
+#UNNAMED sets the silent radio down softly and collapses down next to it, rolling onto their back to breathe. They remove their gas mask. 
+
+
+#There is dead silence as the dust cascades from above. THE UNNAMED’s eyes flutter shut once, then open weakly briefly. The radio is still and silent. They can’t focus for very long anymore. They close their eyes, then inhale sharply.
+
+
+#CUT TO BLACK
+
+
+!event end_game
+
+
+________________
+
+
+#> or equal to 16
+
+
+!name check_on_her
+
+
+UNNAMED
+!a Unnamed_NowhereToRun1.wav
+(neutral)
+(Maybe there’s no way out of it this time...)
+
+
+UNNAMED
+(neutral)
+(Still, before I go, I’d like to make sure that she’s alright.)
+
+
+UNNAMED
+!a Unnamed_WhatIf1.wav
+(neutral)
+(What if I—?)
+
+
+!audio fix_radio
+
+
+UNNAMED 
+(neutral)
+(...)
+
+
+MARIPOSA 
+(neutral)
+-ello? Kairo? Kairo, are you there?
+
+
+UNNAMED 
+!a Unnamed_Mari4.wav
+(neutral)
+Mari. 
+
+
+MARIPOSA
+(neutral)
+Oh, thank goodness! I thought this thing was done for!
+
+
+MARIPOSA
+(neutral)
+You know something funny? I still haven’t been able to figure out why this radio works. Sure, the two-way is technically operable; but I haven't been able to figure out where exactly I’m receiving your frequency from. 
+
+
+MARIPOSA 
+!a Mariposa_Giggle1.wav
+(happy)
+It’s almost like it doesn’t exist!
+
+
+UNNAMED
+(neutral)
+...I see.
+
+
+MARIPOSA
+(happy)
+Ah, I’ve gotten so used to this little radio though, I kinda missed hearing your voice! Made it all the way home before I got it working again.
+
+
+#[GAMEPLAY: BEGIN THE WALKING SIM PART]
+
+
+MARIPOSA 
+(neutral)
+Hey, maybe someday you might stumble onto my little hometown! 
+
+
+MARIPOSA
+(neutral)
+It’s nothing much, but I’d like to show you around. As much as I gush about the big city or the pier, there really is nothing like home. 
+
+
+!name walk_trees
+MARIPOSA
+(neutral)
+The lushness of the trees, or the soft glow of our streetlights…
+
+
+!event walk_show_trees_start
+!event walk_show_trees_end end
+
+
+!name walk_automatons
+MARIPOSA
+(happy)
+Our neighbors bickering about the laundry, and the toy automatons hopping around in the streets...
+
+
+!event walk_show_automatons_start
+!event walk_show_trees_end end
+
+
+!name walk_door
+MARIPOSA 
+(happy)
+I think you’d like it, Kairo.
+
+
+!event walk_show_house_start
+
+
+UNNAMED
+!a Unnamed_Maybe4.wav
+(neutral)
+...yeah. I’m sure I would. 
+
+
+MARIPOSA 
+!a Mariposa_YouOk1.wav
+(neutral)
+You okay?
+
+
+#REACH DOOR DON’T GO IN EXPLODE
+
+
+MARIPOSA
+(sad)
+You’re quiet. What’s wrong?
+
+
+!event walk_show_house_end
+________________
+
+
+!choice1 pretend_nothings_wrong
+Nothing’s wrong.
+
+
+!choice2 talk_about_the_future
+The future.
+
+
+!name pretend_nothings_wrong
+
+
+UNNAMED 
+(neutral)
+(She doesn’t have to know.)
+
+
+UNNAMED
+!a Unnamed_Ugh1.wav
+(neutral)
+(After all this, I couldn’t tell her now.)
+
+
+UNNAMED
+(neutral)
+I’m alright. I just have to go now. It was nice to meet you, though. 
+
+
+MARIPOSA
+(happy)
+Oh, you're leaving? Well, I’m glad I got to talk to you! Maybe I’ll meet you someday, Kairo. Don’t be a stranger!
+
+
+UNNAMED
+(neutral)
+Wouldn’t dream of it. 
+
+
+MARIPOSA
+(happy)
+Will I hear from you tomorrow?
+
+
+UNNAMED
+!a Unnamed_DryLaugh3.wav
+(neutral)
+...yeah, of course.
+
+
+MARIPOSA
+!a Mariposa_Alright3.wav
+(happy)
+Alright, well, see you then!
+
+
+UNNAMED
+(neutral)
+Yeah. 
+
+
+UNNAMED
+(neutral)
+...
+
+
+UNNAMED 
+(neutral)
+See you.
+
+
+
+
+!background silica_heart
+!event silica_heart end
+
+
+#Radio clips off. Enter the house. 
+
+
+#INT. MARIPOSA’S HOME (FUTURE) - EVENING
+
+
+#Red light streaks through dusty and broken windows. THE UNNAMED stumbles through the door, breathing heavily and wounded. 
+
+
+#UNNAMED sets the radio down softly, and collapses down next to it, rolling onto their back to breathe. They remove their gas mask and smile to themself.
+
+
+#There is dead silence as the dust cascades from above. THE UNNAMED’s eyes flutter shut once, then open weakly. The radio is still and silent. A butterfly lands after fluttering around it. They close their eyes, then inhale sharply.
+
+
+#CUT TO BLACK
+
+
+________________
+
+
+
+
+!name talk_about_the_future
+UNNAMED
+!a Unnamed_Sigh1.wav
+(neutral)
+There’s something you have to know about your radio, Mariposa.
+
+
+UNNAMED
+(neutral)
+You said you modified it. It was an old two-way; you rearranged it. Gave it a new shell and fixed it up. Didn’t think it would work. And it receives a signal you cannot trace.
+
+
+MARIPOSA
+!a Mariposa_Well3.wav
+(neutral)
+Well, yes? Actually, I can track it, it’s just spitting out a result that doesn’t make any sense. Says it’s actually not picking up a signal at all, and it’s coming from—
+
+
+UNNAMED
+(neutral)
+–right where you are, correct?
+
+
+UNNAMED
+(neutral)
+It’s because that signal is from itself. It’s picking up its own transmissions and relaying them back into the same place; just a different time. 
+
+
+MARIPOSA
+(sad)
+...Kairo, what are you saying?
+
+
+UNNAMED
+(neutral)
+You said it yourself. It’s an antique; it doesn’t have self-interference cancellation, and it certainly didn’t when you tried to install your upgraded transmitters. 
+
+
+UNNAMED 
+(neutral)
+Somehow, your modification is allowing you to safely project signals faster than what should be possible—and it’s coming back down to Earth a hundred years too late. 
+
+
+UNNAMED 
+(neutral)
+...and receive signals a hundred years too early. 
+
+
+UNNAMED
+(neutral)
+...
+
+
+UNNAMED 
+(neutral)
+Do you understand what I’m saying? 
+
+
+MARIPOSA
+(sad)
+...
+
+
+MARIPOSA
+(neutral)
+...
+
+
+MARIPOSA 
+(happy)
+...you asked me once about the future. The future, Kairo? The future?
+
+
+MARIPOSA
+!a Mariposa_Seriously5.wav
+(neutral)
+Seriously? This is—
+
+
+MARIPOSA
+(happy)
+-this is amazing!
+
+
+MARIPOSA 
+(neutral)
+I can’t believe you didn’t tell me sooner! I mean—-maybe you didn’t know—-I certainly didn’t—--
+
+
+MARIPOSA
+(happy)
+You’ve—I’ve—we’ve done something incredible! Kairo, this is a dream come true!
+
+
+MARIPOSA 
+(happy)
+You’ve got to tell me more. Gosh, I—
+
+
+MARIPOSA 
+(happy)
+I have so many questions!
+
+
+________________
+
+
+
+
+!choice1 tell_a_lie
+Lie.
+!choice2 tell_the_truth
+Truth.
+
+
+!name tell_a_lie
+UNNAMED 
+(neutral)
+Mari...
+
+
+!background orange_sunset
+!event enter_home_good end
+
+
+#INT. MARIPOSA’S HOME (FUTURE) - EVENING
+
+
+#Red light streaks through dusty and broken windows. THE UNNAMED, a masked figure with a large cloak, stumbles through the door, breathing heavily and wounded.
+
+
+#The Unnamed sets the radio down softly, and collapses down next to it, rolling onto their back to breathe. They remove their gas mask. 
+
+
+#MARIPOSA[a]
+#Kairo? You still there?
+
+
+#UNNAMED 
+#Yes.
+
+
+#MARIPOSA
+#I still can’t believe it. 
+
+
+#MARIPOSA
+#What happens to the city, the pier, my hometown—-what happens to us? 
+
+
+#MARIPOSA
+#The future—-what’s it like? 
+
+
+#UNNAMED
+#What’s the future like? 
+
+
+#UNNAMED
+#…oh, Mariposa. It’s beautiful.
+
+
+#The chatter from the radio fades into indistinct noise. THE UNNAMED’s eyes flutter shut once, then open weakly briefly to see a yellow butterfly land on the radio. Mariposa is still presumably talking to them, but they can’t focus for very long anymore. They smile, touch the side of the radio, close their eyes, and take a slow breath. 
+
+
+#CUT TO BLACK
+________________
+
+
+
+
+!name tell_the_truth
+UNNAMED 
+(neutral)
+...
+
+
+UNNAMED
+!a Unnamed_Mariposa3.wav
+(neutral)
+Mariposa, you’re the first person I’ve spoken to in years.
+
+
+UNNAMED
+(neutral)
+I don’t know if anyone else is left, but...
+
+
+UNNAMED
+!a Unnamed_Ugh1.wav
+(neutral)
+...
+
+
+UNNAMED
+(neutral)
+You can’t tell if it’s day or night; the sky is always dark with red clouds. Everything is too quiet.
+
+
+UNNAMED
+(neutral)
+Every breath tastes like ash, even through a filter. Even with an oxygen tank. 
+
+
+UNNAMED
+(neutral)
+If you scream, the sound echoes for miles without a response. 
+
+
+UNNAMED
+(neutral)
+...
+
+
+UNNAMED
+!a Unnamed_ImSorry1.wav
+(neutral)
+...Part of me hopes you don’t believe me. 
+
+
+UNNAMED
+(neutral)
+But I have to thank you. For everything. 
+
+
+UNNAMED
+(neutral)
+For giving me a little comfort before I go.
+
+
+UNNAMED
+(neutral)
+...
+!background orange_sunset
+!event enter_home_good
+
+
+#Goes quiet. PLAYER INTERACTS WITH THE DOOR.
+
+
+#INT. MARIPOSA’S HOME (FUTURE) - EVENING
+
+
+#Red light streaks through dusty and broken windows. UNNAMED walks in.
+
+
+#The Unnamed sets the radio down softly, and collapses down next to it, rolling onto their back to breathe. They remove their gas mask. 
+
+
+#MARIPOSA[b]
+#...Kairo? You still there?
+
+
+#UNNAMED 
+#Yes.
+
+
+#MARIPOSA
+#You’re...not leaving now, are you?
+
+
+#UNNAMED
+#...Mariposa.
+
+
+#MARIPOSA
+#Is it always going to be this way? There’s—nothing I can do? Nothing’s changed, even though I—
+
+
+#UNNAMED
+#...I don’t know. I’m sorry
+
+
+#UNNAMED
+#But thank you. Really. For everything.
+
+
+#UNNAMED
+#I’ll miss you.
+
+
+#MARIPOSA
+#... 
+
+
+#MARIPOSA
+#I think I’ve missed you for a long, long time.
+
+
+#UNNAMED
+#...
+#Goodnight, Mariposa.
+
+
+#The chatter from the radio fades into indistinct noise. THE UNNAMED’s eyes flutter shut once, then open weakly briefly to see a yellow butterfly land on the radio. Mariposa is still presumably talking to them, but they can’t focus for very long anymore. They curl closer to the radio, smile, close their eyes, and take a deep breath.  
+
+
+#CUT TO BLACK
+
+
+#Key Inventory Items - Mariposa  
+#[Radio] 
+!name interact_inventory_radio_mariposa
+INVEN
+It's an antique two-way radio. It's been taken apart, modified, and put back together. The dials are custom made. A labor of love. 
+#[Battery]
+!name interact_inventory_battery_mariposa
+INVENBAT
+A battery. Used to power things and can be recharged. The humming hearts of automatons. 
+#[Keycard]
+!name interact_inventory_keycard_mariposa
+IVENKEY
+A gilded, plastic keycard. Used to access the interiors of certain machines. 
+#[Pipe]
+!name interact_inventory_pipe_mariposa
+IVENPIP
+A piece from the scrap vendor, well-taken care of. It’ll fit just fine. 
+#[Beebo]
+!name interact_inventory_beebo_mariposa
+IVENBEEEEEE
+B33B0. A personalized automaton assistant. Mariposa’s pride and joy. 
+
+
+#Key Inventory Items - The Unnamed
+#[Radio] 
+!name interact_inventory_radio_unnamed
+IVENRADSAD
+An old radio. It looks like it's been patched over and parts have been replaced several times. Almost worthless. 
+#[Battery]
+!name interact_inventory_battery_unnamed
+IVENBATSAD
+A battery. Used to power things and can be recharged. An automaton's only life force.
+#[Grappling Hook]
+!name interact_inventory_grappling_hook_unnamed
+JACKY
+A makeshift grappling hook. It’s held out so far, but the rope is starting to fray.
+
+
+
+
+
+
+[a]I'm not sure if these are being used, but I uncommented them to test the final cutscene system in-game. (see also page 12)
+[b]Same as above.

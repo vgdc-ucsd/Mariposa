@@ -6,7 +6,7 @@ public class FadeController : MonoBehaviour
 {
     public static FadeController Instance { get; private set; }
     [SerializeField] private Image _blackImage;
-    [SerializeField] private float _fadeDuration = 0.5f;
+    public float _fadeDuration = 0.5f;
 
     private void Awake()
     {
