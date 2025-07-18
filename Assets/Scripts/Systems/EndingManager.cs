@@ -5,16 +5,30 @@ using UnityEngine;
 public class EndingManager : Singleton<EndingManager>
 {
     private const int GOOD_ENDING_THRESHOLD = 16;
-    [SerializeField] private List<GameObject> dialogueTriggers;
+    [SerializeField] private List<GameObject> goodDialogueTriggers;
+    [SerializeField] private List<GameObject> badDialogueTriggers;
     [SerializeField] private float fadeDuration;
+    [SerializeField] private HometownCutscene cutsceneManager;
+
+    private bool isGoodEnding;
+    public bool IsGoodEnding
+    {
+        get { return isGoodEnding; }
+        set
+        {
+            isGoodEnding = value;
+            cutsceneManager.Animator.SetBool("IsGoodEnd", isGoodEnding);
+        }
+    }
 
     void Start()
     {
         // TODO: for testing, remove before building
-        FriendshipManager.Instance.SetScore(8);
+        FriendshipManager.Instance.SetScore(GOOD_ENDING_THRESHOLD);
 
-        bool shiftTriggersActive = FriendshipManager.Instance.CompareScore(GOOD_ENDING_THRESHOLD);
-        foreach (GameObject obj in dialogueTriggers) obj.SetActive(shiftTriggersActive);
+        IsGoodEnding = FriendshipManager.Instance.CompareScore(GOOD_ENDING_THRESHOLD);
+        foreach (GameObject obj in goodDialogueTriggers) obj.SetActive(IsGoodEnding);
+        foreach (GameObject obj in badDialogueTriggers) obj.SetActive(!IsGoodEnding);
     }
 
     public IEnumerator FadeSprites(List<SpriteRenderer> sprites, bool fadeIn)
@@ -34,5 +48,17 @@ public class EndingManager : Singleton<EndingManager>
         {
             sr.color = new(sr.color.r, sr.color.g, sr.color.b, fadeIn ? 1f : 0f);
         }
+    }
+
+    public void PlayCutscene()
+    {
+        cutsceneManager.Image.enabled = true;
+        cutsceneManager.Animator.Play("FadeIn");
+    }
+
+    public void EndIdleLoop()
+    {
+        Debug.Log("Ending idle loop");
+        cutsceneManager.Animator.SetTrigger("EndIdleLoop");
     }
 }

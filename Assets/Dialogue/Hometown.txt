@@ -60,7 +60,7 @@ UNNAMED
 #UNNAMED reaches the door. 
 
 
-!name reach door
+!name reach_door
 
 
 UNNAMED 
@@ -74,7 +74,8 @@ UNNAMED
 I wonder if fate is still watching. If she's laughing at what we’ve all become.
 
 
-!background silica_heart
+#!background silica_heart
+!event silica_heart end
 
 
 #[PLAY LOW FRIENDSHIP CUTSCENE - PLUM VINEGAR]
@@ -211,6 +212,9 @@ MARIPOSA
 I think you’d like it, Kairo.
 
 
+!event walk_show_house_start
+
+
 UNNAMED
 !a Unnamed_Maybe4.wav
 (neutral)
@@ -229,6 +233,9 @@ You okay?
 MARIPOSA
 (sad)
 You’re quiet. What’s wrong?
+
+
+!event walk_show_house_end
 ________________
 
 
@@ -303,7 +310,8 @@ See you.
 
 
 
-!background silica_heart
+#!background silica_heart
+!event silica_heart end
 
 
 #Radio clips off. Enter the house. 
@@ -452,7 +460,8 @@ UNNAMED
 Mari...
 
 
-!background orange_sunset
+#!background orange_sunset
+!event enter_home_good end
 
 
 #INT. MARIPOSA’S HOME (FUTURE) - EVENING
@@ -464,32 +473,35 @@ Mari...
 #The Unnamed sets the radio down softly, and collapses down next to it, rolling onto their back to breathe. They remove their gas mask. 
 
 
-#MARIPOSA
-#Kairo? You still there?
+MARIPOSA[a]
+Kairo? You still there?
 
 
-#UNNAMED 
-#Yes.
+UNNAMED 
+Yes.
 
 
-#MARIPOSA
-#I still can’t believe it. 
+MARIPOSA
+I still can’t believe it. 
 
 
-#MARIPOSA
-#What happens to the city, the pier, my hometown—-what happens to us? 
+MARIPOSA
+What happens to the city, the pier, my hometown—-what happens to us? 
 
 
-#MARIPOSA
-#The future—-what’s it like? 
+MARIPOSA
+The future—-what’s it like? 
 
 
-#UNNAMED
-#What’s the future like? 
+UNNAMED
+What’s the future like? 
 
 
-#UNNAMED
-#…oh, Mariposa. It’s beautiful.
+UNNAMED
+…oh, Mariposa. It’s beautiful.
+
+
+!event orange_sunset end
 
 
 #The chatter from the radio fades into indistinct noise. THE UNNAMED’s eyes flutter shut once, then open weakly briefly to see a yellow butterfly land on the radio. Mariposa is still presumably talking to them, but they can’t focus for very long anymore. They smile, touch the side of the radio, close their eyes, and take a slow breath. 
@@ -565,7 +577,8 @@ For giving me a little comfort before I go.
 UNNAMED
 (neutral)
 ...
-!background goodnight_mariposa
+#!background orange_sunset
+!event enter_home_good
 
 
 #Goes quiet. PLAYER INTERACTS WITH THE DOOR.
@@ -580,49 +593,52 @@ UNNAMED
 #The Unnamed sets the radio down softly, and collapses down next to it, rolling onto their back to breathe. They remove their gas mask. 
 
 
-#MARIPOSA
-#...Kairo? You still there?
+MARIPOSA[b]
+...Kairo? You still there?
 
 
-#UNNAMED 
-#Yes.
+UNNAMED 
+Yes.
 
 
-#MARIPOSA
-#You’re...not leaving now, are you?
+MARIPOSA
+You’re...not leaving now, are you?
 
 
-#UNNAMED
-#...Mariposa.
+UNNAMED
+...Mariposa.
 
 
-#MARIPOSA
-#Is it always going to be this way? There’s—nothing I can do? #Nothing’s changed, even though I—
+MARIPOSA
+Is it always going to be this way? There’s—nothing I can do? Nothing’s changed, even though I—
 
 
-#UNNAMED
-#...I don’t know. I’m sorry
+UNNAMED
+...I don’t know. I’m sorry
 
 
-#UNNAMED
-#But thank you. Really. For everything.
+UNNAMED
+But thank you. Really. For everything.
 
 
-#UNNAMED
-#I’ll miss you.
+UNNAMED
+I’ll miss you.
 
 
-#MARIPOSA
-#... 
+MARIPOSA
+... 
 
 
-#MARIPOSA
-#I think I’ve missed you for a long, long time.
+MARIPOSA
+I think I’ve missed you for a long, long time.
 
 
-#UNNAMED
-#...
-#Goodnight, Mariposa.
+UNNAMED
+...
+Goodnight, Mariposa.
+
+
+!event orange_sunset end
 
 
 #The chatter from the radio fades into indistinct noise. THE UNNAMED’s eyes flutter shut once, then open weakly briefly to see a yellow butterfly land on the radio. Mariposa is still presumably talking to them, but they can’t focus for very long anymore. They curl closer to the radio, smile, close their eyes, and take a deep breath.  
@@ -667,3 +683,11 @@ A battery. Used to power things and can be recharged. An automaton's only life f
 !name interact_inventory_grappling_hook_unnamed
 JACKY
 A makeshift grappling hook. It’s held out so far, but the rope is starting to fray.
+
+
+
+
+
+
+[a]I'm not sure if these are being used, but I uncommented them to test the final cutscene system in-game. (see also page 12)
+[b]Same as above.
