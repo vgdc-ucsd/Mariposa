@@ -18,7 +18,7 @@ public class FadeController : MonoBehaviour
     }
 
     private void Start()
-    {
+    {   
         StartCoroutine(Fade(1f, 0f));
     }
 
