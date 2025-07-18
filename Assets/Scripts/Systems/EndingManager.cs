@@ -24,7 +24,7 @@ public class EndingManager : Singleton<EndingManager>
     void Start()
     {
         // TODO: for testing, remove before building
-        FriendshipManager.Instance.SetScore(GOOD_ENDING_THRESHOLD);
+        FriendshipManager.Instance.SetScore(GOOD_ENDING_THRESHOLD - 1);
 
         IsGoodEnding = FriendshipManager.Instance.CompareScore(GOOD_ENDING_THRESHOLD);
         foreach (GameObject obj in goodDialogueTriggers) obj.SetActive(IsGoodEnding);
@@ -52,8 +52,13 @@ public class EndingManager : Singleton<EndingManager>
 
     public void PlayCutscene()
     {
-        cutsceneManager.Image.enabled = true;
-        cutsceneManager.Animator.Play("FadeIn");
+        // cutsceneManager.Animator.Play("FadeIn");
+        cutsceneManager.Animator.Play("EnterHouse");
+    }
+
+    private IEnumerator FadeIntoCutscene()
+    {
+		yield return FadeController.Instance.FadeOut();
     }
 
     public void EndIdleLoop()
