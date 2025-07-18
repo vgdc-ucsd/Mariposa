@@ -11,7 +11,6 @@ public class BigRobotCutscene : MonoBehaviour, IInputListener
     [SerializeField] private Animator animator;
     [SerializeField] private Image image;
     [SerializeField] private int loopCount = 1;
-    [SerializeField] private float fadeTime = 0.0f;
 
     private int currentLoopCount = 0;
     public delegate void Callback();
@@ -26,6 +25,7 @@ public class BigRobotCutscene : MonoBehaviour, IInputListener
     public void OnDropAnimationFinished()
     {
         currentLoopCount = 0;
+        RuntimeManager.StudioSystem.setParameterByName(BigRobotLevel.MUSIC_PARAM, (int)BigRobotLevel.MusicSection.CHASE_START);
     }
 
     public void OnLoopAnimationFinished()
@@ -34,14 +34,19 @@ public class BigRobotCutscene : MonoBehaviour, IInputListener
         if (currentLoopCount >= loopCount)
         {
             animator.SetTrigger("EndIdleLoop");
-            RuntimeManager.StudioSystem.setParameterByName(BigRobotLevel.MUSIC_PARAM, (int)BigRobotLevel.MusicSection.CUTSCENE_END);
         }
+    }
+
+
+    public void OnFadeOut()
+    {
+        PlayerController.Instance.Unsubscribe(this);
+        endCallback();
     }
 
     public void OnAnimationEnd()
     {
-        PlayerController.Instance.Unsubscribe(this);
-        endCallback();
+        gameObject.SetActive(false);
     }
 
     [ContextMenu("Play Cutscene")]
