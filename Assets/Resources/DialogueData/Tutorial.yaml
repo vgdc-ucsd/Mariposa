@@ -1,16 +1,6 @@
 start:
 - Speaker: Mariposa
   Line: (Looks like I’ve got a bit of time before the job.)
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds:
-  - Mariposa_Hmm8.wav
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Mariposa
-  Line: (I can’t wait to get home and take a nice, long nap...)
   Icon: Neutral
   Background: 
   FromRadio: 
@@ -19,12 +9,21 @@ start:
   Choice1: 
   Choice2: 
 - Speaker: Mariposa
-  Line: Let’s get going, BEEBO!
+  Line: (I can’t wait to get home and take a nice, long nap...)
   Icon: 
   Background: 
   FromRadio: 
   Sounds:
-  - Mariposa_Alright1.wav
+  - Mariposa_Sigh4.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: Let’s get going, BEEBO!
+  Icon: Happy
+  Background: 
+  FromRadio: 
+  Sounds: []
   Events: []
   Choice1: 
   Choice2: 
@@ -58,7 +57,7 @@ guard:
   Choice1: 
   Choice2: 
 - Speaker: Guard
-  Line: Good to hear. Here’s the <color=#eb8112>keycard</color>[a] for the thing. Or whatever. I’ll just, I don’t know, wait here until you’re done.
+  Line: Good to hear. Here’s the <color=#eb8112>keycard</color> for the thing. Or whatever. I’ll just, I don’t know, wait here until you’re done.
   Icon: 
   Background: 
   FromRadio: 
@@ -154,7 +153,7 @@ interact_guard:
   Background: 
   FromRadio: 
   Sounds:
-  - Luke_NPC_Well1.wav
+  - Luke_NPC_Sigh3.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -251,10 +250,11 @@ waiting_for_train:
   Choice2: 
 - Speaker: Beebo
   Line: '<ETA: 12 Minutes>'
-  Icon: Neutral
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Beebo_Processing1.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -332,11 +332,10 @@ subway_door_no_radio:
 radio_pickup:
 - Speaker: Unnamed
   Line: The hell is this?
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
-  Sounds:
-  - Unnamed_Ugh3.wav
+  Sounds: []
   Events:
   - EventName: show_radio
     TriggerAtEnd: false
@@ -353,11 +352,13 @@ radio_pickup:
   Choice2: 
 - Speaker: Unnamed
   Line: '...Not much left around here.'
-  Icon: Neutral
+  Icon: 
   Background: 
   FromRadio: 
   Sounds:
+  - Unnamed_TimeToMoveOn5.wav
   - tunnel
+  - radio-clip3-novoices.wav
   Events:
   - EventName: hide_radio
     TriggerAtEnd: false
@@ -395,10 +396,11 @@ radio_pickup:
   Choice2: 
 - Speaker: Unnamed
   Line: (How do I shut this thing off??)
-  Icon: Neutral
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Unnamed_Tch1.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -543,16 +545,17 @@ battery:
   Background: 
   FromRadio: 
   Sounds:
-  - Mariposa_PieceOfCake3.wav
+  - Mariposa_Hmm3.wav
   Events: []
   Choice1: 
   Choice2: 
 - Speaker: Mariposa
   Line: Well, since I’m already here, I’ll keep the bots running around here in good shape for a bit longer.
-  Icon: Happy
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Mariposa_Well2.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -563,7 +566,7 @@ block_puzzle_incomplete_unnamed:
   Background: 
   FromRadio: 
   Sounds:
-  - Unnamed_SomethingsWrong2.wav
+  - Unnamed_TheresNoPoint1.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -896,7 +899,7 @@ YonCon1:
   Background: 
   FromRadio: 
   Sounds:
-  - Regine_NPC_Okay1.wav
+  - Regine_NPC_OhHey1.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -905,8 +908,7 @@ YonCon1:
   Icon: 
   Background: 
   FromRadio: 
-  Sounds:
-  - Regine_NPC_Hm7.wav
+  Sounds: []
   Events: []
   Choice1: 
   Choice2: 
@@ -926,8 +928,7 @@ YonCon2:
   Icon: 
   Background: 
   FromRadio: 
-  Sounds:
-  - Regine_NPC_Yeah3.wav
+  Sounds: []
   Events: []
   Choice1: 
   Choice2: 
@@ -1531,7 +1532,7 @@ interact_charging_station_use_after_fix1:
   Choice2: 
 interact_charging_station_use_after_fix2:
 - Speaker: Hetellsyousecretsithink
-  Line: '[a]ask val'
+  Line: It's struggling to move. The charging station sounds like it's straining to keep it alive.
   Icon: 
   Background: 
   FromRadio: 

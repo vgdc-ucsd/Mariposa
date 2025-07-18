@@ -18,18 +18,17 @@
 
 
 MARIPOSA
-!a Mariposa_Hmm8.wav 
 (neutral)
 (Looks like I’ve got a bit of time before the job.)
 
 
-MARIPOSA
+MARIPOSA 
+!a Mariposa_Sigh4.wav
 (neutral)
 (I can’t wait to get home and take a nice, long nap...)
 
 
 MARIPOSA
-!a Mariposa_Alright1.wav
 (happy)
 Let’s get going, BEEBO!
 
@@ -57,7 +56,7 @@ Got it! No worries, I’ll get this thing working in no time.
 
 
 GUARD
-Good to hear. Here’s the <color=#eb8112>keycard</color>[a] for the thing. Or whatever. I’ll just, I don’t know, wait here until you’re done.
+Good to hear. Here’s the <color=#eb8112>keycard</color> for the thing. Or whatever. I’ll just, I don’t know, wait here until you’re done.
 
 
 #MARIPOSA gets to work, examining the turnstile. She puts the card into the machine to open it, but the machine ejects it out of the other end.
@@ -133,7 +132,7 @@ ________________
 !name interact_guard
 #1:
 GUARD
-!a Luke_NPC_Well1.wav
+!a Luke_NPC_Sigh3.wav
 When’s this girl going to be done...?
 
 
@@ -210,6 +209,7 @@ BEEBO, how much time until the train gets here?
 
 
 BEEBO
+!a Beebo_Processing1.wav
 (neutral)
 <ETA: 12 Minutes>
 
@@ -279,7 +279,6 @@ I should take another look around; I could’ve missed something.
 
 
 UNNAMED
-!a Unnamed_Ugh3.wav 
 (neutral)
 The hell is this? 
 
@@ -294,12 +293,16 @@ Just scrap metal. Might have some useful parts though.
 
 
 UNNAMED
+!a Unnamed_TimeToMoveOn5.wav
 (neutral)
 ...Not much left around here.
 !event hide_radio
 #A static crackling noise echoes in the subway tunnel. An unknown voice flickers in and out of audibility. The screen may shake slightly as the sound of gnashing metal rumbles through the tunnel. 
 !event screenshake
 !audio tunnel
+!a radio-clip3-novoices.wav
+
+
 
 
 MARIPOSA 
@@ -319,6 +322,7 @@ Thought I already rewired this part...
 
 
 UNNAMED
+!a Unnamed_Tch1.wav
 (neutral)
 (How do I shut this thing off??)
 
@@ -434,12 +438,13 @@ Though, honestly, it looks kind of scuffed...
 
 
 MARIPOSA
-!a Mariposa_PieceOfCake3.wav
+!a Mariposa_Hmm3.wav
 (neutral)
 Needs just a few little tweaks to get back into shape, though. I wonder why no one’s bothered?
 
 
 MARIPOSA
+!a Mariposa_Well2.wav
 (happy)
 Well, since I’m already here, I’ll keep the bots running around here in good shape for a bit longer.
 
@@ -455,7 +460,7 @@ ________________
 
 
 UNNAMED
-!a Unnamed_SomethingsWrong2.wav
+!a Unnamed_TheresNoPoint1.wav
 (neutral)
 No way out of this. I’m trapped here.
 
@@ -693,12 +698,11 @@ Bet you don’t know what a CD is. Heh.
 
 !name YonCon1
 CONDUCTOR
-!a Regine_NPC_Okay1.wav
+!a Regine_NPC_OhHey1.wav
 Oh, I’m on my lunch break.
 
 
 CONDUCTOR
-!a Regine_NPC_Hm7.wav
 Why am I just standing here? That’s what I like to do on my lunch breaks, that’s all.
 CONDUCTOR
 !a Regine_NPC_IMean2.wav
@@ -707,7 +711,6 @@ Just here, appreciating the infrastructure of the metro. The platform, the rush 
 
 !name YonCon2
 CONDUCTOR
-!a Regine_NPC_Yeah3.wav
 I love public transportation!
 
 
@@ -1158,6 +1161,3 @@ DOOR...7...8...6...4...2...EMERGENCY...OVERRIDE.
 HETELLSYOUSECRETSITHINK
 7...8...6...4...2...
 It's struggling to move. The charging station sounds like it's straining to keep it alive.
-
-
-[a]ask val
