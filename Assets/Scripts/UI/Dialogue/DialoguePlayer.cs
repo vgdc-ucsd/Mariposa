@@ -141,7 +141,8 @@ public class DialoguePlayer : MonoBehaviour
             {
                 DialogueManager.Instance.TriggerEvent(dialogueEvent);
             }
-            
+
+            DialogueManager.Instance.isPlayingDialogue = false;
             return;
         }
 

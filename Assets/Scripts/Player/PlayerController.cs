@@ -176,7 +176,7 @@ public class PlayerController : MonoBehaviour
 
     private void TryToggleSquid(InputAction.CallbackContext ctx)
     {
-        if (!IsSquidUnlocked || ControlledPlayer.Data.characterID == CharID.Unnamed) return;
+        if (!IsSquidUnlocked || ControlledPlayer.Data.characterID == CharID.Unnamed || DialogueManager.Instance.isPlayingDialogue) return;
 
         if (isSquidActive) // could be a value vs ref check error
         {
