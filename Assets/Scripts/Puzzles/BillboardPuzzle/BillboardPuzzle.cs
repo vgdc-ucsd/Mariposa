@@ -54,6 +54,7 @@ public class BillboardPuzzle : Puzzle
         }
         UpdatePuzzleDisplay();
         Initialized = true;
+        this.gameObject.SetActive(false);
     }
 
     [ContextMenu("Reset Puzzle")]

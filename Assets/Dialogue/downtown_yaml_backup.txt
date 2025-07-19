@@ -1,0 +1,1934 @@
+﻿downtown_start:
+- Speaker: Unnamed
+  Line: Hey, you. On the radio. Who are you?
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Unnamed_YouThere7.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: My name is Mariposa! I’m a techsmith.
+  Icon: Happy
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: How about you? What’s your name?
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: (...)
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1:
+    Response: Don’t tell her.
+    LinkedDialogue: do_not_tell_her
+    Friendship: -1
+  Choice2:
+    Response: Tell her your name.
+    LinkedDialogue: tell_her_your_name
+    Friendship: 1
+do_not_tell_her:
+- Speaker: Mariposa
+  Line: …uhm, hello? Are—are you still there?
+  Icon: Sad
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: (Tch. I can’t be doing this right now.)
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Unnamed_NoTimeToWaste5.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: Hello~o?
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: …I guess you don’t <i>have</i> to tell me anything. But I’ve got to call you <i>something</i>.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Mariposa_Hmm3.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: Fine by me! You’re Kairo, then, until you tell me your real name.
+  Icon: Happy
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events:
+  - EventName: play_bot_conversation_from_dont_tell
+    TriggerAtEnd: false
+  Choice1: 
+  Choice2: 
+tell_her_your_name:
+- Speaker: Unnamed
+  Line: My name is Kairo.
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: Kairo? I’ve never met anyone named Kairo before— I like it!
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Mariposa_Giggle4.wav
+  Events:
+  - EventName: play_bot_conversation_from_tell_her
+    TriggerAtEnd: false
+  Choice1: 
+  Choice2: 
+bot_conversation:
+- Speaker: Mariposa
+  Line: Say, Kairo, how’s your bot situation? It sounded like you figured it out, but—
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: It’s been...resolved.
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: You said you were a techsmith. You fixed a charger for maintenance bots. Where?
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Unnamed_Hey1.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: Oh, I was at the metro. I was waiting for my train, but it got delayed. I guess I’ll have to catch a bus now...
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: The metro?
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: Where are you right now?
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: I’m catching my bus, like I said.
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: How about you? What do you do?
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: '...'
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: Aw, come on! I answered your questions. You can answer a few of mine, right? It’s not like anything’s chasing you right now.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Mariposa_Hey2.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: '...'
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: You alright there?
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: Give me a moment.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Unnamed_NotTheTime4.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+blocked_by_turrets:
+- Speaker: Unnamed
+  Line: (One wrong move and those things are going to shoot my head clean off.)
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Unnamed_Ugh3.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: Is everything okay? I might be wrong, but I hear—
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Mariposa_YouOk1.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: (...can’t afford to be worrying about her right now.)
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Unnamed_NoTimeToWaste1.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: (There’s no way around this.)
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Unnamed_Tch1.wav
+  Events:
+  - EventName: switch_mariposa3
+    TriggerAtEnd: false
+  Choice1: 
+  Choice2: 
+kairo_is_dumb:
+- Speaker: Mariposa
+  Line: (Kairo seems to be getting themselves into a lot of bad situations. Hopefully they figure something out.)
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Mariposa_Sigh2.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+danny_time:
+- Speaker: Mariposa
+  Line: Danny! It’s so good to see you! It’s been a while, hasn’t it?
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Mariposa_Yeah3.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: What are you doing out here?
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Danny
+  Line: Just starting my shift. I work for an ad company now. Normally, I’m picking up calls and talking to clients.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Jeffery_NPC_Welll1.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: Then, uh...
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: Why are you standing outside?
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Danny
+  Line: One of our billboards broke, and my manager wants me to do the advertising until it gets fixed.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Jeffery_NPC_Honestly1.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Danny
+  Line: So here I am.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: How long are you stuck out here?
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Danny
+  Line: Oh, I don’t know. They said it would be fixed in a week, but they also said that last week. And the week before that...
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Jeffery_NPC_Sigh2.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: Oh!
+  Icon: Surprised
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: I can take a look at the billboard, if you want? Then you won’t have to stand out here all day.
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Danny
+  Line: Oh yeah, you fixed things and stuff, right? Even in high school, you’d spend all of lunch tinkering with your little automatons...
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Danny
+  Line: If you could fix this, I’d really appreciate it. I can finally go home. Or at least, back to my cushy desk job.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Jeffery_NPC_AppreciateIt.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: It’s no problem at all! It’s the billboard on that building behind you, right?
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Danny
+  Line: Yeah, you can get to it with the lifts. I’ll let the guys know you’re here for the billboard.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Danny
+  Line: Can’t tell you what’s actually wrong with it, though. The thing just started glitching before it shut off.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: I’ll see what I can do!
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Mariposa_IPromise1.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_lifts:
+- Speaker: Mariposa
+  Line: These are the lifts Danny mentioned.
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+successful_lift_up:
+- Speaker: Mariposa
+  Line: There we go! Let’s check out that billboard.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Mariposa_PieceOfCake3.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_billboard_not_on:
+- Speaker: Mariposa
+  Line: Hmm, I think I need to get its power source running. It looks wireless. It might be in another building.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Mariposa_Hmm7.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_turnstile_on:
+- Speaker: Mariposa
+  Line: Alright, let’s get you all fixed up.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_building_send_beebo:
+- Speaker: Mariposa
+  Line: I think I see the power source!
+  Icon: Happy
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: BEEBO, can you help me get up there?
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Beebo
+  Line: <UNDERSTOOD.>
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Beebo_Understood2.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_power_source_before_wires:
+- Speaker: Mariposa
+  Line: This thing has definitely seen better days.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Mariposa_Hmm6.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: I’ll patch it right up, and the billboard should have power again.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - PieceOfCake2.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+wires_fixed:
+- Speaker: Mariposa
+  Line: Alright, time to get that billboard fixed!
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Mariposa_Alright3.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_billboard_wires_fixed:
+- Speaker: Mariposa
+  Line: It looks like it needs a bit of calibration. Just need to make sure all the panels are lined up right.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Mariposa_HowBoutThis8.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+billboard_fixed_wires_fixed:
+- Speaker: Mariposa
+  Line: There we go! All fixed now.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Mariposa_InOrder3.wav
+  - radio-clip3-novoices.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: What the...?
+  Icon: Surprised
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: Hmm? Kairo, did something happen? Hello?
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events:
+  - EventName: switch_to_unnamed2
+    TriggerAtEnd: false
+  Choice1: 
+  Choice2: 
+unnamed_start_billboard_fixed:
+- Speaker: Unnamed
+  Line: (These appeared right when that girl said she finished fixing something.)
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: (How’s that possible, though? This radio...)
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: (Never mind. Have to get somewhere safe first.)
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Unnamed_NotTheTime4.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: The crane holding that beam is inactive, but at least it’ll give me some cover.
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+all_battery_put_in:
+- Speaker: Unnamed
+  Line: Finally dealt with. But there’s still no good way to get through here from above.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Unnamed_ComeOn1.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: And the maintenance tunnels under the city were sealed over a long time ago.
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: If I could somehow get underground again, it’d be a safe spot to hunker down. At least for tonight.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Unnamed_AnotherWay3.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: Could I do something with these power cells?
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_not_all_battery_put_in:
+- Speaker: Unnamed
+  Line: This thing needs a lot of power.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Unnamed_MinorSetBack8.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: '...Serves them right.'
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Unnamed_Tch2.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: (Have to—rest now. Can’t keep going on like this.)
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+unnamed_lands_in_gutter:
+- Speaker: Mariposa
+  Line: Kairo, is everything okay? It sounded like you were in the middle of something, so I didn’t want to bother you, but...
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Mariposa_YouOk1.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: Your name is...Mariposa, right?
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: Oh, you remembered? Yeah, it is.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Mariposa_Yeah1.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: So, did something happen? Are you all right?
+  Icon: Sad
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: Why do you keep asking if I’m alright?
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: '...'
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: You don’t know me.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Unnamed_Tch1.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: Well, do I have to? Wanting to make sure someone is alright is normal, isn’t it?
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Mariposa_Well2.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: '...Mariposa, where—'
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: You can call me Mari if you’d like!
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Mariposa_Giggle4.wav
+  Events: []
+  Choice1:
+    Response: Mari.
+    LinkedDialogue: 
+    Friendship: 0
+  Choice2:
+    Response: '...'
+    LinkedDialogue: 
+    Friendship: 0
+- Speaker: Unnamed
+  Line: '...Mari. Where are you from?'
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Unnamed_Mari5.wav
+  Events:
+  - EventName: play_small_town_from_mari
+    TriggerAtEnd: false
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: '...'
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: Ah. Guess not, then.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Mariposa_Sigh2.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: '...'
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: Where are you from?
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events:
+  - EventName: play_small_town_from_...
+    TriggerAtEnd: false
+  Choice1: 
+  Choice2: 
+small_town:
+- Speaker: Mariposa
+  Line: I’m from a small town. You’ve probably never heard of it before. It’s a few minutes outside the city by train.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Mariposa_Well3.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: It’s nice. I know I was born there, but I think I would say the same even if I weren’t. The people are really nice, the town is clean, and we pretty much have everything we need.
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: Everything...
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: And the city? What’s that like?
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: Oh, are you not from the city?
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1:
+    Response: Say something.
+    LinkedDialogue: 
+    Friendship: 0
+  Choice2:
+    Response: Stay quiet.
+    LinkedDialogue: 
+    Friendship: 0
+say_something:
+- Speaker: Unnamed
+  Line: Somewhere that you’ll probably not be familiar with. It’s...quite different from what you’re describing.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Unnamed_Sigh3.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: Ah, I see.
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events:
+  - EventName: play_city_charm_from_say_something
+    TriggerAtEnd: false
+  Choice1: 
+  Choice2: 
+stay_silent:
+- Speaker: Unnamed
+  Line: '...'
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: Right. I—-okay.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Mariposa_Sigh4.wav
+  Events:
+  - EventName: play_city_charm_from_stay_quiet
+    TriggerAtEnd: false
+  Choice1: 
+  Choice2: 
+city_charm:
+- Speaker: Mariposa
+  Line: Well, the city is less nice. Still has its charms, though, don’t get me wrong! But it’s just so big, you know? There are places even I haven’t been to, and I’ve basically been everywhere because of my job.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Mariposa_Well2.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: You mentioned your job before. You fixed a charger at a station. Then...something else. A billboard.
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: Yeah, I was going to catch the bus, but I ran into an old friend. He was in a bit of a mess, so I helped him out a bit. I had to do a bit of rewiring, and it was a bit of a hassle to get to the thing, but I got the billboard up and running no problem.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Mariposa_Yeah1.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: A hassle?
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: It’s above a store, but getting to it needed a bit of fiddling around with the lifts.
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: Did he pay you? Your ‘friend’?
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: No, it’s just a favor.
+  Icon: Happy
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: I had some time anyway, so it wasn’t a big deal.
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: Isn’t he just taking advantage of you? Favors are meant to be exchanged.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Unnamed_Tch1.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: I don’t see it that way.
+  Icon: Sad
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: Well, it doesn't make sense to me.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Unnamed_StruckANerve4.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: I like helping people. I don’t expect anything in return. If I have the skills to do it, I don’t see any reason not to help, you know? I’m sure if I were in trouble, Danny would help me out, too, if he could.
+  Icon: Happy
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: '...how optimistic.'
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: So, what were you planning to do tomorrow?
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: Have you ever been to the ocean? A pier?
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events:
+  - EventName: check_friendship
+    TriggerAtEnd: false
+  Choice1: 
+  Choice2: 
+ocean_friends:
+- Speaker: Mariposa
+  Line: I love the ocean!
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Mariposa_Giggle2.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: I haven’t been able to go there in a while, though. The air is always so nice, and that cool breeze is just perfect. There’s a busy pier near here that I used to go to a lot. They have a fish market with some of the biggest fish I’ve ever seen!
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: Ugh, I kinda want to visit the pier again now. Thanks for that.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Mariposa_Urgh3.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: Did I say something wrong?
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: No, what? Don’t take everything so seriously, you’re fine!
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Mariposa_Giggle4.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: I’ll have to ask if there are any jobs at the pier so I have an excuse tomorrow. Were you planning to go to the beach tomorrow?
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events:
+  - EventName: play_sleepy_time_from_ocean_friends
+    TriggerAtEnd: false
+  Choice1: 
+  Choice2: 
+no_ocean_friends:
+- Speaker: Mariposa
+  Line: Well, yes. But I haven’t been able to go there in a while, though. The air, the breeze, the pier...I kinda miss it.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Mariposa_Sigh4.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: Maybe I’ll ask if there are any jobs at the pier. I could use an excuse to go...
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events:
+  - EventName: play_sleepy_time_from_no_ocean_friends
+    TriggerAtEnd: false
+  Choice1: 
+  Choice2: 
+sleepy_time:
+- Speaker: Mariposa
+  Line: '...'
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: Ah, I didn’t realize how late it was! I’ve got to catch the bus and get back home.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Mariposa_Woah1.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: I’m really glad this radio is working, though!
+  Icon: Happy
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: Honestly, I didn’t think this old thing would be able to receive <i>any</i> modern signal, much less still serve as a two-way. I made sure it had a functional transmitter and receiver, but…
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Mariposa_Well4.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: I admit, I spent too long just making it look nice.
+  Icon: Happy
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: I’d love to run a few more tests but...
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Mariposa_Sigh2.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: '...'
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1:
+    Response: Stay quiet.
+    LinkedDialogue: 
+    Friendship: 0
+  Choice2:
+    Response: Offer to help.
+    LinkedDialogue: 
+    Friendship: 0
+stay_quiet:
+- Speaker: Unnamed
+  Line: '...'
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: Right. Well. If you’ve got nothing better to do tomorrow, uhm, could you just turn your radio on? I’d really appreciate it.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Mariposa_Sigh4.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: You don’t even need to do anything special, just—--I need to figure out why this is happening. It doesn’t...make any sense. Least, not yet.
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: '...'
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: Well, uh. Thanks. In advance. Goodnight, Kairo.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: (...Time to set up camp.)
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: (...)
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Unnamed_Cough1.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: (...urgh, what a mess.)
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events:
+  - EventName: play_pier_arrival_from_stay_quiet
+    TriggerAtEnd: false
+  Choice1: 
+  Choice2: 
+offer_help:
+- Speaker: Unnamed
+  Line: (...)
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: I’ll hear from you tomorrow, then?
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Unnamed_HowBoutThis3.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: Oh! Yeah! Yeah, that’d be—!
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Mariposa_Yeah3.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: ——that’d be amazing, actually! I’ve just got to run a few errands, but I can take you with me, this thing is portable enough and BEEBO can—
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds:
+  - radio-clip3-novoices.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: —night—! Thank you–!
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: '...'
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: (...!)
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Unnamed_Cough2.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: (I guess it has been a bit since I’ve spoken to anyone...)
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: (Time to catch up on some sleep.)
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events:
+  - EventName: play_pier_arrival_from_offer_help
+    TriggerAtEnd: false
+  Choice1: 
+  Choice2: 
+ResDuo1:
+- Speaker: Bonnie
+  Line: "...and the robot that I own keeps running into the walls, scratching up the paint and scaring the cat, instead of cleaning up the floor like it's supposed to!"
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Regine_NPC_Honestly1.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Clyde
+  Line: Oh my! That is quite troublesome. Are you thinking of getting it checked out soon?
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Ruby_NPC_Woah5.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Bonnie
+  Line: Perhaps. I have had this one for a while. And my nephew’s always bugging me about a new automaton… he gets a work discount for them, and he’s always bringing back little automatons for all the kids.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+ResDuo2:
+- Speaker: Clyde
+  Line: Maybe it would be better to just buy a new automaton instead of repairing the same one over and over again...
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Regine_NPC_IThink1.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+ConsWork1:
+- Speaker: Tic
+  Line: Have you finished setting up that beam yet?
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Tac
+  Line: Almost, but there are still a couple more beams I have to set up in order to make this floor stable. We’ve been working to the bone lately, but it’ll all be worth it when the 100th anniversary of the city comes around!
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Justin_NPC_Okay1.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+ConsWork2:
+- Speaker: Tic
+  Line: Let’s keep working hard!
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Luke_NPC_Yeah2.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+MailPe1:
+- Speaker: Mailperson
+  Line: Hmmmm…Where was this place again? Was it around this corner? No, no… that doesn’t seem right?
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Regine_NPC_Hm3.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mailperson
+  Line: I really should’ve learned the ins and outs of this city before taking this job...
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+MailPer2:
+- Speaker: Mailperson
+  Line: This box of cat litter...It should be sent to this area, right? Or wait...maybe it’s supposed to go across the bridge...?
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Regine_NPC_Sigh3.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+BirdFeed1:
+- Speaker: Birdwatcher
+  Line: Here you go, birdies! I have plenty of seeds to share with you guys!
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Justin_NPC_Laugh7.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Birdwatcher
+  Line: Hehe, they really seem to like the sunflower seeds I bought for them.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+BirdFeed2:
+- Speaker: Birdwatcher
+  Line: I should buy more of these seeds! The birds will really love me then!
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Justin_NPC_Laugh2.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+Burre1:
+- Speaker: Burre
+  Line: <I’ve detected a familiar lifeform.>
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Luke_Robot_NPC_Aww.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Burre
+  Line: <Miss Mariposa. You fixed me once.>
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: I’m glad you remember!
+  Icon: Happy
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: You and your flickering lights, all alone in the scrapyard...
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: I know you’re a bot, but I can’t let anyone sleep in the rain like that. Everyone needs a chance to do good.
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+Burre2:
+- Speaker: Burre
+  Line: <I am happy to be useful once more.>
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+Barboleta1:
+- Speaker: Barboleta
+  Line: Mari! Didn’t think you would show your face around here. Not after last time. Don’t think I could forget you!
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Regine_NPC_Mari2.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: You mean after you and I tied for that automaton smithing competition?
+  Icon: Happy
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Barboleta
+  Line: No ma’am, the one you <i>won</i>!
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Regine_NPC_Hm1
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: I didn’t want to rub it in your face…
+  Icon: Bashful
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Barboleta
+  Line: I’ll get you next time, Mari. Just you wait!
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: Seaweed biofuels is a novel idea, but for a breakdancing bot, I’m not sure if it’s too optimal...
+  Icon: Bashful
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+Barboleta2:
+- Speaker: Barboleta
+  Line: What does she have that I don’t...?
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events:
+  - EventName: check_billboard
+    TriggerAtEnd: false
+  Choice1: 
+  Choice2: 
+interact_billboard_before_fix1:
+- Speaker: Mariposa
+  Line: We’re awfully high up…
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: Ah, the whole thing is scrambled. If there was power, I bet I could fix this in no time.
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: Looks like I’ll have to look somewhere else to turn on the power...
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_billboard_before_fix2:
+- Speaker: Mariposa
+  Line: It’s probably not here.
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_billboard_after_fix1:
+- Speaker: Mariposa
+  Line: There we go! Good as new. There shouldn’t be any more issues with it.
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_billboard_after_fix2:
+- Speaker: Mariposa
+  Line: A job well done!
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_scissor_lift_pre_puzzle1:
+- Speaker: Scissor
+  Line: (It’s a scissor lift. It could probably reach the top of this building).
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_scissor_lift_pre_puzzle2:
+- Speaker: Mariposa
+  Line: '…I shouldn’t operate this without permission.# Optional Flavor Text: The Unnamed'
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_semi_destroyed_building_various_1:
+- Speaker: Brokenbroken
+  Line: The concrete crumbles at the slightest touch, exposing the bare steel supports.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_semi_destroyed_building_various_2:
+- Speaker: Brokenbroken
+  Line: It’s falling apart.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_wall_before_turrets_1:
+- Speaker: Wall
+  Line: It’s the only thing standing in the way of the turret on the other side.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_wall_before_turrets_3:
+- Speaker: Wall
+  Line: This doesn’t feel right.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_billboard_destroyed_1:
+- Speaker: Billboard
+  Line: It’s a damaged billboard. It seems to be advertising the pierside markets, but most of the billboard is unrecognizable.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_billboard_destroyed_2:
+- Speaker: Billboard
+  Line: The markets are just beyond the business district.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_rubble_1:
+- Speaker: Ruinedruined
+  Line: The ruins of a skyscraper.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_rubble_2:
+- Speaker: Ruinedruined
+  Line: Walk carefully over the broken glass.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_destroyed_robots_1:
+- Speaker: Metalaches
+  Line: They aren’t moving anymore. Metal aches against itself as it all slowly falls apart.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_destroyed_robots_2:
+- Speaker: Metalaches
+  Line: They’ll never move again.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_deactivated_turret_1:
+- Speaker: Deactivated
+  Line: The mechanical hum has gone silent. It can’t see you anymore.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_deactivated_turret_2:
+- Speaker: Deactivated
+  Line: It’s been deactivated.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_crane_before_1:
+- Speaker: Crane
+  Line: There's an empty chamber on the side of the crane. It looks like enough space for 3 batteries.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_crane_before_2:
+- Speaker: Crane
+  Line: It looks like enough space for 3 batteries.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_crane_after_1:
+- Speaker: Crane
+  Line: You place a battery into the last chamber. You hear a faint mechanical whir.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_crane_after_2:
+- Speaker: Crane
+  Line: It sounds like it'll be able to work.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_steel_beam_1:
+- Speaker: Beam
+  Line: …it's perfectly intact. It looks heavy.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+interact_steel_beam_2:
+- Speaker: Beam
+  Line: Looks heavy.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
