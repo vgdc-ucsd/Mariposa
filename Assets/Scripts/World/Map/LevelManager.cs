@@ -57,7 +57,7 @@ public class LevelManager : MonoBehaviour, IDataPersistence
     private IEnumerator InitSublevelDelayed()
     {
         while (
-            FindObjectOfType<Level>() == null ||
+            FindFirstObjectByType<Level>() == null ||
             Player.ActivePlayer == null ||
             CameraController.ActiveCamera == null
         )
@@ -65,7 +65,7 @@ public class LevelManager : MonoBehaviour, IDataPersistence
 
         yield return null;
 
-        CurrentLevel = FindObjectOfType<Level>();
+        CurrentLevel = FindFirstObjectByType<Level>();
         SublevelIndex = 0;
 
         foreach (var sl in CurrentLevel.Sublevels) sl.Unload();
