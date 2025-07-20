@@ -7,7 +7,7 @@ public class PuzzlePopupManager : MonoBehaviour
 {
     public static PuzzlePopupManager Instance;
 
-    private GameObject activePuzzle;
+    [SerializeField] private GameObject activePuzzle;
     private InputSystem_Actions inputs;
 
     public GameObject ActivePuzzle
@@ -63,7 +63,7 @@ public class PuzzlePopupManager : MonoBehaviour
     /// </summary>
     private void HidePuzzle()
     {
-        if (PlayerController.Instance) PlayerController.Instance.SetMovementLock(false);
+        if (PlayerController.Instance != null) PlayerController.Instance.SetMovementLock(false);
         activePuzzle.SetActive(false);
     }
 

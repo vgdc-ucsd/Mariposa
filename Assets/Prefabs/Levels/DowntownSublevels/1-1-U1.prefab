@@ -2590,6 +2590,38 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &5531952325107175399
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 343224930035870089}
+  m_Layer: 0
+  m_Name: Checkpoints
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &343224930035870089
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5531952325107175399}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8856405599301879857}
+  m_Father: {fileID: 3452210170019151490}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5845448705074589788
 GameObject:
   m_ObjectHideFlags: 0
@@ -3091,7 +3123,6 @@ Transform:
   - {fileID: 5862314373820434297}
   - {fileID: 1479270844243208680}
   - {fileID: 5194922340535331177}
-  - {fileID: 8856405599301879857}
   - {fileID: 4932330040190802381}
   - {fileID: 144851741401367364}
   - {fileID: 7642345667712043423}
@@ -3114,6 +3145,7 @@ Transform:
   - {fileID: 790714935882339509}
   - {fileID: 9168860294962158635}
   - {fileID: 9205227020052483709}
+  - {fileID: 343224930035870089}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8532638922646263075
@@ -3131,6 +3163,10 @@ MonoBehaviour:
   _subLevelCharacter: 1
   StartingSpawn: {fileID: 7915300648177197335}
   CameraBounds: {fileID: 7455476472869723971}
+  <SublevelMusic>k__BackingField: 0
+  <SublevelAmbience>k__BackingField: 0
+  <MusicTransitionDuration>k__BackingField: 1.5
+  <PlayOnLoad>k__BackingField: 1
   isAutoscrolling: 0
 --- !u!1 &8135664045913286890
 GameObject:
@@ -4429,11 +4465,11 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 3452210170019151490}
+    m_TransformParent: {fileID: 343224930035870089}
     m_Modifications:
     - target: {fileID: 3676781943583411204, guid: e197a5c3daf17294bb5e3812563fce55, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -8.1
+      value: -8.100001
       objectReference: {fileID: 0}
     - target: {fileID: 3676781943583411204, guid: e197a5c3daf17294bb5e3812563fce55, type: 3}
       propertyPath: m_LocalPosition.y
