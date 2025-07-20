@@ -32,7 +32,7 @@ public class EndingManager : Singleton<EndingManager>
     void Start()
     {
         // TODO: for testing, remove before building
-        FriendshipManager.Instance.SetScore(GOOD_ENDING_THRESHOLD);
+        FriendshipManager.Instance.SetScore(GOOD_ENDING_THRESHOLD - 1);
 
         bool isGoodEnding = FriendshipManager.Instance.CompareScore(GOOD_ENDING_THRESHOLD);
         foreach (GameObject obj in goodDialogueTriggers) obj.SetActive(isGoodEnding);

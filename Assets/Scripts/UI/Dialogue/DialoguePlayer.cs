@@ -53,6 +53,7 @@ public class DialoguePlayer : MonoBehaviour
     private List<DialogueElement> conversation = new List<DialogueElement>();
     private int dialogueIndex = 0;
     private bool awaitingChoice = false;
+    private bool isFading = false;
 
     // typewriter control
     private bool finishedTypewriter;
@@ -89,6 +90,7 @@ public class DialoguePlayer : MonoBehaviour
         speakerSprites = new Dictionary<string, Sprite>();
         endingEvents = new List<string>();
         awaitingChoice = false;
+        isFading = false;
         if (InGameUI.Instance != null) InGameUI.Instance.InteractPrompt(false);
         SetCinematicMode(false);
 
@@ -116,6 +118,10 @@ public class DialoguePlayer : MonoBehaviour
 
     public void TryAdvanceDialogue()
     {
+        Debug.Log("TRYING ADVANCING");
+        // If currently fading, don't advance
+        if (isFading) return;
+
         // if typewriter effect not finished yet
         if (!finishedTypewriter)
         {
@@ -221,9 +227,27 @@ public class DialoguePlayer : MonoBehaviour
             }
             else
             {
-                backgroundGraphic.sprite = backgroundMap.GetSprite(element.Background);
-                SetCinematicMode(true);
+                // Wait for screen to fade before continuing execution
+                isFading = true;
+                FadeController.Instance.FadeOutAndDo(() =>
+                {
+                    backgroundGraphic.sprite = backgroundMap.GetSprite(element.Background);
+                    SetCinematicMode(true);
+                    FadeController.Instance.FadeIn();
+                    isFading = false;
+                    
+                    activeLineTarget.text = conversation[dialogueIndex].Line;
+                    speakerTarget.text = speaker;
+                    StartCoroutine(TypewriterEffect());
+                });
             }
+        }
+        else
+        {
+            // If no background change, execute text update immediately
+            activeLineTarget.text = conversation[dialogueIndex].Line;
+            speakerTarget.text = speaker;
+            StartCoroutine(TypewriterEffect());
         }
 
         if (element.Choice1 != null && element.Choice2 != null)
@@ -234,9 +258,9 @@ public class DialoguePlayer : MonoBehaviour
             SetChoiceButton(choiceButton2, choiceText2, element.Choice2);
         }
 
-        activeLineTarget.text = conversation[dialogueIndex].Line;
-        speakerTarget.text = speaker;
-        StartCoroutine(TypewriterEffect());
+        // activeLineTarget.text = conversation[dialogueIndex].Line;
+        // speakerTarget.text = speaker;
+        // StartCoroutine(TypewriterEffect());
     }
 
     private void SetChoiceButton(UnityEngine.UI.Button button, TextMeshProUGUI choiceText, DialogueChoice choice)
