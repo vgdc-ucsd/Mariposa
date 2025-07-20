@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class Door : MonoBehaviour
+public abstract class Door : Interactable
 {
-    private BoxCollider2D boxCollider;
-    private SpriteRenderer spriteRenderer;
+    [SerializeField] private BoxCollider2D boxCollider;
+    [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private bool isOpen;
     [SerializeField] private bool isLocked;
     [SerializeField] private Sprite openSprite, closedSprite;
@@ -13,16 +13,9 @@ public class Door : MonoBehaviour
     /// Box collider subject to change depending on how doors will open and close.
     /// (i.e. if it moves up and down or trigger is enabled and disabled) 
     /// </summary>
-    void Awake()
+    protected override void Awake()
     {
-        if (GetComponent<Collider2D>() == null)
-        {
-            Debug.Log("No Collider was found!");
-            return;
-        }
-
-        boxCollider = GetComponent<BoxCollider2D>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        base.Awake();
         if (isOpen) Open();
         SetSprite();
     }
@@ -63,18 +56,17 @@ public class Door : MonoBehaviour
         
         if (!isLocked) Debug.Log("Door is unlocked");
     }
-    
+
     /// <summary>
     /// Opens the door allowing the player to pass through.
     /// Currently, the door opens by updating its LayerMask to not be Barrier.
     /// </summary>
-    private void Open()
+    public virtual void Open()
     {
-        Debug.Log("Open");
-        
+        isOpen = true;
+        SetSprite();
         if (boxCollider == null) return;
-
-        gameObject.layer = LayerMask.NameToLayer("Default");
+        boxCollider.gameObject.layer = LayerMask.NameToLayer("Default");
     }
 
     /// <summary>
@@ -83,11 +75,10 @@ public class Door : MonoBehaviour
     /// </summary>
     private void Close()
     {
-        Debug.Log("Close");
-        
+        isOpen = false;
+        SetSprite();
         if (boxCollider == null) return;
-
-        gameObject.layer = LayerMask.NameToLayer("Barrier");
+        boxCollider.gameObject.layer = LayerMask.NameToLayer("Barrier");
     }
     
     /// <summary>

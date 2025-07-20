@@ -530,19 +530,98 @@ PrefabInstance:
       propertyPath: Lens.OrthographicSize
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 8203995099927249179, guid: f7ba4b11513a904409f499c05ca71649, type: 3}
+      propertyPath: namedSprites.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8203995099927249179, guid: f7ba4b11513a904409f499c05ca71649, type: 3}
+      propertyPath: namedSprites.Array.data[0].Icon
+      value: 
+      objectReference: {fileID: 4760799477523965678, guid: 1dc8361be86975b4fbdc5fb1c2a5f13d, type: 3}
+    - target: {fileID: 8203995099927249179, guid: f7ba4b11513a904409f499c05ca71649, type: 3}
+      propertyPath: namedSprites.Array.data[0].Name
+      value: silica_heart
+      objectReference: {fileID: 0}
+    - target: {fileID: 8203995099927249179, guid: f7ba4b11513a904409f499c05ca71649, type: 3}
+      propertyPath: namedSprites.Array.data[1].Icon
+      value: 
+      objectReference: {fileID: 4760799477523965678, guid: 1dc8361be86975b4fbdc5fb1c2a5f13d, type: 3}
+    - target: {fileID: 8203995099927249179, guid: f7ba4b11513a904409f499c05ca71649, type: 3}
+      propertyPath: namedSprites.Array.data[1].Name
+      value: orange_sunset
+      objectReference: {fileID: 0}
     - target: {fileID: 8248671544103256755, guid: f7ba4b11513a904409f499c05ca71649, type: 3}
       propertyPath: DialogueNames.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8248671544103256755, guid: f7ba4b11513a904409f499c05ca71649, type: 3}
       propertyPath: 'DialogueNames.Array.data[0]'
-      value: Tutorial
+      value: Hometown
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 13790089062929314, guid: f7ba4b11513a904409f499c05ca71649, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 884917912}
+    - targetCorrespondingSourceObject: {fileID: 13790089062929314, guid: f7ba4b11513a904409f499c05ca71649, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 884917911}
   m_SourcePrefab: {fileID: 100100000, guid: f7ba4b11513a904409f499c05ca71649, type: 3}
+--- !u!1 &884917910 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 13790089062929314, guid: f7ba4b11513a904409f499c05ca71649, type: 3}
+  m_PrefabInstance: {fileID: 884917909}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &884917911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 884917910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc11c97e284158a458ce565994809ffe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Animator: {fileID: 884917912}
+  Image: {fileID: 884917914}
+  fadeTime: 0
+--- !u!95 &884917912
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 884917910}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 58e8202653cf67940bd804281a9dac09, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &884917914 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 43636471706189178, guid: f7ba4b11513a904409f499c05ca71649, type: 3}
+  m_PrefabInstance: {fileID: 884917909}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 884917910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1329853476
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -612,6 +691,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: 3-1-U1
       objectReference: {fileID: 0}
+    - target: {fileID: 4545303938992084810, guid: f835bba26527c2442becf6d448727aad, type: 3}
+      propertyPath: cutsceneManager
+      value: 
+      objectReference: {fileID: 884917911}
     - target: {fileID: 5384814496559900006, guid: f835bba26527c2442becf6d448727aad, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

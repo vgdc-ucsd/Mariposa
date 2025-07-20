@@ -19,8 +19,8 @@ public class GameManager : Singleton<GameManager>
 
     public override void Awake()
     {
-        base.Awake();
         actions = new InputSystem_Actions();
+        base.Awake();
     }
 
     void Start()

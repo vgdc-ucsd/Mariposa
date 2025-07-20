@@ -11,13 +11,13 @@ public class Hoverer : MonoBehaviour
 
     void Start()
     {
-        origin = transform.position;
+        origin = transform.localPosition;
         startTime = Time.time;
     }
 
     void Update()
     {
-        transform.position = new Vector3
+        transform.localPosition = new Vector3
         (
             origin.x,
             origin.y + Mathf.Sin((Time.time - startTime) * HoverSpeed) * HoverDistance,

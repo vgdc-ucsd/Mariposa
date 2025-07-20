@@ -8,7 +8,7 @@ public class CameraController : MonoBehaviour
     private CinemachineConfiner2D confiner;
 
     public static CameraController ActiveCamera;
-    private bool isPaused = false;
+    // private bool isPaused = false;
 
     private void Awake()
     {
@@ -52,7 +52,7 @@ public class CameraController : MonoBehaviour
     /// </summary>
     public void PauseCamera()
     {
-        isPaused = true;
+        // isPaused = true;
         if (cinemachineCamera != null)
             cinemachineCamera.Target.TrackingTarget = null;
     }
@@ -62,7 +62,7 @@ public class CameraController : MonoBehaviour
     /// </summary>
     public void ResumeCamera()
     {
-        isPaused = false;
+        // isPaused = false;
         if (Player.ActivePlayer != null)
             StartFollowing(Player.ActivePlayer.transform);
     }

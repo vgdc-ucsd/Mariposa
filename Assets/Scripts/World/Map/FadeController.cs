@@ -6,13 +6,12 @@ public class FadeController : MonoBehaviour
 {
     public static FadeController Instance { get; private set; }
     [SerializeField] private Image _blackImage;
-    [SerializeField] private float _fadeDuration = 0.5f;
+    public float _fadeDuration = 0.5f;
 
     private void Awake()
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
-        DontDestroyOnLoad(gameObject);
         _blackImage.enabled = true;
         _blackImage.color = new Color(0,0,0,1f);
     }
