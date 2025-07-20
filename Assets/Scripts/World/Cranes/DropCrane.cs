@@ -7,7 +7,7 @@ public class DropCrane : Crane
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        loadRB = platform.gameObject.GetComponent<Rigidbody2D>();
+        // loadRB = platform.gameObject.GetComponent<Rigidbody2D>();
         if (loadRB == null)
         {
             Debug.LogWarning("Warning: Attached crane load does not have a rigidbody");
