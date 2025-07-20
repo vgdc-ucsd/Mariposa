@@ -131,8 +131,6 @@ public class DialoguePlayer : MonoBehaviour
         // if typewriter effect not finished yet
         if (!finishedTypewriter)
         {
-            if (isCinematic) return;
-
             // finish typewriter effect
             StopAllCoroutines();
             finishedTypewriter = true;
