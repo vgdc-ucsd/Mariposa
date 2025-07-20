@@ -181,13 +181,13 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
         Physics2D.SyncTransforms();
         Bounds bounds = SurfaceCollider.bounds;
 
-        bool onBee = false;
+        // bool onBee = false;
         if (CanDoubleJump && airJumpAvailable)
         {
             Vector2 beeCastCenter = bounds.center + 0.375f * bounds.size.y * Vector3.down;
             Vector2 beeCastSize = 0.25f * bounds.size;
             RaycastHit2D[] beeHits = Physics2D.BoxCastAll(beeCastCenter, beeCastSize, 0f, Vector2.down, COLLISION_CHECK_DISTANCE);
-            foreach (var hit in beeHits) if (hit.collider.CompareTag("Bee")) onBee = true;
+            // foreach (var hit in beeHits) if (hit.collider.CompareTag("Bee")) onBee = true;
         }
 
 

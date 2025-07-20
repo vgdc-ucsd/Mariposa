@@ -6,7 +6,7 @@ public class BatteryPickup : ItemPickup
     private Vector3 spawnPosition;
     private SpriteRenderer sr;
     private Collider2D col;
-    private float pickupDelay = 1;
+    // private float pickupDelay = 1;
     
     protected override void Awake()
     {

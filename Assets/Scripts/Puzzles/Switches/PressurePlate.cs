@@ -3,7 +3,8 @@ using UnityEngine;
 
 public abstract class PressurePlate : MonoBehaviour
 {
-    [SerializeField] private int requiredBatteries = 0;
+    [SerializeField] protected int requiredBatteries = 0;
+    [SerializeField] protected int numBatteries;
     [SerializeField] SpriteRenderer spriteRenderer;
 
     /// <summary>
@@ -12,7 +13,7 @@ public abstract class PressurePlate : MonoBehaviour
     void OnTriggerEnter2D(Collider2D collider)
     {
         if (collider.gameObject != Player.ActivePlayer.gameObject) return;
-        spriteRenderer.transform.localPosition = new Vector2(0, -0.25f);
+        spriteRenderer.transform.Translate(0.0f, -0.1f, 0.0f);
         OnPress();
     }
     /// <summary>
@@ -21,7 +22,7 @@ public abstract class PressurePlate : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collider)
     {
         if (collider.gameObject != Player.ActivePlayer.gameObject) return;
-        spriteRenderer.transform.localPosition = new Vector2(0, 0);
+        spriteRenderer.transform.Translate(0.0f, 0.1f, 0.0f);
         OnRelease();
     }
 

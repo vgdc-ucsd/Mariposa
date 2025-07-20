@@ -12,13 +12,12 @@ public class FadeController : MonoBehaviour
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
-        DontDestroyOnLoad(gameObject);
         _blackImage.enabled = true;
         _blackImage.color = new Color(0,0,0,1f);
     }
 
     private void Start()
-    {
+    {   
         StartCoroutine(Fade(1f, 0f));
     }
 

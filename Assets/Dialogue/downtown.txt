@@ -1,0 +1,1429 @@
+﻿#Writer Name: Jordan Huynh
+#Edited by: Jess Yang, Lucas Ramirez, Jorge Lozoya
+
+
+#EXT. DOWNTOWN CITY (REGION 1) - DAY 
+
+
+#UNNAMED runs up the stairs and exits out into the downtown city area. They stop to talk to MARIPOSA over the radio.
+
+
+!name downtown_start
+
+
+UNNAMED
+!a Unnamed_YouThere7.wav
+(neutral)
+Hey, you. On the radio. Who are you?
+
+
+MARIPOSA 
+(happy)
+My name is Mariposa! I’m a techsmith.
+
+
+MARIPOSA
+(neutral)
+How about you? What’s your name?
+
+
+UNNAMED 
+(neutral)
+(...)
+
+
+________________
+
+
+
+
+#>Don’t tell her. 
+# Downtown choice #1
+!choice1 do_not_tell_her -1
+Don’t tell her.
+
+
+!choice2 tell_her_your_name +1
+Tell her your name.
+
+
+!name do_not_tell_her
+
+
+MARIPOSA
+(sad)
+…uhm, hello? Are—are you still there?
+
+
+UNNAMED
+!a Unnamed_NoTimeToWaste5.wav
+(neutral)
+(Tch. I can’t be doing this right now.)
+
+
+MARIPOSA
+(neutral)
+Hello~o?
+
+
+#UNNAMED does not respond. 
+
+
+MARIPOSA
+!a Mariposa_Hmm3.wav
+(neutral)
+…I guess you don’t <i>have</i> to tell me anything. But I’ve got to call you <i>something</i>. 
+
+
+MARIPOSA
+(happy)
+Fine by me! You’re Kairo, then, until you tell me your real name.
+
+
+!event play_bot_conversation_from_dont_tell
+________________
+
+
+#>Tell her your name.
+
+
+!name tell_her_your_name
+
+
+#[PROMPT PLAYER TO FILL IN THEIR NAME]
+
+
+ UNNAMED 
+(neutral)
+My name is Kairo.
+
+
+MARIPOSA
+!a Mariposa_Giggle4.wav
+(neutral)
+Kairo? I’ve never met anyone named Kairo before— I like it!
+
+
+!event play_bot_conversation_from_tell_her
+________________
+
+
+!name bot_conversation
+MARIPOSA
+(neutral)
+Say, Kairo, how’s your bot situation? It sounded like you figured it out, but—
+
+
+UNNAMED
+(neutral)
+It’s been...resolved. 
+
+
+UNNAMED
+!a Unnamed_Hey1.wav
+You said you were a techsmith. You fixed a charger for maintenance bots. Where?
+
+
+MARIPOSA
+(neutral)
+Oh, I was at the metro. I was waiting for my train, but it got delayed. I guess I’ll have to catch a bus now...
+
+
+UNNAMED
+(neutral)
+The metro?
+
+
+UNNAMED
+(neutral)
+Where are you right now?
+
+
+MARIPOSA
+(neutral)
+I’m catching my bus, like I said. 
+
+
+MARIPOSA
+(neutral)
+How about you? What do you do?
+
+
+UNNAMED
+(neutral)
+...
+
+
+MARIPOSA
+!a Mariposa_Hey2.wav
+(neutral)
+Aw, come on! I answered your questions. You can answer a few of mine, right? It’s not like anything’s chasing you right now.
+
+
+UNNAMED
+(neutral)
+...
+
+
+MARIPOSA
+(neutral)
+You alright there?
+
+
+UNNAMED
+!a Unnamed_NotTheTime4.wav
+(neutral)
+Give me a moment.
+
+
+# Player takes control of UNNAMED, and they run from the bot, going up the building. They try to leave via rooftops but see their way blocked by turrets.
+
+
+!name blocked_by_turrets
+UNNAMED
+!a Unnamed_Ugh3.wav
+(neutral)
+(One wrong move and those things are going to shoot my head clean off.)
+
+
+MARIPOSA
+!a Mariposa_YouOk1.wav
+(sad)
+Is everything okay? I might be wrong, but I hear—
+
+
+UNNAMED
+!a Unnamed_NoTimeToWaste1.wav
+(neutral)
+(...can’t afford to be worrying about her right now.)
+
+
+# If the player tries to pass the wall or proceed into range of turrets, they will be shot by the turret. 
+
+
+UNNAMED
+!a Unnamed_Tch1.wav
+(neutral)
+(There’s no way around this.)
+
+
+# PLAYER switches to MARIPOSA
+
+
+!event switch_mariposa3
+
+
+# MARIPOSA has exited the subway station and is standing in the downtown area. She heads toward her bus stop further down the street.
+
+
+!name kairo_is_dumb
+MARIPOSA
+!a Mariposa_Sigh2.wav
+(sad)
+(Kairo seems to be getting themselves into a lot of bad situations. Hopefully they figure something out.)
+
+
+# She walks down the street and is stopped by a person holding a sign in front of a building. The building has an electronic billboard attached to it that isn’t on.
+
+
+!name danny_time
+
+
+SIGN GUY
+!a Jeffery_NPC_Mari2.wav
+Mari, is that you? 
+
+
+SIGN GUY
+!a Jeffery_LongTimeNoSee2.wav
+It’s me, Danny! From high school.
+
+
+MARIPOSA
+!a Mariposa_Yeah3.wav
+(happy)
+Danny! It’s so good to see you! It’s been a while, hasn’t it? 
+
+
+MARIPOSA
+(neutral)
+What are you doing out here?
+
+
+DANNY
+!a Jeffery_NPC_Welll1.wav
+Just starting my shift. I work for an ad company now. Normally, I’m picking up calls and talking to clients.
+
+
+MARIPOSA
+(neutral)
+Then, uh... 
+
+
+MARIPOSA
+(neutral)
+Why are you standing outside?
+
+
+DANNY
+!a Jeffery_NPC_Honestly1.wav
+One of our billboards broke, and my manager wants me to do the advertising until it gets fixed. 
+
+
+DANNY
+So here I am.
+
+
+MARIPOSA
+(neutral)
+How long are you stuck out here?
+
+
+DANNY
+!a Jeffery_NPC_Sigh2.wav
+Oh, I don’t know. They said it would be fixed in a week, but they also said that last week. And the week before that... 
+
+
+MARIPOSA
+(surprised)
+Oh!
+
+
+MARIPOSA
+(neutral)
+I can take a look at the billboard, if you want? Then you won’t have to stand out here all day.
+
+
+DANNY
+Oh yeah, you fixed things and stuff, right? Even in high school, you’d spend all of lunch tinkering with your little automatons...
+
+
+DANNY
+!a Jeffery_NPC_AppreciateIt.wav
+If you could fix this, I’d really appreciate it. I can finally go home. Or at least, back to my cushy desk job.
+
+
+MARIPOSA
+(neutral)
+It’s no problem at all! It’s the billboard on that building behind you, right?
+
+
+DANNY
+Yeah, you can get to it with the lifts. I’ll let the guys know you’re here for the billboard. 
+
+
+DANNY
+Can’t tell you what’s actually wrong with it, though. The thing just started glitching before it shut off.
+
+
+MARIPOSA
+!a Mariposa_IPromise1.wav
+(happy)
+I’ll see what I can do!
+
+
+
+
+#MARIPOSA PUZZLE:
+#MARIPOSA can go up the lifts. 
+# >ON INTERACTION WITH LIFTS:
+
+
+!name interact_lifts
+# Plays upon interacting before fixing it. 
+
+
+MARIPOSA
+(neutral)
+These are the lifts Danny mentioned.
+
+
+
+
+!name successful_lift_up
+
+
+# Plays upon interacting with the lift post-fix 
+
+
+MARIPOSA
+!a Mariposa_PieceOfCake3.wav
+(happy)
+There we go! Let’s check out that billboard.
+
+
+!name interact_billboard_not_on
+
+
+# Plays upon interacting with the billboard prior to fixing 
+
+
+MARIPOSA
+!a Mariposa_Hmm7.wav
+(neutral)
+Hmm, I think I need to get its power source running. It looks wireless. It might be in another building.
+
+
+!name interact_turnstile_on
+
+
+MARIPOSA
+Alright, let’s get you all fixed up.
+
+
+#MARIPOSA can go to the other building to fix the power source of the billboard.
+
+
+
+
+# >ON INTERACTION WITH BUILDING:
+
+
+!name interact_building_send_beebo
+
+
+MARIPOSA
+(happy)
+I think I see the power source! 
+
+
+MARIPOSA
+(neutral)
+BEEBO, can you help me get up there?
+
+
+BEEBO
+!a Beebo_Understood2.wav
+<UNDERSTOOD.>
+
+
+# Start the VENT PUZZLE for BEEBO to allow MARIPOSA to access the roof of the building. She goes to the power source to fix it.
+
+
+# >ON INTERACTION WITH POWER SOURCE:
+!name interact_power_source_before_wires
+
+
+MARIPOSA
+!a Mariposa_Hmm6.wav
+(neutral)
+This thing has definitely seen better days.
+
+
+MARIPOSA
+!a PieceOfCake2.wav
+(neutral)
+I’ll patch it right up, and the billboard should have power again.
+
+
+!event open_wires_puzzle end
+
+
+# >AFTER FIXING WIRES:
+!name wires_fixed
+
+
+MARIPOSA
+!a Mariposa_Alright3.wav
+Alright, time to get that billboard fixed!
+
+
+# MARIPOSA goes back to the billboard. Do the lift puzzle if not done already (use dialogue above). Otherwise, use the shortcut to get to the billboard.
+
+
+!name interact_billboard_wires_fixed
+
+
+MARIPOSA
+!a Mariposa_HowBoutThis8.wav
+It looks like it needs a bit of calibration. Just need to make sure all the panels are lined up right.
+
+
+!event open_billboard_puzzle end
+
+
+#Do BILLBOARD PUZZLE.
+
+
+#>AFTER PUZZLE:
+!name billboard_fixed_wires_fixed
+
+
+MARIPOSA
+!a Mariposa_InOrder3.wav
+(happy)
+There we go! All fixed now.
+
+
+#The radio starts making noise as UNNAMED sees changes in their time.
+
+
+!a radio-clip3-novoices.wav
+
+
+
+
+UNNAMED
+(surprised)
+What the...?
+
+
+MARIPOSA
+(neutral)
+Hmm? Kairo, did something happen? Hello?
+
+
+#PLAYER switches to UNNAMED.
+
+
+!event switch_to_unnamed2
+________________
+
+
+
+
+#UNNAMED’s world has now changed with a crane and the vision of the turret is now blocked. The billboard is now fixed.
+
+
+!name unnamed_start_billboard_fixed
+
+
+UNNAMED
+(neutral)
+(These appeared right when that girl said she finished fixing something.)
+
+
+UNNAMED
+(neutral)
+(How’s that possible, though? This radio...)
+
+
+UNNAMED 
+!a Unnamed_NotTheTime4.wav
+(neutral)
+(Never mind. Have to get somewhere safe first.)
+
+
+UNNAMED
+(neutral)
+The crane holding that beam is inactive, but at least it’ll give me some cover.
+
+
+#Turret vision is now blocked, and so UNNAMED can get behind it to grab its battery. Can do this for 2 more for a total of 3 batteries.
+
+
+!name all_battery_put_in
+
+
+
+
+UNNAMED
+!a Unnamed_ComeOn1.wav
+(neutral)
+Finally dealt with. But there’s still no good way to get through here from above.
+
+
+UNNAMED
+(neutral)
+And the maintenance tunnels under the city were sealed over a long time ago.
+
+
+UNNAMED
+!a Unnamed_AnotherWay3.wav
+(neutral)
+If I could somehow get underground again, it’d be a safe spot to hunker down. At least for tonight.
+
+
+!name batteries_hint
+UNNAMED
+(neutral)
+Could I do something with these power cells?
+
+
+#Crane can be interacted with and can be slotted with the batteries to power it.
+
+
+!name interact_not_all_battery_put_in
+
+
+UNNAMED
+!a Unnamed_MinorSetBack8.wav
+This thing needs a lot of power.
+
+
+#UNNAMED can now use the crane and move the pillar blocking the now deactivated turret’s sightline. Mechanic similar to the bee. The pillar can be dropped onto a target on the ground (visual context clues). The pillar will break the area and open the way into the maintenance tunnels. Crushes the bots chasing them.
+
+
+!name crushed_bots
+UNNAMED
+!a Unnamed_Tch2.wav
+(neutral)
+...Serves them right.
+
+
+UNNAMED
+(neutral)
+(Have to—rest now. Can’t keep going on like this.)
+
+
+#END UNNAMED PUZZLE
+________________
+
+
+
+
+#UNNAMED enters the sewer, and the transition to stage 3 begins. Go to a conversation between MARIPOSA and UNNAMED. Begin choices for dialogue here.
+
+
+________________
+
+
+#INT. GUTTER SYSTEMS - NIGHT 
+
+
+#[IN-GAME] UNNAMED lands into the gutter system underground. A soft static fills the air. 
+
+
+!name unnamed_lands_in_gutter
+
+
+MARIPOSA
+!a Mariposa_YouOk1.wav 
+(neutral)
+Kairo, is everything okay? It sounded like you were in the middle of something, so I didn’t want to bother you, but...
+
+
+UNNAMED
+(neutral)
+Your name is...Mariposa, right?
+
+
+MARIPOSA
+!a Mariposa_Yeah1.wav
+(neutral)
+Oh, you remembered? Yeah, it is. 
+
+
+MARIPOSA
+(sad)
+So, did something happen? Are you all right?
+
+
+UNNAMED
+(neutral)
+Why do you keep asking if I’m alright? 
+
+
+UNNAMED
+(neutral)
+...
+
+
+UNNAMED
+!a Unnamed_Tch1.wav
+(neutral)
+You don’t know me.
+
+
+MARIPOSA 
+!a Mariposa_Well2.wav
+(happy)
+Well, do I have to? Wanting to make sure someone is alright is normal, isn’t it?
+
+
+UNNAMED
+(neutral)
+...Mariposa, where—
+
+
+MARIPOSA
+!a Mariposa_Giggle4.wav
+(happy)
+You can call me Mari if you’d like!
+
+
+
+
+________________
+
+
+
+
+#> Mari.
+#Downtown choice #2
+!choice1 say_mari_name +3
+# Value pending
+Mari. 
+
+
+!choice2 dont_say_mari_name -1
+...
+
+
+!name say_mari_name
+UNNAMED
+!a Unnamed_Mari5.wav
+(neutral)
+...Mari. Where are you from?
+
+
+!event play_small_town_from_mari
+________________
+
+
+
+
+#> ...
+
+
+# Value pending
+
+
+!name dont_say_mari_name
+MARIPOSA 
+(neutral)
+...
+
+
+
+
+MARIPOSA 
+!a Mariposa_Sigh2.wav
+(neutral)
+Ah. Guess not, then.
+
+
+UNNAMED
+(neutral)
+...
+
+
+UNNAMED
+(neutral)
+Where are you from?
+
+
+!event play_small_town_from_...
+
+
+________________
+
+
+!name small_town
+
+
+MARIPOSA
+!a Mariposa_Well3.wav 
+(neutral)
+I’m from a small town. You’ve probably never heard of it before. It’s a few minutes outside the city by train.
+
+
+MARIPOSA 
+(neutral)
+It’s nice. I know I was born there, but I think I would say the same even if I weren’t. The people are really nice, the town is clean, and we pretty much have everything we need.
+
+
+UNNAMED 
+(neutral)
+Everything...
+
+
+UNNAMED 
+(neutral)
+And the city? What’s that like?
+
+
+MARIPOSA 
+(neutral)
+Oh, are you not from the city?
+
+
+________________
+
+
+#>Say something. 
+# Downtown choice #3
+
+
+
+
+!choice1 say_something +2
+Say something. 
+!choice2 stay_silent -2
+Stay quiet.
+
+
+!name say_something
+
+
+UNNAMED
+!a Unnamed_Sigh3.wav
+(neutral)
+Somewhere that you’ll probably not be familiar with. It’s...quite different from what you’re describing.
+
+
+MARIPOSA 
+(neutral)
+Ah, I see. 
+
+
+!event play_city_charm_from_say_something
+________________
+
+
+#>Stay quiet.
+
+
+!name stay_silent
+UNNAMED
+(neutral)
+...
+
+
+MARIPOSA 
+!a Mariposa_Sigh4.wav
+(neutral)
+Right. I—-okay. 
+
+
+!event play_city_charm_from_stay_quiet
+________________
+
+
+
+
+!name city_charm
+MARIPOSA 
+!a Mariposa_Well2.wav
+(neutral)
+Well, the city is less nice. Still has its charms, though, don’t get me wrong! But it’s just so big, you know? There are places even I haven’t been to, and I’ve basically been everywhere because of my job. 
+
+
+UNNAMED 
+(neutral)
+You mentioned your job before. You fixed a charger at a station. Then...something else. A billboard.
+
+
+MARIPOSA
+!a Mariposa_Yeah1.wav
+(neutral)
+Yeah, I was going to catch the bus, but I ran into an old friend. He was in a bit of a mess, so I helped him out a bit. I had to do a bit of rewiring, and it was a bit of a hassle to get to the thing, but I got the billboard up and running no problem.
+
+
+UNNAMED
+(neutral)
+A hassle?
+
+
+MARIPOSA
+(neutral)
+It’s above a store, but getting to it needed a bit of fiddling around with the lifts.
+
+
+UNNAMED 
+(neutral)
+Did he pay you? Your ‘friend’?
+
+
+MARIPOSA
+(happy)
+No, it’s just a favor. 
+
+
+MARIPOSA 
+(neutral)
+I had some time anyway, so it wasn’t a big deal.
+
+
+UNNAMED
+!a Unnamed_Tch1.wav
+(neutral)
+Isn’t he just taking advantage of you? Favors are meant to be exchanged.
+
+
+MARIPOSA
+(sad)
+I don’t see it that way. 
+
+
+UNNAMED 
+!a Unnamed_StruckANerve4.wav
+(neutral)
+Well, it doesn't make sense to me.
+
+
+MARIPOSA
+(happy)
+I like helping people. I don’t expect anything in return. If I have the skills to do it, I don’t see any reason not to help, you know? I’m sure if I were in trouble, Danny would help me out, too, if he could.
+
+
+UNNAMED
+(neutral)
+...how optimistic.
+
+
+MARIPOSA 
+(neutral)
+So, what were you planning to do tomorrow?
+
+
+UNNAMED
+(neutral)
+Have you ever been to the ocean? A pier?
+
+
+!event check_friendship_downtown
+________________
+
+
+
+
+# >If score > or equal to 5
+
+
+!name ocean_friends
+
+
+MARIPOSA 
+!a Mariposa_Giggle2.wav
+(happy)
+I love the ocean! 
+
+
+MARIPOSA 
+(neutral)
+I haven’t been able to go there in a while, though. The air is always so nice, and that cool breeze is just perfect. There’s a busy pier near here that I used to go to a lot. They have a fish market with some of the biggest fish I’ve ever seen!
+
+
+MARIPOSA
+!a Mariposa_Urgh3.wav
+(neutral)
+Ugh, I kinda want to visit the pier again now. Thanks for that.
+
+
+UNNAMED 
+(neutral)
+Did I say something wrong?
+
+
+MARIPOSA
+!a Mariposa_Giggle4.wav
+(happy)
+No, what? Don’t take everything so seriously, you’re fine!
+
+
+MARIPOSA
+(neutral)
+I’ll have to ask if there are any jobs at the pier so I have an excuse tomorrow. Were you planning to go to the beach tomorrow?
+
+
+!event play_sleepy_time_from_ocean_friends
+
+
+________________
+
+
+
+
+#>If score <5
+!name no_ocean_friends
+
+
+MARIPOSA
+!a Mariposa_Sigh4.wav 
+(neutral)
+Well, yes. But I haven’t been able to go there in a while, though. The air, the breeze, the pier...I kinda miss it. 
+
+
+MARIPOSA
+(neutral)
+Maybe I’ll ask if there are any jobs at the pier. I could use an excuse to go... 
+
+
+!event play_sleepy_time_from_no_ocean_friends
+
+
+________________
+
+
+
+
+!name sleepy_time
+
+
+MARIPOSA 
+(neutral)
+...
+
+
+MARIPOSA 
+!a Mariposa_Woah1.wav
+(surprised)
+Ah, I didn’t realize how late it was! I’ve got to catch the bus and get back home.
+
+
+MARIPOSA 
+(happy)
+I’m really glad this radio is working, though! 
+
+
+MARIPOSA
+!a Mariposa_Well4.wav
+(neutral)
+Honestly, I didn’t think this old thing would be able to receive <i>any</i> modern signal, much less still serve as a two-way. I made sure it had a functional transmitter and receiver, but…
+
+
+MARIPOSA
+(happy)
+I admit, I spent too long just making it look nice.
+
+
+MARIPOSA 
+!a Mariposa_Sigh2.wav
+(neutral)
+I’d love to run a few more tests but...
+
+
+UNNAMED
+(neutral)
+...
+________________
+
+
+# >Stay quiet.
+!choice1 stay_quiet -2
+
+
+Stay quiet.
+
+
+!choice2 offer_help +2
+
+
+Offer to help. 
+
+
+!name stay_quiet
+UNNAMED
+(neutral)
+...
+
+
+MARIPOSA
+!a Mariposa_Sigh4.wav
+(neutral)
+Right. Well. If you’ve got nothing better to do tomorrow, uhm, could you just turn your radio on? I’d really appreciate it. 
+
+
+MARIPOSA
+(neutral)
+You don’t even need to do anything special, just—--I need to figure out why this is happening. It doesn’t...make any sense. Least, not yet.  
+
+
+UNNAMED
+...
+
+
+MARIPOSA 
+Well, uh. Thanks. In advance. Goodnight, Kairo. 
+
+
+# The sound cuts. UNNAMED settles down onto the ground. 
+
+
+UNNAMED
+(neutral)
+(...Time to set up camp.)
+
+
+UNNAMED
+!a Unnamed_Cough1.wav
+(...)
+
+
+UNNAMED
+(neutral)
+(...urgh, what a mess.)
+
+
+!event play_pier_arrival_from_stay_quiet end
+#FADE TO BLACK
+________________
+
+
+# >Offer to help
+
+
+!name offer_help
+
+
+
+
+UNNAMED
+(neutral)
+(...)
+
+
+UNNAMED
+!a Unnamed_HowBoutThis3.wav
+I’ll hear from you tomorrow, then?
+
+
+MARIPOSA 
+!a Mariposa_Yeah3.wav
+(happy)
+Oh! Yeah! Yeah, that’d be—!
+
+
+MARIPOSA
+(neutral)
+——that’d be amazing, actually! I’ve just got to run a few errands, but I can take you with me, this thing is portable enough and BEEBO can—
+
+
+# The radio buzzes and warps. Presumably, Mariposa is starting to move out of range. 
+
+
+!a radio-clip3-novoices.wav
+
+
+
+
+MARIPOSA
+—night—! Thank you–!
+
+
+# The radio hums, but Mariposa does not speak again. 
+
+
+UNNAMED
+(neutral)
+...
+
+
+# The sound cuts. UNNAMED settles down onto the ground. 
+
+
+UNNAMED
+!a Unnamed_Cough2.wav
+(...!)
+
+
+UNNAMED
+(neutral)
+(I guess it has been a bit since I’ve spoken to anyone...)
+
+
+UNNAMED
+(neutral)
+(Time to catch up on some sleep.)
+
+
+!event play_pier_arrival_from_offer_help end
+
+
+#FADE TO BLACK
+
+
+#DOWNTOWN NPCs
+#Restaurant Duo
+
+
+!name ResDuo1
+BONNIE
+!a Regine_NPC_Honestly1.wav
+...and the robot that I own keeps running into the walls, scratching up the paint and scaring the cat, instead of cleaning up the floor like it's supposed to!
+CLYDE
+!a Ruby_NPC_Woah5.wav
+Oh my! That is quite troublesome. Are you thinking of getting it checked out soon?
+BONNIE
+Perhaps. I have had this one for a while. And my nephew’s always bugging me about a new automaton… he gets a work discount for them, and he’s always bringing back little automatons for all the kids. 
+!name ResDuo2
+CLYDE
+!a Regine_NPC_IThink1.wav
+Maybe it would be better to just buy a new automaton instead of repairing the same one over and over again...
+#Construction Workers
+
+
+!name ConsWork1
+
+
+TIC
+Have you finished setting up that beam yet?
+
+
+TAC
+!a Justin_NPC_Okay1.wav
+Almost, but there are still a couple more beams I have to set up in order to make this floor stable. We’ve been working to the bone lately, but it’ll all be worth it when the 100th anniversary of the city comes around!
+!name ConsWork2
+TIC
+!a Luke_NPC_Yeah2.wav
+Let’s keep working hard!
+#A Lost Mailperson
+!name MailPe1
+MAILPERSON
+!a Regine_NPC_Hm3.wav
+Hmmmm…Where was this place again? Was it around this corner? No, no… that doesn’t seem right?
+MAILPERSON
+I really should’ve learned the ins and outs of this city before taking this job...
+!name MailPer2
+MAILPERSON
+!a Regine_NPC_Sigh3.wav
+This box of cat litter...It should be sent to this area, right? Or wait...maybe it’s supposed to go across the bridge...?
+#A Person Feeding The Birds
+!name BirdFeed1
+BIRDWATCHER
+!a Justin_NPC_Laugh7.wav
+Here you go, birdies! I have plenty of seeds to share with you guys!
+BIRDWATCHER
+Hehe, they really seem to like the sunflower seeds I bought for them.
+!name BirdFeed2
+BIRDWATCHER
+!a Justin_NPC_Laugh2.wav
+I should buy more of these seeds! The birds will really love me then!
+
+
+#Writer Name: Jorge Lozoya
+#Edited By: Jess Yang, Jorge Lozoya
+!name Burre1
+
+
+BURRE
+!a Luke_Robot_NPC_Aww.wav
+<I’ve detected a familiar lifeform.>
+
+
+BURRE
+<Miss Mariposa. You fixed me once.>
+
+
+MARIPOSA 
+(happy)
+I’m glad you remember! 
+
+
+MARIPOSA 
+!aMariposa_Sigh2.wav
+(neutral)
+You and your flickering lights, all alone in the scrapyard... 
+
+
+MARIPOSA 
+(neutral)
+I know you’re a bot, but I can’t let anyone sleep in the rain like that. Everyone needs a chance to do good.
+
+
+!name Burre2
+BURRE
+<I am happy to be useful once more.>
+________________
+#[BORBOLETA] (Downtown)
+!name Barboleta1
+
+
+BARBOLETA
+!a Regine_NPC_Mari2.wav
+Mari! Didn’t think you would show your face around here. Not after last time. Don’t think I could forget you!
+
+
+MARIPOSA
+(happy)
+You mean after you and I tied for that automaton smithing competition? 
+
+
+BARBOLETA
+!a Regine_NPC_Hm1
+No ma’am, the one you <i>won</i>!
+
+
+MARIPOSA 
+(bashful)
+I didn’t want to rub it in your face…
+
+
+BARBOLETA
+I’ll get you next time, Mari. Just you wait!
+
+
+MARIPOSA
+(bashful)
+Seaweed biofuels is a novel idea, but for a breakdancing bot, I’m not sure if it’s too optimal... 
+
+
+!name Barboleta2
+
+
+BARBOLETA
+What does she have that I don’t...?
+
+
+#DOWNTOWN Flavor text
+
+
+# Writer Name: Mackenzie, Joshua, & Fatimah 
+# Edited by: Joshua Nolasco, Jess Yang
+# Optional Flavor Text: Mariposa 
+#[Billboard]
+# Interacting with the Billboard (Multiple Interactions)
+!event check_billboard
+
+
+# BEFORE FIXING
+!name interact_billboard_before_fix1
+
+
+MARIPOSA 
+(neutral)
+We’re awfully high up…
+
+
+MARIPOSA 
+(neutral)
+Ah, the whole thing is scrambled. If there was power, I bet I could fix this in no time. 
+
+
+MARIPOSA 
+(neutral)
+Looks like I’ll have to look somewhere else to turn on the power... 
+
+
+!name interact_billboard_before_fix2
+MARIPOSA 
+(neutral)
+It’s probably not here.
+
+
+# AFTER FIXING
+!name interact_billboard_after_fix1
+MARIPOSA 
+(neutral)
+There we go! Good as new. There shouldn’t be any more issues with it.
+
+
+!name interact_billboard_after_fix2
+MARIPOSA 
+(neutral)
+A job well done!
+#[Scissor Lift]
+# Before talking to the NPC (pre-puzzle)
+!name interact_scissor_lift_pre_puzzle1
+SCISSOR
+(It’s a scissor lift. It could probably reach the top of this building). 
+
+
+!name interact_scissor_lift_pre_puzzle2
+
+
+MARIPOSA 
+(neutral)
+…I shouldn’t operate this without permission.# Optional Flavor Text: The Unnamed 
+#[Semi-Destroyed Building (Various)] 
+
+
+# Interacting with the Semi-Destroyed Building (Various)
+
+
+!name interact_semi_destroyed_building_various_1
+BROKENBROKEN
+The concrete crumbles at the slightest touch, exposing the bare steel supports. 
+
+
+!name interact_semi_destroyed_building_various_2
+BROKENBROKEN
+It’s falling apart.
+
+
+#[Wall Before Turrets] 
+# Interacting with the Wall Before Turrets
+
+
+!name interact_wall_before_turrets_1
+WALL
+This wall doesn’t feel that stable. 
+It’s the only thing standing in the way of the turret on the other side. 
+
+
+!name interact_wall_before_turrets_3
+WALL
+This doesn’t feel right. 
+#[Billboard (Destroyed)] 
+
+
+# Interacting with the Destroyed Billboard
+
+
+!name interact_billboard_destroyed_1
+BILLBOARD
+It’s a damaged billboard. It seems to be advertising the pierside markets, but most of the billboard is unrecognizable. 
+
+
+!name interact_billboard_destroyed_2
+BILLBOARD
+The markets are just beyond the business district.
+
+
+#[Rubble] 
+# Interacting with the Rubble
+
+
+!name interact_rubble_1
+RUINEDRUINED
+The ruins of a skyscraper. 
+
+
+!name interact_rubble_2
+RUINEDRUINED
+Walk carefully over the broken glass. 
+
+
+#[Destroyed Robots] 
+# Interacting with the Destroyed Robots
+
+
+!name interact_destroyed_robots_1
+METALACHES
+They aren’t moving anymore. Metal aches against itself as it all slowly falls apart. 
+
+
+!name interact_destroyed_robots_2
+METALACHES
+They’ll never move again.
+#[Deactivated Turret] 
+# Interacting with the Deactivated Turret
+
+
+!name interact_deactivated_turret_1
+DEACTIVATED
+The mechanical hum has gone silent. It can’t see you anymore. 
+
+
+!name interact_deactivated_turret_2
+DEACTIVATED
+It’s been deactivated.
+#[Crane] 
+
+
+!name interact_crane_before_1
+CRANE
+There's an empty chamber on the side of the crane. It looks like enough space for 3 batteries.  
+
+
+!name interact_crane_before_2
+CRANE
+It looks like enough space for 3 batteries. 
+
+
+# AFTER: 
+!name interact_crane_after_1
+CRANE
+You place a battery into the last chamber. You hear a faint mechanical whir. 
+!name interact_crane_after_2
+CRANE
+It sounds like it'll be able to work. 
+#[Steel Beam] 
+# Interacting with the Steel Beam
+!name interact_steel_beam_1
+BEAM
+…it's perfectly intact. It looks heavy.
+!name interact_steel_beam_2 
+BEAM
+Looks heavy.

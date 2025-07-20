@@ -176,12 +176,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bf291a968d867e45b0fd848b720cc86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  boxCollider: {fileID: 0}
+  spriteRenderer: {fileID: 0}
   isOpen: 0
   isLocked: 1
   openSprite: {fileID: -2750678463497565672, guid: 9ee2c1eca7b4b554ebe44e49328bab0d, type: 3}
   closedSprite: {fileID: -5762710749327013647, guid: 6101cd68385314847a042544e73cecae, type: 3}
   keycard: {fileID: 11400000, guid: baa233cac22a91e439f70b37f26cbf03, type: 2}
-  inventoryType: 0
+  guard: {fileID: 0}
+  interactionTrigger: {fileID: 0}
 --- !u!1 &6710252040486608089
 GameObject:
   m_ObjectHideFlags: 0
@@ -191,7 +194,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1450672591584865567}
-  - component: {fileID: 1955848778212272176}
   - component: {fileID: 8185951845952957356}
   m_Layer: 6
   m_Name: KeycardDoorInteractable
@@ -215,19 +217,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 9027440662875632070}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1955848778212272176
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6710252040486608089}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f3abcb0b96d5394cb27d110c7677f04, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  door: {fileID: 4404650794279099582}
 --- !u!61 &8185951845952957356
 BoxCollider2D:
   m_ObjectHideFlags: 0

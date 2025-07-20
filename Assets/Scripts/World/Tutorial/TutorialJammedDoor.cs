@@ -16,7 +16,7 @@ public class TutorialJammedDoor : Interactable
 
         if (!jammed)
         {
-            SceneManager.LoadScene(2);
+			LevelManager.Instance.LoadNextLevel();
         }
 
     }
