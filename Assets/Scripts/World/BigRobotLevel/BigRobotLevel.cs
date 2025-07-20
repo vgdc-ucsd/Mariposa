@@ -61,7 +61,7 @@ public class BigRobotLevel : MonoBehaviour
 
         currentSection = CurrentSection.START;
 
-        RuntimeManager.StudioSystem.setParameterByName(BigRobotLevel.MUSIC_PARAM, (int)MusicSection.CHASE_START);
+        RuntimeManager.StudioSystem.setParameterByName(MUSIC_PARAM, (int)MusicSection.CHASE_START);
 
         DisableAllRobots();
         SendRobot(0);
@@ -74,10 +74,6 @@ public class BigRobotLevel : MonoBehaviour
 
     private void OnPlayerDeath()
     {
-        MusicManager.Instance.Stop();
-        RuntimeManager.StudioSystem.setParameterByName(MUSIC_PARAM, (int)MusicSection.DROP);
-        MusicManager.Instance.Play();
-
         DisableAllRobots();
         if (Player.ActivePlayer.CurrentRespawnPoint == checkpoints[0])
         {
