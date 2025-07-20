@@ -25,7 +25,6 @@ public class BigRobotCutscene : MonoBehaviour, IInputListener
     public void OnDropAnimationFinished()
     {
         currentLoopCount = 0;
-        RuntimeManager.StudioSystem.setParameterByName(BigRobotLevel.MUSIC_PARAM, (int)BigRobotLevel.MusicSection.CHASE_START);
     }
 
     public void OnLoopAnimationFinished()
