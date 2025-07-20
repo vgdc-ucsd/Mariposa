@@ -538,7 +538,9 @@ interact_power_source_before_wires:
   FromRadio: 
   Sounds:
   - PieceOfCake2.wav
-  Events: OpenWiresPuzzle
+  Events:
+  - EventName: open_wires_puzzle
+    TriggerAtEnd: true
   Choice1: 
   Choice2: 
 wires_fixed:
@@ -560,7 +562,9 @@ interact_billboard_wires_fixed:
   FromRadio: 
   Sounds:
   - Mariposa_HowBoutThis8.wav
-  Events: OpenBillBoardPuzzle
+  Events:
+  - EventName: open_billboard_puzzle
+    TriggerAtEnd: true
   Choice1: 
   Choice2: 
 billboard_fixed_wires_fixed:
@@ -798,12 +802,13 @@ unnamed_lands_in_gutter:
   Events: []
   Choice1:
     Response: Mari.
-    LinkedDialogue: 
-    Friendship: 0
+    LinkedDialogue: say_mari_name
+    Friendship: 3
   Choice2:
     Response: '...'
-    LinkedDialogue: 
-    Friendship: 0
+    LinkedDialogue: dont_say_mari_name
+    Friendship: -1
+say_mari_name:
 - Speaker: Unnamed
   Line: '...Mari. Where are you from?'
   Icon: 
@@ -816,6 +821,7 @@ unnamed_lands_in_gutter:
     TriggerAtEnd: false
   Choice1: 
   Choice2: 
+dont_say_mari_name:
 - Speaker: Mariposa
   Line: '...'
   Icon: Neutral
@@ -902,12 +908,12 @@ small_town:
   Events: []
   Choice1:
     Response: Say something.
-    LinkedDialogue: 
-    Friendship: 0
+    LinkedDialogue: say_something
+    Friendship: 2
   Choice2:
     Response: Stay quiet.
-    LinkedDialogue: 
-    Friendship: 0
+    LinkedDialogue: stay_silent
+    Friendship: -2
 say_something:
 - Speaker: Unnamed
   Line: Somewhere that you’ll probably not be familiar with. It’s...quite different from what you’re describing.
@@ -1243,12 +1249,12 @@ sleepy_time:
   Events: []
   Choice1:
     Response: Stay quiet.
-    LinkedDialogue: 
-    Friendship: 0
+    LinkedDialogue: stay_quiet
+    Friendship: 2
   Choice2:
     Response: Offer to help.
-    LinkedDialogue: 
-    Friendship: 0
+    LinkedDialogue: offer_help
+    Friendship: -2
 stay_quiet:
 - Speaker: Unnamed
   Line: '...'

@@ -47,7 +47,7 @@ Don’t tell her.
 Tell her your name.
 
 
-!name dont_tell
+!name do_not_tell_her
 
 
 MARIPOSA
@@ -87,7 +87,7 @@ ________________
 #>Tell her your name.
 
 
-!name tell_her
+!name tell_her_your_name
 
 
 #[PROMPT PLAYER TO FILL IN THEIR NAME]
@@ -416,6 +416,9 @@ MARIPOSA
 I’ll patch it right up, and the billboard should have power again.
 
 
+!event open_wires_puzzle end
+
+
 # >AFTER FIXING WIRES:
 !name wires_fixed
 
@@ -434,6 +437,9 @@ Alright, time to get that billboard fixed!
 MARIPOSA
 !a Mariposa_HowBoutThis8.wav
 It looks like it needs a bit of calibration. Just need to make sure all the panels are lined up right.
+
+
+!event open_billboard_puzzle end
 
 
 #Do BILLBOARD PUZZLE.
@@ -643,17 +649,16 @@ ________________
 
 #> Mari.
 #Downtown choice #2
-!choice1 mari positive_response + 3
+!choice1 say_mari_name +3
 # Value pending
 Mari. 
 
 
-!choice2 ... negative_response - 1
+!choice2 dont_say_mari_name -1
 ...
 
 
-
-
+!name say_mari_name
 UNNAMED
 !a Unnamed_Mari5.wav
 (neutral)
@@ -672,6 +677,7 @@ ________________
 # Value pending
 
 
+!name dont_say_mari_name
 MARIPOSA 
 (neutral)
 ...
@@ -739,9 +745,9 @@ ________________
 
 
 
-!choice1 say_something positive_response + 2
+!choice1 say_something +2
 Say something. 
-!choice2 stay_silent negative_response -2
+!choice2 stay_silent -2
 Stay quiet.
 
 
@@ -983,13 +989,13 @@ ________________
 
 
 # >Stay quiet.
-!c1 stay_quiet positive_response + 2
+!choice1 stay_quiet +2
 
 
 Stay quiet.
 
 
-!c2 offer_help negative response - 2
+!choice2 offer_help -2
 
 
 Offer to help. 

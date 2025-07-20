@@ -1,16 +1,15 @@
 using UnityEngine;
 
-public class OpenWiresTrigger : MonoBehaviour
+public class OpenWiresTrigger : DialogueEvent
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    [SerializeField] private Puzzle wiresPuzzle;
 
-    // Update is called once per frame
-    void Update()
+    public override void Trigger()
     {
-        
+        if (!wiresPuzzle.IsComplete)
+        {
+            // wiresPuzzle.gameObject.SetActive(true);
+            PuzzlePopupManager.Instance.ActivePuzzle = wiresPuzzle.gameObject;
+        }
     }
 }
