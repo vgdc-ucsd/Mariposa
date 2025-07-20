@@ -17,7 +17,11 @@ public class PuzzlePopupManager : MonoBehaviour
         {
             if (activePuzzle != null) HidePuzzle();
             activePuzzle = value;
-            if (activePuzzle != null) ShowPuzzle();
+            if (activePuzzle != null)
+            {
+                activePuzzle.SetActive(true);
+                ShowPuzzle();
+            }
         }
     }
 
