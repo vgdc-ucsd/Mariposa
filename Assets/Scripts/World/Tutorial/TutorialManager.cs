@@ -37,11 +37,6 @@ public class TutorialManager : Singleton<TutorialManager>
     [SerializeField] private GameObject showRadioCanvas;
     public string blockPuzzleCompleteDialogue;
     private Object[] dialogueData;
-    private IEnumerator Start()
-    {
-        yield return new WaitForEndOfFrame();
-        DialogueManager.Instance.PlayDialogue("start");
-    }
 
     public bool UnnamedHasRadio()
     {

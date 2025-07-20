@@ -33,7 +33,7 @@ public class PlayerAnimation : MonoBehaviour
         PlayLand();
 
         // Idle, not moving
-        if (Player.ActivePlayer.Movement.Velocity.sqrMagnitude <= 0.00f)
+        if (Player.ActivePlayer.Movement.Velocity.sqrMagnitude <= 0.005f)
         {
             animator.SetBool("isJumping", false);
             animator.SetFloat("xVelocity", 0f);
