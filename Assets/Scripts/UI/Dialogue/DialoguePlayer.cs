@@ -54,6 +54,7 @@ public class DialoguePlayer : MonoBehaviour
     private int dialogueIndex = 0;
     private bool awaitingChoice = false;
     private bool isFading = false;
+    private bool acceptingInput = false;
 
     // typewriter control
     private bool finishedTypewriter;
@@ -91,6 +92,7 @@ public class DialoguePlayer : MonoBehaviour
         endingEvents = new List<string>();
         awaitingChoice = false;
         isFading = false;
+        acceptingInput = false;
         if (InGameUI.Instance != null) InGameUI.Instance.InteractPrompt(false);
         SetCinematicMode(false);
 
@@ -113,6 +115,7 @@ public class DialoguePlayer : MonoBehaviour
             advanceIndicator.sprite = unnAdvance;
         }
 
+        StartCoroutine(ReenableInput());
         if (initAdvance) AdvanceDialogue();
     }
 
@@ -120,7 +123,7 @@ public class DialoguePlayer : MonoBehaviour
     {
         Debug.Log("TRYING ADVANCING");
         // If currently fading, don't advance
-        if (isFading) return;
+        if (isFading || !acceptingInput) return;
 
         // if typewriter effect not finished yet
         if (!finishedTypewriter)
@@ -311,5 +314,11 @@ public class DialoguePlayer : MonoBehaviour
             advanceIndicator.gameObject.SetActive(true);
         }
         finishedTypewriter = true;
+    }
+
+    private IEnumerator ReenableInput()
+    {
+        yield return new WaitForSeconds(0.1f);
+        acceptingInput = true;
     }
 }
