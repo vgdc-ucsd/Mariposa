@@ -5,7 +5,11 @@ public class HometownCutscene : MonoBehaviour
 {
     public Animator Animator;
     public Image Image;
-    [SerializeField] private float fadeTime = 0.0f;
+
+    public void PlaySound(string sound)
+    {
+        VoicelineManager.Instance.PlayDialogueAudioEffect(sound);
+    }
 
     public void OnCutsceneEnd()
     {

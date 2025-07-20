@@ -142,7 +142,10 @@ public class DialoguePlayer : MonoBehaviour
         {
             VoicelineManager.Instance.StopAllDialogueAudioEffects(FMOD.Studio.STOP_MODE.IMMEDIATE);
             activeDialogueWindow.SetActive(false);
-            backgroundGraphic.gameObject.SetActive(false);
+
+            // Removed for hometown cutscenes
+            // backgroundGraphic.gameObject.SetActive(false);
+
             if (PlayerController.Instance) PlayerController.Instance.SetMovementLock(false);
 
             foreach (string dialogueEvent in endingEvents)

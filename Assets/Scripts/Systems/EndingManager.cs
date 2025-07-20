@@ -4,31 +4,39 @@ using UnityEngine;
 
 public class EndingManager : Singleton<EndingManager>
 {
+    public enum Ending
+    {
+        SilicaHeart,
+        PlumVinegar,
+        OrangeSunset,
+        GoodnightMariposa,
+    }
+
     private const int GOOD_ENDING_THRESHOLD = 16;
     [SerializeField] private List<GameObject> goodDialogueTriggers;
     [SerializeField] private List<GameObject> badDialogueTriggers;
     [SerializeField] private float fadeDuration;
     [SerializeField] private HometownCutscene cutsceneManager;
 
-    private bool isGoodEnding;
-    public bool IsGoodEnding
+    private Ending currentEnding;
+    public Ending CurrentEnding
     {
-        get { return isGoodEnding; }
+        get { return currentEnding; }
         set
         {
-            isGoodEnding = value;
-            cutsceneManager.Animator.SetBool("IsGoodEnd", isGoodEnding);
+            currentEnding = value;
+            cutsceneManager.Animator.SetBool(currentEnding.ToString(), true);
         }
     }
 
     void Start()
     {
         // TODO: for testing, remove before building
-        FriendshipManager.Instance.SetScore(GOOD_ENDING_THRESHOLD - 1);
+        FriendshipManager.Instance.SetScore(GOOD_ENDING_THRESHOLD);
 
-        IsGoodEnding = FriendshipManager.Instance.CompareScore(GOOD_ENDING_THRESHOLD);
-        foreach (GameObject obj in goodDialogueTriggers) obj.SetActive(IsGoodEnding);
-        foreach (GameObject obj in badDialogueTriggers) obj.SetActive(!IsGoodEnding);
+        bool isGoodEnding = FriendshipManager.Instance.CompareScore(GOOD_ENDING_THRESHOLD);
+        foreach (GameObject obj in goodDialogueTriggers) obj.SetActive(isGoodEnding);
+        foreach (GameObject obj in badDialogueTriggers) obj.SetActive(!isGoodEnding);
     }
 
     public IEnumerator FadeSprites(List<SpriteRenderer> sprites, bool fadeIn)
@@ -54,11 +62,6 @@ public class EndingManager : Singleton<EndingManager>
     {
         // cutsceneManager.Animator.Play("FadeIn");
         cutsceneManager.Animator.Play("EnterHouse");
-    }
-
-    private IEnumerator FadeIntoCutscene()
-    {
-		yield return FadeController.Instance.FadeOut();
     }
 
     public void EndIdleLoop()

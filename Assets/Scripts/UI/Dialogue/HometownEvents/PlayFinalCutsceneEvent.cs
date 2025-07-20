@@ -5,23 +5,23 @@ public class PlayFinalCutsceneEvent : DialogueEvent
     private enum AnimatorAction
     {
         PlayAnimation,
-        EndIdleLoop,
+        AdvanceDialogue,
     }
 
     [SerializeField] private AnimatorAction action;
-    [SerializeField] private bool isGoodEnding;
+    [SerializeField] private EndingManager.Ending ending;
 
     public override void Trigger()
     {
         Debug.Log($"Triggering {Name}");
-        EndingManager.Instance.IsGoodEnding = isGoodEnding;
+        EndingManager.Instance.CurrentEnding = ending;
 
         switch (action)
         {
             case AnimatorAction.PlayAnimation:
                 EndingManager.Instance.PlayCutscene();
                 break;
-            case AnimatorAction.EndIdleLoop:
+            case AnimatorAction.AdvanceDialogue:
                 EndingManager.Instance.EndIdleLoop();
                 break;
         }
