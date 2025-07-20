@@ -870,7 +870,7 @@ UNNAMED
 Have you ever been to the ocean? A pier?
 
 
-!event check_friendship
+!event check_friendship_downtown
 ________________
 
 
@@ -989,13 +989,13 @@ ________________
 
 
 # >Stay quiet.
-!choice1 stay_quiet +2
+!choice1 stay_quiet -2
 
 
 Stay quiet.
 
 
-!choice2 offer_help -2
+!choice2 offer_help +2
 
 
 Offer to help. 
@@ -1044,7 +1044,7 @@ UNNAMED
 (...urgh, what a mess.)
 
 
-!event play_pier_arrival_from_stay_quiet
+!event play_pier_arrival_from_stay_quiet end
 #FADE TO BLACK
 ________________
 
@@ -1116,7 +1116,7 @@ UNNAMED
 (Time to catch up on some sleep.)
 
 
-!event play_pier_arrival_from_offer_help
+!event play_pier_arrival_from_offer_help end
 
 
 #FADE TO BLACK

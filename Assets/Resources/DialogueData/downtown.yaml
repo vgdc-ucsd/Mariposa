@@ -1096,7 +1096,7 @@ city_charm:
   FromRadio: 
   Sounds: []
   Events:
-  - EventName: check_friendship
+  - EventName: check_friendship_downtown
     TriggerAtEnd: false
   Choice1: 
   Choice2: 
@@ -1250,11 +1250,11 @@ sleepy_time:
   Choice1:
     Response: Stay quiet.
     LinkedDialogue: stay_quiet
-    Friendship: 2
+    Friendship: -2
   Choice2:
     Response: Offer to help.
     LinkedDialogue: offer_help
-    Friendship: -2
+    Friendship: 2
 stay_quiet:
 - Speaker: Unnamed
   Line: '...'
@@ -1329,7 +1329,7 @@ stay_quiet:
   Sounds: []
   Events:
   - EventName: play_pier_arrival_from_stay_quiet
-    TriggerAtEnd: false
+    TriggerAtEnd: true
   Choice1: 
   Choice2: 
 offer_help:
@@ -1417,7 +1417,7 @@ offer_help:
   Sounds: []
   Events:
   - EventName: play_pier_arrival_from_offer_help
-    TriggerAtEnd: false
+    TriggerAtEnd: true
   Choice1: 
   Choice2: 
 ResDuo1:
