@@ -127,6 +127,11 @@ public class ChaseRobot : MonoBehaviour
             if (retreatPoint != null && DidPassRetreatPoint())
                 StartCoroutine(Retreat());
         }
+        else if (state == RobotWallState.ENTERING)
+        {
+            transform.position += Vector3.Lerp(Vector3.zero, GetPerpCorrection(), fdt * perpendicularCatchupRate);
+        }
+
     }
 
     private Vector3 GetPerpCorrection()

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using FMOD.Studio;
 using FMODUnity;
 using UnityEngine;
@@ -35,13 +36,14 @@ public class PlayerAnimation : MonoBehaviour
         // Idle, not moving
         if (Player.ActivePlayer.Movement.Velocity.sqrMagnitude <= 0.005f)
         {
+            StartCoroutine(IdleDelay(() => animator.SetFloat("xVelocity", 0f)));
             animator.SetBool("isJumping", false);
-            animator.SetFloat("xVelocity", 0f);
             animator.SetFloat("yVelocity", 0f);
         }
         // Running
         else
         {
+            StopAllCoroutines();
             animator.SetFloat("xVelocity", 1);
             animator.SetFloat("yVelocity", Player.ActivePlayer.Movement.Velocity.y);
 
@@ -55,6 +57,12 @@ public class PlayerAnimation : MonoBehaviour
                 animator.SetFloat("faceLeft", 0);
             }
         }
+    }
+
+    IEnumerator IdleDelay(Action idle)
+    {
+        yield return new WaitForSeconds(0.03f);
+        idle();
     }
 
     private string MaterialCheck()

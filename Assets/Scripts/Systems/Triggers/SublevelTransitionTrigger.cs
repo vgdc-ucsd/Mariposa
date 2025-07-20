@@ -8,12 +8,8 @@ public class SublevelTransitionTrigger : Trigger
     public override bool OnEnter(Body body)
     {
         if (!base.OnEnter(body)) return false;
-        if (true)
-        {
-            Debug.LogError("If this is still in use migrate to the new dialogue system");
-            //DialogueManager.Instance.PlayDialogue(dialogue, () => LevelManager.Instance.GoToNextSublevel());
-        }
-        else LevelManager.Instance.GoToNextSublevel();
+        Debug.LogError("If this is still in use migrate to the new dialogue system");
+        //DialogueManager.Instance.PlayDialogue(dialogue, () => LevelManager.Instance.GoToNextSublevel());
         return true;
     }
 

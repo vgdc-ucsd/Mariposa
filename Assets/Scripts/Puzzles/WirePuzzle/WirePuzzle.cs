@@ -18,6 +18,7 @@ public class WirePuzzle : Puzzle
         }
 
         InitializeWires();
+        this.gameObject.SetActive(false);
     }
 
     private void InitializeWires()
@@ -48,7 +49,7 @@ public class WirePuzzle : Puzzle
         {
             IsComplete = true;
             PlayerController.Instance.IsSquidUnlocked = true;
-            SquidMovement.Instance.gameObject.SetActive(true);
+            if (SquidMovement.Instance) SquidMovement.Instance.gameObject.SetActive(true);
             OnComplete();
         }
     }
@@ -74,5 +75,17 @@ public class WirePuzzle : Puzzle
         }
 
         return true;
+    }
+
+    // debug shenanigans
+    void Update()
+    {
+        if (Input.GetKey(KeyCode.H))
+        {
+            IsComplete = true;
+            PlayerController.Instance.IsSquidUnlocked = true;
+            if (SquidMovement.Instance) SquidMovement.Instance.gameObject.SetActive(true);
+            OnComplete();
+        }
     }
 }

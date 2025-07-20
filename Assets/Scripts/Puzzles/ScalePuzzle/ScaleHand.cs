@@ -32,8 +32,8 @@ public class ScaleHand : MonoBehaviour
         scaleObjects.Add(obj);
         totalWeight += obj.weight;
         UpdateWeightText();
-        Debug.Log(obj.GetComponent<RectTransform>().localPosition.x);
-        Debug.Log(platformRect.x);
+        // Debug.Log(obj.GetComponent<RectTransform>().localPosition.x);
+        // Debug.Log(platformRect.x);
         FitToPlatform(obj.GetComponent<RectTransform>(), true);
         ScalePuzzle.Instance.CheckSolution();
         
@@ -50,15 +50,15 @@ public class ScaleHand : MonoBehaviour
     public void UpdateWeightText()
     {
         weightText.text = totalWeight.ToString();
-        if (scaleObjects.Contains(ScalePuzzle.Instance.mysteryBox)) weightText.text = "???";
-        else weightText.text = (totalWeight == 0 ? string.Empty : totalWeight.ToString());
+        // if (scaleObjects.Contains(ScalePuzzle.Instance.mysteryBox)) weightText.text = "???";
+        // else weightText.text = (totalWeight == 0 ? string.Empty : totalWeight.ToString());
         arrow.transform.eulerAngles = Mathf.Sqrt(totalWeight * arrowRotateScale) * Vector3.forward;
     }
 
     public void FitToPlatform(RectTransform objRect, bool print = false)
     {
         objRect.SetParent(platform, true);
-        if (print) Debug.Log(objRect.localPosition.x);
+        // if (print) Debug.Log(objRect.localPosition.x);
         objRect.transform.localPosition = new Vector3(
             Mathf.Clamp(objRect.transform.localPosition.x, platformRect.x, platformRect.xMax),
             Mathf.Clamp(objRect.transform.localPosition.y, platformRect.y, platformRect.yMax), 0
