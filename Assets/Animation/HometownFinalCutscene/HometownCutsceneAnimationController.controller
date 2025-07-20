@@ -75,33 +75,6 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
---- !u!1102 &-8046757585415865725
-AnimatorState:
-  serializedVersion: 6
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: FadeIn
-  m_Speed: 1
-  m_CycleOffset: 0
-  m_Transitions:
-  - {fileID: 8546083287477969686}
-  m_StateMachineBehaviours: []
-  m_Position: {x: 50, y: 50, z: 0}
-  m_IKOnFeet: 0
-  m_WriteDefaultValues: 1
-  m_Mirror: 0
-  m_SpeedParameterActive: 0
-  m_MirrorParameterActive: 0
-  m_CycleOffsetParameterActive: 0
-  m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 0a4204969f52d9341aedb2afabdb6bd2, type: 2}
-  m_Tag: 
-  m_SpeedParameter: 
-  m_MirrorParameter: 
-  m_CycleOffsetParameter: 
-  m_TimeParameter: 
 --- !u!1102 &-7578981497067252661
 AnimatorState:
   serializedVersion: 6
@@ -194,7 +167,7 @@ AnimatorStateTransition:
     m_ConditionEvent: GoodnightMariposa
     m_EventTreshold: 0
   - m_ConditionMode: 1
-    m_ConditionEvent: AdvanceDialogue
+    m_ConditionEvent: AdvanceCutscene
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -2567475796843345832}
@@ -205,7 +178,7 @@ AnimatorStateTransition:
   m_TransitionDuration: 0
   m_TransitionOffset: 0
   m_ExitTime: 1
-  m_HasExitTime: 1
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -251,7 +224,7 @@ AnimatorStateTransition:
     m_ConditionEvent: OrangeSunset
     m_EventTreshold: 0
   - m_ConditionMode: 1
-    m_ConditionEvent: AdvanceDialogue
+    m_ConditionEvent: AdvanceCutscene
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -2567475796843345832}
@@ -262,7 +235,7 @@ AnimatorStateTransition:
   m_TransitionDuration: 0
   m_TransitionOffset: 0
   m_ExitTime: 1
-  m_HasExitTime: 1
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -291,9 +264,6 @@ AnimatorStateMachine:
   - serializedVersion: 1
     m_State: {fileID: -7578981497067252661}
     m_Position: {x: 30, y: 220, z: 0}
-  - serializedVersion: 1
-    m_State: {fileID: -8046757585415865725}
-    m_Position: {x: 300, y: 80, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 5962580330863888973}
     m_Position: {x: 900, y: 380, z: 0}
@@ -357,7 +327,7 @@ AnimatorStateTransition:
     m_ConditionEvent: OrangeSunset
     m_EventTreshold: 0
   - m_ConditionMode: 1
-    m_ConditionEvent: AdvanceDialogue
+    m_ConditionEvent: AdvanceCutscene
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 4719018323118832084}
@@ -368,7 +338,7 @@ AnimatorStateTransition:
   m_TransitionDuration: 0
   m_TransitionOffset: 0
   m_ExitTime: 1
-  m_HasExitTime: 1
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -407,7 +377,7 @@ AnimatorController:
   m_Name: HometownCutsceneAnimationController
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: AdvanceDialogue
+  - m_Name: AdvanceCutscene
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -492,7 +462,7 @@ AnimatorStateTransition:
     m_ConditionEvent: OrangeSunset
     m_EventTreshold: 0
   - m_ConditionMode: 1
-    m_ConditionEvent: AdvanceDialogue
+    m_ConditionEvent: AdvanceCutscene
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 8525475031787136125}
@@ -503,7 +473,7 @@ AnimatorStateTransition:
   m_TransitionDuration: 0
   m_TransitionOffset: 0
   m_ExitTime: 1
-  m_HasExitTime: 1
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -520,7 +490,7 @@ AnimatorStateTransition:
     m_ConditionEvent: GoodnightMariposa
     m_EventTreshold: 0
   - m_ConditionMode: 1
-    m_ConditionEvent: AdvanceDialogue
+    m_ConditionEvent: AdvanceCutscene
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 4719018323118832084}
@@ -531,7 +501,7 @@ AnimatorStateTransition:
   m_TransitionDuration: 0
   m_TransitionOffset: 0
   m_ExitTime: 1
-  m_HasExitTime: 1
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -568,7 +538,10 @@ AnimatorStateTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: silica_heart
-  m_Conditions: []
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: SilicaHeart
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 683350363444535414}
   m_Solo: 0
@@ -595,7 +568,7 @@ AnimatorStateTransition:
     m_ConditionEvent: GoodnightMariposa
     m_EventTreshold: 0
   - m_ConditionMode: 1
-    m_ConditionEvent: AdvanceDialogue
+    m_ConditionEvent: AdvanceCutscene
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 8525475031787136125}
@@ -606,7 +579,7 @@ AnimatorStateTransition:
   m_TransitionDuration: 0
   m_TransitionOffset: 0
   m_ExitTime: 1
-  m_HasExitTime: 1
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -623,7 +596,7 @@ AnimatorStateTransition:
     m_ConditionEvent: GoodnightMariposa
     m_EventTreshold: 0
   - m_ConditionMode: 1
-    m_ConditionEvent: AdvanceDialogue
+    m_ConditionEvent: AdvanceCutscene
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 683350363444535414}
@@ -634,7 +607,7 @@ AnimatorStateTransition:
   m_TransitionDuration: 0
   m_TransitionOffset: 0
   m_ExitTime: 1
-  m_HasExitTime: 1
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -675,13 +648,13 @@ AnimatorStateTransition:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: orange_sunset
+  m_Name: orange_sunset_adv
   m_Conditions:
   - m_ConditionMode: 1
     m_ConditionEvent: OrangeSunset
     m_EventTreshold: 0
   - m_ConditionMode: 1
-    m_ConditionEvent: AdvanceDialogue
+    m_ConditionEvent: AdvanceCutscene
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -6664714521421101185}
@@ -692,7 +665,7 @@ AnimatorStateTransition:
   m_TransitionDuration: 0
   m_TransitionOffset: 0
   m_ExitTime: 1
-  m_HasExitTime: 1
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -739,7 +712,7 @@ AnimatorStateTransition:
     m_ConditionEvent: GoodnightMariposa
     m_EventTreshold: 0
   - m_ConditionMode: 1
-    m_ConditionEvent: AdvanceDialogue
+    m_ConditionEvent: AdvanceCutscene
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 5962580330863888973}
@@ -750,7 +723,7 @@ AnimatorStateTransition:
   m_TransitionDuration: 0
   m_TransitionOffset: 0
   m_ExitTime: 1
-  m_HasExitTime: 1
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -818,7 +791,7 @@ AnimatorStateTransition:
     m_ConditionEvent: OrangeSunset
     m_EventTreshold: 0
   - m_ConditionMode: 1
-    m_ConditionEvent: AdvanceDialogue
+    m_ConditionEvent: AdvanceCutscene
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 683350363444535414}
@@ -871,7 +844,7 @@ AnimatorStateTransition:
     m_ConditionEvent: GoodnightMariposa
     m_EventTreshold: 0
   - m_ConditionMode: 1
-    m_ConditionEvent: AdvanceDialogue
+    m_ConditionEvent: AdvanceCutscene
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -6111107162173902943}
@@ -882,7 +855,7 @@ AnimatorStateTransition:
   m_TransitionDuration: 0
   m_TransitionOffset: 0
   m_ExitTime: 1
-  m_HasExitTime: 1
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -915,25 +888,3 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
---- !u!1101 &8546083287477969686
-AnimatorStateTransition:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  m_Conditions: []
-  m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 5433178405721635458}
-  m_Solo: 0
-  m_Mute: 0
-  m_IsExit: 0
-  serializedVersion: 3
-  m_TransitionDuration: 0
-  m_TransitionOffset: 0
-  m_ExitTime: 1
-  m_HasExitTime: 1
-  m_HasFixedDuration: 1
-  m_InterruptionSource: 0
-  m_OrderedInterruption: 1
-  m_CanTransitionToSelf: 1

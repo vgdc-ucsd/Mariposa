@@ -55,6 +55,7 @@ public class DialoguePlayer : MonoBehaviour
     private bool awaitingChoice = false;
     private bool isFading = false;
     private bool acceptingInput = false;
+    private bool isCinematic = false;
 
     // typewriter control
     private bool finishedTypewriter;
@@ -94,7 +95,10 @@ public class DialoguePlayer : MonoBehaviour
         isFading = false;
         acceptingInput = false;
         if (InGameUI.Instance != null) InGameUI.Instance.InteractPrompt(false);
-        SetCinematicMode(false);
+
+        // TODO: hard-coded workaround for final hometown cutscene
+        if (!EndingManager.Instance.IsCutsceneActive) SetCinematicMode(false);
+        else activeLineTarget.text = "";
 
         activeDialogueWindow.SetActive(true);
         if (PlayerController.Instance) PlayerController.Instance.SetMovementLock(true);
@@ -121,13 +125,14 @@ public class DialoguePlayer : MonoBehaviour
 
     public void TryAdvanceDialogue()
     {
-        Debug.Log("TRYING ADVANCING");
-        // If currently fading, don't advance
+        // If currently fading, in cinematic mode, or at the very start of a dialogue, don't advance
         if (isFading || !acceptingInput) return;
 
         // if typewriter effect not finished yet
         if (!finishedTypewriter)
         {
+            if (isCinematic) return;
+
             // finish typewriter effect
             StopAllCoroutines();
             finishedTypewriter = true;
@@ -222,7 +227,7 @@ public class DialoguePlayer : MonoBehaviour
             portraitBG.gameObject.SetActive(false);
         }
 
-        if (element.Background != null)
+        if (element.Background != null && !EndingManager.Instance.IsCutsceneActive)
         {
             if (element.Background.ToLower() == "none")
             {
@@ -260,10 +265,6 @@ public class DialoguePlayer : MonoBehaviour
             SetChoiceButton(choiceButton1, choiceText1, element.Choice1);
             SetChoiceButton(choiceButton2, choiceText2, element.Choice2);
         }
-
-        // activeLineTarget.text = conversation[dialogueIndex].Line;
-        // speakerTarget.text = speaker;
-        // StartCoroutine(TypewriterEffect());
     }
 
     private void SetChoiceButton(UnityEngine.UI.Button button, TextMeshProUGUI choiceText, DialogueChoice choice)
@@ -284,6 +285,7 @@ public class DialoguePlayer : MonoBehaviour
 
     private void SetCinematicMode(bool isCinematic)
     {
+        this.isCinematic = isCinematic;
         backgroundGraphic.gameObject.SetActive(isCinematic);
         activeLineTarget = isCinematic ? cinematicLineTarget : defaultLineTarget;
         activeDialogueWindow = isCinematic ? cinematicDialogueWindow : defaultDialogueWindow;

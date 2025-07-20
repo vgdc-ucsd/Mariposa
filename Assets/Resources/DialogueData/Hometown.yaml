@@ -74,7 +74,7 @@ reach_door:
 - Speaker: Unnamed
   Line: I wonder if fate is still watching. If she's laughing at what we’ve all become.
   Icon: Neutral
-  Background: silica_heart
+  Background: enter_house
   FromRadio: 
   Sounds: []
   Events:
@@ -379,7 +379,7 @@ pretend_nothings_wrong:
 - Speaker: Unnamed
   Line: See you.
   Icon: Neutral
-  Background: plum_vinegar
+  Background: enter_house
   FromRadio: 
   Sounds: []
   Events:
@@ -581,7 +581,7 @@ tell_a_lie:
 - Speaker: Unnamed
   Line: Mari...
   Icon: Neutral
-  Background: orange_sunset
+  Background: enter_house
   FromRadio: 
   Sounds: []
   Events:
@@ -589,28 +589,35 @@ tell_a_lie:
     TriggerAtEnd: true
   Choice1: 
   Choice2: 
+enter_house_orange_sunset:
 - Speaker: Mariposa
   Line: Kairo? You still there?
   Icon: 
-  Background: 
+  Background: place_radio
   FromRadio: 
   Sounds: []
-  Events: []
+  Events:
+  - EventName: advance_cutscene
+    TriggerAtEnd: true
   Choice1: 
   Choice2: 
+lay_down_orange_sunset:
 - Speaker: Unnamed
   Line: Yes.
   Icon: 
-  Background: 
+  Background: lay_down
   FromRadio: 
   Sounds: []
-  Events: []
+  Events:
+  - EventName: advance_cutscene
+    TriggerAtEnd: true
   Choice1: 
   Choice2: 
+idle_radio_orange_sunset:
 - Speaker: Mariposa
   Line: I still can’t believe it.
   Icon: 
-  Background: 
+  Background: radio_idle
   FromRadio: 
   Sounds: []
   Events: []
@@ -631,25 +638,33 @@ tell_a_lie:
   Background: 
   FromRadio: 
   Sounds: []
-  Events: []
+  Events:
+  - EventName: advance_cutscene
+    TriggerAtEnd: true
   Choice1: 
   Choice2: 
+idle_lying_orange_sunset:
 - Speaker: Unnamed
   Line: What’s the future like?
   Icon: 
-  Background: 
+  Background: lay_down
   FromRadio: 
   Sounds: []
-  Events: []
+  Events:
+  - EventName: advance_cutscene
+    TriggerAtEnd: true
   Choice1: 
   Choice2: 
+close_eyes_orange_sunset:
 - Speaker: Unnamed
   Line: …oh, Mariposa. It’s beautiful.
   Icon: 
-  Background: 
+  Background: eyes_closed
   FromRadio: 
   Sounds: []
-  Events: []
+  Events:
+  - EventName: advance_cutscene
+    TriggerAtEnd: true
   Choice1: 
   Choice2: 
 tell_the_truth:
@@ -758,7 +773,7 @@ tell_the_truth:
 - Speaker: Unnamed
   Line: '...'
   Icon: Neutral
-  Background: goodnight_mariposa
+  Background: enter_house
   FromRadio: 
   Sounds: []
   Events:
@@ -766,28 +781,35 @@ tell_the_truth:
     TriggerAtEnd: true
   Choice1: 
   Choice2: 
+enter_house_goodnight_mariposa:
 - Speaker: Mariposa
   Line: '...Kairo? You still there?'
   Icon: 
-  Background: 
+  Background: place_radio
   FromRadio: 
   Sounds: []
-  Events: []
+  Events:
+  - EventName: advance_cutscene
+    TriggerAtEnd: true
   Choice1: 
   Choice2: 
+lay_down_goodnight_mariposa:
 - Speaker: Unnamed
   Line: Yes.
   Icon: 
-  Background: 
+  Background: lay_down
   FromRadio: 
   Sounds: []
-  Events: []
+  Events:
+  - EventName: advance_cutscene
+    TriggerAtEnd: true
   Choice1: 
   Choice2: 
+idle_radio_goodnight_mariposa:
 - Speaker: Mariposa
   Line: You’re...not leaving now, are you?
   Icon: 
-  Background: 
+  Background: radio_idle
   FromRadio: 
   Sounds: []
   Events: []
@@ -817,13 +839,16 @@ tell_the_truth:
   Background: 
   FromRadio: 
   Sounds: []
-  Events: []
+  Events:
+  - EventName: advance_cutscene
+    TriggerAtEnd: true
   Choice1: 
   Choice2: 
+close_eyes_goodnight_mariposa:
 - Speaker: Unnamed
   Line: But thank you. Really. For everything.
   Icon: 
-  Background: 
+  Background: eyes_closed
   FromRadio: 
   Sounds: []
   Events: []
@@ -835,13 +860,16 @@ tell_the_truth:
   Background: 
   FromRadio: 
   Sounds: []
-  Events: []
+  Events:
+  - EventName: advance_cutscene
+    TriggerAtEnd: true
   Choice1: 
   Choice2: 
+butterfly_radio_goodnight_mariposa:
 - Speaker: Mariposa
   Line: '...'
   Icon: 
-  Background: 
+  Background: radio_butterfly
   FromRadio: 
   Sounds: []
   Events: []
@@ -853,16 +881,21 @@ tell_the_truth:
   Background: 
   FromRadio: 
   Sounds: []
-  Events: []
+  Events:
+  - EventName: advance_cutscene
+    TriggerAtEnd: true
   Choice1: 
   Choice2: 
+idle_butterfly_goodnight_mariposa:
 - Speaker: Unnamed
   Line: Goodnight, Mariposa.
   Icon: 
-  Background: 
+  Background: death_butterfly
   FromRadio: 
   Sounds: []
-  Events: []
+  Events:
+  - EventName: advance_cutscene
+    TriggerAtEnd: true
   Choice1: 
   Choice2: 
 interact_inventory_radio_mariposa:

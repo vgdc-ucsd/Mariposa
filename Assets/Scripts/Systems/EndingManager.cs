@@ -28,11 +28,12 @@ public class EndingManager : Singleton<EndingManager>
             cutsceneManager.Animator.SetBool(currentEnding.ToString(), true);
         }
     }
+    public bool IsCutsceneActive { get; private set; }
 
     void Start()
     {
         // TODO: for testing, remove before building
-        FriendshipManager.Instance.SetScore(GOOD_ENDING_THRESHOLD - 1);
+        FriendshipManager.Instance.SetScore(GOOD_ENDING_THRESHOLD);
 
         bool isGoodEnding = FriendshipManager.Instance.CompareScore(GOOD_ENDING_THRESHOLD);
         foreach (GameObject obj in goodDialogueTriggers) obj.SetActive(isGoodEnding);
@@ -60,13 +61,19 @@ public class EndingManager : Singleton<EndingManager>
 
     public void PlayCutscene()
     {
-        // cutsceneManager.Animator.Play("FadeIn");
+        IsCutsceneActive = true;
         cutsceneManager.Animator.Play("EnterHouse");
     }
 
-    public void EndIdleLoop()
+    public void AdvanceCutscene()
     {
-        Debug.Log("Ending idle loop");
-        cutsceneManager.Animator.SetTrigger("EndIdleLoop");
+        cutsceneManager.Animator.SetTrigger("AdvanceCutscene");
+    }
+
+    public void EndCutscene()
+    {
+        // TODO: go to credits, or main menu?
+        Debug.Log("Game finished");
+        IsCutsceneActive = false;
     }
 }

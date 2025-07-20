@@ -74,7 +74,7 @@ UNNAMED
 I wonder if fate is still watching. If she's laughing at what we’ve all become.
 
 
-!background silica_heart
+!background enter_house
 !event silica_heart end
 
 
@@ -309,7 +309,7 @@ See you.
 
 
 
-!background plum_vinegar
+!background enter_house
 !event plum_vinegar end
 
 
@@ -457,7 +457,7 @@ UNNAMED
 Mari...
 
 
-!background orange_sunset
+!background enter_house
 !event orange_sunset end
 
 
@@ -470,16 +470,24 @@ Mari...
 #The Unnamed sets the radio down softly, and collapses down next to it, rolling onto their back to breathe. They remove their gas mask. 
 
 
+!name enter_house_orange_sunset
 MARIPOSA
 Kairo? You still there?
+!background place_radio
+!event advance_cutscene end
 
 
+!name lay_down_orange_sunset
 UNNAMED 
 Yes.
+!background lay_down
+!event advance_cutscene end
 
 
+!name idle_radio_orange_sunset
 MARIPOSA
 I still can’t believe it. 
+!background radio_idle
 
 
 MARIPOSA
@@ -488,14 +496,21 @@ What happens to the city, the pier, my hometown—-what happens to us?
 
 MARIPOSA
 The future—-what’s it like? 
+!event advance_cutscene end
 
 
+!name idle_lying_orange_sunset
 UNNAMED
 What’s the future like? 
+!background lay_down
+!event advance_cutscene end
 
 
+!name close_eyes_orange_sunset
 UNNAMED
 …oh, Mariposa. It’s beautiful.
+!background eyes_closed
+!event advance_cutscene end
 
 
 #The chatter from the radio fades into indistinct noise. THE UNNAMED’s eyes flutter shut once, then open weakly briefly to see a yellow butterfly land on the radio. Mariposa is still presumably talking to them, but they can’t focus for very long anymore. They smile, touch the side of the radio, close their eyes, and take a slow breath. 
@@ -569,7 +584,7 @@ For giving me a little comfort before I go.
 UNNAMED
 (neutral)
 ...
-!background goodnight_mariposa
+!background enter_house
 !event goodnight_mariposa end
 
 
@@ -585,16 +600,24 @@ UNNAMED
 #The Unnamed sets the radio down softly, and collapses down next to it, rolling onto their back to breathe. They remove their gas mask. 
 
 
+!name enter_house_goodnight_mariposa
 MARIPOSA
 ...Kairo? You still there?
+!background place_radio
+!event advance_cutscene end
 
 
+!name lay_down_goodnight_mariposa
 UNNAMED 
 Yes.
+!background lay_down
+!event advance_cutscene end
 
 
+!name idle_radio_goodnight_mariposa
 MARIPOSA
 You’re...not leaving now, are you?
+!background radio_idle
 
 
 UNNAMED
@@ -607,27 +630,37 @@ Is it always going to be this way? There’s—nothing I can do? Nothing’s cha
 
 UNNAMED
 ...I don’t know. I’m sorry.
+!event advance_cutscene end
 
 
+!name close_eyes_goodnight_mariposa
 UNNAMED
 But thank you. Really. For everything.
+!background eyes_closed
 
 
 UNNAMED
 I’ll miss you.
+!event advance_cutscene end
 
 
+!name butterfly_radio_goodnight_mariposa
 MARIPOSA
 ... 
+!background radio_butterfly
 
 
 MARIPOSA
 I think I’ve missed you for a long, long time.
+!event advance_cutscene end
 
 
+!name idle_butterfly_goodnight_mariposa
 UNNAMED
 ...
 Goodnight, Mariposa.
+!background death_butterfly
+!event advance_cutscene end
 
 
 #The chatter from the radio fades into indistinct noise. THE UNNAMED’s eyes flutter shut once, then open weakly briefly to see a yellow butterfly land on the radio. Mariposa is still presumably talking to them, but they can’t focus for very long anymore. They curl closer to the radio, smile, close their eyes, and take a deep breath.  
