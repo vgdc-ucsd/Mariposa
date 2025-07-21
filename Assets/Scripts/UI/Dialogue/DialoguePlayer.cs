@@ -97,7 +97,7 @@ public class DialoguePlayer : MonoBehaviour
         if (InGameUI.Instance != null) InGameUI.Instance.InteractPrompt(false);
 
         // TODO: hard-coded workaround for final hometown cutscene
-        if (!EndingManager.Instance.IsCutsceneActive) SetCinematicMode(false);
+        if (EndingManager.Instance && !EndingManager.Instance.IsCutsceneActive) SetCinematicMode(false);
         else activeLineTarget.text = "";
 
         activeDialogueWindow.SetActive(true);
