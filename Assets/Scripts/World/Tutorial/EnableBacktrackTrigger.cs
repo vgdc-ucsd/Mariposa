@@ -7,7 +7,7 @@ public class EnableBacktrackTrigger : Trigger
     public override bool OnEnter(Body body)
     {
         if (!base.OnEnter(body)) return false;
-        TutorialManager.Instance.backtrackTrigger.SetActive(true);
+        //TutorialManager.Instance.backtrackTrigger.SetActive(true);
         return true;
     }
 }

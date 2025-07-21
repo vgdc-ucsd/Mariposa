@@ -279,6 +279,8 @@ GameObject:
   - component: {fileID: 4523102469945333274}
   - component: {fileID: 5132626664994144052}
   - component: {fileID: 751145334354421976}
+  - component: {fileID: 1401613861515938743}
+  - component: {fileID: 8369668486070836137}
   m_Layer: 0
   m_Name: CutsceneEvents
   m_TagString: Untagged
@@ -315,7 +317,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: silica_heart
   action: 0
-  isGoodEnding: 0
+  ending: 0
 --- !u!114 &5132626664994144052
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -328,9 +330,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a47a73e5f6fa1ab498dabd01851b78a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: enter_home_good
+  Name: plum_vinegar
   action: 0
-  isGoodEnding: 1
+  ending: 1
 --- !u!114 &751145334354421976
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -344,8 +346,38 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: orange_sunset
+  action: 0
+  ending: 2
+--- !u!114 &1401613861515938743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330539824752648188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a47a73e5f6fa1ab498dabd01851b78a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: goodnight_mariposa
+  action: 0
+  ending: 3
+--- !u!114 &8369668486070836137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330539824752648188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a47a73e5f6fa1ab498dabd01851b78a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: advance_cutscene
   action: 1
-  isGoodEnding: 1
+  ending: 0
 --- !u!1 &526402761070202213
 GameObject:
   m_ObjectHideFlags: 0
@@ -4145,7 +4177,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4823896868386678462, guid: 29fbe75e81630c947b2cf4ab50a47961, type: 3}
       propertyPath: <SublevelMusic>k__BackingField
-      value: 8
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 5296501696184503134, guid: 29fbe75e81630c947b2cf4ab50a47961, type: 3}
       propertyPath: m_LocalPosition.x

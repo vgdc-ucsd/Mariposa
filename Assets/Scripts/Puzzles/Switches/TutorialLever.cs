@@ -7,6 +7,7 @@ using UnityEngine;
 public class TutorialLever : Switch
 {
     public SpriteRenderer spriteRenderer;
+    [SerializeField] private ChargingStation chargingStation; 
 
     /// <summary>
     /// Override of TriggerSwitch from switch class which switchs lever to opposite value
@@ -20,11 +21,8 @@ public class TutorialLever : Switch
             SwitchToggled = true;
             spriteRenderer.flipX = true;
             RuntimeManager.PlayOneShot("event:/sfx/puzzle/lever_pull");
-
-            if (BlockPuzzle.Instance.IsComplete)
-            {
-                DialogueManager.Instance.PlayDialogue(TutorialManager.Instance.blockPuzzleCompleteDialogue);
-            }
+            chargingStation.SetCharged();
+            Destroy(GetComponentInChildren<InteractionTrigger>().gameObject);
         }
     }
 }

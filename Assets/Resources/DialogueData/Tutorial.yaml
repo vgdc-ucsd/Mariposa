@@ -511,6 +511,7 @@ battery:
     TriggerAtEnd: false
   Choice1: 
   Choice2: 
+mariposa_part2_start:
 - Speaker: Mariposa
   Line: (I think I’ll give them a bit of space for now. Seems like they’re not interested in talking to me...)
   Icon: 
@@ -811,10 +812,11 @@ unnamed_bot_appear:
   Background: 
   FromRadio: 
   Sounds: []
-  Events: []
+  Events:
+  - EventName: unlock_tutorial_exit
+    TriggerAtEnd: false
   Choice1: 
   Choice2: 
-success_put_battery_in_bot:
 - Speaker: Narration
   Line: <i>You slot the battery into the automaton. The charging station starts to churr. The automaton creaks to life. It barely moves, but its eyes begin to glow.</i>
   Icon: 
