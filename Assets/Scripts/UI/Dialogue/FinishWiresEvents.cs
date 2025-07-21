@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class FinishWiresEvents : MonoBehaviour
 {
-    [SerializeField] private DialogueInteractable wiresPuzzleOpenDialogue;
+    [SerializeField] private DialogueInteractableSimple wiresPuzzleOpenDialogue;
     [SerializeField] private GameObject billboardPuzzleInteractableObj;
     [SerializeField] private GameObject wiresPuzzleObj;
     [SerializeField] private GameObject billboardOffPanelObj;

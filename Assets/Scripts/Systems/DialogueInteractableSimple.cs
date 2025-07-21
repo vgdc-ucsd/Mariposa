@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DialogueInteractable : Interactable
+public class DialogueInteractableSimple : Interactable
 {
     [SerializeField] private string dialogueToTrigger;
 
