@@ -23,11 +23,13 @@ public class StateMachine<T>
 
     public void AddEnterAction(T state, Action action)
     {
+        if (onEnterActions.ContainsKey(state)) return;
         onEnterActions.Add(state, action);
     }
 
     public void AddExitAction(T state, Action action)
     {
+        if (onExitActions.ContainsKey(state)) return;
         onExitActions.Add(state, action);
     }
 
