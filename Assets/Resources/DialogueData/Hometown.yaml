@@ -74,14 +74,12 @@ reach_door:
 - Speaker: Unnamed
   Line: I wonder if fate is still watching. If she's laughing at what we’ve all become.
   Icon: Neutral
-  Background: silica_heart
+  Background: enter_house
   FromRadio: 
   Sounds: []
   Events:
   - EventName: silica_heart
     TriggerAtEnd: true
-  - EventName: end_game
-    TriggerAtEnd: false
   Choice1: 
   Choice2: 
 check_on_her:
@@ -381,11 +379,11 @@ pretend_nothings_wrong:
 - Speaker: Unnamed
   Line: See you.
   Icon: Neutral
-  Background: silica_heart
+  Background: enter_house
   FromRadio: 
   Sounds: []
   Events:
-  - EventName: silica_heart
+  - EventName: plum_vinegar
     TriggerAtEnd: true
   Choice1: 
   Choice2: 
@@ -583,11 +581,89 @@ tell_a_lie:
 - Speaker: Unnamed
   Line: Mari...
   Icon: Neutral
-  Background: orange_sunset
+  Background: enter_house
   FromRadio: 
   Sounds: []
   Events:
-  - EventName: enter_home_good
+  - EventName: orange_sunset
+    TriggerAtEnd: true
+  Choice1: 
+  Choice2: 
+enter_house_orange_sunset:
+- Speaker: Mariposa
+  Line: Kairo? You still there?
+  Icon: 
+  Background: place_radio
+  FromRadio: 
+  Sounds: []
+  Events:
+  - EventName: advance_cutscene
+    TriggerAtEnd: true
+  Choice1: 
+  Choice2: 
+lay_down_orange_sunset:
+- Speaker: Unnamed
+  Line: Yes.
+  Icon: 
+  Background: lay_down
+  FromRadio: 
+  Sounds: []
+  Events:
+  - EventName: advance_cutscene
+    TriggerAtEnd: true
+  Choice1: 
+  Choice2: 
+idle_radio_orange_sunset:
+- Speaker: Mariposa
+  Line: I still can’t believe it.
+  Icon: 
+  Background: radio_idle
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: What happens to the city, the pier, my hometown—-what happens to us?
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: The future—-what’s it like?
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events:
+  - EventName: advance_cutscene
+    TriggerAtEnd: true
+  Choice1: 
+  Choice2: 
+idle_lying_orange_sunset:
+- Speaker: Unnamed
+  Line: What’s the future like?
+  Icon: 
+  Background: lay_down
+  FromRadio: 
+  Sounds: []
+  Events:
+  - EventName: advance_cutscene
+    TriggerAtEnd: true
+  Choice1: 
+  Choice2: 
+close_eyes_orange_sunset:
+- Speaker: Unnamed
+  Line: …oh, Mariposa. It’s beautiful.
+  Icon: 
+  Background: eyes_closed
+  FromRadio: 
+  Sounds: []
+  Events:
+  - EventName: advance_cutscene
     TriggerAtEnd: true
   Choice1: 
   Choice2: 
@@ -697,12 +773,129 @@ tell_the_truth:
 - Speaker: Unnamed
   Line: '...'
   Icon: Neutral
-  Background: orange_sunset
+  Background: enter_house
   FromRadio: 
   Sounds: []
   Events:
-  - EventName: enter_home_good
-    TriggerAtEnd: false
+  - EventName: goodnight_mariposa
+    TriggerAtEnd: true
+  Choice1: 
+  Choice2: 
+enter_house_goodnight_mariposa:
+- Speaker: Mariposa
+  Line: '...Kairo? You still there?'
+  Icon: 
+  Background: place_radio
+  FromRadio: 
+  Sounds: []
+  Events:
+  - EventName: advance_cutscene
+    TriggerAtEnd: true
+  Choice1: 
+  Choice2: 
+lay_down_goodnight_mariposa:
+- Speaker: Unnamed
+  Line: Yes.
+  Icon: 
+  Background: lay_down
+  FromRadio: 
+  Sounds: []
+  Events:
+  - EventName: advance_cutscene
+    TriggerAtEnd: true
+  Choice1: 
+  Choice2: 
+idle_radio_goodnight_mariposa:
+- Speaker: Mariposa
+  Line: You’re...not leaving now, are you?
+  Icon: 
+  Background: radio_idle
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: '...Mariposa.'
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: Is it always going to be this way? There’s—nothing I can do? Nothing’s changed, even though I—
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: '...I don’t know. I’m sorry.'
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events:
+  - EventName: advance_cutscene
+    TriggerAtEnd: true
+  Choice1: 
+  Choice2: 
+close_eyes_goodnight_mariposa:
+- Speaker: Unnamed
+  Line: But thank you. Really. For everything.
+  Icon: 
+  Background: eyes_closed
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: I’ll miss you.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events:
+  - EventName: advance_cutscene
+    TriggerAtEnd: true
+  Choice1: 
+  Choice2: 
+butterfly_radio_goodnight_mariposa:
+- Speaker: Mariposa
+  Line: '...'
+  Icon: 
+  Background: radio_butterfly
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: I think I’ve missed you for a long, long time.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events:
+  - EventName: advance_cutscene
+    TriggerAtEnd: true
+  Choice1: 
+  Choice2: 
+idle_butterfly_goodnight_mariposa:
+- Speaker: Unnamed
+  Line: Goodnight, Mariposa.
+  Icon: 
+  Background: death_butterfly
+  FromRadio: 
+  Sounds: []
+  Events:
+  - EventName: advance_cutscene
+    TriggerAtEnd: true
   Choice1: 
   Choice2: 
 interact_inventory_radio_mariposa:
@@ -777,7 +970,7 @@ interact_inventory_battery_unnamed:
   Choice2: 
 interact_inventory_grappling_hook_unnamed:
 - Speaker: Jacky
-  Line: '[b]Same as above.'
+  Line: A makeshift grappling hook. It’s held out so far, but the rope is starting to fray.
   Icon: 
   Background: 
   FromRadio: 
