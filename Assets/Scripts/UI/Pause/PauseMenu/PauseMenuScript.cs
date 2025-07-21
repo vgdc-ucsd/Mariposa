@@ -13,7 +13,7 @@ public class PauseMenuScript : MonoBehaviour
 
     void Start()
     {
-        // GameManager.Instance.RegisterStartAction(GameState.PAUSE, PauseGame);
+        GameManager.Instance.RegisterStartAction(GameState.PAUSE, PauseGame);
         GameManager.Instance.RegisterExitAction(GameState.PAUSE, ResumeGame);
     }
 
