@@ -8,10 +8,12 @@ using System.Text.RegularExpressions;
 public class DialoguePlayer : MonoBehaviour
 {
     // object references
-    public GameObject DialogueWindow;
+    [SerializeField] private GameObject defaultDialogueWindow;
+    [SerializeField] private GameObject cinematicDialogueWindow;
 
     [SerializeField] private TMP_Text speakerTarget;
-    [SerializeField] private TMP_Text lineTarget;
+    [SerializeField] private TMP_Text defaultLineTarget;
+    [SerializeField] private TMP_Text cinematicLineTarget;
 
     [SerializeField] private Image textboxRect;
     [SerializeField] private Sprite mariRect;
@@ -44,10 +46,16 @@ public class DialoguePlayer : MonoBehaviour
     [SerializeField] private TextMeshProUGUI choiceText1;
     [SerializeField] private TextMeshProUGUI choiceText2;
 
+    private TMP_Text activeLineTarget;
+    private GameObject activeDialogueWindow;
+
     // dialogue control
     private List<DialogueElement> conversation = new List<DialogueElement>();
     private int dialogueIndex = 0;
     private bool awaitingChoice = false;
+    private bool isFading = false;
+    private bool acceptingInput = false;
+    private bool isCinematic = false;
 
     // typewriter control
     private bool finishedTypewriter;
@@ -66,7 +74,9 @@ public class DialoguePlayer : MonoBehaviour
 
     void Start()
     {
-        DialogueWindow.SetActive(false);
+        activeDialogueWindow = defaultDialogueWindow;
+        activeLineTarget = defaultLineTarget;
+        activeDialogueWindow.SetActive(false);
     }
 
     public void PlayDialogue(List<DialogueElement> dialogue, bool initAdvance)
@@ -82,10 +92,15 @@ public class DialoguePlayer : MonoBehaviour
         speakerSprites = new Dictionary<string, Sprite>();
         endingEvents = new List<string>();
         awaitingChoice = false;
+        isFading = false;
+        acceptingInput = false;
         if (InGameUI.Instance != null) InGameUI.Instance.InteractPrompt(false);
-        SetCinematicMode(false);
 
-        DialogueWindow.SetActive(true);
+        // TODO: hard-coded workaround for final hometown cutscene
+        if (!EndingManager.Instance.IsCutsceneActive) SetCinematicMode(false);
+        else activeLineTarget.text = "";
+
+        activeDialogueWindow.SetActive(true);
         if (PlayerController.Instance) PlayerController.Instance.SetMovementLock(true);
 
         // check if Mariposa currently active
@@ -104,18 +119,22 @@ public class DialoguePlayer : MonoBehaviour
             advanceIndicator.sprite = unnAdvance;
         }
 
+        StartCoroutine(ReenableInput());
         if (initAdvance) AdvanceDialogue();
     }
 
     public void TryAdvanceDialogue()
     {
+        // If currently fading, in cinematic mode, or at the very start of a dialogue, don't advance
+        if (isFading || !acceptingInput) return;
+
         // if typewriter effect not finished yet
         if (!finishedTypewriter)
         {
             // finish typewriter effect
             StopAllCoroutines();
             finishedTypewriter = true;
-            lineTarget.maxVisibleCharacters = taglessText.Length;
+            activeLineTarget.maxVisibleCharacters = taglessText.Length;
             advanceHoverer.Reset();
             advanceIndicator.gameObject.SetActive(true);
         }
@@ -134,14 +153,19 @@ public class DialoguePlayer : MonoBehaviour
         if (dialogueIndex >= conversation.Count)
         {
             VoicelineManager.Instance.StopAllDialogueAudioEffects(FMOD.Studio.STOP_MODE.IMMEDIATE);
-            DialogueWindow.SetActive(false);
+            activeDialogueWindow.SetActive(false);
+
+            // Removed for hometown cutscenes
+            // backgroundGraphic.gameObject.SetActive(false);
+
             if (PlayerController.Instance) PlayerController.Instance.SetMovementLock(false);
 
             foreach (string dialogueEvent in endingEvents)
             {
                 DialogueManager.Instance.TriggerEvent(dialogueEvent);
             }
-            
+
+            DialogueManager.Instance.isPlayingDialogue = false;
             return;
         }
 
@@ -201,7 +225,7 @@ public class DialoguePlayer : MonoBehaviour
             portraitBG.gameObject.SetActive(false);
         }
 
-        if (element.Background != null)
+        if (element.Background != null && !EndingManager.Instance.IsCutsceneActive)
         {
             if (element.Background.ToLower() == "none")
             {
@@ -209,9 +233,27 @@ public class DialoguePlayer : MonoBehaviour
             }
             else
             {
-                backgroundGraphic.sprite = backgroundMap.GetSprite(element.Background);
-                SetCinematicMode(true);
+                // Wait for screen to fade before continuing execution
+                isFading = true;
+                FadeController.Instance.FadeOutAndDo(() =>
+                {
+                    backgroundGraphic.sprite = backgroundMap.GetSprite(element.Background);
+                    SetCinematicMode(true);
+                    FadeController.Instance.FadeIn();
+                    isFading = false;
+                    
+                    activeLineTarget.text = conversation[dialogueIndex].Line;
+                    speakerTarget.text = speaker;
+                    StartCoroutine(TypewriterEffect());
+                });
             }
+        }
+        else
+        {
+            // If no background change, execute text update immediately
+            activeLineTarget.text = conversation[dialogueIndex].Line;
+            speakerTarget.text = speaker;
+            StartCoroutine(TypewriterEffect());
         }
 
         if (element.Choice1 != null && element.Choice2 != null)
@@ -221,10 +263,6 @@ public class DialoguePlayer : MonoBehaviour
             SetChoiceButton(choiceButton1, choiceText1, element.Choice1);
             SetChoiceButton(choiceButton2, choiceText2, element.Choice2);
         }
-
-        lineTarget.text = conversation[dialogueIndex].Line;
-        speakerTarget.text = speaker;
-        StartCoroutine(TypewriterEffect());
     }
 
     private void SetChoiceButton(UnityEngine.UI.Button button, TextMeshProUGUI choiceText, DialogueChoice choice)
@@ -233,9 +271,9 @@ public class DialoguePlayer : MonoBehaviour
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(() =>
         {
-            // TODO adjust friendship
             if (choice.LinkedDialogue != null)
             {
+                FriendshipManager.Instance.ChangeScore(choice.Friendship);
                 DialogueManager.Instance.PlayDialogue(choice.LinkedDialogue);
             }
             buttonDisplay.SetActive(false);
@@ -245,7 +283,12 @@ public class DialoguePlayer : MonoBehaviour
 
     private void SetCinematicMode(bool isCinematic)
     {
+        this.isCinematic = isCinematic;
         backgroundGraphic.gameObject.SetActive(isCinematic);
+        activeLineTarget = isCinematic ? cinematicLineTarget : defaultLineTarget;
+        activeDialogueWindow = isCinematic ? cinematicDialogueWindow : defaultDialogueWindow;
+        defaultDialogueWindow.SetActive(!isCinematic);
+        cinematicDialogueWindow.SetActive(isCinematic);
     }
 
     private IEnumerator TypewriterEffect()
@@ -255,11 +298,11 @@ public class DialoguePlayer : MonoBehaviour
         int length = taglessText.Length;
 
         int i = 0;
-        lineTarget.maxVisibleCharacters = i;
+        activeLineTarget.maxVisibleCharacters = i;
         while (i < length)
         {
             i++;
-            lineTarget.maxVisibleCharacters = i;
+            activeLineTarget.maxVisibleCharacters = i;
             bool punctuation = taglessText[i - 1] == ',' || taglessText[i - 1] == '.' || taglessText[i - 1] == '?' || taglessText[i - 1] == '!' || taglessText[i - 1] == ':' || taglessText[i - 1] == ';';
             if (punctuation) yield return new WaitForSeconds(DIALOGUE_SPEED * 10.0f);
             else yield return new WaitForSeconds(DIALOGUE_SPEED);
@@ -271,5 +314,11 @@ public class DialoguePlayer : MonoBehaviour
             advanceIndicator.gameObject.SetActive(true);
         }
         finishedTypewriter = true;
+    }
+
+    private IEnumerator ReenableInput()
+    {
+        yield return new WaitForSeconds(0.1f);
+        acceptingInput = true;
     }
 }

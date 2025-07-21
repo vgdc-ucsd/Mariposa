@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using FMOD.Studio;
 using FMODUnity;
 using UnityEngine;
@@ -18,46 +19,50 @@ public class PlayerAnimation : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
-        // playerSprite = GetComponent<SpriteRenderer>();
     }
 
     void Update()
     {
-        if (Player.ActivePlayer.Movement.State == BodyState.InAir)
-        {
-            animator.SetBool("isJumping", true);
-        }
-        else
-        {
-            animator.SetBool("isJumping", false);
-        }
+        // Jumping
+        bool isJumping = Player.ActivePlayer.Movement.State == BodyState.InAir;
+        animator.SetBool("isJumping", isJumping);
     }
 
     void FixedUpdate()
     {
+        // Landing SFX
         PlayLand();
-        // at rest
-        if (Player.ActivePlayer.Movement.Velocity.sqrMagnitude <= 0.05f)
-        {
-            animator.SetBool("isJumping", false);
-            animator.SetFloat("xVelocity", 0f);
-            animator.SetFloat("yVelocity", 0f);
-            return;
-        }
 
-        int dir = Player.ActivePlayer.FacingDirection;
-        if (dir == -1)
+        // Idle, not moving
+        if (Player.ActivePlayer.Movement.Velocity.sqrMagnitude <= 0.005f)
         {
-            animator.SetFloat("xVelocity", 1);
-            animator.SetFloat("yVelocity", Player.ActivePlayer.Movement.Velocity.y);
-            animator.SetFloat("faceLeft", 1);
+            StartCoroutine(IdleDelay(() => animator.SetFloat("xVelocity", 0f)));
+            animator.SetBool("isJumping", false);
+            animator.SetFloat("yVelocity", 0f);
         }
+        // Running
         else
         {
+            StopAllCoroutines();
             animator.SetFloat("xVelocity", 1);
             animator.SetFloat("yVelocity", Player.ActivePlayer.Movement.Velocity.y);
-            animator.SetFloat("faceLeft", 0);
+
+            int dir = Player.ActivePlayer.FacingDirection;
+            if (dir == -1)
+            {
+                animator.SetFloat("faceLeft", 1);
+            }
+            else
+            {
+                animator.SetFloat("faceLeft", 0);
+            }
         }
+    }
+
+    IEnumerator IdleDelay(Action idle)
+    {
+        yield return new WaitForSeconds(0.03f);
+        idle();
     }
 
     private string MaterialCheck()

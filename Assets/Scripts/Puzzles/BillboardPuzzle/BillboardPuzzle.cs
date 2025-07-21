@@ -54,6 +54,7 @@ public class BillboardPuzzle : Puzzle
         }
         UpdatePuzzleDisplay();
         Initialized = true;
+        this.gameObject.SetActive(false);
     }
 
     [ContextMenu("Reset Puzzle")]
@@ -148,7 +149,7 @@ public class BillboardPuzzle : Puzzle
             }
         }
 
-        
+
     }
 
     private void UpdatePuzzleDisplay()
@@ -183,6 +184,15 @@ public class BillboardPuzzle : Puzzle
         }
 
         return true;
+    }
+    
+    void Update()
+    {
+        if (Input.GetKey(KeyCode.H))
+        {
+            IsComplete = true;
+            OnComplete();
+        }
     }
 }
 

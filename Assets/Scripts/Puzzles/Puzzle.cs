@@ -26,13 +26,13 @@ public abstract class Puzzle : MonoBehaviour
         if (completionEvent != null) completionEvent.Invoke();
 
         if (Player.ActivePlayer.Data.characterID == CharID.Mariposa)
-            {
-                RuntimeManager.PlayOneShot("event:/sfx/puzzle/puzzle_complete/mariposa");
-            }
-            else
-            {
-                RuntimeManager.PlayOneShot("event:/sfx/puzzle/puzzle_complete/unnamed");
-            }
+        {
+            RuntimeManager.PlayOneShot("event:/sfx/puzzle/puzzle_complete/mariposa");
+        }
+        else
+        {
+            RuntimeManager.PlayOneShot("event:/sfx/puzzle/puzzle_complete/unnamed");
+        }
     }
 
     /// <summary>
