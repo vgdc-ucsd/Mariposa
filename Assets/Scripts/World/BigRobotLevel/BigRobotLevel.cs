@@ -119,7 +119,7 @@ public class BigRobotLevel : MonoBehaviour
 
     public void CompleteLevel()
     {
-        Debug.Log("Level Complete!");
+        LevelManager.Instance.LoadNextLevel();
     }
 
     private void SendRobot(int robotIndex)
