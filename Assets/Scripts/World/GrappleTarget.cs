@@ -11,6 +11,21 @@ public class GrappleTarget : MonoBehaviour
 
     public bool isAvailable = true;
 
+    private void Awake()
+    {
+        ResetGrappleTarget();
+    }
+
+    private void OnEnable()
+    {
+        Player.OnDeath += ResetGrappleTarget;
+    }
+
+    private void OnDisable()
+    {
+        Player.OnDeath -= ResetGrappleTarget;
+    }
+
     private void Update()
     {
         respawn_t -= Time.deltaTime;
@@ -38,5 +53,12 @@ public class GrappleTarget : MonoBehaviour
             isAvailable = false;
             respawn_t = respawnTime;
         }
+    }
+
+    public void ResetGrappleTarget()
+    {
+        isAvailable = true;
+        respawn_t = 0;
+        isTargeted = false;
     }
 }

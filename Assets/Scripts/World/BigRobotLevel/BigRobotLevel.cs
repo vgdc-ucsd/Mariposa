@@ -11,6 +11,10 @@ public class BigRobotLevel : MonoBehaviour
     [SerializeField] private RespawnPoint[] checkpoints;
     [SerializeField] private BigRobotLevelTrigger[] triggers;
 
+    [SerializeField] private Vector2 climbRobotSpecialResetPosition;
+
+    private WaitForSeconds waitForFade;
+
     public enum CurrentSection
     {
         START, 
@@ -45,6 +49,7 @@ public class BigRobotLevel : MonoBehaviour
     {
         yield return new WaitForEndOfFrame();
 
+        waitForFade = new(FadeController.Instance._fadeDuration);
         Player.ActivePlayer.gameObject.SetActive(false);
 
         cutscene.gameObject.SetActive(true);
@@ -63,7 +68,12 @@ public class BigRobotLevel : MonoBehaviour
 
         RuntimeManager.StudioSystem.setParameterByName(MUSIC_PARAM, (int)MusicSection.CHASE_START);
 
-        DisableAllRobots();
+        foreach (ChaseRobot robot in chaseRobots)
+        {
+            robot.StopAllCoroutines();
+            robot.state = ChaseRobot.RobotWallState.IDLE;
+            robot.gameObject.SetActive(false);
+        }
         SendRobot(0);
     }
 
@@ -74,16 +84,21 @@ public class BigRobotLevel : MonoBehaviour
 
     private void OnPlayerDeath()
     {
-        DisableAllRobots();
+        StartCoroutine(DisableAllRobots());
         if (Player.ActivePlayer.CurrentRespawnPoint == checkpoints[0])
         {
             currentSection = CurrentSection.START;
-            ResetRobot(0);
+            StartCoroutine(ResetRobot(0));
         }
         else if (Player.ActivePlayer.CurrentRespawnPoint == checkpoints[1])
         {
             currentSection = CurrentSection.CLIMB;
-            ResetRobot(1);
+            StartCoroutine(ResetRobot(1));
+        }
+        else if (Player.ActivePlayer.CurrentRespawnPoint == checkpoints[2])
+        {
+            currentSection = CurrentSection.CLIMB;
+            StartCoroutine(ResetRobot(1));
         }
         else
         {
@@ -134,24 +149,34 @@ public class BigRobotLevel : MonoBehaviour
         StartCoroutine(chaseRobots[robotIndex].Enter());
     }
 
-    private void ResetRobot(int robotIndex)
+    private IEnumerator ResetRobot(int robotIndex)
     {
         if (robotIndex < 0 || robotIndex >= chaseRobots.Length)
         {
             Debug.LogError($"{robotIndex} is not a valid index for chaseRobots");
-            return;
+            yield break;
         }
 
+        yield return waitForFade;
+
         chaseRobots[robotIndex].gameObject.SetActive(true);
-        StartCoroutine(chaseRobots[robotIndex].ResetRobot());
+        chaseRobots[robotIndex].col.enabled = true;
+        chaseRobots[robotIndex].ResetRobot();
     }
 
-    private void DisableAllRobots()
+    private IEnumerator DisableAllRobots()
     {
         foreach (ChaseRobot robot in chaseRobots)
         {
             robot.StopAllCoroutines();
             robot.state = ChaseRobot.RobotWallState.IDLE;
+            robot.col.enabled = false;
+        }
+
+        yield return waitForFade;
+
+        foreach (ChaseRobot robot in chaseRobots)
+        {
             robot.gameObject.SetActive(false);
         }
     }
