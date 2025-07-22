@@ -31,7 +31,7 @@ public class ResolutionSetting : MonoBehaviour
     {
         Width = resolutions[currentResolutionIndex,0];
         Height = resolutions[currentResolutionIndex,1];
-        Screen.SetResolution(Width, Height, FullScreenMode.Windowed);
+        Screen.SetResolution(Width, Height, FullScreenMode.ExclusiveFullScreen);
     }
 
     /// <summary>
