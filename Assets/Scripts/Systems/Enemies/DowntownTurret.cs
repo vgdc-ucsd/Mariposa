@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using Microsoft.Unity.VisualStudio.Editor;
 using System;
+using UnityEditor.EditorTools;
 
 public class DowntownTurret : MonoBehaviour
 {
@@ -33,7 +34,7 @@ public class DowntownTurret : MonoBehaviour
     [Header("Turret Attribute")]
     private LayerMask playerLayer;
     private LayerMask playerAndEnvLayer;
-    [SerializeField][Range(0.1f, 20.0f)] private float rotationSpeed;
+    [SerializeField][Range(0.0f, 1000.0f)] private float rotationSpeed;
     [SerializeField][Range(0.1f, 10.0f)] private float attackCooldownDuration;
     private float attackCooldownCounter;
     [SerializeField][Range(0.1f, 10)] private float projectileFocusDuration;
@@ -44,7 +45,8 @@ public class DowntownTurret : MonoBehaviour
     [Header("Range Detector")]
     [SerializeField][Range(0.1f, 10.0f)] float rangeRadius;
 
-    private bool hasPositivePlayerLOS;
+    [Tooltip("Determines how precise turret is. The greater the number, the farther the player can be before the turret starts to charge. Number is in degrees.")]
+    [SerializeField][Range(0.0f, 90.0f)] float precision;
 
     [Header("Sprites")]
     [SerializeField] private Image activeSprite;
@@ -96,12 +98,11 @@ public class DowntownTurret : MonoBehaviour
         }
 
         // if made it this far, target is in range
-        hasPositivePlayerLOS = true;
 
         // 0.0174533f = pi / 180.0f;
         Vector3 playerDirectionVector = (playerTargetObj.transform.position - chargingPoint.transform.position).normalized;
         Vector3 currentFaceDirection = new((float)Math.Cos(turretHead.transform.eulerAngles.z * 0.0174533f), (float)Math.Sin(turretHead.transform.eulerAngles.z * 0.0174533f));
-        Debug.DrawRay(chargingPoint.transform.position, currentFaceDirection, Color.yellow, 0.5f);
+        // Debug.DrawRay(chargingPoint.transform.position, currentFaceDirection, Color.yellow, 0.5f);
 
         float angleBetweenTurretAndPlayer = Vector2.SignedAngle(currentFaceDirection, playerDirectionVector);
 
@@ -110,7 +111,7 @@ public class DowntownTurret : MonoBehaviour
         TurnToTarget(dt, angleBetweenTurretAndPlayer);
 
         // if locked on (enough), charge projectile
-        if (Math.Abs(angleBetweenTurretAndPlayer) < 0.2f)
+        if (Math.Abs(angleBetweenTurretAndPlayer) <= precision)
         {
             ChargeProjectile(dt);
         }
@@ -124,7 +125,7 @@ public class DowntownTurret : MonoBehaviour
         // if charged up, fire
         if (projectileFocusCounter >= projectileFocusDuration)
         {
-            FireProjectile(dt);
+            FireProjectile(dt, (Vector2)currentFaceDirection);
             ResetState();
             isOnCooldown = true;
         }
@@ -147,10 +148,11 @@ public class DowntownTurret : MonoBehaviour
         Vector3 playerDirectionVector = (playerTargetObj.transform.position - turretPos).normalized;
         RaycastHit2D ray = Physics2D.Raycast(turretPos, playerDirectionVector, rangeRadius, playerAndEnvLayer);
         if (!ray) return false;
-        Debug.DrawRay(turretPos, playerDirectionVector, Color.white, 0.5f);
+        // Debug.DrawRay(turretPos, playerDirectionVector, Color.white, 0.5f);
         return ray.collider.gameObject.CompareTag("Player");
     }
 
+    // reset cooldowns and lots of logical states (arbitrary because none of this is planned)
     public void ResetState()
     {
         attackCooldownCounter = 0.0f;
@@ -158,24 +160,29 @@ public class DowntownTurret : MonoBehaviour
 
         isFocusing = false;
         isOnCooldown = false;
-        hasPositivePlayerLOS = false;
 
         chargeFocusRate = chargePointSize / projectileFocusDuration;
         chargingPoint.transform.localScale = new(0.0f, 0.0f, 1.0f);
     }
 
+    // called when battery is removed. also shuts down the turret
     public void RemoveBattery()
     {
         HasBattery = false;
         ShutDown();
     }
 
+    // shutdown procedure
     public void ShutDown()
     {
         IsOn = false;
+
+        float turretHeadZRotation = turretHead.transform.eulerAngles.z;
         turretCenter.SetActive(false);
-        turretHead.transform.Translate(0.0f, -1.0f, 0.0f);
         turretHead.transform.rotation = Quaternion.identity;
+        turretHead.transform.Translate(0.0f, -1.0f, 0.0f);
+        turretHead.transform.Rotate(Vector3.forward, turretHeadZRotation);
+
         turretHead.GetComponent<SpriteRenderer>().color = Color.gray;
         turretBase.GetComponent<SpriteRenderer>().color = Color.gray;
     }
@@ -188,9 +195,10 @@ public class DowntownTurret : MonoBehaviour
         turretHead.transform.Rotate(Vector3.forward, angularDisplacement);
     }
 
+    // charges projectile if locked on
     public void ChargeProjectile(float dt)
     {
-        Debug.Log("Locked");
+        // Debug.Log("Locked");
         projectileFocusCounter += dt;
 
         // focus beam with the sphere
@@ -198,20 +206,22 @@ public class DowntownTurret : MonoBehaviour
         chargingPoint.transform.localScale = new(chargingPointSize, chargingPointSize, 1.0f);
     }
 
-    public void FireProjectile(float dt)
+    // self-explanatory
+    public void FireProjectile(float dt, Vector2 direction)
     {
-        GameObject newProjOBj = GameObject.Instantiate(projectile, transform.position, Quaternion.identity);
+        GameObject newProjOBj = GameObject.Instantiate(projectile, transform.position, Quaternion.identity, transform);
         if (type == TurretType.Laser)
         {
-
+            newProjOBj.GetComponent<LaserProjectile>().Initialize(chargingPoint.transform.position, direction);
         }
         else
         {
-
+            newProjOBj.GetComponent<BallProjectile>().Initialize(chargingPoint.transform.position, direction);
         }
-        Debug.Log("boom");
+        // Debug.Log("boom");
     }
 
+    // executes when on cooldown (turret should be unable to do anything)
     public void HandleCooldowns(float dt)
     {
         attackCooldownCounter += dt;

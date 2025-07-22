@@ -358,9 +358,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsOn: 0
-  IsFiring: 0
-  IsCoolingDown: 0
   HasBattery: 0
+  IsTargetInRange: 0
   isFocusing: 0
   isOnCooldown: 0
   turretHead: {fileID: 993132913301962975}
@@ -370,11 +369,12 @@ MonoBehaviour:
   projectile: {fileID: 1673388464405015080, guid: 9e92eead83ec47c4b9cb4c401584f95e, type: 3}
   type: 1
   playerTargetObj: {fileID: 0}
-  rotationSpeed: 10
+  rotationSpeed: 50
   attackCooldownDuration: 3
   projectileFocusDuration: 0.1
-  chargePointSize: 0.1
+  chargePointSize: 1
   rangeRadius: 3
+  precision: 15
 --- !u!61 &4648444225927750529
 BoxCollider2D:
   m_ObjectHideFlags: 0
