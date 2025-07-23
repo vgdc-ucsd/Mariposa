@@ -3,7 +3,7 @@ using UnityEngine;
 public class ClimbSectionSpeedupTrigger : MonoBehaviour
 {
     [SerializeField] private ChaseRobot robotToSpeedup;
-    [SerializeField] private float speedupFactor = 1.0f;
+    [SerializeField] private float newBaseSpeed = 1.0f;
     [SerializeField] private Vector2 newStartPos;
     [SerializeField] private float newEnterOffset;
     [SerializeField] private float newEnterTime;
@@ -19,23 +19,13 @@ public class ClimbSectionSpeedupTrigger : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            robotToSpeedup.baseMovementSpeed *= speedupFactor;
+            robotToSpeedup.baseMovementSpeed = newBaseSpeed;
             robotToSpeedup.startPos = newStartPos;
             robotToSpeedup.timeToEnter = newEnterTime;
             robotToSpeedup.enterStartOffset = newEnterOffset;
             robotToSpeedup.movementStartDelay = 0.0f;
             col.enabled = false;
         }
-    }
-
-    private void OnEnable()
-    {
-        Player.OnDeath += ResetTrigger;
-    }
-
-    private void OnDisable()
-    {
-        Player.OnDeath -= ResetTrigger;
     }
 
     private void ResetTrigger()

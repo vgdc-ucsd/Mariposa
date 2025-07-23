@@ -1,3 +1,4 @@
+using FMOD.Studio;
 using FMODUnity;
 using System.Collections;
 using UnityEngine;
@@ -177,7 +178,22 @@ public class BigRobotLevel : MonoBehaviour
 
         foreach (ChaseRobot robot in chaseRobots)
         {
+            robot.col.enabled = true;
             robot.gameObject.SetActive(false);
+        }
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyUp(KeyCode.O))
+        {
+            MusicManager.Instance.currentEventInstance.getTimelinePosition(out int position);
+            float totalSeconds = position / 1000f;
+            float minutes = Mathf.FloorToInt(totalSeconds / 60f);
+            float seconds = totalSeconds - minutes * 60f;
+            Debug.Log($"Playback position: {(int)minutes}:{seconds}");
+            MusicManager.Instance.currentEventInstance.getPlaybackState(out PLAYBACK_STATE playbackState);
+            Debug.Log($"Playback state: {playbackState}");
         }
     }
 }
