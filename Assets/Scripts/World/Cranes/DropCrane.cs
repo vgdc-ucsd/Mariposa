@@ -1,8 +1,10 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class DropCrane : Crane
 {
     [SerializeField] protected Rigidbody2D loadRB;
+    [SerializeField] private GameObject preemptiveCollider;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -19,6 +21,7 @@ public class DropCrane : Crane
         Debug.Log("dropcrane triggered");
         if (loadRB == null) return;
 
+        preemptiveCollider.SetActive(false);
         loadRB.simulated = true;
         lineRenderer.enabled = false;
         Debug.Log("Dropped");
