@@ -13,24 +13,25 @@ public class ChaseRobot : MonoBehaviour
         RETREATING
     }
 
+    public Collider2D col;
+
     [Header("Params")]
     public float baseMovementSpeed = 4.0f;
-    private float intialBaseMovementSpeed;
-    [SerializeField] private float movementStartDelay = 1.0f;
-    [SerializeField] private float catchupDistanceThreshold = 5.0f;
-    [SerializeField] private float maxSpeed = 40.0f;
-    [SerializeField] private float catchupRate = 5.0f;
-    [SerializeField] private float perpendicularCatchupRate = 5.0f;
+    public float movementStartDelay = 1.0f;
+    public float catchupDistanceThreshold = 5.0f;
+    public float maxSpeed = 40.0f;
+    public float catchupRate = 5.0f;
+    public float perpendicularCatchupRate = 5.0f;
 
     [Header("Entering")]
-    [SerializeField] private float enterDelay;
-    [SerializeField] private float timeToEnter;
-    [SerializeField] private float enterStartOffset;
+    public float enterDelay;
+    public float timeToEnter;
+    public float enterStartOffset;
 
     [Header("Retreating")]
-    [SerializeField] private Transform retreatPoint;
-    [SerializeField] private float retreatDistance;
-    [SerializeField] private float timeToRetreat;
+    public Transform retreatPoint;
+    public float retreatDistance;
+    public float timeToRetreat;
 
     [Header("State")]
     public Vector2 moveDir;
@@ -39,16 +40,16 @@ public class ChaseRobot : MonoBehaviour
     public RobotWallState state;
 
 
-    private Vector2 startPos;
+    public Vector2 startPos;
 
-    private void Start()
+    private void Awake()
     {
         startPos = transform.position;
         hasPreviouslyEntered = false;
-        intialBaseMovementSpeed = baseMovementSpeed;
+        col = GetComponent<Collider2D>();
     }
 
-    private IEnumerator StartMoving()
+    public IEnumerator StartMoving()
     {
         state = RobotWallState.IDLE;
 
@@ -142,14 +143,11 @@ public class ChaseRobot : MonoBehaviour
         return -correction;
     }
 
-    public IEnumerator ResetRobot()
+    public void ResetRobot()
     {
         state = RobotWallState.IDLE;
         transform.position = startPos;
-        baseMovementSpeed = intialBaseMovementSpeed;
         currentSpeed = baseMovementSpeed;
-
-        yield return new WaitForSeconds(FadeController.Instance._fadeDuration);
 
         StartCoroutine(Enter());
         /*
