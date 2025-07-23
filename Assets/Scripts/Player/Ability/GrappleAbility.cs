@@ -69,6 +69,16 @@ public class GrappleAbility : MonoBehaviour, IAbility
         hookProjectile.transform.SetParent(transform.parent);
     }
 
+    private void OnEnable()
+    {
+        Player.OnDeath += ResetGrapple;
+    }
+
+    private void OnDisable()
+    {
+        Player.OnDeath -= ResetGrapple;
+    }
+
     private void Update()
     {
         if (state == GrappleState.Idle)
@@ -163,18 +173,16 @@ public class GrappleAbility : MonoBehaviour, IAbility
 
     }
 
+    private RaycastHit2D[] lineOfSightCastHits = new RaycastHit2D[10];
     private bool HasLineOfSightToTarget(GrappleTarget target)
     {
-        ContactFilter2D filter = new ContactFilter2D();
+        ContactFilter2D filter = new();
         filter.SetLayerMask(LayerMask.GetMask("Barrier"));
-        RaycastHit2D[] hit = new RaycastHit2D[10];
-        Physics2D.Raycast(Player.ActivePlayer.transform.position, target.transform.position - Player.ActivePlayer.transform.position, filter, hit);
-        Debug.DrawLine(Player.ActivePlayer.transform.position, hit[0].point);
-        if (hit[0].collider != null && hit[0].distance < Vector2.Distance(Player.ActivePlayer.transform.position, target.transform.position))
-        {
-            return false;
-        }
-        return true;
+        Vector2 playerToTarget = target.transform.position - Player.ActivePlayer.transform.position;
+        Physics2D.Raycast(Player.ActivePlayer.transform.position, playerToTarget, filter, lineOfSightCastHits);
+        Debug.DrawLine(Player.ActivePlayer.transform.position, lineOfSightCastHits[0].point);
+        return lineOfSightCastHits[0].collider == null
+                || lineOfSightCastHits[0].distance >= playerToTarget.magnitude;
     }
 
     // fire the hook towards the target
@@ -321,5 +329,10 @@ public class GrappleAbility : MonoBehaviour, IAbility
     public void UpdateGrappleTargets()
     {
         grappleTargets = FindObjectsByType<GrappleTarget>(FindObjectsSortMode.None).ToList();
+    }
+
+    private void ResetGrapple()
+    {
+        if (currentTarget != null) GrappleRelease();
     }
 }
