@@ -28,6 +28,7 @@ public class LaserProjectile : Projectile
             {
                 Debug.Log("hit player");
                 StartCoroutine(boxCast.collider.gameObject.GetComponent<Player>().Die());
+                endPoints[1] += (Vector3)direction;
             }
         }
         else
