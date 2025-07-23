@@ -265,6 +265,7 @@ public class GrappleAbility : MonoBehaviour, IAbility
         state = GrappleState.Idle;
         storedMomentum = Vector2.zero;
         Player.ActivePlayer.Movement.ToggleGravity(true);
+        hookProjectile.SetActive(false);
         lockedTarget.ReleaseGrapple();
     }
 
