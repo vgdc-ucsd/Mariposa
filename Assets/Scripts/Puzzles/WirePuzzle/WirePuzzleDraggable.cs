@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -76,11 +77,21 @@ public class WirePuzzleDraggable : MonoBehaviour, IBeginDragHandler, IDragHandle
         EventSystem.current.RaycastAll(eventData, raycastResults);
         foreach (var hit in raycastResults)
         {
-            if (hit.gameObject.GetComponent<WirePuzzleReceiver>() != null)
-            {
-                TryConnectWire(hit.gameObject.GetComponent<WirePuzzleReceiver>());
-                return;
-            }
+            if (hit.gameObject.GetComponent<WirePuzzleReceiver>() == null) continue;
+
+            WirePuzzleReceiver receiver = hit.gameObject.GetComponent<WirePuzzleReceiver>();
+
+            // Prevent the player from making a connection that isn't straight down or one column over
+            int nodeDistance = ConnectedReceivers.Count == 0
+                ? math.abs(transform.parent.GetSiblingIndex() - receiver.column)
+                : math.abs(ConnectedReceivers[^1].column - receiver.column);
+            if (nodeDistance > 1) continue;
+
+            // Prevent the player from making a connection to a node that is a set color
+            if (receiver.onlyAllowsValidConnections && receiver.MatchingDraggable != this) continue;
+
+            TryConnectWire(receiver);
+            return;
         }
 
         // If did not connect then disconnect wire

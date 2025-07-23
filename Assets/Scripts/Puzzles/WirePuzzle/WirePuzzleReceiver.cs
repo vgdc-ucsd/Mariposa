@@ -1,3 +1,4 @@
+using Unity.Mathematics;
 using UnityEngine;
 
 public abstract class WirePuzzleReceiver : MonoBehaviour
@@ -23,6 +24,8 @@ public abstract class WirePuzzleReceiver : MonoBehaviour
 
     public WirePuzzleDraggable MatchingDraggable;
     public int layer;
+    public int column;
+    public bool onlyAllowsValidConnections;
     public Color Color;
     public bool IsMatched
     { get => ConnectedDraggable != null && ConnectedDraggable == MatchingDraggable; }

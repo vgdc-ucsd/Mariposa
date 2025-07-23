@@ -6,26 +6,43 @@ public class WirePuzzleVisuals : MonoBehaviour
 {
     [Header("Wire Segment Settings")]
     public Color Color;
-    [SerializeField] Vector2 wireFillSize;
-    [SerializeField] Vector2 wireFillPos;
     [SerializeField] float wireThickness;
+    [SerializeField] Vector2 segmentInitialOffset = Vector2.zero;
+    private float canvasScaleFactor = 1.0f;
 
     [Header("References")]
     [SerializeField] GameObject WireSegmentPrefab;
     public List<GameObject> WireSegments = new();
 
+    private bool hasAwoken = false; // This is only for OnRectTransformDimensionsChange() function is called before Awake()
+    private void Awake()
+    {
+        canvasScaleFactor = GetComponentInParent<Canvas>().scaleFactor;
+        hasAwoken = true;
+    }
+
+    private void OnRectTransformDimensionsChange()
+    {
+        if (!hasAwoken) return;
+        Canvas canvas = GetComponentInParent<Canvas>(true);
+        if (canvas != null) canvasScaleFactor = canvas.scaleFactor;
+    }
+
     public void InitializeVisuals()
     {
         // Instantiate prefab
-        GameObject instantiated = Instantiate(WireSegmentPrefab, transform);
-        instantiated.GetComponent<RectTransform>().sizeDelta = wireFillSize;
-        WireSegments.Add(instantiated);
+        RectTransform thisRectTransform = GetComponent<RectTransform>();
+        GameObject newSegment = Instantiate(WireSegmentPrefab, transform);
+        RectTransform newSegmentTransform = newSegment.GetComponent<RectTransform>();
 
+        // Set Size
+        newSegmentTransform.sizeDelta = thisRectTransform.sizeDelta;
         // Set Color
-        instantiated.GetComponent<Image>().color = Color;
-
+        newSegment.GetComponent<Image>().color = Color;
         // Set Starting Position
-        instantiated.GetComponent<RectTransform>().localPosition = wireFillPos;
+        Vector2 pivotOffset = newSegmentTransform.sizeDelta.y / 2.0f * Vector2.down; // segments are pivoted at (0.5, 1.0)
+        newSegmentTransform.localPosition = thisRectTransform.anchoredPosition - pivotOffset;
+        WireSegments.Add(newSegment);
     }
 
     public void BeginDragVisuals(WirePuzzleDraggable draggable)
@@ -47,7 +64,7 @@ public class WirePuzzleVisuals : MonoBehaviour
             GameObject instantiated = Instantiate(WireSegmentPrefab, transform);
             WireSegments.Add(instantiated);
             instantiated.GetComponent<Image>().color = Color;
-            instantiated.GetComponent<RectTransform>().localPosition = new(0, -70f);
+            instantiated.GetComponent<RectTransform>().localPosition = segmentInitialOffset;
         }
     }
 
@@ -57,7 +74,7 @@ public class WirePuzzleVisuals : MonoBehaviour
         Vector2 mousePos = Input.mousePosition;
 
         // Set length (By changing height of rect transform)
-        wireSegment.sizeDelta = new(wireThickness, Vector2.Distance(mousePos, wireSegment.position));
+        wireSegment.sizeDelta = new(wireThickness, Vector2.Distance(mousePos, wireSegment.position) / canvasScaleFactor);
 
         // Add rotation
         float rotation = Mathf.Atan2(wireSegment.position.y - mousePos.y, wireSegment.position.x - mousePos.x) * Mathf.Rad2Deg - 90f;
@@ -69,7 +86,7 @@ public class WirePuzzleVisuals : MonoBehaviour
         RectTransform wireSegment = WireSegments[^1].GetComponent<RectTransform>();
 
         // Set size & rotation of visuals
-        wireSegment.sizeDelta = new(wireThickness, Vector2.Distance(receiver.transform.position, wireSegment.position));
+        wireSegment.sizeDelta = new(wireThickness, Vector2.Distance(receiver.transform.position, wireSegment.position) / canvasScaleFactor);
 
         float rotation = Mathf.Atan2(wireSegment.position.y - receiver.transform.position.y,
                             wireSegment.position.x - receiver.transform.position.x) * Mathf.Rad2Deg - 90f;
