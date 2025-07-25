@@ -6,9 +6,7 @@ using UnityEngine;
 public class PuzzlePopupManager : MonoBehaviour
 {
     public static PuzzlePopupManager Instance;
-
     [SerializeField] private GameObject activePuzzle;
-    private InputSystem_Actions inputs;
 
     public GameObject ActivePuzzle
     {
@@ -36,8 +34,6 @@ public class PuzzlePopupManager : MonoBehaviour
             Debug.LogWarning("Tried to create more than one instance of the PuzzleManager singleton!");
             Destroy(this);
         }
-        
-        inputs = new InputSystem_Actions();
     }
 
 
@@ -79,17 +75,5 @@ public class PuzzlePopupManager : MonoBehaviour
         if (InGameUI.Instance != null) InGameUI.Instance.InteractPrompt(false);
         if (PlayerController.Instance) PlayerController.Instance.SetMovementLock(true);
         activePuzzle.SetActive(true);
-    }
-    
-    private void OnEnable()
-    {
-        inputs.Enable();
-        inputs.Player.DebugCompletePuzzle.performed += ctx => activePuzzle.GetComponent<Puzzle>().OnComplete();
-    }
-
-    private void OnDisable()
-    {
-        inputs.Player.DebugCompletePuzzle.performed -= ctx => activePuzzle.GetComponent<Puzzle>().OnComplete();
-        inputs.Disable();
     }
 }

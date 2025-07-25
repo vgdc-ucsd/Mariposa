@@ -15,23 +15,6 @@ public class LevelManager : Singleton<LevelManager>
         FadeController.Instance.FadeIn();
     }
 
-    private void Update()
-    {
-        /* if (Settings.Instance.Debug.GetDebug())
-        {    
-            // Swap worlds when the "F" key is pressed
-            if (Input.GetKeyDown(KeyCode.F))
-            {
-                GoToNextSublevel();
-            }
-
-            if (Input.GetKeyDown(KeyCode.M))
-            {
-                LoadNextLevel();
-            }
-        } */
-    }
-
     public void GoToNextSublevel()
     {
         CurrentLevel.GoToNextSublevel();

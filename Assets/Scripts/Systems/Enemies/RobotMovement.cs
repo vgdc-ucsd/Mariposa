@@ -31,22 +31,6 @@ public class RobotMovement : FreeBody
 
     }
 
-    protected override void Update()
-    {
-        base.Update();
-        /*
-        if (Input.GetKeyDown(KeyCode.V)) // TODO make this an input action
-        {
-            // Consume a battery if available
-            if (InventoryManager.Instance.GetItemCount(InventoryType.Mariposa, BatteryItem.Instance) > 0)
-            {
-                InventoryManager.Instance.DeleteItem(InventoryType.Mariposa, BatteryItem.Instance);
-                StartCoroutine(DashRoutine());
-            }
-        }
-        */
-    }
-
     private void OnValidate()
     {
         if (Application.isPlaying) InitDerivedConsts();

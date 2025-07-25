@@ -82,9 +82,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""DebugCompletePuzzle"",
+                    ""name"": ""Recall"",
                     ""type"": ""Button"",
-                    ""id"": ""5c0dd2c9-d65e-46fc-ba45-f394229aa411"",
+                    ""id"": ""c35d4f0d-1f55-4cb0-b8e3-cf5270843d9b"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -413,12 +413,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""0b98d7ea-dde4-43bb-a82a-d04c6c496f2f"",
-                    ""path"": ""<Keyboard>/p"",
+                    ""id"": ""03568640-4a00-4b75-9782-68602b86c8d6"",
+                    ""path"": ""<Keyboard>/r"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""DebugCompletePuzzle"",
+                    ""action"": ""Recall"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -998,6 +998,74 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Debug"",
+            ""id"": ""6c12aa7d-08fb-492f-a702-e4fa5bb93c46"",
+            ""actions"": [
+                {
+                    ""name"": ""AdvanceSublevel"",
+                    ""type"": ""Button"",
+                    ""id"": ""53df9d62-bf68-4ba4-b202-030e990f21a5"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""CompletePuzzle"",
+                    ""type"": ""Button"",
+                    ""id"": ""7382280c-fd67-42e9-ba36-d7ac4b7090d6"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""AdvanceLevel"",
+                    ""type"": ""Button"",
+                    ""id"": ""7c9b5bd5-18c7-403d-9b5f-bb0ef6db0e6a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""8b820049-e031-493e-b959-831ef1633fb9"",
+                    ""path"": ""<Keyboard>/l"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AdvanceSublevel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5bdeec28-8b4d-4e18-8789-d6d4d80e0eaf"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""CompletePuzzle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a00b9d43-6191-4292-9d77-41af253a8a76"",
+                    ""path"": ""<Keyboard>/m"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AdvanceLevel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -1071,7 +1139,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_AltAbility = m_Player.FindAction("AltAbility", throwIfNotFound: true);
         m_Player_Click = m_Player.FindAction("Click", throwIfNotFound: true);
-        m_Player_DebugCompletePuzzle = m_Player.FindAction("DebugCompletePuzzle", throwIfNotFound: true);
+        m_Player_Recall = m_Player.FindAction("Recall", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1088,6 +1156,11 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Control = asset.FindActionMap("Control", throwIfNotFound: true);
         m_Control_Escape = m_Control.FindAction("Escape", throwIfNotFound: true);
         m_Control_Inventory = m_Control.FindAction("Inventory", throwIfNotFound: true);
+        // Debug
+        m_Debug = asset.FindActionMap("Debug", throwIfNotFound: true);
+        m_Debug_AdvanceSublevel = m_Debug.FindAction("AdvanceSublevel", throwIfNotFound: true);
+        m_Debug_CompletePuzzle = m_Debug.FindAction("CompletePuzzle", throwIfNotFound: true);
+        m_Debug_AdvanceLevel = m_Debug.FindAction("AdvanceLevel", throwIfNotFound: true);
     }
 
     ~@InputSystem_Actions()
@@ -1095,6 +1168,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         UnityEngine.Debug.Assert(!m_Player.enabled, "This will cause a leak and performance issues, InputSystem_Actions.Player.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_UI.enabled, "This will cause a leak and performance issues, InputSystem_Actions.UI.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_Control.enabled, "This will cause a leak and performance issues, InputSystem_Actions.Control.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_Debug.enabled, "This will cause a leak and performance issues, InputSystem_Actions.Debug.Disable() has not been called.");
     }
 
     public void Dispose()
@@ -1162,7 +1236,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_AltAbility;
     private readonly InputAction m_Player_Click;
-    private readonly InputAction m_Player_DebugCompletePuzzle;
+    private readonly InputAction m_Player_Recall;
     public struct PlayerActions
     {
         private @InputSystem_Actions m_Wrapper;
@@ -1173,7 +1247,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @AltAbility => m_Wrapper.m_Player_AltAbility;
         public InputAction @Click => m_Wrapper.m_Player_Click;
-        public InputAction @DebugCompletePuzzle => m_Wrapper.m_Player_DebugCompletePuzzle;
+        public InputAction @Recall => m_Wrapper.m_Player_Recall;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1201,9 +1275,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Click.started += instance.OnClick;
             @Click.performed += instance.OnClick;
             @Click.canceled += instance.OnClick;
-            @DebugCompletePuzzle.started += instance.OnDebugCompletePuzzle;
-            @DebugCompletePuzzle.performed += instance.OnDebugCompletePuzzle;
-            @DebugCompletePuzzle.canceled += instance.OnDebugCompletePuzzle;
+            @Recall.started += instance.OnRecall;
+            @Recall.performed += instance.OnRecall;
+            @Recall.canceled += instance.OnRecall;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1226,9 +1300,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Click.started -= instance.OnClick;
             @Click.performed -= instance.OnClick;
             @Click.canceled -= instance.OnClick;
-            @DebugCompletePuzzle.started -= instance.OnDebugCompletePuzzle;
-            @DebugCompletePuzzle.performed -= instance.OnDebugCompletePuzzle;
-            @DebugCompletePuzzle.canceled -= instance.OnDebugCompletePuzzle;
+            @Recall.started -= instance.OnRecall;
+            @Recall.performed -= instance.OnRecall;
+            @Recall.canceled -= instance.OnRecall;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1418,6 +1492,68 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         }
     }
     public ControlActions @Control => new ControlActions(this);
+
+    // Debug
+    private readonly InputActionMap m_Debug;
+    private List<IDebugActions> m_DebugActionsCallbackInterfaces = new List<IDebugActions>();
+    private readonly InputAction m_Debug_AdvanceSublevel;
+    private readonly InputAction m_Debug_CompletePuzzle;
+    private readonly InputAction m_Debug_AdvanceLevel;
+    public struct DebugActions
+    {
+        private @InputSystem_Actions m_Wrapper;
+        public DebugActions(@InputSystem_Actions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @AdvanceSublevel => m_Wrapper.m_Debug_AdvanceSublevel;
+        public InputAction @CompletePuzzle => m_Wrapper.m_Debug_CompletePuzzle;
+        public InputAction @AdvanceLevel => m_Wrapper.m_Debug_AdvanceLevel;
+        public InputActionMap Get() { return m_Wrapper.m_Debug; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(DebugActions set) { return set.Get(); }
+        public void AddCallbacks(IDebugActions instance)
+        {
+            if (instance == null || m_Wrapper.m_DebugActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_DebugActionsCallbackInterfaces.Add(instance);
+            @AdvanceSublevel.started += instance.OnAdvanceSublevel;
+            @AdvanceSublevel.performed += instance.OnAdvanceSublevel;
+            @AdvanceSublevel.canceled += instance.OnAdvanceSublevel;
+            @CompletePuzzle.started += instance.OnCompletePuzzle;
+            @CompletePuzzle.performed += instance.OnCompletePuzzle;
+            @CompletePuzzle.canceled += instance.OnCompletePuzzle;
+            @AdvanceLevel.started += instance.OnAdvanceLevel;
+            @AdvanceLevel.performed += instance.OnAdvanceLevel;
+            @AdvanceLevel.canceled += instance.OnAdvanceLevel;
+        }
+
+        private void UnregisterCallbacks(IDebugActions instance)
+        {
+            @AdvanceSublevel.started -= instance.OnAdvanceSublevel;
+            @AdvanceSublevel.performed -= instance.OnAdvanceSublevel;
+            @AdvanceSublevel.canceled -= instance.OnAdvanceSublevel;
+            @CompletePuzzle.started -= instance.OnCompletePuzzle;
+            @CompletePuzzle.performed -= instance.OnCompletePuzzle;
+            @CompletePuzzle.canceled -= instance.OnCompletePuzzle;
+            @AdvanceLevel.started -= instance.OnAdvanceLevel;
+            @AdvanceLevel.performed -= instance.OnAdvanceLevel;
+            @AdvanceLevel.canceled -= instance.OnAdvanceLevel;
+        }
+
+        public void RemoveCallbacks(IDebugActions instance)
+        {
+            if (m_Wrapper.m_DebugActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IDebugActions instance)
+        {
+            foreach (var item in m_Wrapper.m_DebugActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_DebugActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public DebugActions @Debug => new DebugActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     public InputControlScheme KeyboardMouseScheme
     {
@@ -1471,7 +1607,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnAltAbility(InputAction.CallbackContext context);
         void OnClick(InputAction.CallbackContext context);
-        void OnDebugCompletePuzzle(InputAction.CallbackContext context);
+        void OnRecall(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
@@ -1490,5 +1626,11 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     {
         void OnEscape(InputAction.CallbackContext context);
         void OnInventory(InputAction.CallbackContext context);
+    }
+    public interface IDebugActions
+    {
+        void OnAdvanceSublevel(InputAction.CallbackContext context);
+        void OnCompletePuzzle(InputAction.CallbackContext context);
+        void OnAdvanceLevel(InputAction.CallbackContext context);
     }
 }

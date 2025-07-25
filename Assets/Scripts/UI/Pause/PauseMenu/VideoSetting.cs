@@ -101,22 +101,9 @@ public class VideoSetting : MonoBehaviour
 
     public void ResetGraphicsSettings()
     {
-        Debug.Log("caca");
         GraphicsQualityDropdown.value = defaultQualityIndex;
-        Debug.Log(GraphicsQualityDropdown.value);
         ResolutionTypeDropdown.value = defaultResolutionTypeIndex;
         ResolutionSizeDropdown.value = defaultResolutionIndex;
-
         ApplyAllGraphicsChanges();
-        Debug.Log("loco");
-    }
-
-    void Update()
-    {
-        if (Input.GetKeyUp(KeyCode.U))
-        {
-            ResolutionSizeDropdown.value++;
-            ApplyAllGraphicsChanges();
-        }
     }
 }
