@@ -3,8 +3,9 @@ using UnityEngine;
 
 public class Level : MonoBehaviour
 {
+    [SerializeField] private GameScene nextScene;
     [SerializeField] public Sublevel[] Sublevels;
-    public GameScene NextScene { get; }
+    public GameScene NextScene { get { return nextScene; } }
     public int SublevelIndex { get; private set; }
 
     public void LoadLevel()
