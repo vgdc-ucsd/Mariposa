@@ -9,7 +9,7 @@ public enum InventoryType
     Unnamed,
 }
 
-public class InventoryManager : Singleton<InventoryManager>, IDataPersistence
+public class InventoryManager : Singleton<InventoryManager>
 {
     [SerializeField] private InventoryUI mariposaUI;
     [SerializeField] private InventoryUI unnamedUI;
@@ -18,7 +18,6 @@ public class InventoryManager : Singleton<InventoryManager>, IDataPersistence
 
     void Start()
     {
-        // TODO load inventory data
         mariposaInventory = new Inventory();
         unnamedInventory = new Inventory();
 
@@ -51,17 +50,5 @@ public class InventoryManager : Singleton<InventoryManager>, IDataPersistence
     {
         if (Player.ActivePlayer.Data.characterID == CharID.Mariposa) return mariposaInventory;
         else return unnamedInventory;
-    }
-
-    public void SaveData(ref GameData data)
-    {
-        data.mariposaInventory = mariposaInventory;
-        data.unnamedInventory = unnamedInventory;
-    }
-
-    public void LoadData(GameData data)
-    {
-        mariposaInventory = data.mariposaInventory;
-        unnamedInventory = data.unnamedInventory;
     }
 }

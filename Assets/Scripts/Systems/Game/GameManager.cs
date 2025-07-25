@@ -1,7 +1,17 @@
 using System;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
+// These must be in the same order as the Unity build settings
+public enum GameScene
+{
+    MAIN_MENU,
+    TUTORIAL,
+    DOWNTOWN,
+    PIER,
+    ROBOT,
+    HOMETOWN
+};
 
 public enum GameState
 {
@@ -12,6 +22,7 @@ public enum GameState
 
 public class GameManager : Singleton<GameManager>
 {
+    public GameScene CurrentScene { get; private set; }
     public InteractionTrigger DefaultInteractionTrigger;
     private InputSystem_Actions actions;
 
@@ -40,15 +51,40 @@ public class GameManager : Singleton<GameManager>
         gameState.AddTransition(GameState.INVENTORY, GameState.GAME);
         gameState.AddTransition(GameState.INVENTORY, GameState.PAUSE);
     }
+    
+    public void LoadScene(GameScene scene)
+    {
+        OnChangeScene();
+        CurrentScene = scene;
+        SceneManager.LoadSceneAsync((int)scene);
+    } 
+
+    public void OnChangeScene()
+    {
+        UnregisterStartAction(GameState.PAUSE);
+        UnregisterExitAction(GameState.PAUSE);
+        UnregisterStartAction(GameState.INVENTORY);
+        UnregisterExitAction(GameState.INVENTORY);
+    }
 
     public void RegisterStartAction(GameState state, Action action)
     {
         gameState.AddEnterAction(state, action);
     }
+    
+    public void UnregisterStartAction(GameState state)
+    {
+        gameState.RemoveEnterAction(state);        
+    }
 
     public void RegisterExitAction(GameState state, Action action)
     {
-        gameState.AddExitAction(state, action);        
+        gameState.AddExitAction(state, action);
+    }
+
+    public void UnregisterExitAction(GameState state)
+    {
+        gameState.RemoveExitAction(state);        
     }
 
     public void HandlePause()

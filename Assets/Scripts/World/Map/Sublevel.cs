@@ -1,16 +1,11 @@
-using FMODUnity;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using static AudioEvents;
 
 public class Sublevel : MonoBehaviour
 {
-    [SerializeField]
-    private CharID _subLevelCharacter;
-    public CharID SublevelCharacter
-    {
-        get => _subLevelCharacter;
-    }
-
+    [SerializeField] private CharID _subLevelCharacter;
     public RespawnPoint StartingSpawn;
     public Collider2D CameraBounds;
 
@@ -18,6 +13,8 @@ public class Sublevel : MonoBehaviour
     [field: SerializeField] public Ambience SublevelAmbience { get; private set; } = Ambience.NONE;
     [field: SerializeField] public float MusicTransitionDuration { get; private set; } = 1.5f;
     [field: SerializeField] public bool PlayOnLoad { get; private set; } = true;
+    private List<Enemy> activeEnemies;
+    private List<BreakablePlatform> breakables;
 
     private void Awake()
     {
@@ -27,13 +24,48 @@ public class Sublevel : MonoBehaviour
 
     public void Load()
     {
+        CameraController.ActiveCamera.SetBounds(CameraBounds);
+        PlayerController.Instance.LoadIntoSublevel(_subLevelCharacter, StartingSpawn.GetRespawnPosition());
+
+        activeEnemies = FindObjectsByType<Enemy>(FindObjectsInactive.Exclude, FindObjectsSortMode.None).ToList();
+        breakables = FindObjectsByType<BreakablePlatform>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList();
+        ResetEnemies();
+        ResetBreakables();
+
+        // Tell audio managers to change audio if PlayOnLoad is on in the current sublevel
+        if (PlayOnLoad)
+        {
+            MusicManager.Instance.ChangeMusic(SublevelMusic, MusicTransitionDuration);
+            AmbienceManager.Instance.ChangeAmbience(SublevelAmbience);
+        }
+
         gameObject.SetActive(true);
-        enabled = true;
     }
 
     public void Unload()
     {
         gameObject.SetActive(false);
-        enabled = false;
+    }
+
+    public void RestartFromCheckpoint()
+    {
+        ResetEnemies();
+        ResetBreakables();
+    }
+
+    public void ResetEnemies()
+    {
+        foreach (Enemy enemy in activeEnemies)
+        {
+            enemy.Init();
+        }
+    }
+
+    public void ResetBreakables()
+    {
+        foreach (BreakablePlatform platform in breakables)
+        {
+            platform.Reset();
+        }
     }
 }

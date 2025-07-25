@@ -9,6 +9,11 @@ public class DebugSettings
     [SerializeField] private bool audioDebug = false;
     [SerializeField] private bool puzzleDebug = false;
 
+    public bool GetDebug()
+    {
+        return enableDebug;
+    }
+    
     public bool GetPlayerDebug()
     {
         return enableDebug && playerDebug;

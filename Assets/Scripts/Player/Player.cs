@@ -97,9 +97,7 @@ public class Player : MonoBehaviour
 			if (playerDebug) Debug.Log($"Player respawned to: {CurrentRespawnPoint.gameObject.name} @ {CurrentRespawnPoint.GetRespawnPosition().ToString()}");
 			RuntimeManager.PlayOneShot("event:/sfx/player/respawn");
 		}
-		// should be moved to level resetter
-		LevelManager.Instance.ResetEnemies();
-		LevelManager.Instance.ResetBreakables();
+		LevelManager.Instance.RestartFromCheckpoint();
     }
 
 	public void TurnTowards(int dir)

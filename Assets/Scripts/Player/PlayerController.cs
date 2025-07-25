@@ -158,7 +158,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!IsLocked)
         {
-            listeners.ForEachReverse(x => x.InteractInputDown());            
+            listeners.ForEachReverse(x => x.InteractInputDown());
         }
 
         DialogueManager.Instance.TryAdvanceDialogue();
@@ -180,20 +180,20 @@ public class PlayerController : MonoBehaviour
 
         if (isSquidActive) // could be a value vs ref check error
         {
-            StartControlling(MariposaRef.Movement);            
+            StartControlling(MariposaRef.Movement);
         }
         else
         {
             StartControlling(SquidMovement.Instance);
         }
-        
+
         isSquidActive = !isSquidActive;
     }
 
     public void EnableSquid(bool enable)
     {
         IsSquidUnlocked = enable;
-        
+
         if (enable)
         {
             isSquidActive = true;
@@ -208,5 +208,34 @@ public class PlayerController : MonoBehaviour
             inputs.Player.Ability.started += ctx => SendAbilityDown(ctx);
             inputs.Player.Ability.canceled += ctx => SendAbilityUp(ctx);
         }
+    }
+
+    public void LoadIntoSublevel(CharID character, Vector3 spawn)
+    {
+        // teleport previous player (and bee, if applicable) off screen
+        ControlledPlayer.transform.position = new Vector3(-1000, -1000, 0);
+        if (ControlledPlayer.Ability is BeeControlAbility b)
+        {
+            b.BeeRef.transform.position = new Vector3(-1000, -1000, 0);
+            b.TurnOffBeeFlap();
+        }
+
+        SwitchTo(character);
+        ControlledPlayer.transform.position = spawn;
+        ControlledPlayer.Movement.ResolveInitialCollisions();
+        if (ControlledPlayer.Ability is BeeControlAbility bc)
+        {
+            bc.BeeRef.transform.position = ControlledPlayer.transform.position + new Vector3(0, 2, 0);
+        }
+
+        // update grapple targets every time player switches to an unnamed sublevel
+        GrappleAbility grappleAbility = ControlledPlayer.GetComponentInChildren<GrappleAbility>();
+        if (grappleAbility != null && ControlledPlayer.Data.characterID == CharID.Unnamed)
+        {
+            grappleAbility.UpdateGrappleTargets();
+        }
+
+        SquidMovement.Instance?.gameObject.SetActive(false);
+        IsSquidUnlocked = false;
     }
 }

@@ -80,16 +80,6 @@ public class MusicManager : Singleton<MusicManager>
         return false;
     }
 
-    public Music GetMusicToCurrentSublevel()
-    {
-        Sublevel currentSublevel = AudioManager.Instance.getCurrentSublevel();
-        if (currentSublevel == null)
-        {
-            return Music.NONE;
-        }
-        return currentSublevel.SublevelMusic;
-    }
-
     [ContextMenu("Play")]
     public void Play()
     {

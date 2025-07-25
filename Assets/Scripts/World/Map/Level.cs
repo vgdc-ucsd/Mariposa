@@ -1,21 +1,40 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Level : MonoBehaviour
 {
-    [SerializeField]
-    public Sublevel[] Sublevels;
+    [SerializeField] public Sublevel[] Sublevels;
+    public GameScene NextScene { get; }
+    public int SublevelIndex { get; private set; }
 
-    public int CurLevelIndex;
-
-    
-
-    public void LoadSublevel(int level)
+    public void LoadLevel()
     {
-        Sublevels[level].Load();
+        // TODO: Load inventory
+        foreach (Sublevel sl in Sublevels) sl.Unload();
+        SublevelIndex = 0;
+        LoadSublevel(SublevelIndex);
     }
 
-    public void UnloadSublevel(int level)
+    public void LoadSublevel(int index)
     {
-        Sublevels[level].Unload();
+        Sublevels[index].Load();
+    }
+
+    public void UnloadSublevel(int index)
+    {
+        Sublevels[index].Unload();
+    }
+
+    public void GoToNextSublevel()
+    {
+        UnloadSublevel(SublevelIndex);
+        SublevelIndex++;
+        SublevelIndex %= Sublevels.Length;
+        LoadSublevel(SublevelIndex);
+    }
+
+    public void RestartFromCheckpoint()
+    {
+        Sublevels[SublevelIndex].RestartFromCheckpoint();
     }
 }

@@ -41,19 +41,4 @@ public class AudioManager : Singleton<AudioManager>
             _voicelineManager = gameObject.AddComponent<VoicelineManager>();
         }
     }
-
-    public Sublevel getCurrentSublevel()
-    {
-        Sublevel currentSublevel;
-        try
-        {
-            currentSublevel = levelManager.CurrentLevel.Sublevels[levelManager.SublevelIndex];
-        }
-        catch (NullReferenceException)
-        {
-            Debug.LogWarning("Unable to grab current sublevel from LevelManager! Attempting to use previous value.");
-            return null;
-        }
-        return currentSublevel;
-    }
 }

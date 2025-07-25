@@ -147,10 +147,10 @@ public class Settings : Singleton<Settings>, IDataPersistence
     
     public void SaveData(ref GameData data)
     {
-        data.audioSetting = audioSetting;
+        //data.audioSetting = audioSetting;
     }
     public void LoadData(GameData data)
     {
-        audioSetting = data.audioSetting;
+        //audioSetting = data.audioSetting;
     }
 }

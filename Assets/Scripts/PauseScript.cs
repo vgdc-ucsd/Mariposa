@@ -57,7 +57,7 @@ public class PauseScript : Singleton<PauseScript>
             Debug.LogWarning("Pause manager attempting to restart level but LevelManager not found!");
             return;
         }
-        LevelManager.Instance.InitSublevel();
+        LevelManager.Instance.RestartLevel();
     }
 
     public void QuitLevel()

@@ -29,16 +29,6 @@ public class AmbienceManager : Singleton<AmbienceManager>
         }
     }
 
-    public Ambience GetAmbienceToCurrentSublevel()
-    {
-        Sublevel currentSublevel = AudioManager.Instance.getCurrentSublevel();
-        if (currentSublevel == null)
-        {
-            return Ambience.NONE;
-        }
-        return currentSublevel.SublevelAmbience;
-    }
-
     [ContextMenu("Play")]
     public void Play()
     {

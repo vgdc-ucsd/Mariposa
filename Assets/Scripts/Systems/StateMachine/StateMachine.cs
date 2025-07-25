@@ -23,14 +23,22 @@ public class StateMachine<T>
 
     public void AddEnterAction(T state, Action action)
     {
-        if (onEnterActions.ContainsKey(state)) return;
         onEnterActions.Add(state, action);
+    }
+
+    public void RemoveEnterAction(T state)
+    {
+        onEnterActions.Remove(state);
     }
 
     public void AddExitAction(T state, Action action)
     {
-        if (onExitActions.ContainsKey(state)) return;
         onExitActions.Add(state, action);
+    }
+
+    public void RemoveExitAction(T state)
+    {
+        onExitActions.Remove(state);
     }
 
     public void AddTransition(T state, T newState)

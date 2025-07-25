@@ -1,8 +1,4 @@
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
 public class PauseMenuScript : MonoBehaviour
 {
@@ -71,7 +67,7 @@ public class PauseMenuScript : MonoBehaviour
     {
         CloseAllMenus();
         ResumeGame();
-        SceneManager.LoadScene(0);
+        GameManager.Instance.LoadScene(GameScene.MAIN_MENU);
     }
 
     public void RestartFromCheckpoint()
@@ -90,12 +86,12 @@ public class PauseMenuScript : MonoBehaviour
             Debug.LogWarning("Pause manager attempting to restart level but LevelManager not found!");
             return;
         }
-        LevelManager.Instance.InitSublevel();
+        LevelManager.Instance.RestartLevel();
     }
 
     public void QuitLevel()
     {
         Time.timeScale = 1.0f;
-        SceneManager.LoadScene(0);
+        GameManager.Instance.LoadScene(GameScene.MAIN_MENU);
     }
 }
