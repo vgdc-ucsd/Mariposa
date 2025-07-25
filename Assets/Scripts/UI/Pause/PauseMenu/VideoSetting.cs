@@ -30,7 +30,7 @@ public class VideoSetting : MonoBehaviour
         {3840, 2160}
     };
     public int graphicsQualityIndex = 2;
-    public WindowType ResolutionType = WindowType.Windowed;
+    public WindowType ResolutionType = WindowType.Fullscreen;
     public int currentResolutionIndex = 5;
 
     public int Width;
@@ -54,7 +54,7 @@ public class VideoSetting : MonoBehaviour
     {
         Width = resolutions[currentResolutionIndex, 0];
         Height = resolutions[currentResolutionIndex, 1];
-        Screen.SetResolution(Width, Height, FullScreenMode.Windowed);
+        Screen.SetResolution(Width, Height, FullScreenMode.ExclusiveFullScreen);
 
         GraphicsQualityDropdown.value = QualitySettings.GetQualityLevel();
         graphicsQualityIndex = GraphicsQualityDropdown.value;

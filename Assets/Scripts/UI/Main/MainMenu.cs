@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 //Drag and drop the menuManager object into the button onclick on unity
 //Drop down of methods in this script should show up and you can then choose
 
-public class MainMenu : MonoBehaviour
+public class MainMenu : Singleton<MainMenu>
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -17,7 +17,7 @@ public class MainMenu : MonoBehaviour
 
     void OnDestroy()
     {
-        PauseMenuScript.Instance.gameObject.SetActive(true);
+        if (PauseMenuScript.Instance != null) PauseMenuScript.Instance.gameObject.SetActive(true);
     }
 
     public void NewGameBtn()
