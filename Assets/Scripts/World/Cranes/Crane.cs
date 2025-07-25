@@ -2,22 +2,27 @@ using UnityEngine;
 
 public class Crane : MonoBehaviour
 {
-    [SerializeField] LineRenderer lineRenderer;
-    [SerializeField] CraneLoad platform;
+    [SerializeField] protected LineRenderer lineRenderer;
+    [SerializeField] protected CraneLoad platform;
 
-    private void Awake()
+    protected void Awake()
     {
         lineRenderer.SetPosition(0, transform.position);
     }
 
-    private void Update()
+    protected void Update()
     {
         lineRenderer.SetPosition(1, platform.attachPoint.position);
     }
 
-    public void TriggerCrane()
+    public virtual void TriggerCrane()
     {
-        // platform.SendPlatform();
+        platform.SendPlatform(1);
+    }
+
+    public virtual void ReturnCrane()
+    {
+        platform.SendPlatform(-1);
     }
 
 }

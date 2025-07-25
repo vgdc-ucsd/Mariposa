@@ -32,6 +32,18 @@ public class Inventory
         return items.ContainsKey(item);
     }
 
+    public int TryGetItemCount(ItemData item)
+    {
+        if (HasItem(item))
+        {
+            return items[item];
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
     /// <summary>
     /// Tries to use an item from inventory by ID
     /// </summary>

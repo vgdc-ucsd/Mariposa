@@ -6,14 +6,6 @@ public class BillboardPuzzleButton : MonoBehaviour
     [SerializeField] private int row, col;
     [SerializeField] private float rotScale;
 
-    private new void Start()
-    {
-        
-    }
-
-
-    
-
     public void OnClick()
     {
         if (beeMode)

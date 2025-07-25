@@ -15,16 +15,4 @@ public class VentActivation : Interactable
         ventPuzzle.SetActive(true);
         
     }
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        //ventPuzzle.SetActive(false);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

@@ -14,7 +14,7 @@ public class SquidMovement : FreeBody, IInputListener, IControllable
     private bool onWalkableSlope = false;
     private Vector2 slopeDir = Vector2.zero;
 
-    private int wallNormal = 0; // -1 = left, 1 = right, 0 = not on a wall
+    // private int wallNormal = 0; // -1 = left, 1 = right, 0 = not on a wall
 
 
     [SerializeField] private PlayerData data;
@@ -101,9 +101,9 @@ public class SquidMovement : FreeBody, IInputListener, IControllable
         bool hitLeftWall = Mathf.Abs(leftHit.normal.normalized.x) > LAND_SLOPE_FACTOR;
         bool hitRightWall = Mathf.Abs(rightHit.normal.normalized.x) > LAND_SLOPE_FACTOR;
 
-        if (hitLeftWall) wallNormal = 1;
-        else if (hitRightWall) wallNormal = -1;
-        else wallNormal = 0;
+        // if (hitLeftWall) wallNormal = 1;
+        // else if (hitRightWall) wallNormal = -1;
+        // else wallNormal = 0;
     }
 
     // public method to send a move command

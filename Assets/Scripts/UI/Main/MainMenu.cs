@@ -23,7 +23,6 @@ public class MainMenu : MonoBehaviour
     public void NewGameBtn()
     {
         SceneManager.LoadScene(1);
-        Debug.Log("New Game button clicked");
     }
 
     public void LoadGameBtn()
@@ -35,8 +34,6 @@ public class MainMenu : MonoBehaviour
 
     public void SettingsBtn()
     {
-        Debug.Log("Settings button clicked");
-
     }
 
     public void ExitBtn()

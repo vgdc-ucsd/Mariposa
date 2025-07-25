@@ -58,7 +58,7 @@ public class LevelManager : MonoBehaviour, IDataPersistence
     private IEnumerator InitSublevelDelayed()
     {
         while (
-            FindObjectOfType<Level>() == null ||
+            FindFirstObjectByType<Level>() == null ||
             Player.ActivePlayer == null ||
             CameraController.ActiveCamera == null
         )
@@ -66,7 +66,7 @@ public class LevelManager : MonoBehaviour, IDataPersistence
 
         yield return null;
 
-        CurrentLevel = FindObjectOfType<Level>();
+        CurrentLevel = FindFirstObjectByType<Level>();
         SublevelIndex = 0;
 
         foreach (var sl in CurrentLevel.Sublevels) sl.Unload();
@@ -132,6 +132,7 @@ public class LevelManager : MonoBehaviour, IDataPersistence
         PlayerController.Instance.SwitchTo(GetCurrentSublevel().SublevelCharacter);
         CameraController.ActiveCamera.SetBounds(GetCurrentSublevel().CameraBounds);
         Player.ActivePlayer.transform.position = GetCurrentSublevel().StartingSpawn.GetRespawnPosition();
+        Player.ActivePlayer.Movement.ResolveInitialCollisions();
         if (Player.ActivePlayer.Ability is BeeControlAbility bc)
         {
             bc.BeeRef.transform.position = Player.ActivePlayer.transform.position + new Vector3(0, 2, 0);
