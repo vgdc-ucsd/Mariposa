@@ -16,11 +16,17 @@ public class InventoryManager : Singleton<InventoryManager>
     private Inventory mariposaInventory;
     private Inventory unnamedInventory;
 
+    [Header("Preset Items")]
+    [Tooltip("Mariposa: Beebo, Radio")]
+    [SerializeField] private List<ItemData> mariposaItems;
+    [Tooltip("Unnnamed: Grapple Hook, Radio")]
+    [SerializeField] private List<ItemData> unnamedItems;
+
     void Start()
     {
-        // TODO load inventory data
         mariposaInventory = new Inventory();
         unnamedInventory = new Inventory();
+        LoadInventory(true); // Should run starting in Tutorial
 
         GameManager.Instance.RegisterStartAction(GameState.INVENTORY, EnterInventory);
         GameManager.Instance.RegisterExitAction(GameState.INVENTORY, ExitInventory);
@@ -53,4 +59,18 @@ public class InventoryManager : Singleton<InventoryManager>
         else return unnamedInventory;
     }
 
+    /*
+     Preset Inventories
+     tutorial:
+        mariposa: beebo, radio
+        unnamed: grappling hook
+     every other stage:
+        mariposa: beebo, radio
+        unnamed: grappling hook, radio
+    */
+    public void LoadInventory(bool isTutorial)
+    {
+        foreach(ItemData item in mariposaItems) { mariposaInventory.AddItem(item); }
+        foreach (ItemData item in unnamedItems) { if (!isTutorial || item.Name != "Radio") { unnamedInventory.AddItem(item); } }
+    }
 }

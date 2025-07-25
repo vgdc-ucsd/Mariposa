@@ -182,6 +182,7 @@ public class LevelManager : MonoBehaviour, IDataPersistence
     public void LoadNextLevel()
     {
         SceneManager.LoadScene(NextLevelName);
+        InventoryManager.Instance.LoadInventory(NextLevelName=="Tutorial");
         DataPersistenceManager.Instance.SaveGame(DataPersistenceManager.Instance.fileName);
         // Scene nextLevel = SceneManager.GetSceneByName(NextLevelName);
     }
