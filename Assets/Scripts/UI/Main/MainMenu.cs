@@ -12,12 +12,12 @@ public class MainMenu : MonoBehaviour
     void Start()
     {
         MusicManager.Instance.ChangeMusic(AudioEvents.Music.titlescreen_title_theme);
+        PauseMenuScript.Instance.gameObject.SetActive(false);
     }
 
-    // Update is called once per frame
-    void Update()
+    void OnDestroy()
     {
-
+        PauseMenuScript.Instance.gameObject.SetActive(true);
     }
 
     public void NewGameBtn()
@@ -27,9 +27,7 @@ public class MainMenu : MonoBehaviour
 
     public void LoadGameBtn()
     {
-        Debug.Log("Load button clicked");
         DataPersistenceManager.Instance.LoadGame(DataPersistenceManager.Instance.fileName);
-
     }
 
     public void SettingsBtn()
@@ -38,7 +36,6 @@ public class MainMenu : MonoBehaviour
 
     public void ExitBtn()
     {
-        Debug.Log("Exit button clicked");
         Application.Quit();
     }
 

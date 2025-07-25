@@ -1,11 +1,10 @@
 using UnityEngine;
 
-public class PauseMenuScript : MonoBehaviour
+public class PauseMenuScript : Singleton<PauseMenuScript>
 {
     public GameObject PauseMenu;
     public GameObject VideoSettingsMenu;
     public GameObject AudioSettingsMenu;
-    public GameObject BackgroundPanel;
 
     void Start()
     {
@@ -16,14 +15,12 @@ public class PauseMenuScript : MonoBehaviour
     public void PauseGame()
     {
         OpenPauseMenu();
-        BackgroundPanel.SetActive(true);
         Time.timeScale = 0.0f;
     }
 
     public void ResumeGame()
     {
         CloseAllMenus();
-        BackgroundPanel.SetActive(false);
         Time.timeScale = 1.0f;
     }
 
