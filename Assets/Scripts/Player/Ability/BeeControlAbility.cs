@@ -9,18 +9,14 @@ public class BeeControlAbility : MonoBehaviour, IAbility
     EventInstance BeeFlap;
     private bool playSendOutSFX = true;
 
-
-    public void Update()
+    public void RecallBee()
     {
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Bee.Instance.Movement.CurrentBehavior is not Follow && !Bee.Instance.IsControlled)
         {
-            if (Bee.Instance.Movement.CurrentBehavior is not Follow && !Bee.Instance.IsControlled)
-            {
-                RuntimeManager.PlayOneShot(AudioEvents.SFX.mariposa_recall.GetPath());
-                playSendOutSFX = true;
-            }
-            BeeRef.StartFollow();
+            RuntimeManager.PlayOneShot(AudioEvents.SFX.mariposa_recall.GetPath());
+            playSendOutSFX = true;
         }
+        BeeRef.StartFollow();
     }
 
     public void AbilityInputDown()

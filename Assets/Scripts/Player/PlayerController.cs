@@ -60,6 +60,7 @@ public class PlayerController : MonoBehaviour
         inputs.Player.Ability.canceled += ctx => SendAbilityUp(ctx);
         inputs.Player.Jump.performed += ctx => SendJump(ctx);
         inputs.Player.Interact.started += ctx => SendInteract();
+        inputs.Player.Recall.performed += TryRecallBee;
         inputs.Player.Click.performed += ctx => DialogueManager.Instance.TryAdvanceDialogue();
     }
 
@@ -69,6 +70,7 @@ public class PlayerController : MonoBehaviour
         inputs.Player.Ability.canceled -= ctx => SendAbilityUp(ctx);
         inputs.Player.Jump.performed -= ctx => SendJump(ctx);
         inputs.Player.Interact.started -= ctx => SendInteract();
+        inputs.Player.Recall.performed -= TryRecallBee;
         inputs.Player.Click.performed -= ctx => DialogueManager.Instance.TryAdvanceDialogue();
         inputs.Disable();
     }
@@ -162,6 +164,14 @@ public class PlayerController : MonoBehaviour
         }
 
         DialogueManager.Instance.TryAdvanceDialogue();
+    }
+
+    public void TryRecallBee(InputAction.CallbackContext ctx)
+    {
+        if (ControlledPlayer.Ability is BeeControlAbility bee)
+        {
+            bee.RecallBee();
+        }
     }
 
     private void FixedUpdate()

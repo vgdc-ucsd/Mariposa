@@ -25,7 +25,6 @@ public class Sublevel : MonoBehaviour
     public void Load()
     {
         CameraController.ActiveCamera.SetBounds(CameraBounds);
-        PlayerController.Instance.LoadIntoSublevel(_subLevelCharacter, StartingSpawn.GetRespawnPosition());
 
         activeEnemies = FindObjectsByType<Enemy>(FindObjectsInactive.Exclude, FindObjectsSortMode.None).ToList();
         breakables = FindObjectsByType<BreakablePlatform>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList();
@@ -40,6 +39,7 @@ public class Sublevel : MonoBehaviour
         }
 
         gameObject.SetActive(true);
+        PlayerController.Instance.LoadIntoSublevel(_subLevelCharacter, StartingSpawn.GetRespawnPosition());
     }
 
     public void Unload()

@@ -1,9 +1,6 @@
 using System.Collections;
-using NUnit.Framework.Internal.Commands;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Experimental.GlobalIllumination;
 using FMODUnity;
 using static AudioEvents;
 
@@ -77,23 +74,6 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
         {
             Instance = this;
         }
-
-    }
-
-    protected override void Update()
-    {
-        base.Update();
-        /*
-        if (Input.GetKeyDown(KeyCode.V)) // TODO make this an input action
-        {
-            // Consume a battery if available
-            if (InventoryManager.Instance.GetItemCount(InventoryType.Mariposa, BatteryItem.Instance) > 0)
-            {
-                InventoryManager.Instance.DeleteItem(InventoryType.Mariposa, BatteryItem.Instance);
-                StartCoroutine(DashRoutine());
-            }
-        }
-        */
     }
 
     private void OnValidate()
