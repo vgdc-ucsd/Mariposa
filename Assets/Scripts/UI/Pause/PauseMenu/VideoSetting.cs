@@ -4,6 +4,8 @@ using UnityEngine.UI;
 using UnityEngine.UIElements.Experimental;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering.Universal;
+using System.Collections.Generic;
+using System.Linq;
 
 /// <summary>
 /// Unity moment
@@ -20,7 +22,11 @@ public class VideoSetting : MonoBehaviour
 
     public RenderPipelineAsset[] QualityLevels;
 
-    private readonly int[,] resolutions =
+    public int graphicsQualityIndex = 2;
+    public WindowType ResolutionType = WindowType.WindowedFullscreen;
+    public int currentResolutionIndex;
+
+    private int[,] resolutions =
     {
         {640, 360},
         {1280, 720},
@@ -29,10 +35,6 @@ public class VideoSetting : MonoBehaviour
         {2560, 1440},
         {3840, 2160}
     };
-    public int graphicsQualityIndex = 2;
-    public WindowType ResolutionType = WindowType.Fullscreen;
-    public int currentResolutionIndex = 5;
-
     public int Width;
     public int Height;
 
@@ -52,11 +54,17 @@ public class VideoSetting : MonoBehaviour
     /// </summary>
     public void Start()
     {
-        Width = resolutions[currentResolutionIndex, 0];
-        Height = resolutions[currentResolutionIndex, 1];
-        Screen.SetResolution(Width, Height, FullScreenMode.ExclusiveFullScreen);
+        ResolutionSizeDropdown.ClearOptions();
+        ResolutionSizeDropdown.AddOptions(Screen.resolutions.Select(x => x.ToString()).ToList());
+        currentResolutionIndex = Screen.resolutions.Length - 1;
 
+        Width = Screen.resolutions[currentResolutionIndex].width;
+        Height = Screen.resolutions[currentResolutionIndex].height;
+        Screen.SetResolution(Width, Height, FullScreenMode.FullScreenWindow);
+
+        ResolutionSizeDropdown.value = currentResolutionIndex;
         GraphicsQualityDropdown.value = QualitySettings.GetQualityLevel();
+        ResolutionTypeDropdown.value = 2;
         graphicsQualityIndex = GraphicsQualityDropdown.value;
     }
 
@@ -67,8 +75,8 @@ public class VideoSetting : MonoBehaviour
     public void ApplyResolutionDimensionsChanges()
     {
         currentResolutionIndex = ResolutionSizeDropdown.value;
-        Width = resolutions[currentResolutionIndex, 0];
-        Height = resolutions[currentResolutionIndex, 1];
+        Width = Screen.resolutions[currentResolutionIndex].width;
+        Height = Screen.resolutions[currentResolutionIndex].height;
     }
 
     /// <summary>

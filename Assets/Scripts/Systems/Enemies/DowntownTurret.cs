@@ -1,8 +1,5 @@
 using UnityEngine;
-using System.Collections;
-using Microsoft.Unity.VisualStudio.Editor;
 using System;
-using UnityEditor.EditorTools;
 
 public class DowntownTurret : MonoBehaviour
 {
@@ -49,8 +46,8 @@ public class DowntownTurret : MonoBehaviour
     [SerializeField][Range(0.0f, 90.0f)] float precision;
 
     [Header("Sprites")]
-    [SerializeField] private Image activeSprite;
-    [SerializeField] private Image deactivatedSprite;
+    [SerializeField] private Sprite activeSprite;
+    [SerializeField] private Sprite deactivatedSprite;
 
     private void Start()
     {
