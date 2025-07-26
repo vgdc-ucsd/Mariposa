@@ -4,9 +4,6 @@
 [System.Serializable]
 public class GameData
 {
-    // REMOVE THIS VARIABLE LATER! This is just to test the saving :)
-    public int TEST_keyStrokeCount;
-
     // Player Data
     // TODO: Add reference to Unnamed's name
     public int friendshipScore;
@@ -31,7 +28,6 @@ public class GameData
         // Default Creations may Conflict with Start() calls
         // Probably don't even need these anyway or we can refactor the code for this to work
         this.friendshipScore = 0;
-        this.audioSetting = new AudioSetting();
         this.width = 1920;
         this.height = 1080;
         this.windowType = WindowType.Windowed;
