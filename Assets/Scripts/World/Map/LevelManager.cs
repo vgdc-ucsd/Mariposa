@@ -64,4 +64,12 @@ public class LevelManager : Singleton<LevelManager>
             // TODO: Check if it works and if needed call a function to apply the changes
         }
         */
+
+//     public void LoadNextLevel()
+//     {
+//         SceneManager.LoadScene(NextLevelName);
+//         InventoryManager.Instance.LoadInventory(NextLevelName=="Tutorial");
+//         DataPersistenceManager.Instance.SaveGame(DataPersistenceManager.Instance.fileName);
+//         // Scene nextLevel = SceneManager.GetSceneByName(NextLevelName);
+//     }
 }

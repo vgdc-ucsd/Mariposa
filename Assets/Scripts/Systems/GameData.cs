@@ -4,9 +4,12 @@
 [System.Serializable]
 public class GameData
 {
-    // Player inventory
-    public Inventory mariposaInventory;
-    public Inventory unnamedInventory;
+    // REMOVE THIS VARIABLE LATER! This is just to test the saving :)
+    public int TEST_keyStrokeCount;
+
+    // Player Data
+    // TODO: Add reference to Unnamed's name
+    public int friendshipScore;
 
     // Settings
     // TODO: audio settings
@@ -25,8 +28,10 @@ public class GameData
     /// </summary>
     public GameData()
     {
-        mariposaInventory = new Inventory();
-        unnamedInventory = new Inventory();
+        // Default Creations may Conflict with Start() calls
+        // Probably don't even need these anyway or we can refactor the code for this to work
+        this.friendshipScore = 0;
+        this.audioSetting = new AudioSetting();
         this.width = 1920;
         this.height = 1080;
         this.windowType = WindowType.Windowed;
