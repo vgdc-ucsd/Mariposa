@@ -20,6 +20,7 @@ public class WaterPuzzle : Puzzle
     [SerializeField] private GameObject backgroundParent;
     [SerializeField] private float puzzleScale;
     [SerializeField] private Transform content;
+    [SerializeField] private int puzzleNumber = 1;
 
     public float RandomTurnChance; // odds from 0 to 1 for the solution generator to make a random turn between tiles.
     public float TileWidth, TileHeight; // width and height of one tile in the scene
@@ -99,10 +100,27 @@ public class WaterPuzzle : Puzzle
 
     public IEnumerator CompletePuzzle()
     {
-        yield return new WaitForSeconds(1f);
         OnComplete();
+        yield return null;
     }
 
+    public override void OnComplete()
+    {
+        switch (puzzleNumber)
+        {
+            case 1:
+                WaterPuzzleProgressTracker.Instance.MarkPuzzle1Complete();
+                break;
+            case 2:
+                WaterPuzzleProgressTracker.Instance.MarkPuzzle2Complete();
+                break;
+            case 3:
+                WaterPuzzleProgressTracker.Instance.MarkPuzzle3Complete();
+                break;
+        }
+        base.OnComplete();
+    }
+    
     public void RevertSplitTile()
     {
         if (SplitTile == null) return;
