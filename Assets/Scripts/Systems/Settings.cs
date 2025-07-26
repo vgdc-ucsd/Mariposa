@@ -26,7 +26,6 @@ public class Settings : Singleton<Settings>, IDataPersistence
     private void Start()
     {
         getSliders();
-        initializeVolumeSettings();
         // play background test audio if audio debug is on to test volume slider functionality
         if (Debug.GetAudioDebug())
         {
@@ -65,6 +64,8 @@ public class Settings : Singleton<Settings>, IDataPersistence
         checkSliderImport(DialogueSlider);
         AmbienceSlider = audioSetting.AmbienceSlider;
         checkSliderImport(AmbienceSlider);
+
+        initializeVolumeSettings();
     }
 
     public float internalUsageGetSFXVolume()

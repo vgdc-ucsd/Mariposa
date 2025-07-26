@@ -89,8 +89,8 @@ public class GameManager : Singleton<GameManager>
 
     public void HandlePause()
     {
-        if (MainMenu.Instance != null) return;
-        if (gameState.GetState() == GameState.PAUSE) gameState.Transition(GameState.GAME);
+        if (CurrentScene == GameScene.MAIN_MENU) MainMenuSettings.Instance.CloseAllMenus();
+        else if (gameState.GetState() == GameState.PAUSE) gameState.Transition(GameState.GAME);
         else gameState.Transition(GameState.PAUSE);
     }
 
