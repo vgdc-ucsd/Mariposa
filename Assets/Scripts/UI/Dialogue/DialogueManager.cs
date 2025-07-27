@@ -82,4 +82,5 @@ public class DialogueManager : Singleton<DialogueManager>
     }
 
     public void TryAdvanceDialogue() { dialoguePlayer.TryAdvanceDialogue(); }
+    public void EndCutscene() { dialoguePlayer.EndCutscene(); }
 }

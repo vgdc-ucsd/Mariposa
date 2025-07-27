@@ -7,6 +7,7 @@ public class VelocityField : MonoBehaviour
     public float blowForce = 70f;
     [SerializeField] private BoxCollider2D blowField;
     [SerializeField] private LayerMask barrierLayerMask;
+    [SerializeField] private ParticleSystem windParticles;
     private Vector2 fieldMaxSize;
     private Vector2 blowDirection = Vector2.zero;
 
@@ -20,6 +21,7 @@ public class VelocityField : MonoBehaviour
         RecomputeFieldCollider();
         if (inactiveOnStart)
         {
+            windParticles.Stop();
             gameObject.SetActive(false);
         }
     }
@@ -48,6 +50,8 @@ public class VelocityField : MonoBehaviour
         float newLength = hit
             ? hit.distance + CAST_OFFSET
             : fieldMaxSize.x;
+        var main = windParticles.main;
+        main.startLifetime = new ParticleSystem.MinMaxCurve(newLength / windParticles.main.startSpeed.constant, newLength / windParticles.main.startSpeed.constant);
         blowField.transform.localScale = new(newLength, fieldMaxSize.y);
         blowField.transform.localPosition = new Vector2(newLength / 2f, 0f);
         // Debug.Log(newLength); 
@@ -70,5 +74,7 @@ public class VelocityField : MonoBehaviour
     public void OnFieldToggle()
     {
         gameObject.SetActive(!gameObject.activeSelf);
+        if (gameObject.activeSelf) windParticles.Play();
+        else windParticles.Stop();
     }
 }
