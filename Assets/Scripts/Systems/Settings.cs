@@ -150,18 +150,10 @@ public class Settings : Singleton<Settings>, IDataPersistence
     
     public void SaveData(ref GameData data)
     {
-        data.SfxSliderValue = SFXSlider.value;
-        data.MusicSliderValue = MusicSlider.value;
-        data.DialogueSliderValue = DialogueSlider.value;
-        data.MasterSliderValue = MasterSlider.value;
-        data.AmbienceSliderValue = AmbienceSlider.value;
+        //audioSetting = data.audioSetting;
     }
     public void LoadData(GameData data)
     {
-        SFXSlider.value = data.SfxSliderValue;
-        MusicSlider.value = data.MusicSliderValue;
-        DialogueSlider.value = data.DialogueSliderValue;
-        MasterSlider.value = data.MasterSliderValue;
-        AmbienceSlider.value = data.AmbienceSliderValue;
+        //audioSetting = data.audioSetting;
     }
 }
