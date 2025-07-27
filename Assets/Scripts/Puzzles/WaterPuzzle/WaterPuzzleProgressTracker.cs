@@ -6,6 +6,7 @@ public class WaterPuzzleProgressTracker : MonoBehaviour
     public bool Puzzle1Complete { get; private set; }
     public bool Puzzle2Complete { get; private set; }
     public bool Puzzle3Complete { get; private set; }
+    public bool Puzzle3Unlocked { get; private set; } = false;
     [SerializeField] private ItemData pipeItemSO;
 
     private void Awake()
@@ -22,19 +23,28 @@ public class WaterPuzzleProgressTracker : MonoBehaviour
                 return true;
 
             case 2:
-                if (Puzzle1Complete)
-                    return true;
-                else
+                if (!Puzzle1Complete)
                 {
-                    DialogueManager.Instance.PlayDialogue("pipe_missing");
+                    DialogueManager.Instance.PlayDialogue("pipe_two_no_one");
+                    return false;
+                }
+                return true;
+
+            case 3:
+                if (!Puzzle2Complete)
+                {
+                    DialogueManager.Instance.PlayDialogue("pipe_three_no_others");
                     return false;
                 }
 
-            case 3:
-                if (!Puzzle2Complete || !InventoryManager.Instance.GetInventory().TryConsumeItem(pipeItemSO))
+                if (!Puzzle3Unlocked)
                 {
-                    DialogueManager.Instance.PlayDialogue("pipe_missing");
-                    return false;
+                    if (!InventoryManager.Instance.GetInventory().TryConsumeItem(pipeItemSO))
+                    {
+                        DialogueManager.Instance.PlayDialogue("pipe_missing");
+                        return false;
+                    }
+                    Puzzle3Unlocked = true;
                 }
                 return true;
 
