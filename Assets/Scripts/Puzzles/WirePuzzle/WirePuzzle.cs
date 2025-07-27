@@ -78,6 +78,7 @@ public class WirePuzzle : Puzzle
     }
 
     // debug shenanigans
+    /*
     void Update()
     {
         if (Input.GetKey(KeyCode.H))
@@ -88,4 +89,5 @@ public class WirePuzzle : Puzzle
             OnComplete();
         }
     }
+    */
 }

@@ -161,15 +161,8 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
         Physics2D.SyncTransforms();
         Bounds bounds = SurfaceCollider.bounds;
 
-        // bool onBee = false;
-        if (CanDoubleJump && airJumpAvailable)
-        {
-            Vector2 beeCastCenter = bounds.center + 0.375f * bounds.size.y * Vector3.down;
-            Vector2 beeCastSize = 0.25f * bounds.size;
-            RaycastHit2D[] beeHits = Physics2D.BoxCastAll(beeCastCenter, beeCastSize, 0f, Vector2.down, COLLISION_CHECK_DISTANCE);
-            // foreach (var hit in beeHits) if (hit.collider.CompareTag("Bee")) onBee = true;
-        }
-
+        Vector2 castSize = new(bounds.size.x * 0.99f, bounds.size.y);
+        RaycastHit2D closeToGround = Physics2D.BoxCast((Vector2)transform.position + SurfaceCollider.offset, castSize, 0f, Vector2.down, 1.5f, collisionLayer);
 
         if (CanWallJump && wallNormal != 0 && State == BodyState.InAir)
         {
@@ -184,7 +177,7 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
             coyoteTimeRemaining = 0f;   // consume coyote time
             playJumpSFX();
         }
-        else if (CanDoubleJump && airJumpAvailable && Bee.Instance.CanBeeJump())
+        else if (CanDoubleJump && airJumpAvailable && !closeToGround && Bee.Instance.CanBeeJump())
         {
             StartCoroutine(DelayedJump());
             Bee.Instance.TriggerBeeJump();

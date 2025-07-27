@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour
     public bool IsLocked { get; private set; }
 
     public bool IsSquidUnlocked;
-    private bool isSquidActive = false;
+    public bool isSquidActive = false;
 
     private void Awake()
     {
