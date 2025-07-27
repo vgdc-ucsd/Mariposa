@@ -161,7 +161,7 @@ public class WaterPuzzleTile : MonoBehaviour
             return;
         }
         Image.sprite = puzzle.TileSprites[spriteIndex - 1]; // as of 5/7/25, there's no empty sprite
-        Image.transform.eulerAngles += Vector3.forward * (transform.eulerAngles.z + rotation);
+        Image.transform.eulerAngles = Vector3.forward * rotation;
     }
 
     /// <summary>
