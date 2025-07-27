@@ -123,6 +123,12 @@ public class DialoguePlayer : MonoBehaviour
         if (initAdvance) AdvanceDialogue();
     }
 
+    public void EndCutscene()
+    {
+        SetCinematicMode(false);
+        PlayerController.Instance.SetMovementLock(false);
+    }
+
     public void TryAdvanceDialogue()
     {
         // If currently fading, in cinematic mode, or at the very start of a dialogue, don't advance
@@ -158,7 +164,7 @@ public class DialoguePlayer : MonoBehaviour
             // Removed for hometown cutscenes
             // backgroundGraphic.gameObject.SetActive(false);
 
-            if (PlayerController.Instance) PlayerController.Instance.SetMovementLock(false);
+            if (PlayerController.Instance && !isCinematic) PlayerController.Instance.SetMovementLock(false);
 
             foreach (string dialogueEvent in endingEvents)
             {
@@ -241,7 +247,7 @@ public class DialoguePlayer : MonoBehaviour
                     SetCinematicMode(true);
                     FadeController.Instance.FadeIn();
                     isFading = false;
-                    
+
                     activeLineTarget.text = conversation[dialogueIndex].Line;
                     speakerTarget.text = speaker;
                     StartCoroutine(TypewriterEffect());
