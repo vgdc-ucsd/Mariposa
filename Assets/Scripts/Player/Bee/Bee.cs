@@ -12,6 +12,7 @@ public class Bee : MonoBehaviour
     public float MaxControlRadius;
     public float FollowRadius = 2f;
     public bool IsControlled = false;
+    [SerializeField] private SpriteRenderer beeRadius;
 
     private void Awake()
     {
@@ -33,6 +34,7 @@ public class Bee : MonoBehaviour
         }
         else
         {
+            beeRadius.color = Color.clear;
             PlayerController.Instance.StartControlling(Player.ActivePlayer.Movement);
             Movement.SetBehavior(new Stay());
         }
@@ -54,7 +56,10 @@ public class Bee : MonoBehaviour
         Movement.SetBehavior(new Follow(2f, FollowRadius));
     }
 
-
+    public void SetRadiusSprite(float alpha)
+    {
+        beeRadius.color = new Color(1.0f, 1.0f, 1.0f, alpha);
+    }
 }
 
 

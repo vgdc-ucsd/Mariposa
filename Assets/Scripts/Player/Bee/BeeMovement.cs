@@ -112,7 +112,8 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
     {
         Vector2 r = transform.position - Player.ActivePlayer.transform.position;
         float distanceToPlayer = r.magnitude;
-
+        float radiusSpriteAlpha = Mathf.Clamp01(Mathf.Pow(distanceToPlayer / parent.MaxControlRadius, 2f) - 0.5f);
+        parent.SetRadiusSprite(radiusSpriteAlpha);
 
         if (distanceToPlayer > parent.MaxControlRadius)
         {
