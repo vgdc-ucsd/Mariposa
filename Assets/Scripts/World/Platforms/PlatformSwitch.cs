@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class PlatformSwitch : Switch
 {
+    [SerializeField] private SpriteRenderer sr;
     [Serializable] class PlatformMovement
     {
         public SendableMovingPlatform platform;
@@ -15,6 +16,7 @@ public class PlatformSwitch : Switch
 
     public override void TriggerSwitch()
     {
+        sr.flipX = !sr.flipX;
         foreach (PlatformMovement platformMovement in platformMovements)
         {
             platformMovement.platform.SendPlatform(platformMovement.nodesToMove);
