@@ -11,16 +11,11 @@ public class MainMenu : Singleton<MainMenu>
     void Start()
     {
         MusicManager.Instance.ChangeMusic(AudioEvents.Music.titlescreen_title_theme);
-        PauseMenuScript.Instance.gameObject.SetActive(false);
-    }
-
-    void OnDestroy()
-    {
-        if (PauseMenuScript.Instance != null) PauseMenuScript.Instance.gameObject.SetActive(true);
     }
 
     public void NewGameBtn()
     {
+        DataPersistenceManager.Instance.NewGame();
         GameManager.Instance.LoadScene(GameScene.TUTORIAL);
     }
 
@@ -31,6 +26,7 @@ public class MainMenu : Singleton<MainMenu>
 
     public void SettingsBtn()
     {
+        // Opens via onClick event in inspector
     }
 
     public void ExitBtn()

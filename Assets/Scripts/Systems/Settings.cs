@@ -10,7 +10,7 @@ using UnityEngine.UI;
 public class Settings : Singleton<Settings>, IDataPersistence
 {
     public DebugSettings Debug;
-    private AudioSetting audioSetting;
+    [SerializeField] private AudioSetting audioSetting;
 
     private Slider MasterSlider;
     private Slider MusicSlider;
@@ -25,6 +25,7 @@ public class Settings : Singleton<Settings>, IDataPersistence
 
     private void Start()
     {
+        if (audioSetting == null) audioSetting = FindFirstObjectByType<AudioSetting>();
         getSliders();
         // play background test audio if audio debug is on to test volume slider functionality
         if (Debug.GetAudioDebug())
@@ -83,11 +84,12 @@ public class Settings : Singleton<Settings>, IDataPersistence
 
     public void setAudioSettingReference(AudioSetting audioSetting)
     {
-        if (this.audioSetting != null)
-        {
-            UnityEngine.Debug.LogWarning("Audio setting referenced is already set! This may be caused by multiple instances of AudioSetting. Overriding current reference...");
-        }
-        this.audioSetting = audioSetting;
+        // TODO - Have to use keyword ref or out in order to reference, using FindFirstObjectyByType for now
+        // if (this.audioSetting != null)
+        // {
+        //     UnityEngine.Debug.LogWarning("Audio setting referenced is already set! This may be caused by multiple instances of AudioSetting. Overriding current reference...");
+        // }
+        // this.audioSetting = audioSetting;
     }
 
     private void backgroundAudioTest()
@@ -148,10 +150,18 @@ public class Settings : Singleton<Settings>, IDataPersistence
     
     public void SaveData(ref GameData data)
     {
-        //data.audioSetting = audioSetting;
+        data.SfxSliderValue = SFXSlider.value;
+        data.MusicSliderValue = MusicSlider.value;
+        data.DialogueSliderValue = DialogueSlider.value;
+        data.MasterSliderValue = MasterSlider.value;
+        data.AmbienceSliderValue = AmbienceSlider.value;
     }
     public void LoadData(GameData data)
     {
-        //audioSetting = data.audioSetting;
+        SFXSlider.value = data.SfxSliderValue;
+        MusicSlider.value = data.MusicSliderValue;
+        DialogueSlider.value = data.DialogueSliderValue;
+        MasterSlider.value = data.MasterSliderValue;
+        AmbienceSlider.value = data.AmbienceSliderValue;
     }
 }
