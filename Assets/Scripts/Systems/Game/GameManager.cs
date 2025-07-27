@@ -125,4 +125,9 @@ public class GameManager : Singleton<GameManager>
         actions.Control.Disable();
         actions.Player.Disable();
     }
+    
+    public GameState GetCurrentState()
+    {
+        return gameState.GetState();
+    }
 }

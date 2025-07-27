@@ -5,6 +5,7 @@ public class PauseMenuScript : Singleton<PauseMenuScript>
     public GameObject PauseMenu;
     public GameObject VideoSettingsMenu;
     public GameObject AudioSettingsMenu;
+    [SerializeField] private UnityEngine.UI.Button checkpointButton;
 
     void Start()
     {
@@ -49,6 +50,10 @@ public class PauseMenuScript : Singleton<PauseMenuScript>
         VideoSettingsMenu.SetActive(false);
         Settings.Instance.PauseSounds(true);
         Settings.Instance.MuteTestSounds(true);
+        bool canCheckpoint = !(DialogueManager.Instance != null && DialogueManager.Instance.isPlayingDialogue)
+                             && !(PuzzlePopupManager.Instance != null && PuzzlePopupManager.Instance.ActivePuzzle != null);
+        if (checkpointButton != null)
+            checkpointButton.interactable = canCheckpoint;
     }
 
     public void CloseAllMenus()
@@ -69,6 +74,10 @@ public class PauseMenuScript : Singleton<PauseMenuScript>
 
     public void RestartFromCheckpoint()
     {
+        if (DialogueManager.Instance != null || PuzzlePopupManager.Instance != null)
+        {
+            return;
+        }
         CloseAllMenus();
         ResumeGame();
         // respawn from level manager or something?
