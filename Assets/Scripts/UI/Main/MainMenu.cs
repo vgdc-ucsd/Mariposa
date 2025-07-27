@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 //To assign a method to the onclick for a button...
 //Drag and drop the menuManager object into the button onclick on unity
@@ -22,7 +21,7 @@ public class MainMenu : Singleton<MainMenu>
 
     public void NewGameBtn()
     {
-        SceneManager.LoadScene(1);
+        GameManager.Instance.LoadScene(GameScene.TUTORIAL);
     }
 
     public void LoadGameBtn()

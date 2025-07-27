@@ -35,6 +35,7 @@ public class EndingManager : Singleton<EndingManager>
         // TODO: for testing, remove before building
         FriendshipManager.Instance.SetScore(GOOD_ENDING_THRESHOLD);
 
+        IsCutsceneActive = false;
         bool isGoodEnding = FriendshipManager.Instance.CompareScore(GOOD_ENDING_THRESHOLD);
         foreach (GameObject obj in goodDialogueTriggers) obj.SetActive(isGoodEnding);
         foreach (GameObject obj in badDialogueTriggers) obj.SetActive(!isGoodEnding);
@@ -72,8 +73,12 @@ public class EndingManager : Singleton<EndingManager>
 
     public void EndCutscene()
     {
-        // TODO: go to credits, or main menu?
-        Debug.Log("Game finished");
-        IsCutsceneActive = false;
+        // Calling these causes screen to flicker back to hometown level before returning to menu
+        // They should be unnecessary unless there are issues with persistent state when returning to hometown after finishing
+        // DialogueManager.Instance.EndCutscene();
+        // IsCutsceneActive = false;
+
+        // TODO: go to credits
+        GameManager.Instance.LoadScene(GameScene.MAIN_MENU);
     }
 }

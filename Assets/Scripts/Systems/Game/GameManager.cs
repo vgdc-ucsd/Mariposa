@@ -31,6 +31,7 @@ public class GameManager : Singleton<GameManager>
     public override void Awake()
     {
         actions = new InputSystem_Actions();
+        CurrentScene = (GameScene)SceneManager.GetActiveScene().buildIndex;
         base.Awake();
     }
 
@@ -61,8 +62,6 @@ public class GameManager : Singleton<GameManager>
 
     public void OnChangeScene()
     {
-        UnregisterStartAction(GameState.PAUSE);
-        UnregisterExitAction(GameState.PAUSE);
         UnregisterStartAction(GameState.INVENTORY);
         UnregisterExitAction(GameState.INVENTORY);
     }

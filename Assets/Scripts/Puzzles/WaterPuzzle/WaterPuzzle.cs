@@ -124,6 +124,11 @@ public class WaterPuzzle : Puzzle
     public void RevertSplitTile()
     {
         if (SplitTile == null) return;
+        foreach (WaterPuzzleTile tile in Tiles)
+        {
+            if (tile != null)
+                tile.EmptyTile();
+        }
         SplitTile.PipeRight = SplitTilePipes[0];
         SplitTile.PipeUp = SplitTilePipes[1];
         SplitTile.PipeLeft = SplitTilePipes[2];
@@ -133,7 +138,7 @@ public class WaterPuzzle : Puzzle
         SplitTilePipes = new bool[4];
         UsedPipeSplitter = false;
         toggleText.text = (PipeSplitterToggled ? "Click a pipe to split it!" : "Use Pipe Splitter");
-
+        StartTile.FillTile(true);
     }
 
     public void ToggleSplitTile()
