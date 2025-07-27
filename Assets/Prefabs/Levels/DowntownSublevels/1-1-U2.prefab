@@ -6215,8 +6215,6 @@ Transform:
   - {fileID: 756224451179465134}
   - {fileID: 3475347689238875067}
   - {fileID: 9154890248907375012}
-  - {fileID: 7890484702207239623}
-  - {fileID: 6228504407768536463}
   m_Father: {fileID: 341775098364039607}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5762550174865527920
@@ -6854,51 +6852,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 5.5, y: 6.5}
   m_EdgeRadius: 0
---- !u!1 &6142255150019544422
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7890484702207239623}
-  - component: {fileID: 5500775694436893440}
-  m_Layer: 0
-  m_Name: PierSwitchOfferHelpEvent
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7890484702207239623
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6142255150019544422}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3398338825806622786}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5500775694436893440
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6142255150019544422}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a0675b10fcbad7841b35973da9503773, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Name: play_pier_arrival_from_offer_help
 --- !u!1 &6179702752071002851
 GameObject:
   m_ObjectHideFlags: 0
@@ -7410,6 +7363,67 @@ MonoBehaviour:
   platform: {fileID: 8762491157275445846}
   loadRB: {fileID: 6876620823987147345}
   preemptiveCollider: {fileID: 8987090779464779443}
+--- !u!1 &6684954339104308816
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7500460560477298816}
+  - component: {fileID: 8665697404396015975}
+  - component: {fileID: 989853109674570671}
+  m_Layer: 0
+  m_Name: Load Pier Event
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7500460560477298816
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6684954339104308816}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9215895420803957392}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8665697404396015975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6684954339104308816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7928f3b746b672449330ee99f1b30dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: play_pier_arrival_from_stay_quiet
+  scene: 3
+--- !u!114 &989853109674570671
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6684954339104308816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7928f3b746b672449330ee99f1b30dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: play_pier_arrival_from_offer_help
+  scene: 3
 --- !u!1 &6736741438216764035
 GameObject:
   m_ObjectHideFlags: 0
@@ -7821,51 +7835,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 3.03, y: 2.62}
   m_EdgeRadius: 0
---- !u!1 &6952318250653667336
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6228504407768536463}
-  - component: {fileID: 9150278968003555578}
-  m_Layer: 0
-  m_Name: PierSwitchSayNothingEvent
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6228504407768536463
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6952318250653667336}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3398338825806622786}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &9150278968003555578
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6952318250653667336}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a0675b10fcbad7841b35973da9503773, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Name: play_pier_arrival_from_stay_quiet
 --- !u!1 &7059655009497675050
 GameObject:
   m_ObjectHideFlags: 0
@@ -8722,7 +8691,8 @@ Transform:
   m_LocalPosition: {x: 65.4, y: -11.3, z: 0}
   m_LocalScale: {x: 4.8165, y: 7.5606527, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 7500460560477298816}
   m_Father: {fileID: 3398338825806622786}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &7899773226053457899
@@ -8769,7 +8739,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 2.07, y: 1}
   m_EdgeRadius: 0
 --- !u!114 &2684053862158320945
 MonoBehaviour:
