@@ -22,6 +22,7 @@ public class VelocityField : MonoBehaviour
         if (inactiveOnStart)
         {
             windParticles.Stop();
+            windParticles.Clear();
             gameObject.SetActive(false);
         }
     }
@@ -74,7 +75,14 @@ public class VelocityField : MonoBehaviour
     public void OnFieldToggle()
     {
         gameObject.SetActive(!gameObject.activeSelf);
-        if (gameObject.activeSelf) windParticles.Play();
-        else windParticles.Stop();
+        if (gameObject.activeSelf)
+        {
+            windParticles.gameObject.SetActive(true);
+            windParticles.Play();
+        }
+        else
+        {
+            windParticles.Stop();
+        }
     }
 }
