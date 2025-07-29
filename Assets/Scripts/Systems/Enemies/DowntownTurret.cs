@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using FMODUnity;
 
 public class DowntownTurret : MonoBehaviour
 {
@@ -166,6 +167,7 @@ public class DowntownTurret : MonoBehaviour
     public void RemoveBattery()
     {
         HasBattery = false;
+        RuntimeManager.PlayOneShot("event:/sfx/item/pickup");
         ShutDown();
     }
 

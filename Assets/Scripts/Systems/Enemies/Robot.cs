@@ -1,3 +1,4 @@
+using FMODUnity;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -9,10 +10,14 @@ public class Robot : Enemy
 
     [SerializeField] private float closeDistance = 1f;
 
+    private float playStepCtr;
+    [SerializeField] private float playStepInterval = 0.5f;
+
 
 
     protected override void Awake()
     {
+        playStepCtr = Random.Range(0.0f, 0.15f);
         base.Awake();
         Movement = GetComponent<RobotMovement>();
         animationController = this.gameObject.GetComponent<Animator>();
@@ -31,23 +36,36 @@ public class Robot : Enemy
     void Update()
     {
         Vector2 targetPos = Player.ActivePlayer.transform.position;
+        float dt = Time.deltaTime;
         if (targetPos.x - transform.position.x > closeDistance)
         {
             Movement.SetMoveDir(Vector2.right);
             animationController.SetBool("IsMoving", true);
             spriteRenderer.flipX = false;
-
+            HandleStepAudio(dt);
         }
         else if (transform.position.x - targetPos.x > closeDistance)
         {
             Movement.SetMoveDir(Vector2.left);
             animationController.SetBool("IsMoving", true);
             spriteRenderer.flipX = true;
+            HandleStepAudio(dt);
         }
         else
         {
+            playStepCtr = 0.0f;
             Movement.SetMoveDir(Vector2.zero);
             animationController.SetBool("IsMoving", false);
+        }
+    }
+
+    private void HandleStepAudio(float dt)
+    {
+        playStepCtr += dt;
+        if (playStepCtr > playStepInterval)
+        {
+            RuntimeManager.PlayOneShot("event:/sfx/world/robot/step", this.transform.position);
+            playStepCtr = 0.0f;
         }
     }
 }
