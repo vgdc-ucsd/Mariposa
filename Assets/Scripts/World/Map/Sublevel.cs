@@ -39,6 +39,8 @@ public class Sublevel : MonoBehaviour
         }
 
         gameObject.SetActive(true);
+        CameraManager.Instance.GetCamerasInScene();
+        CameraManager.Instance.ResetCamera();
         PlayerController.Instance.LoadIntoSublevel(_subLevelCharacter, StartingSpawn.GetRespawnPosition());
     }
 

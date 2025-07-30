@@ -1,12 +1,12 @@
 using UnityEngine;
 
-public class CameraTrigger : Trigger
+public class StillCameraTrigger : Trigger
 {
     [SerializeField] private GameObject cameraToActivate;
 
     void Start()
     {
-       cameraToActivate.SetActive(false);
+       // cameraToActivate.SetActive(false);
     }
     
     public override bool OnEnter(Body body)

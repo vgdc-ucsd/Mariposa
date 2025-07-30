@@ -21,7 +21,6 @@ public class CameraManager : MonoBehaviour
     void Start()
     {
         GetCamerasInScene();
-        playerCamera = cameras.Find(obj => obj.CompareTag("MainCamera"));
     }
 
     public void SetActiveCamera(GameObject camera)
@@ -42,6 +41,11 @@ public class CameraManager : MonoBehaviour
         }
 
         cameras.Find(obj => obj.name == cameraName).SetActive(true);
+    }
+
+    public void ResetCamera()
+    {
+        SetActiveCamera(playerCamera);
     }
 
     public void EnableCamera(GameObject camera)
@@ -72,6 +76,7 @@ public class CameraManager : MonoBehaviour
         {
             cameras.Add(cam.gameObject);
         }
+        playerCamera = cameras.Find(obj => obj.CompareTag("MainCamera"));
     }
 
 }
