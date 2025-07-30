@@ -12,12 +12,33 @@ public class PanCameraTrigger : Trigger
     private bool isPanning;
     private int cameraIndex;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    private InputSystem_Actions inputs;
     void Start()
     {
         // cameraToPan.SetActive(false);
         panCtr = 0.0f;
         isPanning = false;
         cameraIndex = 0;
+        inputs = new();
+    }
+
+    void OnEnable()
+    {
+        inputs.Player.Enable();
+        inputs.Player.Click.performed += context =>
+        {
+            if (isPanning)
+            {
+                RestoreDefaultCam();
+            }
+        };      
+    }
+
+    void OnDisable()
+    {
+        inputs.Player.Click.started -= context => { };
+        inputs.Player.Disable();
     }
 
     public override bool OnEnter(Body body)
@@ -45,16 +66,18 @@ public class PanCameraTrigger : Trigger
     {
         if (!isPanning) return;
 
-        if (cameraIndex >= camerasToPan.Length)
-        {
-            RestoreDefaultCam();
-            this.transform.parent.gameObject.SetActive(false);
-        }
 
         panCtr += Time.deltaTime;
         if (panCtr > timePerCamera)
         {
             cameraIndex++;
+            if (cameraIndex >= camerasToPan.Length)
+            {
+                RestoreDefaultCam();
+                this.transform.parent.gameObject.SetActive(false);
+                return;
+            }
+
             if (!camerasToPan[cameraIndex].TryGetComponent<CinemachineCamera>(out CinemachineCamera cam))
             {
                 Debug.LogWarning("Trying to activate something that is not a camera; stopping process");
