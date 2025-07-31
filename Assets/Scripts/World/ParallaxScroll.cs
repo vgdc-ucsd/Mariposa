@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ParallaxScroll : MonoBehaviour
 {
@@ -6,11 +7,14 @@ public class ParallaxScroll : MonoBehaviour
     [SerializeField] private float yOffset = 0f;
     private float startPos;
     private float length;
+    private float canvasScaleFactor;
 
     void OnEnable()
     {
         startPos = transform.position.x;
-        length = GetComponent<SpriteRenderer>().bounds.size.x;
+        // length = GetComponent<SpriteRenderer>().bounds.size.x;
+        length = GetComponent<RectTransform>().rect.width;
+        canvasScaleFactor = this.transform.parent.gameObject.GetComponent<CanvasScaler>().scaleFactor;
     }
 
     void FixedUpdate()
@@ -20,11 +24,11 @@ public class ParallaxScroll : MonoBehaviour
 
         transform.position = new Vector3(startPos + distance, Camera.main.transform.position.y + yOffset, transform.position.z);
 
-        if (movement > startPos + length)
+        if (movement > (startPos + length) * canvasScaleFactor)
         {
             startPos += length;
         }
-        else if (movement < startPos - length)
+        else if (movement < (startPos - length) * canvasScaleFactor)
         {
             startPos -= length;
         }

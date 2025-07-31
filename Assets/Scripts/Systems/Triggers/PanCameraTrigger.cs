@@ -7,15 +7,18 @@ public class PanCameraTrigger : Trigger
     [Header("Camera Settings")]
     [SerializeField] private GameObject[] camerasToPan;
     [SerializeField] private float timePerCamera;
-    [SerializeField] private bool canMoveDuringPan;
+    [SerializeField] private bool canMoveDuringPan = false;
+    [SerializeField] private bool isSkippable = true;
     private float panCtr;
     private bool isPanning;
     private int cameraIndex;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     private InputSystem_Actions inputs;
-    void Start()
+    public override void Awake()
     {
+        base.Awake();
+        
         // cameraToPan.SetActive(false);
         panCtr = 0.0f;
         isPanning = false;
@@ -28,7 +31,7 @@ public class PanCameraTrigger : Trigger
         inputs.Player.Enable();
         inputs.Player.Click.performed += context =>
         {
-            if (isPanning)
+            if (isPanning && isSkippable)
             {
                 RestoreDefaultCam();
             }
