@@ -19,19 +19,21 @@ pier_arrival:
   Choice2: 
 - Speaker: Unnamed
   Line: (Besides, maybe the ocean breeze will do me some good.)
-  Icon: Neutral
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Unnamed_Maybe1.wav
   Events: []
   Choice1: 
   Choice2: 
 - Speaker: Unnamed
   Line: (...Hah. As if.)
-  Icon: Neutral
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Unnamed_DryLaugh1.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -55,10 +57,11 @@ pier_arrival:
   Choice2: 
 - Speaker: Unnamed
   Line: (Ah. Never mind that for now. Best to get on with it.)
-  Icon: Neutral
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Unnamed_TimeToMoveOn5.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -68,29 +71,35 @@ pier_dead_end:
   Icon: Neutral
   Background: 
   FromRadio: 
-  Sounds:
-  - radio-clip3-novoices.wav
-  Events:
-  - EventName: check_friendship
-    TriggerAtEnd: true
-  Choice1: 
-  Choice2: 
-pier_friends:
-- Speaker: Mariposa
-  Line: Kairo? You there?
-  Icon: Neutral
-  Background: 
-  FromRadio: 
   Sounds: []
   Events: []
   Choice1: 
   Choice2: 
-- Speaker: Unnamed
-  Line: Mari.
-  Icon: Neutral
+- Speaker: Mariposa
+  Line: Kairo? You there?
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Mariposa_Hmm3.wav
+  - radio-clip3-novoices.wav
+  Events: []
+  Choice1:
+    Response: Respond.
+    LinkedDialogue: pier_respond
+    Friendship: 3
+  Choice2:
+    Response: Stay quiet.
+    LinkedDialogue: pier_no_response
+    Friendship: -3
+pier_respond:
+- Speaker: Unnamed
+  Line: Mari.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Unnamed_Mari4.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -104,7 +113,7 @@ pier_friends:
   Choice1: 
   Choice2: 
 - Speaker: Mariposa
-  Line: Good news! I got a job at the pier.
+  Line: Good news! I got a gig at the pier.
   Icon: Happy
   Background: 
   FromRadio: 
@@ -114,19 +123,21 @@ pier_friends:
   Choice2: 
 - Speaker: Mariposa
   Line: Not usually in my line of work, but the automatons in the gutters need a check-up.
-  Icon: Neutral
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Mariposa_IMean1.wav
   Events: []
   Choice1: 
   Choice2: 
 - Speaker: Mariposa
   Line: Ah, the breeze is so nice!
-  Icon: Happy
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Mariposa_Giggle4.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -150,31 +161,34 @@ pier_friends:
   Choice2: 
 - Speaker: Unnamed
   Line: The pier, that is. What is it like?
-  Icon: Neutral
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Unnamed_TellMeAboutIt3.wav
   Events:
   - EventName: switch_sublevels
     TriggerAtEnd: true
   Choice1: 
   Choice2: 
-pier_friends_part2:
+pier_respond_part2:
 - Speaker: Mariposa
   Line: Well, it’s a bit early, so it’s not as busy as it usually is. The shops are opening up, and the seagulls are starting to wake up.
-  Icon: Neutral
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Mariposa_Well2.wav
   Events: []
   Choice1: 
   Choice2: 
 - Speaker: Mariposa
   Line: The water’s really pretty too; the way the sun hits it, it’s like the tides are sparkling.
-  Icon: Happy
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Mariposa_Giggle2.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -192,13 +206,55 @@ pier_friends_part2:
   Icon: Neutral
   Background: 
   FromRadio: 
-  Sounds:
-  - radio-clip3-novoices.wav
+  Sounds: []
   Events: []
   Choice1: 
   Choice2: 
 - Speaker: Mariposa
-  Line: You still there?
+  Line: Different? How so?
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events:
+  - EventName: check_friendship
+    TriggerAtEnd: false
+  Choice1: 
+  Choice2: 
+seriously:
+- Speaker: Unnamed
+  Line: It doesn’t matter. No point in talking more about it.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: Aw, but I–
+  Icon: Sad
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: '...'
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Unnamed_Tch1.wav
+  Events:
+  - EventName: play_woops_from_seriously
+    TriggerAtEnd: true
+  Choice1: 
+  Choice2: 
+bonkers:
+- Speaker: Unnamed
+  Line: I guess, in a way, it's quite beautiful.
   Icon: Neutral
   Background: 
   FromRadio: 
@@ -207,7 +263,86 @@ pier_friends_part2:
   Choice1: 
   Choice2: 
 - Speaker: Unnamed
-  Line: —break—connection—?
+  Line: No one’s around right now, and...well, I get this whole place to myself.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Unnamed_Sigh4.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: Mostly.
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: What? Are you kidding? That’s amazing!
+  Icon: Happy
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: I’d give anything to have a bit of peace and quiet sometimes, you know?
+  Icon: Happy
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: '...hah. Believe me. It’s not as great as it sounds.'
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: As much as I love talking with everyone, it’s honestly just so exhausting sometimes and—
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Mariposa_Urgh4.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: (She’s off in her own world...)
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - ''
+  Events:
+  - EventName: play_woops_from_bonkers
+    TriggerAtEnd: true
+  Choice1: 
+  Choice2: 
+woops:
+- Speaker: Mariposa
+  Line: You still there?
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds:
+  - radio-clip3-novoices.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: ——connection—?
   Icon: Neutral
   Background: 
   FromRadio: 
@@ -217,16 +352,17 @@ pier_friends_part2:
   Choice2: 
 - Speaker: Mariposa
   Line: (Looks like I’ll have to try again later.)
-  Icon: Neutral
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Mariposa_Urgh3.wav
   Events:
-  - EventName: play_control_panel_from_pier_friends
+  - EventName: play_control_panel_from_pier_respond_part2
     TriggerAtEnd: false
   Choice1: 
   Choice2: 
-pier_job_not_friends:
+pier_no_response:
 - Speaker: Mariposa
   Line: Wonder if they’re still there.
   Icon: Neutral
@@ -256,42 +392,48 @@ pier_job_not_friends:
   Choice2: 
 - Speaker: Mariposa
   Line: (Should’ve expected as much.)
-  Icon: Neutral
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Mariposa_NothingICanDo4.wav
   Events:
-  - EventName: play_control_panel_from_pier_job_not_friends
+  - EventName: switch_sublevels
+    TriggerAtEnd: true
+  - EventName: play_control_panel_from_pier_no_response
     TriggerAtEnd: false
   Choice1: 
   Choice2: 
 control_panel:
 - Speaker: Mariposa
   Line: Well, I should get to work. The plumbing maintenance control panel is around here somewhere; it should be an easy fix to get it connected to the automaton in the pipes.
-  Icon: Neutral
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Mariposa_ReadyToGo3.wav
   Events: []
   Choice1: 
   Choice2: 
 control_panel_not_fixed:
 - Speaker: Mariposa
   Line: I’ve got it this time. Let’s try again.
-  Icon: Neutral
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Mariposa_WhyNoWork1.wav
   Events: []
   Choice1: 
   Choice2: 
 control_panel_fixed:
 - Speaker: Mariposa
   Line: That should do it!
-  Icon: Happy
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Mariposa_PieceOfCake3.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -317,7 +459,37 @@ leave_attempt:
 pipe_fail:
 - Speaker: Mariposa
   Line: You’ve got this little guy! Let’s try this again.
-  Icon: Neutral
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Mariposa_Aww2.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+pipe_two_no_one:
+- Speaker: Mariposa
+  Line: Hm, something’s not quite right; looks like something’s missing from the start of the pipe system. Let’s head back and take another look.
+  Icon: Sad
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+pipe_three_no_others:
+- Speaker: Mariposa
+  Line: Looks like something from before was left incomplete; I’ll have to fix that up first before I even try to attempt this...
+  Icon: Sad
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: One thing at a time! I’ve got this.
+  Icon: Happy
   Background: 
   FromRadio: 
   Sounds: []
@@ -327,10 +499,11 @@ pipe_fail:
 pipe_missing:
 - Speaker: Mariposa
   Line: Huh. Looks like there’s a piece missing.
-  Icon: Neutral
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Mariposa_Hmm2.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -354,19 +527,21 @@ pipe_missing:
   Choice2: 
 - Speaker: Beebo
   Line: <The nearest supply warehouse is 2 hours away by public transit.>
-  Icon: Neutral
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Beebo_MsMariposa1.wav
   Events: []
   Choice1: 
   Choice2: 
 - Speaker: Beebo
   Line: '<Recommended route: A Scrap Hawker located down the pier could be selling the missing part, or a fitting alternative.>'
-  Icon: Neutral
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Beebo_FastestRoute1.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -381,10 +556,11 @@ pipe_missing:
   Choice2: 
 - Speaker: Mariposa
   Line: Sure, it’s worth a shot!
-  Icon: Happy
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Mariposa_UpAndRunning1.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -408,8 +584,18 @@ scrap_vendor:
   Choice1: 
   Choice2: 
 - Speaker: Carl
-  Line: Welcome, welcome—just let me tidy up–you caught me off guard, miss—
+  Line: Welcome, welcome—just let me tidy up–you caught me off guard, Miss—?
   Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Luke_NPC_HiThere3.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: –Mariposa!
+  Icon: Happy
   Background: 
   FromRadio: 
   Sounds: []
@@ -417,20 +603,22 @@ scrap_vendor:
   Choice1: 
   Choice2: 
 - Speaker: Carl
-  Line: Are you looking for something in particular?
+  Line: Well, Miss Mariposa, are you looking for something in particular?
   Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Luke_NPC_Giggle-Laugh2.wav
   Events: []
   Choice1: 
   Choice2: 
 - Speaker: Mariposa
   Line: Yup, just looking for a certain pipe fitting.
-  Icon: Neutral
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Mariposa_Hmm5.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -448,7 +636,8 @@ scrap_vendor:
   Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Luke_NPC_IThink1.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -457,7 +646,8 @@ scrap_vendor:
   Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Luke_NPC_Sigh3.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -470,31 +660,24 @@ scrap_vendor:
   Events: []
   Choice1: 
   Choice2: 
-- Speaker: Mariposa
-  Line: I have some time.
-  Icon: Neutral
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
 - Speaker: Carl
   Line: Oh, I mean, if it’s not a bother—It’d sure mean a lot to me. Thanks, kid.
   Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Luke_NPC_AppreciateIt2.wav
   Events: []
   Choice1: 
   Choice2: 
 complete_scale_1:
 - Speaker: Mariposa
   Line: I think I get it now!
-  Icon: Happy
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Mariposa_ItWorks1.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -532,7 +715,8 @@ complete_scale_3:
   Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Luke_NPC_ThanksMariposa3.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -547,15 +731,16 @@ complete_scale_3:
   Choice2: 
 - Speaker: Mariposa
   Line: Oh, no, you don’t need to do that! I shouldn’t—
-  Icon: Surprised
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Mariposa_Seriously3.wav
   Events: []
   Choice1: 
   Choice2: 
 - Speaker: Carl
-  Line: Nonsense. Was going to spend all day struggling with inventory; you really helped me out, kid. Heh, maybe I’ve got enough time to close up early and break out the dingy again. My boy used to love rides around the marina.
+  Line: Nonsense. I was going to spend all day sorting inventory; you really helped me out, kid. Heh, maybe I’ve got enough time to close up early and break out the dingy again. My boy used to love rides around the marina.
   Icon: 
   Background: 
   FromRadio: 
@@ -568,16 +753,18 @@ complete_scale_3:
   Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Luke_NPC_Sigh1.wav
   Events: []
   Choice1: 
   Choice2: 
 - Speaker: Mariposa
   Line: Well, thank you then!
-  Icon: Happy
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Mariposa_SeeYaRound1.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -606,12 +793,42 @@ Izote1:
   Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Ruby_NPC_Mariposa4.wav
   Events: []
   Choice1: 
   Choice2: 
 - Speaker: Mariposa
   Line: Mrs. Izote! How’s life in the city treating you?
+  Icon: Happy
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Izote
+  Line: Oh, you know how the hustle and bustle is, Mari. It’s no small town quiet, but it’s worth it to be with my precious Daisy and my new grandson.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Ruby_NPC_Hm2.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: Wait, Daisy? Like, robotics team captain Daisy? Time sure flies...
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Mariposa_Woah4.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Izote
+  Line: Oh, please; she still talks about you sometimes. Her favorite junior…
   Icon: 
   Background: 
   FromRadio: 
@@ -620,7 +837,35 @@ Izote1:
   Choice1: 
   Choice2: 
 - Speaker: Izote
-  Line: Oh, you know how the hustle and bustle is, sweetheart. It’s no small town community, but it’s worth it to be with my precious Daisy and my new grandson.
+  Line: Probably helped that I picked you up from school every day since you were a tot, hm? Feels like Daisy got you onto the robotics team as soon as you could walk!
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Ruby_NPC_Giggle-Laugh7.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Izote
+  Line: That girl would tutor you right at the kitchen table while I made dinner. You know, I still remember that time you just couldn’t get that little bee bot to fly and–
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: Mrs. Izote!
+  Icon: Bashful
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Izote
+  Line: You’ll always be a little girl in my heart, sweetpea! Come over to the apartment sometime–Daisy would love to see you!
   Icon: 
   Background: 
   FromRadio: 
@@ -630,11 +875,12 @@ Izote1:
   Choice2: 
 Izote2:
 - Speaker: Izote
-  Line: Stop by if you ever need floral arrangements! I’ll be sure to have your favorites, sweetpea; I know how much you adore those peonies and carnations!
+  Line: Stop by if you ever need floral arrangements! I’ll be sure to have your favorites, sweetpea; I know how much you adore those peonies!
   Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Ruby_NPC_Giggle-Laugh1.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -661,23 +907,24 @@ gig_done_choice:
   Choice1:
     Response: Respond.
     LinkedDialogue: response
-    Friendship: 0
+    Friendship: 2
   Choice2:
     Response: Ignore.
     LinkedDialogue: dont_respond
-    Friendship: 0
+    Friendship: -3
 response:
 - Speaker: Unnamed
   Line: Just...looking around.
-  Icon: Neutral
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Unnamed_Hey3.wav
   Events: []
   Choice1: 
   Choice2: 
 - Speaker: Mariposa
-  Line: Don’t leave me on a cliffhanger, I need details! What’s your world like?
+  Line: Don’t leave me on a cliffhanger, I need details!
   Icon: Happy
   Background: 
   FromRadio: 
@@ -705,6 +952,117 @@ response:
   Choice2: 
 - Speaker: Unnamed
   Line: It’s nothing like what you have.
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Unnamed_Tch2.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: '...'
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: Nevermind that. How was...the gig?
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: Oh, don’t even get me started.
+  Icon: Happy
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: People these days have no idea how automatons work at all.
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: '...don’t think they’ll ever figure it out, either...'
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Unnamed_YoureTellingMe3.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: But, I met the loveliest street hawker today! He was telling me all about how his son is away and he thought he’d have to close shop.
+  Icon: Happy
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: Makes me think, well, maybe I ought to call my grandparents more often. Some day, I’ll move out of home and then what? Leave my mum to run the shop on her own?
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: I mean, it’s bound to happen.
+  Icon: Sad
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: But, I just don’t want to regret not spending more time with my mum, or my grandpa, or...
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Mariposa_Sigh4.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: You know what I mean, right?
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: '...'
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: Yeah, I...yeah. Sure.
   Icon: Neutral
   Background: 
   FromRadio: 
@@ -714,19 +1072,21 @@ response:
   Choice2: 
 - Speaker: Unnamed
   Line: Sorry. I need a second. To think about something.
-  Icon: Neutral
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Unnamed_Ugh1.wav
   Events: []
   Choice1: 
   Choice2: 
 - Speaker: Mariposa
   Line: Alright, not a problem!
-  Icon: Happy
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Mariposa_Alright3.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -740,11 +1100,12 @@ response:
   Choice1: 
   Choice2: 
 - Speaker: Unnamed
-  Line: '...sure. Will do.'
-  Icon: Neutral
+  Line: '...yeah, sure. Will do.'
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Unnamed_Maybe1.wav
   Events:
   - EventName: play_pier_friendship_check_from_response
     TriggerAtEnd: false
@@ -762,10 +1123,30 @@ dont_respond:
   Choice2: 
 - Speaker: Unnamed
   Line: (I’m watching the harbor morph before my eyes; twisting, churning, melting away—-time shifts with her every step.)
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Unnamed_No3.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: (It shouldn’t be possible.)
   Icon: Neutral
   Background: 
   FromRadio: 
   Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: (But it doesn’t matter now. What good is a miracle for someone like me?)
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Unnamed_NoTimeToWaste4.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -780,10 +1161,11 @@ dont_respond:
   Choice2: 
 - Speaker: Mariposa
   Line: Well, I’ve still got work to do. I should get going.
-  Icon: Sad
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Mariposa_Sorry3.wav
   Events:
   - EventName: play_pier_friendship_check_from_dont_respond
     TriggerAtEnd: false
@@ -804,10 +1186,11 @@ pier_friendship_check:
 future_friends:
 - Speaker: Unnamed
   Line: '...Mari?'
-  Icon: Neutral
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Unnamed_Mari2.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -822,6 +1205,16 @@ future_friends:
   Choice2: 
 - Speaker: Unnamed
   Line: (...there’s no good way to ask this.)
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Unnamed_Ugh5.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: '...when you picture your future, everyone’s future, what do you see?'
   Icon: Neutral
   Background: 
   FromRadio: 
@@ -830,16 +1223,7 @@ future_friends:
   Choice1: 
   Choice2: 
 - Speaker: Unnamed
-  Line: What do you think about the future?
-  Icon: Neutral
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-- Speaker: Unnamed
-  Line: Everyone, doing the same thing every day, chasing their dreams—-what do you think it’s all for?
+  Line: Everyone, doing the same thing every day, chasing their dreams—what is it all for?
   Icon: Neutral
   Background: 
   FromRadio: 
@@ -867,19 +1251,21 @@ future_friends:
   Choice2: 
 - Speaker: Mariposa
   Line: Kairo, I didn’t think you were the type to ask about these kinds of things!
-  Icon: Happy
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Mariposa_Giggle1.wav
   Events: []
   Choice1: 
   Choice2: 
 - Speaker: Unnamed
   Line: Humor me.
-  Icon: Neutral
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Unnamed_DryLaugh3.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -893,11 +1279,12 @@ future_friends:
   Choice1: 
   Choice2: 
 - Speaker: Mariposa
-  Line: I think, maybe, deep down, everyone wants to save something. Someone they love, something they cherish—-maybe even the whole world.
-  Icon: Neutral
+  Line: I think, maybe, deep down, everyone wants to save something. Someone they love, something they cherish—maybe even the whole world.
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Mariposa_Well2.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -957,16 +1344,17 @@ future_friends:
   Choice2: 
 - Speaker: Mariposa
   Line: Well, when you say it like that, you make me sound crazy.
-  Icon: Happy
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Mariposa_IMean1.wav
   Events: []
   Choice1: 
   Choice2: 
 - Speaker: Mariposa
-  Line: But no, I guess not really.
-  Icon: Neutral
+  Line: But no, I guess not <i>really</i>.
+  Icon: Happy
   Background: 
   FromRadio: 
   Sounds: []
@@ -979,9 +1367,48 @@ future_friends:
   Background: 
   FromRadio: 
   Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: '...'
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: '...you’re ridiculous, you know that?'
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Unnamed_YoureRidiculous4.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: Aw, come on! I bet you’re the same way, aren’t you?
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Mariposa_Giggle6.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Unnamed
+  Line: '...maybe you’re right.'
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Unnamed_MaybeYoureRight1.wav
   Events:
-  - EventName: play_boat_scene_from_future_friends
-    TriggerAtEnd: false
+  - EventName: play_boat_scene
+    TriggerAtEnd: true
   Choice1: 
   Choice2: 
 future_not_friends:
@@ -1014,10 +1441,11 @@ future_not_friends:
   Choice2: 
 - Speaker: Unnamed
   Line: (Still, if I want to keep going, I need her help. I’ve only gotten this far because of what she’s done. Whether she knows it or not.)
-  Icon: Neutral
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Unnamed_TheresNoPoint2.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -1026,19 +1454,21 @@ future_not_friends:
   Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Unnamed_Cough1.wav
   Events: []
   Choice1: 
   Choice2: 
 - Speaker: Unnamed
   Line: (...maybe it’ll all be over anyway. What a waste.)
-  Icon: Neutral
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Unnamed_Sigh4.wav
   Events:
-  - EventName: play
-    TriggerAtEnd: false
+  - EventName: play_boat_scene
+    TriggerAtEnd: true
   Choice1: 
   Choice2: 
 Candy1:
@@ -1047,7 +1477,8 @@ Candy1:
   Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Ruby_NPC_HiThere2.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -1067,7 +1498,8 @@ Candy3:
   Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Ruby_NPC_YouOkay1.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -1103,7 +1535,7 @@ Laddie2:
   Choice2: 
 Laddie3:
 - Speaker: Laddie
-  Line: "...I hope she's coming back soon…"
+  Line: "...I hope she'll come back soon…"
   Icon: 
   Background: 
   FromRadio: 
@@ -1118,8 +1550,7 @@ Peddler1:
   Icon: 
   Background: 
   FromRadio: 
-  Sounds:
-  - Luke_NPC_LetsThinkAboutThis1.wav
+  Sounds: []
   Events: []
   Choice1: 
   Choice2: 
@@ -1286,10 +1717,11 @@ interact_city_poster_1:
 interact_city_poster_2:
 - Speaker: Mariposa
   Line: The city always feels so lively with all the decorations up.
-  Icon: Happy
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Mariposa_Giggle4.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -1372,6 +1804,26 @@ interact_bus_stop_1:
   Events: []
   Choice1: 
   Choice2: 
+- Speaker: Beebo
+  Line: <Updating current preferences; dismissing recommended bus routes.>
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Beebo_Understood3.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Beebo
+  Line: <Where to next?>
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Beebo_WhereToNext3.wav
+  Events: []
+  Choice1: 
+  Choice2: 
 interact_bus_stop_2:
 - Speaker: Bustop
   Line: The bus seems to be running on time.
@@ -1394,7 +1846,7 @@ interact_food_stand_1:
   Choice2: 
 interact_food_stand_2:
 - Speaker: Mariposa
-  Line: Nothing wrong with an occasional sweet treat…
+  Line: Nothing wrong with an occasional sweet treat...
   Icon: Neutral
   Background: 
   FromRadio: 
@@ -1414,10 +1866,11 @@ interact_merchant_stand_1:
   Choice2: 
 - Speaker: Mariposa
   Line: But mum would kill me if I brought back more decorations. The trinket shelf is almost bursting...
-  Icon: Neutral
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Mariposa_Giggle1.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -1442,7 +1895,7 @@ interact_funnel_cake_shop_1:
   Choice1: 
   Choice2: 
 - Speaker: Mariposa
-  Line: I’ll have to come back for this…
+  Line: I’ll have to come back for this...
   Icon: Neutral
   Background: 
   FromRadio: 
@@ -1463,6 +1916,16 @@ interact_funnel_cake_shop_2:
 interact_seashell_stand_1:
 - Speaker: Mariposa
   Line: '‘She Sells Seashells by the Seashore: A Starting Guide to the Law of Supply and Demand.’ A seashell stand that only sells books and not actual seashells? These indie authors are getting creative, huh?'
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Mariposa_Hmm2.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: I’ll find a PDF online somewhere...
   Icon: Neutral
   Background: 
   FromRadio: 
@@ -1470,22 +1933,43 @@ interact_seashell_stand_1:
   Events: []
   Choice1: 
   Choice2: 
-- Speaker: Mariposa
-  Line: I’ll find a pdf online somewhere...
-  Icon: Neutral
+- Speaker: Beebo
+  Line: '<I have located a “Portable Document Format” of the book ‘She Sells Seashells by the Seashore: A Starting Guide to the Law of Supply and Demand.’ Current rating: 2.4 out of 5 stars. Top review: “A perfect bedtime story for putting yourself to sleep”.>'
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Beebo_OrderReceived1.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Beebo
+  Line: <Would you like me to save it into your reading list?>
+  Icon: Happy
   Background: 
   FromRadio: 
   Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: Well, on second thought...
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Mariposa_Well4.wav
   Events: []
   Choice1: 
   Choice2: 
 interact_seashell_stand_2:
 - Speaker: Mariposa
   Line: What a weird book...
-  Icon: Neutral
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Mariposa_Hmm4.wav
   Events: []
   Choice1: 
   Choice2: 

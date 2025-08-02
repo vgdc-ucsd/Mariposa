@@ -22,12 +22,14 @@ UNNAMED
 
 
 UNNAMED
+!a Unnamed_Maybe1.wav
 (neutral)
 (Besides, maybe the ocean breeze will do me some good.)
 
 
 UNNAMED
 (neutral)
+!a Unnamed_DryLaugh1.wav
 (...Hah. As if.)
 
 
@@ -42,6 +44,7 @@ UNNAMED
 
 
 UNNAMED
+!a Unnamed_TimeToMoveOn5.wav
 (neutral)
 (Ah. Never mind that for now. Best to get on with it.)
 
@@ -55,23 +58,36 @@ UNNAMED
 (Dead end. Nothing left here.)
 
 
-!e check_friendship end
-________________
-
-
-# >If score >7
-# Radio crackles.
-
-
-!a radio-clip3-novoices.wav
-!name pier_friends
 MARIPOSA 
+!a Mariposa_Hmm3.wav
 (neutral)
 Kairo? You there?
 
 
-UNNAMED 
-(neutral)
+________________
+
+
+# Radio crackles.
+# Pier choice #1
+
+
+!a radio-clip3-novoices.wav
+
+
+!choice1 pier_respond +3
+Respond.
+
+
+!choice2 pier_no_response -3
+Stay quiet.
+
+
+!name pier_respond
+
+
+UNNAMED
+!a Unnamed_Mari4.wav
+(happy)
 Mari.
 
 
@@ -82,15 +98,17 @@ Yes, I’m here.
 
 MARIPOSA
 (happy)
-Good news! I got a job at the pier. 
+Good news! I got a gig at the pier. 
 
 
 MARIPOSA
+!a Mariposa_IMean1.wav
 (neutral)
 Not usually in my line of work, but the automatons in the gutters need a check-up.
 
 
 MARIPOSA
+!a Mariposa_Giggle4.wav
 (happy)
 Ah, the breeze is so nice! 
 
@@ -106,6 +124,7 @@ Do you mind...describing it to me?
 
 
 UNNAMED
+!a Unnamed_TellMeAboutIt3.wav
 (neutral)
 The pier, that is. What is it like?
 
@@ -119,17 +138,19 @@ The pier, that is. What is it like?
 # EXT. PIER - DAY
 
 
-!name pier_friends_part2
+!name pier_respond_part2
 
 
 
 
 MARIPOSA
+!a Mariposa_Well2.wav
 (neutral)
 Well, it’s a bit early, so it’s not as busy as it usually is. The shops are opening up, and the seagulls are starting to wake up. 
 
 
 MARIPOSA
+!a Mariposa_Giggle2.wav
 (happy)
 The water’s really pretty too; the way the sun hits it, it’s like the tides are sparkling. 
 
@@ -144,6 +165,103 @@ UNNAMED
 It’s...different.
 
 
+MARIPOSA 
+Different? How so?
+
+
+!event check_friendship
+
+
+________________
+
+
+# < 12
+
+
+!name seriously
+
+
+UNNAMED 
+Unnamed_UselessDrivel2.wav
+(neutral)
+It doesn’t matter. No point in talking more about it. 
+
+
+MARIPOSA 
+(sad)
+Aw, but I–
+
+
+UNNAMED
+!a Unnamed_Tch1.wav
+(neutral)
+...
+
+
+!event play_woops_from_seriously end
+
+
+________________
+
+
+# > or equal to 12
+
+
+!name bonkers
+
+
+UNNAMED 
+(neutral)
+I guess, in a way, it's quite beautiful. 
+
+
+UNNAMED 
+!a Unnamed_Sigh4.wav
+(neutral)
+No one’s around right now, and...well, I get this whole place to myself. 
+
+
+UNNAMED 
+(neutral)
+Mostly. 
+
+
+MARIPOSA 
+(happy)
+What? Are you kidding? That’s amazing! 
+
+
+MARIPOSA
+(happy)
+I’d give anything to have a bit of peace and quiet sometimes, you know?
+
+
+UNNAMED
+(neutral)
+...hah. Believe me. It’s not as great as it sounds. 
+
+
+MARIPOSA
+!a Mariposa_Urgh4.wav
+(neutral)
+As much as I love talking with everyone, it’s honestly just so exhausting sometimes and—
+
+
+UNNAMED 
+!a  Unnamed_NotListening3.wav
+(neutral)
+(She’s off in her own world...)
+
+
+!event play_woops_from_bonkers end
+
+
+________________
+
+
+
+
+!name woops
 # The radio crackles.
 !a radio-clip3-novoices.wav
 
@@ -155,23 +273,26 @@ MARIPOSA
 You still there?
 
 
+!a radio-clip3-novoices.wav
+
+
 UNNAMED
 (neutral)
-—break—connection—?
+——connection—?
 
 
 MARIPOSA
+!a Mariposa_Urgh3.wav
 (neutral)
 (Looks like I’ll have to try again later.)
 
 
-!event play_control_panel_from_pier_friends
+!event play_control_panel_from_pier_respond_part2
 ________________
 
 
 
 
-# >If score <7
 
 
 # SWITCH to Mariposa’s perspective.
@@ -183,7 +304,7 @@ ________________
 # Radio crackles.
 
 
-!name pier_job_not_friends
+!name pier_no_response
 MARIPOSA
 (neutral)
 Wonder if they’re still there. 
@@ -200,16 +321,19 @@ UNNAMED
 
 
 MARIPOSA 
-(neutral)
+!a Mariposa_NothingICanDo4.wav
+(sad)
 (Should’ve expected as much.)
 
 
-!event play_control_panel_from_pier_job_not_friends
+!e switch_sublevels end
+!event play_control_panel_from_pier_no_response
 ________________
 
 
 !name control_panel
 MARIPOSA
+!a Mariposa_ReadyToGo3.wav
 (neutral)
 Well, I should get to work. The plumbing maintenance control panel is around here somewhere; it should be an easy fix to get it connected to the automaton in the pipes. 
 
@@ -225,6 +349,7 @@ ________________
 # >IF NOT YET FIXED
 !name control_panel_not_fixed
 MARIPOSA 
+!a Mariposa_WhyNoWork1.wav
 (neutral) 
 I’ve got it this time. Let’s try again.
 
@@ -232,6 +357,7 @@ I’ve got it this time. Let’s try again.
 # >AFTER FIX
 !name control_panel_fixed
 MARIPOSA 
+!a Mariposa_PieceOfCake3.wav
 (happy)
 That should do it! 
 
@@ -262,8 +388,40 @@ ________________
 # >IF FAIL & NEED TO RESET: 
 !name pipe_fail
 MARIPOSA
+!a Mariposa_Aww2.wav
 (neutral)
 You’ve got this little guy! Let’s try this again.
+
+
+________________
+
+
+# >IF TRY TO DO PIPE 2 BEFORE PIPE ONE IS COMPLETE: 
+!name pipe_two_no_one
+
+
+MARIPOSA
+(sad)
+Hm, something’s not quite right; looks like something’s missing from the start of the pipe system. Let’s head back and take another look.
+
+
+________________
+
+
+# >IF TRY TO DO PIPE 3 BEFORE PIPE ONE OR TWO IS COMPLETE: 
+!name pipe_three_no_others
+
+
+MARIPOSA
+(sad)
+Looks like something from before was left incomplete; I’ll have to fix that up first before I even try to attempt this...
+
+
+MARIPOSA
+(happy)
+One thing at a time! I’ve got this.
+
+
 
 
 ________________
@@ -278,6 +436,7 @@ ________________
 
 
 MARIPOSA
+!a Mariposa_Hmm2.wav
 (neutral)
 Huh. Looks like there’s a piece missing.
 
@@ -293,11 +452,13 @@ Beebo, is there some sort of plumbing store here?
 
 
 BEEBO
+!a Beebo_MsMariposa1.wav
 (neutral)
 <The nearest supply warehouse is 2 hours away by public transit.>
 
 
 BEEBO
+!a Beebo_FastestRoute1.wav
 (neutral)
 <Recommended route: A Scrap Hawker located down the pier could be selling the missing part, or a fitting alternative.>
 
@@ -308,6 +469,7 @@ BEEBO
 
 
 MARIPOSA
+!a Mariposa_UpAndRunning1.wav
 (happy)
 Sure, it’s worth a shot! 
 
@@ -327,14 +489,22 @@ Ah! Sorry, I didn’t realize you were standing there—
 
 
 CARL
-Welcome, welcome—just let me tidy up–you caught me off guard, miss—
+!a Luke_NPC_HiThere3.wav
+Welcome, welcome—just let me tidy up–you caught me off guard, Miss—?
+
+
+MARIPOSA 
+(happy)
+–Mariposa!
 
 
 CARL
-Are you looking for something in particular?
+!a Luke_NPC_Giggle-Laugh2.wav
+Well, Miss Mariposa, are you looking for something in particular?
 
 
 MARIPOSA
+!a Mariposa_Hmm5.wav
 (neutral)
 Yup, just looking for a certain pipe fitting.
 
@@ -344,10 +514,12 @@ Hah, I have lots of junk here. Surely I've got something you need.
 
 
 CARL
+!a Luke_NPC_IThink1.wav
 I just, uh, need to figure out where it all went. 
 
 
 CARL
+!a Luke_NPC_Sigh3.wav
 My memory’s getting away from me nowadays. Place hasn’t been the same since the kid left for university. He did a lot of the organizing. Heh. Maybe it was about time to think about retiring...
 
 
@@ -356,12 +528,8 @@ MARIPOSA
 If you’d like, I could help out a bit! 
 
 
-MARIPOSA 
-(neutral)
-I have some time.
-
-
 CARL
+!a Luke_NPC_AppreciateIt2.wav
         Oh, I mean, if it’s not a bother—It’d sure mean a lot to me. Thanks, kid. 
 
 
@@ -372,6 +540,7 @@ CARL
 
 !name complete_scale_1
 MARIPOSA 
+!a Mariposa_ItWorks1.wav
 (happy)
 I think I get it now!
 
@@ -387,6 +556,7 @@ We got it!
 
 
 CARL
+!A Luke_NPC_Alright3.wav
 Looks like it’s almost fixed! You’re a miracle, kid. 
 
 
@@ -394,6 +564,7 @@ Looks like it’s almost fixed! You’re a miracle, kid.
 
 
 CARL
+!a Luke_NPC_ThanksMariposa3.wav
         That should be the last of it; I can’t thank you enough. 
 
 
@@ -402,19 +573,22 @@ Here, kid. You needed this, right?  Take it.
 
 
 MARIPOSA
+!a Mariposa_Seriously3.wav
 (surprised)
         Oh, no, you don’t need to do that! I shouldn’t—
 
 
 CARL
-Nonsense. Was going to spend all day struggling with inventory; you really helped me out, kid. Heh, maybe I’ve got enough time to close up early and break out the dingy again. My boy used to love rides around the marina. 
+Nonsense. I was going to spend all day sorting inventory; you really helped me out, kid. Heh, maybe I’ve got enough time to close up early and break out the dingy again. My boy used to love rides around the marina. 
 
 
 CARL
+!a Luke_NPC_Sigh1.wav
 Ah. Hope he calls soon.
 
 
 MARIPOSA
+!a Mariposa_SeeYaRound1.wav
 (happy)
 Well, thank you then!
 
@@ -432,23 +606,50 @@ Take care, kid.
 
 
 IZOTE
-a! Ruby_NPC_Mariposa4.wav
+!a Ruby_NPC_Mariposa4.wav
 Mariposa, my sweetpea, it has been a while since I saw you! It seems like just yesterday you were just a little sprout; look how big you’ve grown!
 
 
 MARIPOSA
-a! Mariposa_Woah3.wav
 (happy)
 Mrs. Izote! How’s life in the city treating you?
 
 
 IZOTE
-a! Ruby_NPC_Hm2.wav
-Oh, you know how the hustle and bustle is, sweetheart. It’s no small town community, but it’s worth it to be with my precious Daisy and my new grandson. 
+!a Ruby_NPC_Hm2.wav
+Oh, you know how the hustle and bustle is, Mari. It’s no small town quiet, but it’s worth it to be with my precious Daisy and my new grandson. 
+
+
+MARIPOSA 
+!a Mariposa_Woah4.wav
+Wait, Daisy? Like, robotics team captain Daisy? Time sure flies...
+
+
+IZOTE 
+Oh, please; she still talks about you sometimes. Her favorite junior…
+
+
+IZOTE 
+!a Ruby_NPC_Giggle-Laugh7.wav
+Probably helped that I picked you up from school every day since you were a tot, hm? Feels like Daisy got you onto the robotics team as soon as you could walk! 
+
+
+IZOTE
+That girl would tutor you right at the kitchen table while I made dinner. You know, I still remember that time you just couldn’t get that little bee bot to fly and–
+
+
+MARIPOSA 
+(bashful)
+Mrs. Izote!
+
+
+IZOTE 
+You’ll always be a little girl in my heart, sweetpea! Come over to the apartment sometime–Daisy would love to see you! 
+ 
 !name Izote2
 IZOTE
-a! Ruby_NPC_Giggle-Laugh1.wav
-Stop by if you ever need floral arrangements! I’ll be sure to have your favorites, sweetpea; I know how much you adore those peonies and carnations!
+!a Ruby_NPC_Giggle-Laugh1.wav
+Stop by if you ever need floral arrangements! I’ll be sure to have your favorites, sweetpea; I know how much you adore those peonies!
 
 
 
@@ -479,6 +680,7 @@ ________________
 
 
 # > Respond
+# Pier choice #2
 
 
 !name gig_done_choice
@@ -489,9 +691,9 @@ UNNAMED
 ...
 
 
-!choice1 response +0
+!choice1 response +2
 Respond. 
-!choice2 dont_respond -0
+!choice2 dont_respond -3
 Ignore.
 
 
@@ -503,13 +705,14 @@ Ignore.
 
 
 UNNAMED
+!a Unnamed_Hey3.wav
 (neutral)
 Just...looking around.
 
 
 MARIPOSA
 (happy)
-Don’t leave me on a cliffhanger, I need details! What’s your world like?
+Don’t leave me on a cliffhanger, I need details!
 
 
 UNNAMED
@@ -523,16 +726,79 @@ UNNAMED
 
 
 UNNAMED
+!a Unnamed_Tch2.wav
 (neutral)
 It’s nothing like what you have. 
 
 
 UNNAMED
 (neutral)
+...
+
+
+UNNAMED 
+(neutral)
+Nevermind that. How was...the gig? 
+
+
+MARIPOSA 
+(happy)
+Oh, don’t even get me started. 
+
+
+MARIPOSA 
+(neutral)
+People these days have no idea how automatons work at all. 
+
+
+UNNAMED 
+!a Unnamed_YoureTellingMe3.wav
+(neutral)
+...don’t think they’ll ever figure it out, either...
+
+
+MARIPOSA
+(happy)
+But, I met the loveliest street hawker today! He was telling me all about how his son is away and he thought he’d have to close shop. 
+
+
+MARIPOSA 
+(neutral)
+Makes me think, well, maybe I ought to call my grandparents more often. Some day, I’ll move out of home and then what? Leave my mum to run the shop on her own? 
+
+
+MARIPOSA
+(sad)
+I mean, it’s bound to happen. 
+
+
+MARIPOSA
+!a Mariposa_Sigh4.wav
+(sad)
+But, I just don’t want to regret not spending more time with my mum, or my grandpa, or... 
+
+
+MARIPOSA
+(neutral)
+You know what I mean, right?
+
+
+UNNAMED
+(neutral)
+...
+UNNAMED
+(neutral)
+Yeah, I...yeah. Sure. 
+
+
+UNNAMED
+!a Unnamed_Ugh1.wav
+(neutral)
 Sorry. I need a second. To think about something.
 
 
 MARIPOSA
+!a Mariposa_Alright3.wav
 (happy)
 Alright, not a problem! 
 
@@ -543,20 +809,15 @@ Just let me know if I can do anything for you.
 
 
 UNNAMED
+!a Unnamed_Maybe1.wav
 (neutral)
-...sure. Will do.
+...yeah, sure. Will do.
 
 
 !event play_pier_friendship_check_from_response
 ________________
 
 
-
-
-# > . . .
-
-
-# Value pending 
 
 
 !name dont_respond
@@ -568,8 +829,20 @@ UNNAMED
 
 
 UNNAMED 
+!a Unnamed_No3.wav
 (neutral)
 (I’m watching the harbor morph before my eyes; twisting, churning, melting away—-time shifts with her every step.)
+
+
+UNNAMED 
+(neutral)
+(It shouldn’t be possible.)
+
+
+UNNAMED 
+!a Unnamed_NoTimeToWaste4.wav
+(neutral)
+(But it doesn’t matter now. What good is a miracle for someone like me?)
 
 
 MARIPOSA
@@ -578,6 +851,7 @@ MARIPOSA
 
 
 MARIPOSA
+!a Mariposa_Sorry3.wav
 (sad)
 Well, I’ve still got work to do. I should get going. 
 
@@ -607,13 +881,14 @@ ________________
 # EXT. BOAT RIDE ON OCEAN - DAY (DARK)
 
 
-# >7
+# > or equal to 16
 
 
 !name future_friends
 
 
 UNNAMED
+!a Unnamed_Mari2.wav
 (neutral)
 ...Mari?
 
@@ -624,18 +899,19 @@ Yes? I’m here.
 
 
 UNNAMED
+!a Unnamed_Ugh5.wav
 (neutral)
 (...there’s no good way to ask this.)
 
 
 UNNAMED
 (neutral)
-What do you think about the future?
+...when you picture your future, everyone’s future, what do you see?
 
 
 UNNAMED
 (neutral)
-Everyone, doing the same thing every day, chasing their dreams—-what do you think it’s all for?
+Everyone, doing the same thing every day, chasing their dreams—what is it all for?
 
 
 MARIPOSA 
@@ -649,12 +925,14 @@ That’s a tough question.
 
 
 MARIPOSA
+!a Mariposa_Giggle1.wav
 (happy)
 Kairo, I didn’t think you were the type to ask about these kinds of things! 
 
 
 UNNAMED
-(neutral)
+!a Unnamed_DryLaugh3.wav
+(happy)
 Humor me.
 
 
@@ -664,8 +942,9 @@ Alright, alright.
 
 
 MARIPOSA 
+!a Mariposa_Well2.wav
 (neutral)
-I think, maybe, deep down, everyone wants to save something. Someone they love, something they cherish—-maybe even the whole world.
+I think, maybe, deep down, everyone wants to save something. Someone they love, something they cherish—maybe even the whole world.
 
 
 MARIPOSA 
@@ -699,13 +978,14 @@ And you really think you’ll be able to save the world?
 
 
 MARIPOSA
-(happy)
+!a Mariposa_IMean1.wav
+(neutral)
 Well, when you say it like that, you make me sound crazy.
 
 
 MARIPOSA 
-(neutral)
-But no, I guess not really.
+(happy)
+But no, I guess not <i>really</i>.
 
 
 MARIPOSA 
@@ -713,11 +993,34 @@ MARIPOSA
 Maybe I’m just looking to save just one person. That’d be plenty enough for me.
 
 
-!event play_boat_scene_from_future_friends
+UNNAMED 
+(neutral)
+...
+
+
+UNNAMED 
+!a Unnamed_YoureRidiculous4.wav
+(happy)
+...you’re ridiculous, you know that? 
+
+
+MARIPOSA 
+!a Mariposa_Giggle6.wav
+(happy)
+Aw, come on! I bet you’re the same way, aren’t you?
+
+
+UNNAMED 
+!a Unnamed_MaybeYoureRight1.wav
+(happy)
+...maybe you’re right.
+
+
+!event play_boat_scene end
 ________________
 
 
-# <7
+# <16
 
 
 !name future_not_friends
@@ -739,22 +1042,24 @@ UNNAMED
 
 
 UNNAMED
+!a Unnamed_TheresNoPoint2.wav
 (neutral)
 (Still, if I want to keep going, I need her help. I’ve only gotten this far because of what she’s done. Whether she knows it or not.)
 
 
 UNNAMED
-a! Unnamed_Cough1.wav
+!a Unnamed_Cough1.wav
 (neutral)
 (...)
 
 
 UNNAMED
+!a Unnamed_Sigh4.wav
 (neutral)
 (...maybe it’ll all be over anyway. What a waste.)
 
 
-!event play boat_scene_from_future_not_friends
+!event play_boat_scene end
 ________________
 
 
@@ -772,7 +1077,7 @@ ________________
 
 !name Candy1
 CANDY
-a! Ruby_NPC_HiThere2.wav
+!a Ruby_NPC_HiThere2.wav
 Hi. Do you like candy? I like candy! 
 
 
@@ -783,7 +1088,7 @@ There's so many reasons to love candy - it's sweet, gives you energy, and it's c
 
 !name Candy3
 CANDY
-a! Ruby_NPC_YouOkay1.wav
+!a Ruby_NPC_YouOkay1.wav
 Hey, are you listening? Are you listening?
 
 
@@ -810,14 +1115,13 @@ My mom left me here while she goes and gets something. She said I'm in charge 't
 !name Laddie3
 LADDIE
 !a Regine_NPC_Hm4.wav
-...I hope she's coming back soon…
+...I hope she'll come back soon…
 
 
 
 
 !name Peddler1
 PEDDLER
-!a Luke_NPC_LetsThinkAboutThis1.wav
 Someone told me of the guy that sells arms.
 
 
@@ -907,6 +1211,7 @@ The city’s 100th anniversary is coming up? I can’t wait!
 
 !name interact_city_poster_2
 MARIPOSA
+!a Mariposa_Giggle4.wav
 (happy)
 The city always feels so lively with all the decorations up. 
 #[Puddle] 
@@ -954,6 +1259,18 @@ MARIPOSA
 It would be a shame not to walk!
 
 
+BEEBO 
+!a Beebo_Understood3.wav
+(happy)
+<Updating current preferences; dismissing recommended bus routes.>
+
+
+BEEBO 
+!a Beebo_WhereToNext3.wav
+(neutral)
+<Where to next?>
+
+
 !name interact_bus_stop_2
 BUSTOP
 The bus seems to be running on time. 
@@ -968,7 +1285,7 @@ Smells delicious! I’ll have to stop by some other time...
 !name interact_food_stand_2
 MARIPOSA
 (neutral)
-Nothing wrong with an occasional sweet treat…
+Nothing wrong with an occasional sweet treat...
 #[Merchant Stand] 
 
 
@@ -982,7 +1299,8 @@ So much to look at…
 
 
 MARIPOSA
-(neutral)
+!a Mariposa_Giggle1.wav
+(bashful)
 But mum would kill me if I brought back more decorations. The trinket shelf is almost bursting... 
 
 
@@ -1001,7 +1319,7 @@ Ah, I thought they only sold these at the county fair!
 
 MARIPOSA
 (neutral)
-I’ll have to come back for this…
+I’ll have to come back for this...
 
 
 !name interact_funnel_cake_shop_2
@@ -1013,17 +1331,38 @@ Funnel cake. A light, airy mass of deep fried batter drenched in powdered sugar.
 # Interacting with the Seashell Stand
 !name interact_seashell_stand_1
 MARIPOSA
+!a Mariposa_Hmm2.wav
 (neutral)
 ‘She Sells Seashells by the Seashore: A Starting Guide to the Law of Supply and Demand.’ A seashell stand that only sells books and not actual seashells? These indie authors are getting creative, huh?
 
 
 MARIPOSA
 (neutral)
-I’ll find a pdf online somewhere...
+I’ll find a PDF online somewhere...
+
+
+BEEBO 
+!a Beebo_OrderReceived1.wav
+(neutral)
+<I have located a “Portable Document Format” of the book ‘She Sells Seashells by the Seashore: A Starting Guide to the Law of Supply and Demand.’ Current rating: 2.4 out of 5 stars. Top review: “A perfect bedtime story for putting yourself to sleep”.>
+
+
+BEEBO 
+(happy)
+<Would you like me to save it into your reading list?>
+
+
+MARIPOSA 
+!a Mariposa_Well4.wav
+(bashful)
+Well, on second thought...
+
+
 
 
 !name interact_seashell_stand_2
 MARIPOSA
+!a Mariposa_Hmm4.wav
 (neutral)
 What a weird book...
 #[Dystopian Slogan]
