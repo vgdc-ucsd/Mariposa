@@ -2735,7 +2735,7 @@ GameObject:
   - component: {fileID: 7513042841235506197}
   - component: {fileID: 5334959645859048785}
   - component: {fileID: 6280170056584115056}
-  - component: {fileID: 4733086652078542433}
+  - component: {fileID: 1177946655110109550}
   m_Layer: 0
   m_Name: PipePuzzle3
   m_TagString: Untagged
@@ -2859,7 +2859,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &4733086652078542433
+--- !u!114 &1177946655110109550
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2868,11 +2868,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 3633646637906624087}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d31f117eccd61b4cb9e5394e958ed2a, type: 3}
+  m_Script: {fileID: 11500000, guid: f9ec3101d2c0011468ec7353e6a74d9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   PuzzleInstance: {fileID: 9204363228736350518}
-  pipeItemSO: {fileID: 11400000, guid: 64c1430344afb574d857097e37bb4dda, type: 2}
+  puzzleNumber: 3
 --- !u!1 &3681662994585161974
 GameObject:
   m_ObjectHideFlags: 0
@@ -5811,7 +5811,7 @@ GameObject:
   - component: {fileID: 7077866831587484333}
   - component: {fileID: 7163813261843062243}
   - component: {fileID: 9118282081130306946}
-  - component: {fileID: 6302605970453851133}
+  - component: {fileID: 3587569350646123385}
   m_Layer: 0
   m_Name: PipePuzzle1
   m_TagString: Untagged
@@ -5935,7 +5935,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &6302605970453851133
+--- !u!114 &3587569350646123385
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5944,10 +5944,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 6856185840957642253}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9efb0bc690c37894ebba907ea7d81522, type: 3}
+  m_Script: {fileID: 11500000, guid: f9ec3101d2c0011468ec7353e6a74d9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   PuzzleInstance: {fileID: 5327144898569285523}
+  puzzleNumber: 1
 --- !u!1 &7009774744778378940
 GameObject:
   m_ObjectHideFlags: 0
@@ -6367,6 +6368,7 @@ Transform:
   - {fileID: 4074889788332941485}
   - {fileID: 7221960267560888575}
   - {fileID: 910779509297073045}
+  - {fileID: 4242005914621089820}
   m_Father: {fileID: 4452845616537468013}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7349904786519884787
@@ -6900,6 +6902,51 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &8069373520105184398
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4242005914621089820}
+  - component: {fileID: 4798909911453862614}
+  m_Layer: 0
+  m_Name: Water Puzzle Tracker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4242005914621089820
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8069373520105184398}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3383189024920804227}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4798909911453862614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8069373520105184398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a8044db2d4ca2449952ddaeba03e221, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pipeItemSO: {fileID: 11400000, guid: 64c1430344afb574d857097e37bb4dda, type: 2}
 --- !u!1 &8208381772134177598
 GameObject:
   m_ObjectHideFlags: 0
@@ -7085,7 +7132,7 @@ GameObject:
   - component: {fileID: 2254827784230589554}
   - component: {fileID: 6066202848411882437}
   - component: {fileID: 7416610871756894121}
-  - component: {fileID: 4316860677724593376}
+  - component: {fileID: 2989836131690008714}
   m_Layer: 0
   m_Name: PipePuzzle2
   m_TagString: Untagged
@@ -7209,7 +7256,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &4316860677724593376
+--- !u!114 &2989836131690008714
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -7218,10 +7265,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 8308266835252985221}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9efb0bc690c37894ebba907ea7d81522, type: 3}
+  m_Script: {fileID: 11500000, guid: f9ec3101d2c0011468ec7353e6a74d9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   PuzzleInstance: {fileID: 7826530398996378176}
+  puzzleNumber: 2
 --- !u!1 &8482216491894378419
 GameObject:
   m_ObjectHideFlags: 0
@@ -9883,6 +9931,10 @@ PrefabInstance:
     - target: {fileID: 4690785587804333328, guid: 620f1be439cedac4a844de35aae98c28, type: 3}
       propertyPath: m_Name
       value: ParallaxBackground_Mariposa
+      objectReference: {fileID: 0}
+    - target: {fileID: 4690785587804333328, guid: 620f1be439cedac4a844de35aae98c28, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
