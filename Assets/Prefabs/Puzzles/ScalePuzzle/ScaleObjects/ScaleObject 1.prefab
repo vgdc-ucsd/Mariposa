@@ -50,7 +50,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b18f13402efebc409bb295bcb659e29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BlockSprite: {fileID: 2656116754624929422}
+  ghostBlockSprite: {fileID: 2656116754624929422}
+  ghostRectTransform: {fileID: 124079298142932958}
 --- !u!222 &7566099273423942837
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -126,7 +127,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 64, y: 64}
+  m_SizeDelta: {x: 128, y: 64}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &8730180828989445678
 CanvasRenderer:
@@ -158,7 +159,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 3284464771883170265, guid: f6e63d04484a8904e9ffb91f225dd8ab, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -179,6 +180,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Scale: {fileID: 0}
-  <Weight>k__BackingField: 1
+  <Weight>k__BackingField: 2
   ghostBlock: {fileID: 6656295895302649126}
   blockSprite: {fileID: 7078655674206948570}
+  rectTransform: {fileID: 1284100964814301374}

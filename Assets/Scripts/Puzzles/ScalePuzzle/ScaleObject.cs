@@ -8,6 +8,7 @@ public class ScaleObject : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     [field: SerializeField] public int Weight { get; private set; }
     [SerializeField] private ScaleGhostObject ghostBlock;
     [SerializeField] private Image blockSprite;
+    [SerializeField] private RectTransform rectTransform;
     private ScalePuzzle scalePuzzle;
     private Vector3 shelfOrigin;
     private Vector3 origin;
@@ -18,8 +19,7 @@ public class ScaleObject : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         scalePuzzle = GetComponentInParent<ScalePuzzle>();
         originalParent = transform.parent;
         shelfOrigin = transform.position;
-        ghostBlock.gameObject.SetActive(false);
-        ghostBlock.BlockSprite.sprite = blockSprite.sprite;
+        ghostBlock.Initialize(blockSprite, rectTransform);
     }
 
     public void ReturnToOrigin()
