@@ -71,18 +71,18 @@ pier_dead_end:
   Icon: Neutral
   Background: 
   FromRadio: 
-  Sounds:
-  - radio-clip3-novoices.wav
+  Sounds: []
   Events: []
   Choice1: 
   Choice2: 
-pier_respond_choice:
-- Speaker: Unnamed
-  Line: '...'
-  Icon: Neutral
+- Speaker: Mariposa
+  Line: Kairo? You there?
+  Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Mariposa_Hmm3.wav
+  - radio-clip3-novoices.wav
   Events: []
   Choice1:
     Response: Respond.
@@ -93,16 +93,6 @@ pier_respond_choice:
     LinkedDialogue: pier_no_response
     Friendship: -3
 pier_respond:
-- Speaker: Mariposa
-  Line: Kairo? You there?
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds:
-  - Mariposa_Hmm3.wav
-  Events: []
-  Choice1: 
-  Choice2: 
 - Speaker: Unnamed
   Line: Mari.
   Icon: 
@@ -251,13 +241,15 @@ seriously:
   Choice1: 
   Choice2: 
 - Speaker: Unnamed
-  Line: '!play woops from seriously'
+  Line: '...'
   Icon: 
   Background: 
   FromRadio: 
   Sounds:
   - Unnamed_Tch1.wav
-  Events: []
+  Events:
+  - EventName: play_woops_from_seriously
+    TriggerAtEnd: true
   Choice1: 
   Choice2: 
 bonkers:
@@ -327,13 +319,15 @@ bonkers:
   Choice1: 
   Choice2: 
 - Speaker: Unnamed
-  Line: '!play woops from bonkers'
+  Line: (She’s off in her own world...)
   Icon: 
   Background: 
   FromRadio: 
   Sounds:
   - ''
-  Events: []
+  Events:
+  - EventName: play_woops_from_bonkers
+    TriggerAtEnd: true
   Choice1: 
   Choice2: 
 woops:
@@ -404,6 +398,8 @@ pier_no_response:
   Sounds:
   - Mariposa_NothingICanDo4.wav
   Events:
+  - EventName: switch_sublevels
+    TriggerAtEnd: true
   - EventName: play_control_panel_from_pier_no_response
     TriggerAtEnd: false
   Choice1: 
@@ -1411,8 +1407,8 @@ future_friends:
   Sounds:
   - Unnamed_MaybeYoureRight1.wav
   Events:
-  - EventName: play_boat_scene_from_future_friends
-    TriggerAtEnd: false
+  - EventName: play_boat_scene
+    TriggerAtEnd: true
   Choice1: 
   Choice2: 
 future_not_friends:
@@ -1471,8 +1467,8 @@ future_not_friends:
   Sounds:
   - Unnamed_Sigh4.wav
   Events:
-  - EventName: play
-    TriggerAtEnd: false
+  - EventName: play_boat_scene
+    TriggerAtEnd: true
   Choice1: 
   Choice2: 
 Candy1:

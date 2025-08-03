@@ -1299,7 +1299,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TriggerCollider: {fileID: 5282570387889009034}
-  DialogueName: pier_friends_part2
+  DialogueName: pier_respond_part2
 --- !u!61 &5282570387889009034
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4700,7 +4700,6 @@ MonoBehaviour:
   pipeItemSO: {fileID: 11400000, guid: 64c1430344afb574d857097e37bb4dda, type: 2}
   pipeVisual: {fileID: 3681662994585161974}
   pipePickup: {fileID: 9145683040622145570}
-  pipeRenderer: {fileID: 6576699288864141075}
 --- !u!1 &5754440429358365392
 GameObject:
   m_ObjectHideFlags: 0
@@ -5998,6 +5997,8 @@ GameObject:
   - component: {fileID: 1462286448401414854}
   - component: {fileID: 2739942520475676233}
   - component: {fileID: 8413196995857831214}
+  - component: {fileID: 1930776908241218399}
+  - component: {fileID: 9132345946874080387}
   m_Layer: 0
   m_Name: Branching Intro
   m_TagString: Untagged
@@ -6033,9 +6034,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: check_friendship
-  friendshipThreshold: 0
-  goodBranch: pier_friends
-  badBranch: pier_job_not_friends
+  friendshipThreshold: 12
+  goodBranch: bonkers
+  badBranch: seriously
 --- !u!114 &2739942520475676233
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6064,6 +6065,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: play_control_panel_from_pier_job_not_friends
   dialogueToPlay: control_panel
+--- !u!114 &1930776908241218399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7114448878116398072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0a040af56e726d4caefb1bcef04802d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: play_woops_from_bonkers
+  dialogueToPlay: woops
+--- !u!114 &9132345946874080387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7114448878116398072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0a040af56e726d4caefb1bcef04802d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: play_woops_from_seriously
+  dialogueToPlay: woops
 --- !u!1 &7173014180236844846
 GameObject:
   m_ObjectHideFlags: 0
@@ -9801,15 +9830,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4376665039875494354, guid: 620f1be439cedac4a844de35aae98c28, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4376665039875494354, guid: 620f1be439cedac4a844de35aae98c28, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4376665039875494354, guid: 620f1be439cedac4a844de35aae98c28, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4376665039875494354, guid: 620f1be439cedac4a844de35aae98c28, type: 3}
       propertyPath: m_LocalPosition.x

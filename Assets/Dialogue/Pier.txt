@@ -58,6 +58,12 @@ UNNAMED
 (Dead end. Nothing left here.)
 
 
+MARIPOSA 
+!a Mariposa_Hmm3.wav
+(neutral)
+Kairo? You there?
+
+
 ________________
 
 
@@ -66,10 +72,6 @@ ________________
 
 
 !a radio-clip3-novoices.wav
-!name pier_respond_choice
-UNNAMED
-(neutral)
-...
 
 
 !choice1 pier_respond +3
@@ -81,10 +83,6 @@ Stay quiet.
 
 
 !name pier_respond
-MARIPOSA 
-!a Mariposa_Hmm3.wav
-(neutral)
-Kairo? You there?
 
 
 UNNAMED
@@ -200,7 +198,7 @@ UNNAMED
 ...
 
 
-!play woops from seriously
+!event play_woops_from_seriously end
 
 
 ________________
@@ -255,7 +253,7 @@ UNNAMED
 (She’s off in her own world...)
 
 
-!play woops from bonkers
+!event play_woops_from_bonkers end
 
 
 ________________
@@ -328,6 +326,7 @@ MARIPOSA
 (Should’ve expected as much.)
 
 
+!e switch_sublevels end
 !event play_control_panel_from_pier_no_response
 ________________
 
@@ -1017,7 +1016,7 @@ UNNAMED
 ...maybe you’re right.
 
 
-!event play_boat_scene_from_future_friends
+!event play_boat_scene end
 ________________
 
 
@@ -1060,7 +1059,7 @@ UNNAMED
 (...maybe it’ll all be over anyway. What a waste.)
 
 
-!event play boat_scene_from_future_not_friends
+!event play_boat_scene end
 ________________
 
 

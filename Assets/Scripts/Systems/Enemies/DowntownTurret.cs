@@ -1,5 +1,7 @@
 using UnityEngine;
 using System;
+using FMODUnity;
+using System.Collections;
 
 public class DowntownTurret : MonoBehaviour
 {
@@ -52,16 +54,34 @@ public class DowntownTurret : MonoBehaviour
     private void Start()
     {
         IsOn = true;
+        HasBattery = true;
         ResetState();
 
         playerLayer = LayerMask.GetMask("Player");
         playerAndEnvLayer = LayerMask.GetMask("Player", "Barrier");
+    }
 
-        playerTargetObj = Array.Find(GameObject.FindGameObjectsWithTag("Player"), player => player.name == "Unnamed Player");
-        if (playerTargetObj == null)
+    private void OnEnable()
+    {
+        StartCoroutine(TryGetPlayer());
+    }
+
+    // hacky way to try to get target player on enable because of load times (small, but nonnegligible)
+    IEnumerator TryGetPlayer()
+    {
+        for (int i = 0; i < 10; i++)
         {
-            Debug.LogWarning("Target player not assigned on this turret");
+            playerTargetObj = Array.Find(GameObject.FindGameObjectsWithTag("Player"), player => player.name == "Unnamed Player");
+            if (playerTargetObj != null)
+            {
+                yield break;
+            }
+            else
+            {
+                yield return new WaitForSeconds(0.1f);
+            }
         }
+        Debug.LogWarning("Target player not assigned on this turret");
     }
 
 
@@ -166,6 +186,7 @@ public class DowntownTurret : MonoBehaviour
     public void RemoveBattery()
     {
         HasBattery = false;
+        RuntimeManager.PlayOneShot("event:/sfx/item/pickup");
         ShutDown();
     }
 
