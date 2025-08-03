@@ -100,5 +100,6 @@ public class PanCameraTrigger : Trigger
         {
             PlayerController.Instance.SetMovementLock(false);
         }
+        Destroy(this);
     }
 }
