@@ -25,6 +25,7 @@ public class DowntownTurret : MonoBehaviour
     [SerializeField] private GameObject turretCenter;
     [SerializeField] private GameObject turretBase;
     [SerializeField] private GameObject chargingPoint;
+    private SpriteRenderer chargingPointSprite;
     [SerializeField] private GameObject projectile;
     [SerializeField] private TurretType type;
     [SerializeField] private GameObject playerTargetObj;
@@ -59,6 +60,7 @@ public class DowntownTurret : MonoBehaviour
 
         playerLayer = LayerMask.GetMask("Player");
         playerAndEnvLayer = LayerMask.GetMask("Player", "Barrier");
+        chargingPointSprite = chargingPoint.GetComponent<SpriteRenderer>();
     }
 
     private void OnEnable()
@@ -222,6 +224,9 @@ public class DowntownTurret : MonoBehaviour
         // focus beam with the sphere
         float chargingPointSize = chargePointSize * projectileFocusCounter / projectileFocusDuration;
         chargingPoint.transform.localScale = new(chargingPointSize, chargingPointSize, 1.0f);
+
+        float chargingPointOpacity = 0.5f + (2.0f * projectileFocusCounter / projectileFocusDuration);
+        chargingPointSprite.color = new(1.0f, 1.0f, 1.0f, chargingPointOpacity);
     }
 
     // self-explanatory
