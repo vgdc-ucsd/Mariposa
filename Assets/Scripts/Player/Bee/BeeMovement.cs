@@ -1,12 +1,7 @@
-using NUnit.Framework.Internal.Commands;
-using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Experimental.GlobalIllumination;
 
 public class BeeMovement : FreeBody, IInputListener, IControllable
 {
-    public static BeeMovement Instance;
     private Bee parent;
 
     [Header("Horizontal Parameters")]

@@ -31,24 +31,24 @@ public class PipeEnterTrigger : MonoBehaviour
         }
     }
 
-    private void Update()
+    private void SetVisibility(bool isVisible)
     {
-        if (!PlayerController.Instance.isSquidActive && isSquidInside && isInteriorVisible) // On switch to Mariposa
+        isInteriorVisible = isVisible;
+        foreach (SpriteRenderer renderer in interiorRenderers)
+            renderer.enabled = isVisible;
+    }
+
+    public void UpdateVisuals()
+    {
+        if (isSquidInside && isInteriorVisible) // On switch to Mariposa
         {
             squidRenderer.enabled = false;
             SetVisibility(false);
         }
-        else if (PlayerController.Instance.isSquidActive && isSquidInside && !isInteriorVisible) // On switch to Squid
+        else if (isSquidInside && !isInteriorVisible) // On switch to Squid
         {
             squidRenderer.enabled = true;
             SetVisibility(true);
         }
-    }
-
-    private void SetVisibility(bool isVisible)
-    {
-        isInteriorVisible = isVisible;
-        foreach (SpriteRenderer renderer in interiorRenderers) 
-            renderer.enabled = isVisible;
     }
 }
