@@ -1,7 +1,6 @@
 using UnityEngine;
 using FMODUnity;
 using FMOD.Studio;
-using FMOD;
 
 public class BeeControlAbility : MonoBehaviour, IAbility
 {
@@ -45,10 +44,7 @@ public class BeeControlAbility : MonoBehaviour, IAbility
                 RuntimeManager.PlayOneShot(AudioEvents.SFX.mariposa_send_out.GetPath());
                 playSendOutSFX = false;
             }
-            if (!PlayerController.Instance.IsSquidUnlocked)
-            {
-                BeeFlap.start();                
-            }
+            BeeFlap.start();
         }
         else
         {

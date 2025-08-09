@@ -34,9 +34,6 @@ public class PlayerController : MonoBehaviour
     private InputSystem_Actions inputs;
     public bool IsLocked { get; private set; }
 
-    public bool IsSquidUnlocked;
-    public bool isSquidActive = false;
-
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -49,8 +46,6 @@ public class PlayerController : MonoBehaviour
 
         InitializePlayers();
         inputs = new();
-
-        IsSquidUnlocked = false;
     }
 
     private void OnEnable()
@@ -184,40 +179,17 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void TryToggleSquid(InputAction.CallbackContext ctx)
+    public void EnableSquid(SquidControlAbility squidAbility)
     {
-        if (!IsSquidUnlocked || ControlledPlayer.Data.characterID == CharID.Unnamed || DialogueManager.Instance.isPlayingDialogue) return;
-
-        if (isSquidActive) // could be a value vs ref check error
+        if (ControlledPlayer.Ability is BeeControlAbility b)
         {
-            StartControlling(MariposaRef.Movement);
-        }
-        else
-        {
-            StartControlling(SquidMovement.Instance);
+            b.RecallBee();
+            listeners.Remove(b);
         }
 
-        isSquidActive = !isSquidActive;
-    }
-
-    public void EnableSquid(bool enable)
-    {
-        IsSquidUnlocked = enable;
-
-        if (enable)
-        {
-            isSquidActive = true;
-            StartControlling(SquidMovement.Instance);
-            inputs.Player.Ability.started += ctx => TryToggleSquid(ctx);
-            inputs.Player.Ability.started -= ctx => SendAbilityDown(ctx);
-            inputs.Player.Ability.canceled -= ctx => SendAbilityUp(ctx);
-        }
-        else
-        {
-            inputs.Player.Ability.started -= ctx => TryToggleSquid(ctx);
-            inputs.Player.Ability.started += ctx => SendAbilityDown(ctx);
-            inputs.Player.Ability.canceled += ctx => SendAbilityUp(ctx);
-        }
+        ControlledPlayer.Ability = squidAbility;
+        listeners.Add(squidAbility);
+        squidAbility.ToggleControl(true);
     }
 
     public void LoadIntoSublevel(CharID character, Vector3 spawn)
@@ -244,8 +216,5 @@ public class PlayerController : MonoBehaviour
         {
             grappleAbility.UpdateGrappleTargets();
         }
-
-        SquidMovement.Instance?.gameObject.SetActive(false);
-        IsSquidUnlocked = false;
     }
 }
