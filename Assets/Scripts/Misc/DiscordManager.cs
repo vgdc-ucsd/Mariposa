@@ -33,6 +33,6 @@ public class DiscordManager : MonoBehaviour
 
     void OnDisable()
     {
-        discord.Dispose();
+        if (discord != null) discord.Dispose();
     }
 }
