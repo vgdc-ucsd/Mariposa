@@ -1,9 +1,10 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class WaterPuzzleTile : MonoBehaviour
+public class WaterPuzzleTile : MonoBehaviour, IPointerClickHandler
 {
     [HideInInspector] public WaterPuzzle puzzle;
     [HideInInspector] public bool PipeRight, PipeUp, PipeLeft, PipeDown;
@@ -15,10 +16,9 @@ public class WaterPuzzleTile : MonoBehaviour
     [HideInInspector] public bool MustBeStraight;
     [HideInInspector] public bool MustBeCross;
     [SerializeField] private Color fillColor;
-    [SerializeField] private float popSpeed, popSizeScale, popRotSpeed, popEasingScale;
+    [SerializeField] private float rotDuration, popSizeScale;
     private bool animating = false;
     public float RandomPipeChance; // odds from 0 to 1 per side on this tile for a pipe to randomly spawn there
-    public GameObject background;
    
     private void Start()
     {
@@ -167,31 +167,47 @@ public class WaterPuzzleTile : MonoBehaviour
     /// <summary>
     /// Rotates this tile 90 degrees clockwise, updating its sprite and pipe states.
     /// </summary>
-    public IEnumerator RotateThisTile()
+    public IEnumerator RotateThisTile(bool shouldRotateClockwise)
     {
         animating = true;
-        float startRot = Image.transform.eulerAngles.z;
-        float totalRot = 0f;
-        float width = puzzle.TileWidth;
+        Vector3 axis = shouldRotateClockwise ? Vector3.back : Vector3.forward;
+        Quaternion startRot = Image.transform.rotation;
+        Quaternion endRot = startRot * Quaternion.Euler(90.0f * axis);
+        Vector3 maxSize = Vector3.one * popSizeScale;
 
-
-        do
+        float rotTime = 0.0f;
+        while (rotTime <= rotDuration)
         {
-            yield return new WaitForSeconds(popSpeed);
-            float rot = popRotSpeed * (popEasingScale + 1 - Mathf.Pow((totalRot / 45f) - 1f, 2)) / popEasingScale;
-            Image.transform.localScale = Vector3.one * (1 + popSizeScale *  rot / popRotSpeed);
-            Image.transform.eulerAngles -= Vector3.forward * rot;
-            totalRot += rot;
-        } while (totalRot <= 90f);
+            yield return null;
+
+            float t = rotTime / rotDuration;
+            float sizeT = Mathf.Sin(Mathf.PI * t) * Mathf.Sin(Mathf.PI * t);
+            float rotT = Mathf.SmoothStep(0, 1, t);
+            Image.transform.localScale = Vector3.Lerp(Vector3.one, maxSize, sizeT);
+            Image.transform.rotation = Quaternion.Lerp(startRot, endRot, rotT);
+
+            rotTime += Time.deltaTime;
+        }
         Image.transform.localScale = Vector3.one;
-        Image.transform.eulerAngles = Vector3.forward * (startRot - 90f);
+        Image.transform.rotation = endRot;
         animating = false;
 
-        bool temp = PipeRight;
-        PipeRight = PipeUp;
-        PipeUp = PipeLeft;
-        PipeLeft = PipeDown;
-        PipeDown = temp;
+        if (shouldRotateClockwise)
+        {
+            bool temp = PipeRight;
+            PipeRight = PipeUp;
+            PipeUp = PipeLeft;
+            PipeLeft = PipeDown;
+            PipeDown = temp;
+        }
+        else
+        {
+            bool temp = PipeRight;
+            PipeRight = PipeDown;
+            PipeDown = PipeLeft;
+            PipeLeft = PipeUp;
+            PipeUp = temp;
+        }
         puzzle.ResetPuzzle();
     }
 
@@ -292,12 +308,12 @@ public class WaterPuzzleTile : MonoBehaviour
         puzzle.ResetPuzzle();
     }
 
-    public void OnClick()
+    public void OnPointerClick(PointerEventData eventData)
     {
         if (!puzzle.IsComplete && !animating)
         {
             if (!puzzle.UsedPipeSplitter && puzzle.PipeSplitterToggled) UsePipeSplitterOnTile();
-            else StartCoroutine(RotateThisTile());
+            else StartCoroutine(RotateThisTile(shouldRotateClockwise: eventData.button == PointerEventData.InputButton.Left));
         }
     }
 }

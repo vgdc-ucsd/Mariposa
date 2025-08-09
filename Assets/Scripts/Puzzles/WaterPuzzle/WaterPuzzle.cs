@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class WaterPuzzle : Puzzle
 {
@@ -17,13 +19,11 @@ public class WaterPuzzle : Puzzle
     
     [SerializeField] private GameObject tilePrefab;
     private List<WaterPuzzleTile> tilesInSolution;
-    [SerializeField] private GameObject backgroundParent;
-    [SerializeField] private float puzzleScale;
     [SerializeField] private Transform content;
     [SerializeField] private int puzzleNumber = 1;
 
     public float RandomTurnChance; // odds from 0 to 1 for the solution generator to make a random turn between tiles.
-    public float TileWidth, TileHeight; // width and height of one tile in the scene
+    public Vector2 TileSize; // width and height of one tile in the scene
     /// <summary>
     /// Different sprites for the water tiles, depending on how many pipes they have
     /// <code>
@@ -46,24 +46,28 @@ public class WaterPuzzle : Puzzle
     [SerializeField] private bool usingSeedBank;
     [SerializeField] private int[] seedBank;
 
+    public static readonly int2 right = new(1, 0);
+    public static readonly int2 left = new(-1, 0);
+    public static readonly int2 up = new(0, 1);
+    public static readonly int2 down = new(0, -1);
+
     private void Awake()
     {
         // move the puzzle object so that the center of the puzzle is at (0, 0, 0)
-        PuzzleUI.GetComponent<RectTransform>().localPosition = new Vector3(TileWidth * (-GridWidth + 1) / 2, TileHeight * (GridHeight - 1) / 2, 0);
+        TileSize = PuzzleUI.GetComponent<RectTransform>().sizeDelta / new Vector2(GridWidth, GridHeight);
+        PuzzleUI.GetComponent<GridLayoutGroup>().cellSize = TileSize;
 
         Tiles = new WaterPuzzleTile[GridWidth, GridHeight];
-        for (int i = 0; i < GridWidth; i++)
+        for (int i = 0; i < GridHeight; i++)
         {
-            for (int j = 0; j < GridHeight; j++)
+            for (int j = 0; j < GridWidth; j++)
             {
-                GameObject tile = Instantiate(tilePrefab, new Vector3(TileWidth * i, -TileHeight * j, 0), Quaternion.identity, PuzzleUI.transform);
-                tile.transform.position += PuzzleUI.transform.position;
-                Tiles[i, j] = tile.GetComponent<WaterPuzzleTile>();
-                Tiles[i, j].background.transform.SetParent(backgroundParent.transform, true);
-                Tiles[i, j].PosX = i;
-                Tiles[i, j].PosY = j;
-                Tiles[i, j].InitializeTile();
-                Tiles[i, j].puzzle = this;
+                GameObject tile = Instantiate(tilePrefab,  PuzzleUI.transform);
+                Tiles[j, i] = tile.GetComponent<WaterPuzzleTile>();
+                Tiles[j, i].PosX = j;
+                Tiles[j, i].PosY = i;
+                Tiles[j, i].InitializeTile();
+                Tiles[j, i].puzzle = this;
             }
         }
         StartTile = Tiles[0, GridHeight / 2];
@@ -80,12 +84,6 @@ public class WaterPuzzle : Puzzle
         GenerateSolution();
         UsedPipeSplitter = false;
     }
-
-    void Start()
-    {
-        content.localScale = Vector3.one * puzzleScale;
-    }
-
 
     public void ResetPuzzle()
     {
@@ -176,24 +174,13 @@ public class WaterPuzzle : Puzzle
             x = tilesInSolution[branchIndex].PosX;
             y = tilesInSolution[branchIndex].PosY;
         }
-        int[] direction = { 0, 0 };
-        int[] right = { 1, 0 };
-        int[] up = { 0, -1 };
-        int[] left = { -1, 0 };
-        int[] down = { 0, 1 };
-
-        switch (Random.Range(0, 3))
+        int2 direction = Random.Range(0, 3) switch
         {
-            case 0:
-                right.CopyTo(direction, 0);
-                break;
-            case 1:
-                up.CopyTo(direction, 0);
-                break;
-            case 2:
-                down.CopyTo(direction, 0);
-                break;
-        }
+            0 => right,
+            1 => up,
+            2 => down,
+            _ => throw new System.NotImplementedException()
+        };
 
         int steps = 0;
 
@@ -207,40 +194,40 @@ public class WaterPuzzle : Puzzle
                 break;  
             }
             steps++;
-            
 
 
-            int[] prevDirection = { direction[0], direction[1] };
+
+            int2 prevDirection = direction;
             bool turned = false;
-            if ((y == 0 || y == GridHeight - 1) && (direction[1] != 0)) // direction should be up or down, set it to right
+            if ((y == 0 || y == GridHeight - 1) && (direction.y != 0)) // direction should be up or down, set it to right
             {
-                right.CopyTo(direction, 0);
+                direction = right;
                 turned = true;
             }
-            else if (x == EndTile.PosX && direction[0] == 1) // direction should be right, set it to up or down
+            else if (x == EndTile.PosX && direction.x == 1) // direction should be right, set it to up or down
             {
-                if (y < EndTile.PosY) down.CopyTo(direction, 0);
-                else up.CopyTo(direction, 0);
+                if (y < EndTile.PosY) direction = down;
+                else direction = up;
                 turned = true;
             }
-            else if (x == StartTile.PosX && y != StartTile.PosY && direction[0] == -1) // direction should be left, set it to up or down
+            else if (x == StartTile.PosX && y != StartTile.PosY && direction.x == -1) // direction should be left, set it to up or down
             {
-                if (y > StartTile.PosY) down.CopyTo(direction, 0);
-                else up.CopyTo(direction, 0);
+                if (y > StartTile.PosY) direction = down;
+                else direction = up;
                 turned = true;
             }
             else if (Random.Range(0f, 1f) < RandomTurnChance)
             {
 
-                TurnDirection(direction).CopyTo(direction, 0);
+                direction = TurnDirection(direction, false);
                 if (Random.Range(0f, 1f) < 0.5f)
                 {
-                    TurnDirection(direction).CopyTo(direction, 0);
-                    TurnDirection(direction).CopyTo(direction, 0);
+                    direction = TurnDirection(direction, false);
+                    direction = TurnDirection(direction, false);
                 }
 
-                if (y == 0) down.CopyTo(direction, 0);
-                if (y == GridHeight - 1) up.CopyTo(direction, 0);
+                if (y == 0) direction = down;
+                if (y == GridHeight - 1) direction = up;
 
                 turned = true;
             }
@@ -249,13 +236,13 @@ public class WaterPuzzle : Puzzle
             // if there's no free direction to go, attempt to turn right
             // also try to avoid making 180 degree turns if possible
             int turnsMade = 0;
-            while (!IsTileFree(x + direction[0], y + direction[1], secondPass)
-                || (direction[0] == 1 && prevDirection[0] == -1)
-                || (direction[0] == -1 && prevDirection[0] == 1)
-                || (direction[1] == -1 && prevDirection[1] == 1)
-                || (direction[1] == 1 && prevDirection[1] == -1))
+            while (!IsTileFree(x + direction.x, y + direction.y, secondPass)
+                || (direction.x == 1 && prevDirection.x == -1)
+                || (direction.x == -1 && prevDirection.x == 1)
+                || (direction.y == -1 && prevDirection.y == 1)
+                || (direction.y == 1 && prevDirection.y == -1))
             {
-                TurnDirection(direction).CopyTo(direction, 0);
+                direction = TurnDirection(direction, false);
                 turned = !turned;
 
                 turnsMade++;
@@ -267,13 +254,13 @@ public class WaterPuzzle : Puzzle
 
 
 
-            if (IsTileInBounds(x + direction[0], y + direction[1]))
+            if (IsTileInBounds(x + direction.x, y + direction.y))
             {
 
-                x += direction[0];
-                y += direction[1];
-                if (turned) Tiles[x - direction[0], y - direction[1]].MustBeTurn = true;
-                else Tiles[x - direction[0], y - direction[1]].MustBeStraight = true;
+                x += direction.x;
+                y += direction.y;
+                if (turned) Tiles[x - direction.x, y - direction.y].MustBeTurn = true;
+                else Tiles[x - direction.x, y - direction.y].MustBeStraight = true;
 
 
                 if (!tilesInSolution.Contains(Tiles[x, y]))
@@ -310,15 +297,11 @@ public class WaterPuzzle : Puzzle
         return (x >= 0 && x < GridWidth && y >= 0 && y < GridHeight);
     }
 
-    private int[] TurnDirection(int[] direction)
+    private int2 TurnDirection(int2 direction, bool isClockwise)
     {
-        if (direction[0] == 1 && direction[1] == 0) return new int[] { 0, -1 };
-        else if (direction[0] == 0 && direction[1] == -1) return new int[] { -1, 0 };
-        else if (direction[0] == -1 && direction[1] == 0) return new int[] { 0, 1 };
-        else if (direction[0] == 0 && direction[1] == 1) return new int[] { 1, 0 };
-        else return new int[] { 0, 0 };
+        if (direction.Equals(int2.zero)) return int2.zero;
 
+        int2 rotMask = isClockwise ? new int2(1, -1) : new int2(-1, 1);
+        return direction.yx * rotMask; // this swizzle combined with the rotMask is equivalent to applying the corresponding 90 degree rotation matrix
     }
-
-
 }
