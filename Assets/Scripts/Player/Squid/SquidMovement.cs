@@ -1,21 +1,12 @@
 using FMODUnity;
-using NUnit.Framework.Internal.Commands;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Experimental.GlobalIllumination;
 
 public class SquidMovement : FreeBody, IInputListener, IControllable
 {
-    public static SquidMovement Instance;
-
-
     private Vector2 moveDir = Vector2.zero;
     private bool onWalkableSlope = false;
     private Vector2 slopeDir = Vector2.zero;
-
-    // private int wallNormal = 0; // -1 = left, 1 = right, 0 = not on a wall
-
 
     [SerializeField] private PlayerData data;
 
@@ -34,14 +25,6 @@ public class SquidMovement : FreeBody, IInputListener, IControllable
     [SerializeField] private float cornerCorrectMaxInsetDistance;
     [Tooltip("The minimum upward velocity required to corner correct")]
     [SerializeField] private float cornerCorrectMinVelocity;
-
-
-
-    SpriteRenderer beeSprite;
-
-    // public bool IsControlled;
-
-    // only activate triggers when it is being controlled
 
     public override bool ActivateTriggers => (IControllable)this == PlayerController.Instance.CurrentControllable;
 
@@ -62,17 +45,13 @@ public class SquidMovement : FreeBody, IInputListener, IControllable
 
     protected override void Awake()
     {
-        Instance = this;
         base.Awake();
         InitDerivedConsts();
-        beeSprite = GetComponent<SpriteRenderer>();
-
     }
 
     protected override void Update()
     {
         base.Update();
-
     }
 
     private void OnValidate()
@@ -87,23 +66,8 @@ public class SquidMovement : FreeBody, IInputListener, IControllable
 
         base.FixedUpdate();
         CeilingCornerCorrect();
-        CheckOnWall();
 
         UpdateTimers(fdt);
-    }
-
-
-    private void CheckOnWall()
-    {
-        Bounds bounds = SurfaceCollider.bounds;
-        RaycastHit2D leftHit = Physics2D.BoxCast(bounds.center, bounds.size, 0f, Vector2.left, COLLISION_CHECK_DISTANCE, collisionLayer);
-        RaycastHit2D rightHit = Physics2D.BoxCast(bounds.center, bounds.size, 0f, Vector2.right, COLLISION_CHECK_DISTANCE, collisionLayer);
-        bool hitLeftWall = Mathf.Abs(leftHit.normal.normalized.x) > LAND_SLOPE_FACTOR;
-        bool hitRightWall = Mathf.Abs(rightHit.normal.normalized.x) > LAND_SLOPE_FACTOR;
-
-        // if (hitLeftWall) wallNormal = 1;
-        // else if (hitRightWall) wallNormal = -1;
-        // else wallNormal = 0;
     }
 
     // public method to send a move command
@@ -116,9 +80,6 @@ public class SquidMovement : FreeBody, IInputListener, IControllable
     private void Move()
     {
         int dir = Mathf.RoundToInt(moveDir.x);
-
-        //if (dir != 0) Player.ActivePlayer.FacingDirection = dir;
-
 
         // Check which acceleration parameter to use
         float accelerationParam = (dir * Velocity.x > 0)
@@ -146,8 +107,6 @@ public class SquidMovement : FreeBody, IInputListener, IControllable
     public void JumpInputDown()
     {
         Physics2D.SyncTransforms();
-        Bounds bounds = SurfaceCollider.bounds;
-
       
         if (State == BodyState.OnGround || coyoteTimeRemaining > 0f)
         {
@@ -234,6 +193,4 @@ public class SquidMovement : FreeBody, IInputListener, IControllable
     {
         base.OnTriggerExit2D(collision);
     }
-
-
 }

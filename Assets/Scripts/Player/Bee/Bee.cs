@@ -58,7 +58,14 @@ public class Bee : MonoBehaviour
 
     public void SetRadiusSprite(float alpha)
     {
-        beeRadius.color = new Color(1.0f, 1.0f, 1.0f, alpha);
+        if (Player.ActivePlayer.Ability is BeeControlAbility)
+        {
+            beeRadius.color = new Color(1.0f, 1.0f, 1.0f, alpha);
+        }
+        else
+        {
+            beeRadius.color = Color.clear;            
+        }
     }
 }
 

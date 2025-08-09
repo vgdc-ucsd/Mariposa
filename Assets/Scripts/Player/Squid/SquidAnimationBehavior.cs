@@ -6,6 +6,7 @@ public class SquidAnimationBehavior : MonoBehaviour
     [SerializeField] private SpriteRenderer sRenderer;
     // [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Animator animator;
+    [SerializeField] private SquidMovement movement;
     public bool wasRunning;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -19,7 +20,7 @@ public class SquidAnimationBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (SquidMovement.Instance.State == BodyState.InAir)
+        if (movement.State == BodyState.InAir)
         {
             animator.SetBool("isJumping", true);
         }
@@ -31,7 +32,7 @@ public class SquidAnimationBehavior : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (SquidMovement.Instance.Velocity.sqrMagnitude <= 0.05f)
+        if (movement.Velocity.sqrMagnitude <= 0.05f)
         {
             if (Player.ActivePlayer.Movement.State == BodyState.OnGround)
             {
