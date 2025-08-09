@@ -58,12 +58,14 @@ public class GameManager : Singleton<GameManager>
         OnChangeScene();
         CurrentScene = scene;
         SceneManager.LoadSceneAsync((int)scene);
-    } 
+    }
 
     public void OnChangeScene()
     {
         UnregisterStartAction(GameState.INVENTORY);
         UnregisterExitAction(GameState.INVENTORY);
+        UnregisterStartAction(GameState.PAUSE);
+        UnregisterExitAction(GameState.PAUSE);
     }
 
     public void RegisterStartAction(GameState state, Action action)

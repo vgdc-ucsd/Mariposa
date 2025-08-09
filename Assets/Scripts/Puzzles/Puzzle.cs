@@ -17,7 +17,7 @@ public abstract class Puzzle : MonoBehaviour
     /// Executes generic puzzle completion actions. Should be called from child 
     /// class when player completes the puzzle.
     /// </summary>
-    public void OnComplete()
+    public virtual void OnComplete()
     {
         IsComplete = true;
         if (PuzzlePopupManager.Instance != null) PuzzlePopupManager.Instance.CompletePuzzle();

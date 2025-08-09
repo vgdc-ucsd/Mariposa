@@ -11,8 +11,8 @@ public class LevelManager : Singleton<LevelManager>
     void Start()
     {
         //DataPersistenceManager.Instance.SaveGame(DataPersistenceManager.Instance.fileName);
-        CurrentLevel.LoadLevel();
         FadeController.Instance.FadeIn();
+        CurrentLevel.LoadLevel();
     }
 
     public void GoToNextSublevel()

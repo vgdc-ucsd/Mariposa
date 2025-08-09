@@ -2,7 +2,7 @@ using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class UnlockPipeEvent : MonoBehaviour
+public class UnlockPipeEvent : DialogueEvent
 {
     [SerializeField] private ItemData pipeItemSO;
     [SerializeField] private GameObject pipeVisual;
@@ -10,11 +10,6 @@ public class UnlockPipeEvent : MonoBehaviour
     private float initialY;
     private const float n1 = 7.5625f;
     private const float d1 = 2.75f;
-
-    public void UnlockPipe()
-    {
-        StartCoroutine(DropPipe());
-    }
 
     IEnumerator DropPipe()
     {
@@ -43,5 +38,10 @@ public class UnlockPipeEvent : MonoBehaviour
         } else {
             return n1 * (x -= 2.625f / d1) * x + 0.984375f;
         }
+    }
+
+    public override void Trigger()
+    {
+        StartCoroutine(DropPipe());
     }
 }

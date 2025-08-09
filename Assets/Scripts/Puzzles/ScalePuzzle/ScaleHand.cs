@@ -1,67 +1,72 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class ScaleHand : MonoBehaviour
+public class ScaleHand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    [HideInInspector] public List<ScaleObject> scaleObjects = new List<ScaleObject>();
-    [SerializeField] private Vector3[] stackPositions;
-    [HideInInspector] public int totalWeight;
-    [HideInInspector] public Vector3 initialPos;
+    private ScalePuzzle scalePuzzle;
+    public int TotalWeight { get; private set; }
+    public int NumBlocks { get; private set; }
     [SerializeField] private RectTransform platform;
-    [SerializeField] private TMP_Text weightText;
     [SerializeField] private GameObject arrow;
     [SerializeField] private float arrowRotateScale;
-    private Rect platformRect;
-
-    private Vector3[] corners;
+    private Vector3 initialPos;
 
     private void Start()
     {
-        totalWeight = 0;
+        scalePuzzle = GetComponentInParent<ScalePuzzle>();
+        TotalWeight = 0;
+        NumBlocks = 0;
         initialPos = GetComponent<RectTransform>().localPosition;
-        platformRect = platform.rect;
-        weightText.text = string.Empty;
     }
 
-    
-
-    public void AddObject(ScaleObject obj)
+    public void CalculatePosition(float weightDiff)
     {
-        scaleObjects.Add(obj);
-        totalWeight += obj.weight;
-        UpdateWeightText();
-        // Debug.Log(obj.GetComponent<RectTransform>().localPosition.x);
-        // Debug.Log(platformRect.x);
-        FitToPlatform(obj.GetComponent<RectTransform>(), true);
-        ScalePuzzle.Instance.CheckSolution();
-        
+        transform.localPosition = initialPos - Vector3.up * weightDiff;
     }
 
-    public void RemoveObject(ScaleObject obj)
+    public void UpdateWeight(int weight)
     {
-        scaleObjects.Remove(obj);
-        totalWeight -= obj.weight;
-        UpdateWeightText();
-        ScalePuzzle.Instance.CheckSolution();
+        TotalWeight += weight;
+        arrow.transform.eulerAngles = Mathf.Sqrt(TotalWeight * arrowRotateScale) * Vector3.forward;
     }
 
-    public void UpdateWeightText()
+    public void AddObject(ScaleObject block)
     {
-        weightText.text = totalWeight.ToString();
-        // if (scaleObjects.Contains(ScalePuzzle.Instance.mysteryBox)) weightText.text = "???";
-        // else weightText.text = (totalWeight == 0 ? string.Empty : totalWeight.ToString());
-        arrow.transform.eulerAngles = Mathf.Sqrt(totalWeight * arrowRotateScale) * Vector3.forward;
+        NumBlocks++;
+        UpdateWeight(block.Weight);
+        FitToPlatform(block.transform);
+        block.Scale = this;
     }
 
-    public void FitToPlatform(RectTransform objRect, bool print = false)
+    public void RemoveObject(ScaleObject block)
     {
-        objRect.SetParent(platform, true);
-        // if (print) Debug.Log(objRect.localPosition.x);
-        objRect.transform.localPosition = new Vector3(
-            Mathf.Clamp(objRect.transform.localPosition.x, platformRect.x, platformRect.xMax),
-            Mathf.Clamp(objRect.transform.localPosition.y, platformRect.y, platformRect.yMax), 0
+        NumBlocks--;
+        UpdateWeight(-block.Weight);
+    }
+
+    public void FitToPlatform(Transform block)
+    {
+        block.SetParent(platform, true);
+        Vector2 pos = platform.position;
+        Vector2 rectMinWorld = platform.rect.min + pos;
+        Vector2 rectMaxWorld = platform.rect.max + pos;
+        block.position = new Vector3
+        (
+            Mathf.Clamp(block.position.x, rectMinWorld.x, rectMaxWorld.x),
+            Mathf.Clamp(block.position.y, rectMinWorld.y, rectMaxWorld.y),
+            0.0f
         );
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        scalePuzzle.TargetScale = this;
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        scalePuzzle.TargetScale = null;
     }
 }

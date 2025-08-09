@@ -1,5 +1,7 @@
 using UnityEngine;
 using System;
+using FMODUnity;
+using System.Collections;
 
 public class DowntownTurret : MonoBehaviour
 {
@@ -23,6 +25,7 @@ public class DowntownTurret : MonoBehaviour
     [SerializeField] private GameObject turretCenter;
     [SerializeField] private GameObject turretBase;
     [SerializeField] private GameObject chargingPoint;
+    private SpriteRenderer chargingPointSprite;
     [SerializeField] private GameObject projectile;
     [SerializeField] private TurretType type;
     [SerializeField] private GameObject playerTargetObj;
@@ -52,16 +55,35 @@ public class DowntownTurret : MonoBehaviour
     private void Start()
     {
         IsOn = true;
+        HasBattery = true;
         ResetState();
 
         playerLayer = LayerMask.GetMask("Player");
         playerAndEnvLayer = LayerMask.GetMask("Player", "Barrier");
+        chargingPointSprite = chargingPoint.GetComponent<SpriteRenderer>();
+    }
 
-        playerTargetObj = Array.Find(GameObject.FindGameObjectsWithTag("Player"), player => player.name == "Unnamed Player");
-        if (playerTargetObj == null)
+    private void OnEnable()
+    {
+        StartCoroutine(TryGetPlayer());
+    }
+
+    // hacky way to try to get target player on enable because of load times (small, but nonnegligible)
+    IEnumerator TryGetPlayer()
+    {
+        for (int i = 0; i < 10; i++)
         {
-            Debug.LogWarning("Target player not assigned on this turret");
+            playerTargetObj = Array.Find(GameObject.FindGameObjectsWithTag("Player"), player => player.name == "Unnamed Player");
+            if (playerTargetObj != null)
+            {
+                yield break;
+            }
+            else
+            {
+                yield return new WaitForSeconds(0.1f);
+            }
         }
+        Debug.LogWarning("Target player not assigned on this turret");
     }
 
 
@@ -166,6 +188,7 @@ public class DowntownTurret : MonoBehaviour
     public void RemoveBattery()
     {
         HasBattery = false;
+        RuntimeManager.PlayOneShot("event:/sfx/item/pickup");
         ShutDown();
     }
 
@@ -201,6 +224,9 @@ public class DowntownTurret : MonoBehaviour
         // focus beam with the sphere
         float chargingPointSize = chargePointSize * projectileFocusCounter / projectileFocusDuration;
         chargingPoint.transform.localScale = new(chargingPointSize, chargingPointSize, 1.0f);
+
+        float chargingPointOpacity = 0.5f + (2.0f * projectileFocusCounter / projectileFocusDuration);
+        chargingPointSprite.color = new(1.0f, 1.0f, 1.0f, chargingPointOpacity);
     }
 
     // self-explanatory

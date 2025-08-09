@@ -198,6 +198,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!20 &300733025 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 2732458957752802677, guid: f7ba4b11513a904409f499c05ca71649, type: 3}
+  m_PrefabInstance: {fileID: 884917909}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &884917909
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -730,6 +735,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5883707273069645462}
     m_Modifications:
+    - target: {fileID: 963376565834552658, guid: f835bba26527c2442becf6d448727aad, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 300733025}
+    - target: {fileID: 963376565834552658, guid: f835bba26527c2442becf6d448727aad, type: 3}
+      propertyPath: m_SortingOrder
+      value: -5
+      objectReference: {fileID: 0}
     - target: {fileID: 3168821385086271312, guid: f835bba26527c2442becf6d448727aad, type: 3}
       propertyPath: m_Name
       value: 3-1-U1
@@ -777,6 +790,10 @@ PrefabInstance:
     - target: {fileID: 5384814496559900006, guid: f835bba26527c2442becf6d448727aad, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8333904702158161372, guid: f835bba26527c2442becf6d448727aad, type: 3}
+      propertyPath: mariposaSprites.Array.size
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -829,9 +846,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CurrentLevel: {fileID: 5883707273069645461}
-  NextLevelName: 
-  ActiveEnemies: []
-  Breakables: []
 --- !u!4 &2022088644
 Transform:
   m_ObjectHideFlags: 0
