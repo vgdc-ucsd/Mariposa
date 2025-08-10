@@ -126,7 +126,6 @@ public class BlockPuzzle : Puzzle
 
     public bool CheckSolution()
     {
-        PrintGridState();
         for (int i = 0; i < GridWidth; ++i)
         {
             for (int j = 0; j < GridHeight; ++j)
