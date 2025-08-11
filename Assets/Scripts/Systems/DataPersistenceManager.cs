@@ -9,8 +9,9 @@ using System.IO;
 /// </summary>
 public class DataPersistenceManager : Singleton<DataPersistenceManager>
 {
-    [Header("File Storage Config")]
-    public string fileName = "save.json";
+    // [Header("File Storage Config")]
+    // Do not make this public, file I/O exception
+    private string fileName = "save.json";
     public GameData gameData;
 
     private List<IDataPersistence> dataPersistenceObjects;
@@ -18,7 +19,7 @@ public class DataPersistenceManager : Singleton<DataPersistenceManager>
 
     private void Start()
     {
-        fullPath = Path.Combine(Application.persistentDataPath, fileName);
+        fullPath = $"{Application.persistentDataPath}{Path.DirectorySeparatorChar}{fileName}";
         dataPersistenceObjects = FindAllDataPersistenceObjects();
         
         LoadGame();
@@ -66,7 +67,7 @@ public class DataPersistenceManager : Singleton<DataPersistenceManager>
         {
             dataPersistenceObj.SaveData(ref gameData);
         }
-        File.WriteAllText(fullPath, JsonUtility.ToJson(gameData));
+        File.WriteAllText(fullPath, JsonUtility.ToJson(gameData, true));
     }
 
     /// <summary>

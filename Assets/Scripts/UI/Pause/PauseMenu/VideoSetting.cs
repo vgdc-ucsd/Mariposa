@@ -10,14 +10,14 @@ using System.Linq;
 /// <summary>
 /// Unity moment
 /// </summary>
-// public enum WindowType
-// {
-//     Windowed,
-//     Fullscreen,
-//     WindowedFullscreen
-// }
+public enum WindowType
+{
+    Windowed,
+    Fullscreen,
+    WindowedFullscreen
+}
 
-public class VideoSetting : MonoBehaviour
+public class VideoSetting : MonoBehaviour, IDataPersistence
 {
 
     public RenderPipelineAsset[] QualityLevels;
@@ -112,6 +112,20 @@ public class VideoSetting : MonoBehaviour
         GraphicsQualityDropdown.value = defaultQualityIndex;
         ResolutionTypeDropdown.value = defaultResolutionTypeIndex;
         ResolutionSizeDropdown.value = defaultResolutionIndex;
+        ApplyAllGraphicsChanges();
+    }
+
+    public void SaveData(ref GameData data)
+    {
+        data.height = Height;
+        data.width = Width;
+        data.windowType = ResolutionType;
+    }
+    public void LoadData(GameData data)
+    {
+        Height = data.height;
+        Width = data.width;
+        ResolutionType = data.windowType;
         ApplyAllGraphicsChanges();
     }
 }
