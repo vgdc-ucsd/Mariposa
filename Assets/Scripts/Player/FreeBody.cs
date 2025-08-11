@@ -105,7 +105,7 @@ public abstract class FreeBody : Body
         Physics2D.SyncTransforms();
         RaycastHit2D groundHit = Physics2D.BoxCast(origin, size, 0f, Vector2.down, Mathf.Infinity, collisionLayer);
 
-        bool didHitGround = groundHit && groundHit.distance <= COLLISION_CHECK_DISTANCE;
+        bool didHitGround = groundHit && groundHit.distance <= COLLISION_CHECK_DISTANCE && !IsPassableOneWayPlatformHit(groundHit, Velocity);
         if (groundHit && !didHitGround && groundHit.collider.CompareTag("MovingPlatform"))
         {
             MovingPlatform movingPlatform = groundHit.collider.GetComponentInParent<MovingPlatform>();
@@ -129,6 +129,19 @@ public abstract class FreeBody : Body
         if (State == BodyState.OnGround) State = BodyState.InAir;
     }
 
+    private bool IsPassableOneWayPlatformHit(RaycastHit2D platformHit, Vector2 moveDir)
+    {
+        Collider2D platformCollider = platformHit.collider;
+        if (!platformCollider.CompareTag("OneWayPlatform")) return false;
+
+        OneWayPlatform oneWayPlatform = platformCollider.GetComponent<OneWayPlatform>();
+        if (oneWayPlatform == null) return false;
+
+        float upwardAlignment = Vector2.Dot(-moveDir.normalized, oneWayPlatform.collisionNormal);
+        float surfaceArcTolerance = Mathf.Cos(oneWayPlatform.surfaceArc * Mathf.Deg2Rad);
+        return upwardAlignment < surfaceArcTolerance;
+    }
+
     /// <summary>
     /// Applies a movement vector to this freebody and respects collision
     /// </summary>
@@ -144,7 +157,7 @@ public abstract class FreeBody : Body
         RaycastHit2D hit = Physics2D.BoxCast(origin, bounds.size, 0f, move.normalized, move.magnitude, collisionLayer);
 
         // If the free body is inside another object, separate them and recompute the raycast
-        if (hit && !hit.collider.isTrigger && Mathf.Approximately(hit.distance, 0f))
+        if (hit && !hit.collider.isTrigger && Mathf.Approximately(hit.distance, 0f) && !hit.collider.CompareTag("OneWayPlatform"))
         {
             ResolveInitialCollisions();
             origin = (Vector2)transform.position + SurfaceCollider.offset;
@@ -154,6 +167,10 @@ public abstract class FreeBody : Body
         int substeps = 0; // This is to prevent infinite loops in case something goes wrong
         while (hit && !hit.collider.isTrigger)
         {
+            // This does not account for when there's a collision that would happen in the same
+            // FixedUpdate step that's just past the passable one-way platform
+            if (IsPassableOneWayPlatformHit(hit, move)) break; 
+
             collisionHits.Add(hit);
             Vector2 normal = hit.normal.normalized;
             Vector2 delta = hit.centroid - origin + CONTACT_OFFSET * normal;
