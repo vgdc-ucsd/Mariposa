@@ -136,7 +136,7 @@ public class Settings : Singleton<Settings>, IDataPersistence
 
     public void PauseSounds(bool pause)
     {
-        MusicVolume?.pauseBus(pause);
+        //MusicVolume?.pauseBus(pause);
         SFXVolume?.pauseBus(pause);     // TODO: there will be an issue with main menu sfx being muted
         DialogueVolume?.pauseBus(pause);
         AmbienceVolume?.pauseBus(pause);
