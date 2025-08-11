@@ -1,3 +1,5 @@
+using UnityEngine;
+
 /// <summary>
 /// JSON serializable class that is used to store the game data. 
 /// </summary>
@@ -5,31 +7,31 @@
 public class GameData
 {
     // Player Data
-    // TODO: Add reference to Unnamed's name
+    public string UnnamedName;
     public int friendshipScore;
+    public GameScene SavedScene;
 
     // Settings
     // TODO: audio settings
 
-    // Video Settings
     public int width;
     public int height;
     public WindowType windowType;
 
-    // Level Manager
-    // TODO: level settings
-
-    /// <summary>
-    /// Constructor for the GameData object
-    /// Creates a new object with the default values
-    /// </summary>
     public GameData()
     {
-        // Default Creations may Conflict with Start() calls
-        // Probably don't even need these anyway or we can refactor the code for this to work
-        this.friendshipScore = 0;
-        this.width = 1920;
-        this.height = 1080;
-        this.windowType = WindowType.Windowed;
+        ResetPlaythrough();
+
+        width = Screen.width;
+        height = 1080;
+        windowType = WindowType.WindowedFullscreen;
+
+    }
+
+    public void ResetPlaythrough()
+    {
+        UnnamedName = "Kairo";
+        friendshipScore = 0;
+        SavedScene = GameScene.TUTORIAL;
     }
 }

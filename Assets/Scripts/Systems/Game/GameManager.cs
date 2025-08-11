@@ -20,7 +20,7 @@ public enum GameState
     INVENTORY
 }
 
-public class GameManager : Singleton<GameManager>
+public class GameManager : Singleton<GameManager>, IDataPersistence
 {
     public GameScene CurrentScene { get; private set; }
     public InteractionTrigger DefaultInteractionTrigger;
@@ -52,7 +52,7 @@ public class GameManager : Singleton<GameManager>
         gameState.AddTransition(GameState.INVENTORY, GameState.GAME);
         gameState.AddTransition(GameState.INVENTORY, GameState.PAUSE);
     }
-    
+
     public void LoadScene(GameScene scene)
     {
         OnChangeScene();
@@ -72,10 +72,10 @@ public class GameManager : Singleton<GameManager>
     {
         gameState.AddEnterAction(state, action);
     }
-    
+
     public void UnregisterStartAction(GameState state)
     {
-        gameState.RemoveEnterAction(state);        
+        gameState.RemoveEnterAction(state);
     }
 
     public void RegisterExitAction(GameState state, Action action)
@@ -85,7 +85,7 @@ public class GameManager : Singleton<GameManager>
 
     public void UnregisterExitAction(GameState state)
     {
-        gameState.RemoveExitAction(state);        
+        gameState.RemoveExitAction(state);
     }
 
     public void HandlePause()
@@ -126,5 +126,15 @@ public class GameManager : Singleton<GameManager>
         actions.Control.Inventory.started -= ctx => HandleInventory();
         actions.Control.Disable();
         actions.Player.Disable();
+    }
+
+    public void SaveData(ref GameData data)
+    {
+        data.SavedScene = CurrentScene;
+    }
+
+    public void LoadData(GameData data)
+    {
+        CurrentScene = data.SavedScene;
     }
 }
