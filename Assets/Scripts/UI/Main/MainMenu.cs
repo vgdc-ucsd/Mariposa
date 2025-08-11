@@ -32,6 +32,7 @@ public class MainMenu : Singleton<MainMenu>
 
     public void ExitBtn()
     {
+        DataPersistenceManager.Instance.SaveGame();
         Application.Quit();
     }
 

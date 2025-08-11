@@ -120,12 +120,14 @@ public class VideoSetting : MonoBehaviour, IDataPersistence
         data.height = Height;
         data.width = Width;
         data.windowType = ResolutionType;
+        data.resolutionIndex = currentResolutionIndex;
     }
     public void LoadData(GameData data)
     {
         Height = data.height;
         Width = data.width;
         ResolutionType = data.windowType;
+        ResolutionSizeDropdown.value = data.resolutionIndex;
         ApplyAllGraphicsChanges();
     }
 }

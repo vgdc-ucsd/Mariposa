@@ -17,6 +17,7 @@ public class GameData
     public int width;
     public int height;
     public WindowType windowType;
+    public int resolutionIndex;
 
     public GameData()
     {
