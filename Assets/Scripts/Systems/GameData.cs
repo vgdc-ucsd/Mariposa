@@ -11,13 +11,18 @@ public class GameData
     public int friendshipScore;
     public GameScene SavedScene;
 
-    // Settings
-    // TODO: audio settings
-
+    // Video Settings
     public int width;
     public int height;
     public WindowType windowType;
     public int resolutionIndex;
+
+    // Audio Settings
+    public float sfxValue;
+    public float musicValue;
+    public float masterValue;
+    public float ambienceValue;
+    public float dialogueValue;
 
     public GameData()
     {
