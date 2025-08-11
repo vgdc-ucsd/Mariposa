@@ -136,7 +136,7 @@ public class Settings : Singleton<Settings>, IDataPersistence
 
     public void PauseSounds(bool pause)
     {
-        MusicVolume?.pauseBus(pause);
+        //MusicVolume?.pauseBus(pause);
         SFXVolume?.pauseBus(pause);     // TODO: there will be an issue with main menu sfx being muted
         DialogueVolume?.pauseBus(pause);
         AmbienceVolume?.pauseBus(pause);
@@ -150,10 +150,18 @@ public class Settings : Singleton<Settings>, IDataPersistence
     
     public void SaveData(ref GameData data)
     {
-        //audioSetting = data.audioSetting;
+        data.sfxValue = audioSetting.SfxSlider.value;
+        data.musicValue = audioSetting.MusicSlider.value;
+        data.masterValue = audioSetting.MasterSlider.value;
+        data.ambienceValue = audioSetting.AmbienceSlider.value;
+        data.dialogueValue = audioSetting.DialogueSlider.value;
     }
     public void LoadData(GameData data)
     {
-        //audioSetting = data.audioSetting;
+        audioSetting.SfxSlider.value = data.sfxValue;
+        audioSetting.MusicSlider.value = data.musicValue;
+        audioSetting.MasterSlider.value = data.masterValue;
+        audioSetting.AmbienceSlider.value = data.ambienceValue;
+        audioSetting.DialogueSlider.value = data.dialogueValue;
     }
 }

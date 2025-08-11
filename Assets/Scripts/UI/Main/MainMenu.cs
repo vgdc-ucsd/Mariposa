@@ -15,13 +15,14 @@ public class MainMenu : Singleton<MainMenu>
 
     public void NewGameBtn()
     {
-        DataPersistenceManager.Instance.NewGame();
         GameManager.Instance.LoadScene(GameScene.TUTORIAL);
+        DataPersistenceManager.Instance.SaveGame();
     }
 
     public void LoadGameBtn()
     {
-        DataPersistenceManager.Instance.LoadGame(DataPersistenceManager.Instance.fileName);
+        DataPersistenceManager.Instance.LoadGame();
+        GameManager.Instance.LoadScene(GameManager.Instance.CurrentScene);
     }
 
     public void SettingsBtn()
@@ -31,6 +32,7 @@ public class MainMenu : Singleton<MainMenu>
 
     public void ExitBtn()
     {
+        DataPersistenceManager.Instance.SaveGame();
         Application.Quit();
     }
 

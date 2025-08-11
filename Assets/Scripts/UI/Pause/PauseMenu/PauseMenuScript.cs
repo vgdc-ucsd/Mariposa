@@ -89,6 +89,7 @@ public class PauseMenuScript : Singleton<PauseMenuScript>
     public void QuitLevel()
     {
         Time.timeScale = 1.0f;
+        DataPersistenceManager.Instance.SaveGame();
         GameManager.Instance.LoadScene(GameScene.MAIN_MENU);
     }
 }

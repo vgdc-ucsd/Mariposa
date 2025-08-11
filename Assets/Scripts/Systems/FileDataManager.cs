@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using System;
 using System.IO;
+using UnityEngine;
 
 /// <summary>
 /// Handles the reading and writing to disk for the DataPersistanceManager
@@ -29,32 +27,20 @@ public class FileDataManager
     public GameData Load()
     {
         string fullPath = Path.Combine(dataDirPath, dataFileName);
+
         GameData loadedData = null;
         if (File.Exists(fullPath)) 
         {
             try
             {
-                // Using the full path generated before, load the JSON data as a string
-                string dataToLoad = "";
-                using (FileStream stream = new FileStream(fullPath, FileMode.Open))
-                {
-                    using (StreamReader reader = new StreamReader(stream))
-                    {
-                        dataToLoad = reader.ReadToEnd();
-                    }
-                }
                 // Deserialize the JSON back into a C# object
-                loadedData = JsonUtility.FromJson<GameData>(dataToLoad);
+                loadedData = JsonUtility.FromJson<GameData>(File.ReadAllText(fullPath));
                 Debug.Log("Loaded data successfuly from: " + fullPath);
             }
             catch (Exception e)
             {
                 Debug.LogError("Error when trying to read data from file: " + fullPath + "\n" + e);
             }
-        }
-        else
-        {
-            Debug.LogError("File doesn't exist");
         }
         return loadedData;
     }
@@ -69,17 +55,7 @@ public class FileDataManager
 
         try
         {
-            // If the directory doesn't exist yet, make the directory
-            Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
             string dataToStore = JsonUtility.ToJson(data, true);
-
-            using (FileStream stream = new FileStream(fullPath, FileMode.Create))
-            {
-                using (StreamWriter writer = new StreamWriter(stream))
-                {
-                    writer.Write(dataToStore);
-                }
-            }
             Debug.Log("Saved data successfuly to: " + fullPath);
         }
         catch (Exception e)

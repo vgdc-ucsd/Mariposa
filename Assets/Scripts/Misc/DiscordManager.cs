@@ -9,7 +9,15 @@ public class DiscordManager : MonoBehaviour
 
     void Start()
     {
-        discord = new Discord.Discord(CLIENT_ID, (ulong)CreateFlags.NoRequireDiscord);
+        try
+        {
+            discord = new Discord.Discord(CLIENT_ID, (ulong)CreateFlags.NoRequireDiscord);
+        }
+        catch
+        {
+            Destroy(this);
+            return;
+        }
 
         ActivityManager activityManager = discord.GetActivityManager();
         Activity activity = new Activity

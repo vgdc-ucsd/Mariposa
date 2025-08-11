@@ -1,7 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System.IO;
 /// <summary>
 /// Manages saving and loading data from disk and the distribution of that data
 /// to components with the IDataPersistence interface.
@@ -9,19 +9,20 @@ using System.Linq;
 /// </summary>
 public class DataPersistenceManager : Singleton<DataPersistenceManager>
 {
-    [Header("File Storage Config")]
-    public string fileName = "Save";
+    // [Header("File Storage Config")]
+    // Do not make this public, file I/O exception
+    private string fileName = "save.json";
+    public GameData gameData;
 
-    private GameData gameData;
     private List<IDataPersistence> dataPersistenceObjects;
-    private FileDataManager dataManager;
-    
+    private string fullPath;
 
     private void Start()
     {
-        // Initialize the file data manager with the default file path and the file name given by the serialize field
-        this.dataManager = new FileDataManager(Application.persistentDataPath);
-        this.dataPersistenceObjects = FindAllDataPersistenceObjects();
+        fullPath = $"{Application.persistentDataPath}{Path.DirectorySeparatorChar}{fileName}";
+        dataPersistenceObjects = FindAllDataPersistenceObjects();
+        
+        LoadGame();
     }
 
     /// <summary>
@@ -30,7 +31,7 @@ public class DataPersistenceManager : Singleton<DataPersistenceManager>
     /// </summary>
     public void NewGame()
     {
-        this.gameData = new GameData();
+        gameData = new GameData();
     }
 
     /// <summary>
@@ -38,19 +39,21 @@ public class DataPersistenceManager : Singleton<DataPersistenceManager>
     /// After loading, the data is passed to each component with the IDataPersistence interface
     /// and then calls the LoadGame() method on each of those components
     /// </summary>
-    public void LoadGame(string fileName)
+    public void LoadGame()
     {
-        SetCurrentSave(fileName);
-
-        gameData = dataManager.Load();
-        if (this.gameData == null)
+        if (File.Exists(fullPath))
         {
-            Debug.Log("No data was found, using default data values");
-            NewGame();
+            string saveData = File.ReadAllText(fullPath);
+            gameData = JsonUtility.FromJson<GameData>(saveData);
+            foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)
+            {
+                dataPersistenceObj.LoadData(gameData);
+            }
         }
-        foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)
+        else
         {
-            dataPersistenceObj.LoadData(gameData);
+            Debug.Log("No data was found, creating new save file");
+            NewGame();
         }
     }
 
@@ -58,14 +61,13 @@ public class DataPersistenceManager : Singleton<DataPersistenceManager>
     /// Passes a reference of gameData to each component with the IDataPersistence interface and then
     /// calls the SaveGame() method on each of those components
     /// </summary>
-    public void SaveGame(string fileName)
+    public void SaveGame()
     {
-        SetCurrentSave(fileName);
         foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)
         {
             dataPersistenceObj.SaveData(ref gameData);
         }
-        dataManager.Save(gameData);
+        File.WriteAllText(fullPath, JsonUtility.ToJson(gameData, true));
     }
 
     /// <summary>
@@ -73,29 +75,17 @@ public class DataPersistenceManager : Singleton<DataPersistenceManager>
     /// </summary>
     public void DeleteGame(string fileName)
     {
-        dataManager.DeleteSave(fileName);
+        if (File.Exists(fullPath))
+        {
+            File.Delete(fullPath);
+            gameData = new GameData();
+        }
     }
 
-    // Save the game when the application closes
-    // This can be changed later!!!!!!
-    private void OnApplicationQuit()
-    {
-        SaveGame("debug");
-    }
     private List<IDataPersistence> FindAllDataPersistenceObjects()
     {
         IEnumerable<IDataPersistence> dataPersistenceObjects = FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None)
                                                                 .OfType<IDataPersistence>();
         return new List<IDataPersistence>(dataPersistenceObjects);
-    }
-
-    /// <summary>
-    /// Helper function that updates the file that the data persistence manager and the file data manager will modify
-    /// </summary>
-    /// <param name="saveSlot">Name of the file you want to use</param>
-    private void SetCurrentSave(string fileName)
-    {
-        this.fileName = fileName;
-        dataManager.SetCurrentSaveSlot(fileName);
     }
 }

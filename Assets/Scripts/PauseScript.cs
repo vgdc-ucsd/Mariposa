@@ -63,6 +63,7 @@ public class PauseScript : Singleton<PauseScript>
     public void QuitLevel()
     {
         Time.timeScale = 1.0f;
+        DataPersistenceManager.Instance.SaveGame();
         SceneManager.LoadScene(0);
     }
 }
