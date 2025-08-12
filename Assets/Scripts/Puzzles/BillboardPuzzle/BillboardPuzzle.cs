@@ -18,6 +18,9 @@ public class BillboardPuzzle : Puzzle
     [SerializeField] private Sprite[] sprites;
     [HideInInspector] public bool Initialized;
 
+    [Tooltip("The amount of seconds to pause the puzzle when it's completed so that the player can see the finished product")]
+    [SerializeField] private float completionPause;
+
     private void Awake()
     {
         if (Instance == null)
@@ -79,6 +82,8 @@ public class BillboardPuzzle : Puzzle
 
     public void ShiftRow(int row)
     {
+        if (IsComplete) return;
+
         for (int i = 0; i < width; i++)
         {
             board[row, i].x++;
@@ -90,6 +95,8 @@ public class BillboardPuzzle : Puzzle
 
     public void RotateCol(int col)
     {
+        if (IsComplete) return;
+
         for (int i = 0; i < height; i++)
         {
             for (int j = 0; j < width; j++)
@@ -168,7 +175,7 @@ public class BillboardPuzzle : Puzzle
             }
         }
 
-        if (IsPuzzleComplete()) OnComplete();
+        if (IsPuzzleComplete()) StartCoroutine(PauseBeforeCompletion());
     }
 
 
@@ -184,6 +191,13 @@ public class BillboardPuzzle : Puzzle
         }
 
         return true;
+    }
+
+    IEnumerator PauseBeforeCompletion()
+    {
+        IsComplete = true;
+        yield return new WaitForSeconds(completionPause);
+        OnComplete();
     }
 }
 
