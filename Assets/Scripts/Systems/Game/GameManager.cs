@@ -26,7 +26,7 @@ public class GameManager : Singleton<GameManager>, IDataPersistence
     public InteractionTrigger DefaultInteractionTrigger;
     private InputSystem_Actions actions;
 
-    private StateMachine<GameState> gameState;
+    public StateMachine<GameState> GameStateMachine { get; private set; }
 
     public override void Awake()
     {
@@ -37,20 +37,20 @@ public class GameManager : Singleton<GameManager>, IDataPersistence
 
     void Start()
     {
-        gameState = new StateMachine<GameState>(GameState.GAME);
+        GameStateMachine = new StateMachine<GameState>(GameState.GAME);
 
         // Game
-        gameState.AddTransition(GameState.GAME, GameState.PAUSE);
-        gameState.AddTransition(GameState.GAME, GameState.INVENTORY);
-        gameState.AddEnterAction(GameState.GAME, EnterGame);
-        gameState.AddExitAction(GameState.GAME, ExitGame);
+        GameStateMachine.AddTransition(GameState.GAME, GameState.PAUSE);
+        GameStateMachine.AddTransition(GameState.GAME, GameState.INVENTORY);
+        GameStateMachine.AddEnterAction(GameState.GAME, EnterGame);
+        GameStateMachine.AddExitAction(GameState.GAME, ExitGame);
 
         // Pause
-        gameState.AddTransition(GameState.PAUSE, GameState.GAME);
+        GameStateMachine.AddTransition(GameState.PAUSE, GameState.GAME);
 
         // Inventory
-        gameState.AddTransition(GameState.INVENTORY, GameState.GAME);
-        gameState.AddTransition(GameState.INVENTORY, GameState.PAUSE);
+        GameStateMachine.AddTransition(GameState.INVENTORY, GameState.GAME);
+        GameStateMachine.AddTransition(GameState.INVENTORY, GameState.PAUSE);
     }
 
     public void LoadScene(GameScene scene)
@@ -70,35 +70,35 @@ public class GameManager : Singleton<GameManager>, IDataPersistence
 
     public void RegisterStartAction(GameState state, Action action)
     {
-        gameState.AddEnterAction(state, action);
+        GameStateMachine.AddEnterAction(state, action);
     }
 
     public void UnregisterStartAction(GameState state)
     {
-        gameState.RemoveEnterAction(state);
+        GameStateMachine.RemoveEnterAction(state);
     }
 
     public void RegisterExitAction(GameState state, Action action)
     {
-        gameState.AddExitAction(state, action);
+        GameStateMachine.AddExitAction(state, action);
     }
 
     public void UnregisterExitAction(GameState state)
     {
-        gameState.RemoveExitAction(state);
+        GameStateMachine.RemoveExitAction(state);
     }
 
     public void HandlePause()
     {
         if (CurrentScene == GameScene.MAIN_MENU) MainMenuSettings.Instance.CloseAllMenus();
-        else if (gameState.GetState() == GameState.PAUSE) gameState.Transition(GameState.GAME);
-        else gameState.Transition(GameState.PAUSE);
+        else if (GameStateMachine.GetState() == GameState.PAUSE) GameStateMachine.Transition(GameState.GAME);
+        else GameStateMachine.Transition(GameState.PAUSE);
     }
 
     public void HandleInventory()
     {
-        if (gameState.GetState() == GameState.GAME) gameState.Transition(GameState.INVENTORY);
-        else if (gameState.GetState() == GameState.INVENTORY) gameState.Transition(GameState.GAME);
+        if (GameStateMachine.GetState() == GameState.GAME) GameStateMachine.Transition(GameState.INVENTORY);
+        else if (GameStateMachine.GetState() == GameState.INVENTORY) GameStateMachine.Transition(GameState.GAME);
     }
 
     private void EnterGame()

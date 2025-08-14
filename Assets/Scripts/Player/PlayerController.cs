@@ -56,7 +56,10 @@ public class PlayerController : MonoBehaviour
         inputs.Player.Jump.performed += ctx => SendJump(ctx);
         inputs.Player.Interact.started += ctx => SendInteract();
         inputs.Player.Recall.performed += TryRecallBee;
-        inputs.Player.Click.performed += ctx => DialogueManager.Instance.TryAdvanceDialogue();
+        inputs.Player.Click.performed += ctx =>
+        {
+            if (GameManager.Instance.GameStateMachine.GetState() != GameState.PAUSE) DialogueManager.Instance.TryAdvanceDialogue();
+        };
     }
 
     private void OnDisable()
@@ -166,6 +169,14 @@ public class PlayerController : MonoBehaviour
         if (ControlledPlayer.Ability is BeeControlAbility bee)
         {
             bee.RecallBee();
+        }
+    }
+
+    public void TryAdvanceDialogue()
+    {
+        if (GameManager.Instance.GameStateMachine.GetState() != GameState.PAUSE)
+        {
+            DialogueManager.Instance.TryAdvanceDialogue();
         }
     }
 

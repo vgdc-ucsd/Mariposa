@@ -35,9 +35,6 @@ public abstract class Puzzle : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Executes generic puzzle completion actions.
-    /// </summary>
     public void Reset()
     {
         Debug.Log("Puzzle Reset");
