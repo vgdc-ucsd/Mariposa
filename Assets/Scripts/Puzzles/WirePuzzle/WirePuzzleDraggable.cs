@@ -41,6 +41,7 @@ public class WirePuzzleDraggable : MonoBehaviour, IBeginDragHandler, IDragHandle
 
     public List<WirePuzzleReceiver> ConnectedReceivers = new();
     [SerializeField] private WirePuzzleVisuals wireVisuals;
+    [SerializeField] private int maxHorizontalMove = 1;
     private Vector3 origPos;
 
     public void InitializeWireDraggable(int index)
@@ -85,7 +86,7 @@ public class WirePuzzleDraggable : MonoBehaviour, IBeginDragHandler, IDragHandle
             int nodeDistance = ConnectedReceivers.Count == 0
                 ? math.abs(transform.parent.GetSiblingIndex() - receiver.column)
                 : math.abs(ConnectedReceivers[^1].column - receiver.column);
-            if (nodeDistance > 1) continue;
+            if (nodeDistance > maxHorizontalMove) continue;
 
             // Prevent the player from making a connection to a node that is a set color
             if (receiver.onlyAllowsValidConnections && receiver.MatchingDraggable != this) continue;
