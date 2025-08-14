@@ -75,6 +75,9 @@ MARIPOSA
 …I guess you don’t <i>have</i> to tell me anything. But I’ve got to call you <i>something</i>. 
 
 
+!event refuse_name_unnamed
+
+
 MARIPOSA
 (happy)
 Fine by me! You’re Kairo, then, until you tell me your real name.
@@ -90,12 +93,16 @@ ________________
 !name tell_her_your_name
 
 
-#[PROMPT PLAYER TO FILL IN THEIR NAME]
-
-
  UNNAMED 
 (neutral)
-My name is Kairo.
+My name is...
+
+
+#[PROMPT PLAYER TO FILL IN THEIR NAME]
+!event name_unnamed end
+
+
+!name tell_her_your_name_after_naming
 
 
 MARIPOSA
@@ -204,7 +211,7 @@ UNNAMED
 UNNAMED
 !a Unnamed_Tch1.wav
 (neutral)
-(There’s no way around this.)
+(There’s no way around this.)[a]
 
 
 # PLAYER switches to MARIPOSA
@@ -320,6 +327,15 @@ MARIPOSA
 !a Mariposa_IPromise1.wav
 (happy)
 I’ll see what I can do!
+
+
+!name danny_time_2
+
+
+DANNY
+I’m going to be stuck at this job forever...
+
+
 
 
 
@@ -471,6 +487,7 @@ What the...?
 MARIPOSA
 (neutral)
 Hmm? Kairo, did something happen? Hello?
+[b]
 
 
 #PLAYER switches to UNNAMED.
@@ -490,7 +507,7 @@ ________________
 
 UNNAMED
 (neutral)
-(These appeared right when that girl said she finished fixing something.)
+(These cranes appeared right when that girl said she finished fixing something.)
 
 
 UNNAMED
@@ -1437,3 +1454,12 @@ BEAM
 !name interact_steel_beam_2 
 BEAM
 Looks heavy.
+
+
+
+
+[a]this plays during mariposa's part, unnamed gets cut off 
+
+
+@eschwartzman@ucsd.edu
+[b]this dialogue gets cut off by switching to unnamed @eschwartzman@ucsd.edu

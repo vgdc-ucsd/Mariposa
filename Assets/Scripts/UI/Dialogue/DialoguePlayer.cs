@@ -69,7 +69,6 @@ public class DialoguePlayer : MonoBehaviour
     // state
     private string speaker = null;
     private Dictionary<string, Sprite> speakerSprites = new Dictionary<string, Sprite>();
-    private string unnamedName = "Kairo"; // placeholder TODO
     private List<string> endingEvents = new List<string>();
 
     void Start()
@@ -180,14 +179,15 @@ public class DialoguePlayer : MonoBehaviour
         DialogueElement element = conversation[dialogueIndex];
 
         // Swap out "Unnamed" or "Kairo" for whatever the player named them
-        string line = namePattern.Replace(element.Line, unnamedName);
+        string unnamedName = DataPersistenceManager.Instance.gameData.UnnamedName ?? "Kairo";
+        element.Line = namePattern.Replace(element.Line, unnamedName);
         if (element.Speaker != null)
         {
             speaker = namePattern.Replace(element.Speaker, unnamedName);
         }
 
         // Remove rich text tags
-        taglessText = tagPattern.Replace(line, string.Empty);
+        taglessText = tagPattern.Replace(element.Line, string.Empty);
 
         // Play the dialogue
         foreach (string sound in element.Sounds)
