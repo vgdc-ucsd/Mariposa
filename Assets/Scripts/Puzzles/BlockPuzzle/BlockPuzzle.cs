@@ -22,6 +22,7 @@ public class BlockPuzzle : Puzzle
     private BlockPuzzleBlock[,] grid;
     private BlockPuzzleSlot[,] slots;
     BlockPuzzleBlock[] blocks;
+    private bool isInitialized = false;
 
     [SerializeField] private TutorialLever lever;
 
@@ -55,7 +56,10 @@ public class BlockPuzzle : Puzzle
 
     void OnEnable()
     {
+        if (isInitialized) return;
+
         StartCoroutine(DelayInitializeBlocks());
+        isInitialized = true;
     }
 
     IEnumerator DelayInitializeBlocks()
