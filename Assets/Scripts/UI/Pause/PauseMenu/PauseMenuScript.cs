@@ -5,6 +5,7 @@ public class PauseMenuScript : Singleton<PauseMenuScript>
     public GameObject PauseMenu;
     public GameObject VideoSettingsMenu;
     public GameObject AudioSettingsMenu;
+    public GameObject BackgroundImage;
 
     void Start()
     {
@@ -15,12 +16,14 @@ public class PauseMenuScript : Singleton<PauseMenuScript>
     public void PauseGame()
     {
         OpenPauseMenu();
+        BackgroundImage.SetActive(true);
         Time.timeScale = 0.0f;
     }
 
     public void ResumeGame()
     {
         CloseAllMenus();
+        BackgroundImage.SetActive(false);
         Time.timeScale = 1.0f;
     }
 
