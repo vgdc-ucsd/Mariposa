@@ -162,8 +162,6 @@ GUARD
 Sure. See ya.
 
 
-#STOP INTERACTING WITH GUARD. 
-!name catch_train
 MARIPOSA
 !a Mariposa_Hmm1.wav
 (neutral)
@@ -231,7 +229,7 @@ UNNAMED
 MARIPOSA
 !a Mariposa_Woah4.wav 
 (surprised)
-Hello? Is someone there?
+Hello? Is someone there?[a]
 
 
 #CUT TO UNNAMED
@@ -351,7 +349,7 @@ ________________
 
 
 
-!name door_jammed
+!name door_jammed[b][c]
 UNNAMED
 (neutral)
 Of course the door is jammed. Why wouldn’t it be?
@@ -451,6 +449,32 @@ Well, since I’m already here, I’ll keep the bots running around here in good
 
 
 #[BEE] hits the lever to restart the electricity flow to the charger on the edge of the platform. MARIPOSA completes a block puzzle to fully fix the charging station, and the maintenance robot will be able to function again.
+
+
+!blockus_tockus 
+#THIS PLAYS OVER the block puzzle
+
+
+MARIPOSA
+[d]
+!a Mariposa_Well2.wav
+(happy)
+Let’s take a look here...
+
+
+MARIPOSA 
+(neutral)
+Mm. Seems like I have to put all the pieces where they belong.
+
+
+MARIPOSA 
+(neutral)
+Some of the parts look like they connect to each other...
+
+
+MARIPOSA 
+(happy)
+I’m always up for the challenge—let’s do this!
 
 
 ________________
@@ -641,7 +665,7 @@ NARRATION
 
 
 AUTOMATON
-DOOR...7...8...6...4...2...EMERGENCY...OVERRIDE.
+...EMERGENCY...OVERRIDE.
 
 
 ________________
@@ -652,8 +676,6 @@ ________________
 !name bot_interact_again
 #>IF INTERACT AGAIN 
 #1:
-AUTOMATON
-7...8...6...4...2...
 
 
 NARRATION
@@ -1168,3 +1190,15 @@ DOOR...7...8...6...4...2...EMERGENCY...OVERRIDE.
 HETELLSYOUSECRETSITHINK
 7...8...6...4...2...
 It's struggling to move. The charging station sounds like it's straining to keep it alive.
+
+
+[a]@eschwartzman@ucsd.edu 
+
+
+line gets cut off during playing :o
+[b]@eschwartzman@ucsd.edu I think this entire part before the switch is not in the game? which means that talking to mariposa later on is kinda confusing
+[c]*solution maybe: hide battery semi-behind scrap pile do not let them pick it up until you have interacted with the door
+[d]@eschwartzman@ucsd.edu 
+
+
+draft one of this dialogue; lmk if any edits are needed on it

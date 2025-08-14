@@ -78,7 +78,9 @@ do_not_tell_her:
   FromRadio: 
   Sounds:
   - Mariposa_Hmm3.wav
-  Events: []
+  Events:
+  - EventName: refuse_name_unnamed
+    TriggerAtEnd: false
   Choice1: 
   Choice2: 
 - Speaker: Mariposa
@@ -94,14 +96,17 @@ do_not_tell_her:
   Choice2: 
 tell_her_your_name:
 - Speaker: Unnamed
-  Line: My name is Kairo.
+  Line: My name is...
   Icon: Neutral
   Background: 
   FromRadio: 
   Sounds: []
-  Events: []
+  Events:
+  - EventName: name_unnamed
+    TriggerAtEnd: true
   Choice1: 
   Choice2: 
+tell_her_your_name_after_naming:
 - Speaker: Mariposa
   Line: Kairo? I’ve never met anyone named Kairo before— I like it!
   Icon: 
@@ -267,7 +272,7 @@ blocked_by_turrets:
   Choice1: 
   Choice2: 
 - Speaker: Unnamed
-  Line: (There’s no way around this.)
+  Line: (There’s no way around this.)[a]
   Icon: 
   Background: 
   FromRadio: 
@@ -449,6 +454,16 @@ danny_time:
   Events: []
   Choice1: 
   Choice2: 
+danny_time_2:
+- Speaker: Danny
+  Line: I’m going to be stuck at this job forever...
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
 interact_lifts:
 - Speaker: Mariposa
   Line: These are the lifts Danny mentioned.
@@ -589,7 +604,7 @@ billboard_fixed_wires_fixed:
   Choice1: 
   Choice2: 
 - Speaker: Mariposa
-  Line: Hmm? Kairo, did something happen? Hello?
+  Line: '[b]'
   Icon: Neutral
   Background: 
   FromRadio: 
@@ -601,7 +616,7 @@ billboard_fixed_wires_fixed:
   Choice2: 
 unnamed_start_billboard_fixed:
 - Speaker: Unnamed
-  Line: (These appeared right when that girl said she finished fixing something.)
+  Line: (These cranes appeared right when that girl said she finished fixing something.)
   Icon: Neutral
   Background: 
   FromRadio: 
@@ -1950,7 +1965,7 @@ interact_steel_beam_1:
   Choice2: 
 interact_steel_beam_2:
 - Speaker: Beam
-  Line: Looks heavy.
+  Line: '[b]this dialogue gets cut off by switching to unnamed @eschwartzman@ucsd.edu'
   Icon: 
   Background: 
   FromRadio: 

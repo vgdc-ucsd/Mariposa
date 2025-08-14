@@ -197,7 +197,6 @@ fix_turnstile:
   Events: []
   Choice1: 
   Choice2: 
-catch_train:
 - Speaker: Mariposa
   Line: (I’m finally all done for the day.)
   Icon: 
@@ -278,7 +277,7 @@ waiting_for_train:
   Choice1: 
   Choice2: 
 - Speaker: Mariposa
-  Line: Hello? Is someone there?
+  Line: Hello? Is someone there?[a]
   Icon: 
   Background: 
   FromRadio: 
@@ -414,7 +413,7 @@ backtrack_attempt:
   Events: []
   Choice1: 
   Choice2: 
-door_jammed:
+door_jammed[b][c]:
 - Speaker: Unnamed
   Line: Of course the door is jammed. Why wouldn’t it be?
   Icon: Neutral
@@ -551,12 +550,49 @@ mariposa_part2_start:
   Choice1: 
   Choice2: 
 - Speaker: Mariposa
-  Line: Well, since I’m already here, I’ll keep the bots running around here in good shape for a bit longer.
+  Line: '!blockus_tockus'
   Icon: 
   Background: 
   FromRadio: 
   Sounds:
   - Mariposa_Well2.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: Let’s take a look here...
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds:
+  - Mariposa_Well2.wav
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: Mm. Seems like I have to put all the pieces where they belong.
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: Some of the parts look like they connect to each other...
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+- Speaker: Mariposa
+  Line: I’m always up for the challenge—let’s do this!
+  Icon: Happy
+  Background: 
+  FromRadio: 
+  Sounds: []
   Events: []
   Choice1: 
   Choice2: 
@@ -827,7 +863,7 @@ unnamed_bot_appear:
   Choice1: 
   Choice2: 
 - Speaker: Automaton
-  Line: DOOR...7...8...6...4...2...EMERGENCY...OVERRIDE.
+  Line: '...EMERGENCY...OVERRIDE.'
   Icon: 
   Background: 
   FromRadio: 
@@ -836,15 +872,6 @@ unnamed_bot_appear:
   Choice1: 
   Choice2: 
 bot_interact_again:
-- Speaker: Automaton
-  Line: 7...8...6...4...2...
-  Icon: 
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
 - Speaker: Narration
   Line: It's struggling to move. The charging station sounds like it's straining to keep it alive.
   Icon: 
@@ -1552,7 +1579,7 @@ interact_charging_station_use_after_fix1:
   Choice2: 
 interact_charging_station_use_after_fix2:
 - Speaker: Hetellsyousecretsithink
-  Line: It's struggling to move. The charging station sounds like it's straining to keep it alive.
+  Line: draft one of this dialogue; lmk if any edits are needed on it
   Icon: 
   Background: 
   FromRadio: 

@@ -36,7 +36,7 @@ public class GameData
 
     public void ResetPlaythrough()
     {
-        UnnamedName = "Kairo";
+        UnnamedName = "???";
         friendshipScore = 0;
         SavedScene = GameScene.TUTORIAL;
     }
