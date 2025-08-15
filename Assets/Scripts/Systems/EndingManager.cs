@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EndingManager : Singleton<EndingManager>
 {
@@ -57,6 +58,25 @@ public class EndingManager : Singleton<EndingManager>
         foreach (SpriteRenderer sr in sprites)
         {
             sr.color = new(sr.color.r, sr.color.g, sr.color.b, fadeIn ? 1f : 0f);
+        }
+    }
+
+    public IEnumerator FadeImages(List<Image> images, bool fadeIn)
+    {
+        float timer = 0;
+        while (timer < fadeDuration)
+        {
+            timer += Time.deltaTime;
+            foreach (Image img in images)
+            {
+                img.color = new(img.color.r, img.color.g, img.color.b, fadeIn ? timer / fadeDuration : (fadeDuration - timer) / fadeDuration);
+            }
+            yield return new WaitForEndOfFrame();
+        }
+
+        foreach (Image img in images)
+        {
+            img.color = new(img.color.r, img.color.g, img.color.b, fadeIn ? 1f : 0f);
         }
     }
 
