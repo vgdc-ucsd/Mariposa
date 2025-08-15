@@ -10,11 +10,11 @@ public class FriendshipManager : Singleton<FriendshipManager>, IDataPersistence
 
     public void LoadData(GameData data)
     {
-        data.friendshipScore = Score;
+        Score = data.friendshipScore;
     }
 
     public void SaveData(ref GameData data)
     {
-        Score = data.friendshipScore;
+        data.friendshipScore = Score;
     }
 }
