@@ -32,9 +32,6 @@ public class EndingManager : Singleton<EndingManager>
 
     void Start()
     {
-        // TODO: for testing, remove before building
-        FriendshipManager.Instance.SetScore(GOOD_ENDING_THRESHOLD);
-
         IsCutsceneActive = false;
         bool isGoodEnding = FriendshipManager.Instance.CompareScore(GOOD_ENDING_THRESHOLD);
         foreach (GameObject obj in goodDialogueTriggers) obj.SetActive(isGoodEnding);
