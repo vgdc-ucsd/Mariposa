@@ -95,7 +95,6 @@ public class EndingManager : Singleton<EndingManager>
         // DialogueManager.Instance.EndCutscene();
         // IsCutsceneActive = false;
 
-        // TODO: go to credits
-        GameManager.Instance.LoadScene(GameScene.MAIN_MENU);
+        GameManager.Instance.LoadScene(GameScene.CREDITS);
     }
 }
