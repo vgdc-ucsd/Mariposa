@@ -17,6 +17,7 @@ public class MainMenu : Singleton<MainMenu>
     {
         DataPersistenceManager.Instance.gameData.ResetPlaythrough();
         GameManager.Instance.LoadScene(GameScene.TUTORIAL);
+        FriendshipManager.Instance.SetScore(DataPersistenceManager.Instance.gameData.friendshipScore);
         DataPersistenceManager.Instance.SaveGame();
     }
 
