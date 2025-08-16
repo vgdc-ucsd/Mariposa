@@ -26,6 +26,7 @@ public class Bee : MonoBehaviour
         {
             return;
         }*/
+
         IsControlled = toggle;
         Movement.ToggleCollisions(toggle);
         if (toggle)
