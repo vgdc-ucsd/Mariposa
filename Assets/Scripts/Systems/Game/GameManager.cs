@@ -10,7 +10,8 @@ public enum GameScene
     DOWNTOWN,
     PIER,
     ROBOT,
-    HOMETOWN
+    HOMETOWN,
+    CREDITS
 };
 
 public enum GameState
