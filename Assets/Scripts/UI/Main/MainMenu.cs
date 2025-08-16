@@ -15,6 +15,7 @@ public class MainMenu : Singleton<MainMenu>
 
     public void NewGameBtn()
     {
+        DataPersistenceManager.Instance.gameData.ResetPlaythrough();
         GameManager.Instance.LoadScene(GameScene.TUTORIAL);
         DataPersistenceManager.Instance.SaveGame();
     }

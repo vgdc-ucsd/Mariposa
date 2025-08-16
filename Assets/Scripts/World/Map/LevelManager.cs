@@ -25,6 +25,7 @@ public class LevelManager : Singleton<LevelManager>
         FadeController.Instance.FadeOutAndDo(() =>
         {
             GameManager.Instance.LoadScene(CurrentLevel.NextScene);
+            DataPersistenceManager.Instance.SaveGame();
         });
     }
 
