@@ -5,6 +5,8 @@ public class PauseMenuScript : Singleton<PauseMenuScript>
     public GameObject PauseMenu;
     public GameObject VideoSettingsMenu;
     public GameObject AudioSettingsMenu;
+    public GameObject RestartConfirmMenu;
+    public GameObject ExitConfirmMenu;
     public GameObject BackgroundImage;
 
     void Start()
@@ -37,6 +39,8 @@ public class PauseMenuScript : Singleton<PauseMenuScript>
         PauseMenu.SetActive(false);
         AudioSettingsMenu.SetActive(false);
         VideoSettingsMenu.SetActive(true);
+        RestartConfirmMenu.SetActive(false);
+        ExitConfirmMenu.SetActive(false);
         Settings.Instance.PauseSounds(true);
         Settings.Instance.MuteTestSounds(true);
     }
@@ -46,6 +50,8 @@ public class PauseMenuScript : Singleton<PauseMenuScript>
         PauseMenu.SetActive(false);
         AudioSettingsMenu.SetActive(true);
         VideoSettingsMenu.SetActive(false);
+        RestartConfirmMenu.SetActive(false);
+        ExitConfirmMenu.SetActive(false);
         Settings.Instance.PauseSounds(true);
         Settings.Instance.MuteTestSounds(false);
     }
@@ -55,6 +61,30 @@ public class PauseMenuScript : Singleton<PauseMenuScript>
         PauseMenu.SetActive(true);
         AudioSettingsMenu.SetActive(false);
         VideoSettingsMenu.SetActive(false);
+        RestartConfirmMenu.SetActive(false);
+        ExitConfirmMenu.SetActive(false);
+        Settings.Instance.PauseSounds(true);
+        Settings.Instance.MuteTestSounds(true);
+    }
+
+    public void OpenRestartConfirmMenu()
+    {
+        PauseMenu.SetActive(false);
+        AudioSettingsMenu.SetActive(false);
+        VideoSettingsMenu.SetActive(false);
+        RestartConfirmMenu.SetActive(true);
+        ExitConfirmMenu.SetActive(false);
+        Settings.Instance.PauseSounds(true);
+        Settings.Instance.MuteTestSounds(true);
+    }
+
+    public void OpenExitConfirmMenu()
+    {
+        PauseMenu.SetActive(false);
+        AudioSettingsMenu.SetActive(false);
+        VideoSettingsMenu.SetActive(false);
+        RestartConfirmMenu.SetActive(false);
+        ExitConfirmMenu.SetActive(true);
         Settings.Instance.PauseSounds(true);
         Settings.Instance.MuteTestSounds(true);
     }
@@ -64,6 +94,8 @@ public class PauseMenuScript : Singleton<PauseMenuScript>
         PauseMenu.SetActive(false);
         AudioSettingsMenu.SetActive(false);
         VideoSettingsMenu.SetActive(false);
+        RestartConfirmMenu.SetActive(false);
+        ExitConfirmMenu.SetActive(false);
         Settings.Instance.PauseSounds(false);
         Settings.Instance.MuteTestSounds(true);
     }
@@ -84,8 +116,7 @@ public class PauseMenuScript : Singleton<PauseMenuScript>
 
     public void RestartLevel()
     {
-        ResumeGame();
-        CloseAllMenus();
+        GameManager.Instance.HandlePause();
         if (LevelManager.Instance == null)
         {
             Debug.LogWarning("Pause manager attempting to restart level but LevelManager not found!");

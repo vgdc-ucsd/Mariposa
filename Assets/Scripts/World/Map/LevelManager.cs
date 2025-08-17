@@ -31,7 +31,10 @@ public class LevelManager : Singleton<LevelManager>
 
     public void RestartLevel()
     {
-        GameManager.Instance.LoadScene(GameManager.Instance.CurrentScene);
+        FadeController.Instance.FadeOutAndDo(() =>
+        {
+            GameManager.Instance.LoadScene(GameManager.Instance.CurrentScene);
+        });
     }
 
     public void RestartFromCheckpoint()
