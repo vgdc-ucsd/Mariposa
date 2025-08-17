@@ -13,6 +13,11 @@ public class PauseMenuScript : Singleton<PauseMenuScript>
         GameManager.Instance.RegisterExitAction(GameState.PAUSE, ResumeGame);
     }
 
+    public void ResumeGameButton()
+    {
+        GameManager.Instance.HandlePause();
+    }
+
     public void PauseGame()
     {
         OpenPauseMenu();
