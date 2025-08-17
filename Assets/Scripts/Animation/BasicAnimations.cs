@@ -3,16 +3,18 @@ using UnityEngine;
 
 public static class BasicAnimations
 {
+    private const float C4 = 2 * Mathf.PI / 3;
+
     public static IEnumerator Interpolate(System.Action onStart, System.Action<float> tween, System.Action onEnd, float duration)
     {
         float t = 0;
         float startTime = Time.time;
         onStart?.Invoke();
 
-        float elapsedTime = 0; 
+        float elapsedTime = 0;
         while (elapsedTime < duration)
         {
-            elapsedTime = Time.time - startTime; 
+            elapsedTime = Time.time - startTime;
             t = elapsedTime / duration;
             tween.Invoke(t);
             yield return null;
@@ -30,7 +32,7 @@ public static class BasicAnimations
 
     public static float EaseIn(float t)
     {
-        t = t*t;
+        t = t * t;
         return t;
     }
 
@@ -38,5 +40,13 @@ public static class BasicAnimations
     {
         t = 1f - (1f - t) * (1f - t);
         return t;
+    }
+    
+    public static float EaseOutElastic(float t) {
+        return t == 0f
+            ? 0f
+            : t == 1f
+            ? 1f
+            : Mathf.Pow(2f, -10f * t) * Mathf.Sin((t * 10f - 0.75f) * C4) + 1f;
     }
 }

@@ -39,6 +39,7 @@ public class DialoguePlayer : MonoBehaviour
     [SerializeField] private Transform portraitStart;
     [SerializeField] private Transform portraitMain;
     [SerializeField] private Transform portraitOut;
+    [SerializeField] private Transform portraitBelow;
 
     [SerializeField] private Image backgroundGraphic;
     [SerializeField] private SpriteMap backgroundMap;
@@ -76,6 +77,7 @@ public class DialoguePlayer : MonoBehaviour
 
     // state
     private string speaker = null;
+    private string lastSpeaker = null;
     private Dictionary<string, Sprite> speakerSprites = new Dictionary<string, Sprite>();
     private List<string> endingEvents = new List<string>();
 
@@ -92,6 +94,7 @@ public class DialoguePlayer : MonoBehaviour
         conversation = dialogue;
         dialogueIndex = -1;
         speaker = null;
+        lastSpeaker = null;
         buttonDisplay.SetActive(false);
         portraitBG.gameObject.SetActive(false);
         portraitBG.sprite = null;
@@ -192,6 +195,7 @@ public class DialoguePlayer : MonoBehaviour
         element.Line = namePattern.Replace(element.Line, unnamedName);
         if (element.Speaker != null)
         {
+            lastSpeaker = speaker;
             speaker = namePattern.Replace(element.Speaker, unnamedName);
         }
 
@@ -222,8 +226,13 @@ public class DialoguePlayer : MonoBehaviour
 
         if (element.Icon != null)
         {
-            portrait.sprite = spriteMap.GetSprite(element.Speaker + element.Icon);
-            PlayPortraitTransition(PortraitEnter());
+            Sprite expression = spriteMap.GetSprite(element.Speaker + element.Icon);
+            if (portrait.sprite != expression)
+            {
+                if (lastSpeaker == speaker) PlayPortraitTransition(PortraitJump());
+                else PlayPortraitTransition(PortraitEnter());
+            }
+            portrait.sprite = expression;
         }
         else if (speakerSprites.ContainsKey(speaker))
         {
@@ -379,13 +388,14 @@ public class DialoguePlayer : MonoBehaviour
             TRANSITION_TIME
         );
     }
-    
+
     private IEnumerator PortraitExit()
     {
         yield return BasicAnimations.Interpolate
         (
             null,
-            (t) => {
+            (t) =>
+            {
                 float curve = BasicAnimations.EaseOut(t);
                 portrait.color = new Color(1.0f, 1.0f, 1.0f, 1.0f - curve);
                 portrait.transform.position = Vector3.Lerp
@@ -397,6 +407,26 @@ public class DialoguePlayer : MonoBehaviour
             },
             () => portraitBG.gameObject.SetActive(false),
             TRANSITION_TIME
+        );
+    }
+    
+    private IEnumerator PortraitJump()
+    {
+        yield return BasicAnimations.Interpolate
+        (
+            () => portraitBG.gameObject.SetActive(true),
+            (t) =>
+            {
+                float curve = BasicAnimations.EaseOutElastic(t);
+                portrait.transform.position = Vector3.Lerp
+                (
+                    portraitBelow.transform.position,
+                    portraitMain.transform.position,
+                    curve
+                );
+            },
+            () => portrait.transform.position = portraitMain.transform.position,
+            TRANSITION_TIME * 1.5f
         );
     }
 }
