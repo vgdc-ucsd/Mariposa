@@ -13,6 +13,8 @@ public class CreditsScroller : MonoBehaviour
     {
         unnamedNameText.text = DataPersistenceManager.Instance.gameData.UnnamedName;
         StartCoroutine(CreditsCoroutine());
+
+        MusicManager.Instance.ChangeMusic(AudioEvents.Music.credits_theme);
     }
 
     private IEnumerator CreditsCoroutine()

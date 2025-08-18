@@ -12,7 +12,8 @@ public static class AudioEvents
         s3BigRobot_theme_unnamed,
         s4Hometown_theme_mariposa,
         s4Hometown_theme_unnamed,
-        titlescreen_title_theme
+        titlescreen_title_theme,
+        credits_theme
     }
 
     public static string GetPath(this Music musicEvent)
@@ -29,6 +30,7 @@ public static class AudioEvents
             Music.s4Hometown_theme_mariposa => "event:/music1/s4_hometown/theme_mariposa",
             Music.s4Hometown_theme_unnamed => "event:/music1/s4_hometown/theme_unnamed",
             Music.titlescreen_title_theme => "event:/music1/title_screen/title_theme",
+            Music.credits_theme => "event:/music1/theme_credits",
             _ => null
         };
     }
