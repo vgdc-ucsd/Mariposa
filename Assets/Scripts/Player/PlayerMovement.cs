@@ -2,7 +2,6 @@ using System.Collections;
 using System.Linq;
 using UnityEngine;
 using FMODUnity;
-using static AudioEvents;
 
 public class PlayerMovement : FreeBody, IInputListener, IControllable
 {
@@ -196,7 +195,7 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
         airJumpAvailable = false;
         coyoteTimeRemaining = 0f;
         playJumpSFX();
-        RuntimeManager.PlayOneShot(SFX.bee_double_jump);
+        RuntimeManager.PlayOneShot(AudioEvents.SFX.bee_double_jump);
 
     }
 
@@ -211,7 +210,7 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
 
     protected override void OnGrounded(RaycastHit2D groundHit)
     {
-        if (State != BodyState.OnGround)
+        if (State != BodyState.OnGround) // This is when the player lands
         {
             if (groundHit.collider.CompareTag("MovingPlatform"))
             {
@@ -222,6 +221,7 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
                 if (currentMovingPlatform is ControllableMovingPlatform) onControllableMovingPlatform = true;
             }
             airJumpAvailable = true;
+            RuntimeManager.PlayOneShot(AudioEvents.SFX.player_landing);
         }
         base.OnGrounded(groundHit);
         if (jumpBufferTimeRemaining > 0.0f) JumpInputDown();
@@ -299,11 +299,11 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
         // plays the active character's jump sound
         if (Player.ActivePlayer.Data.characterID == CharID.Mariposa)
         {
-            RuntimeManager.PlayOneShot(SFX.mariposa_jump);
+            RuntimeManager.PlayOneShot(AudioEvents.SFX.mariposa_jump);
         }
         else if (Player.ActivePlayer.Data.characterID == CharID.Unnamed)
         {
-            RuntimeManager.PlayOneShot(SFX.unnamed_jump);
+            RuntimeManager.PlayOneShot(AudioEvents.SFX.unnamed_jump);
         }
         else
         {
@@ -311,6 +311,6 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
         }
 
         // generic jump sfx
-        RuntimeManager.PlayOneShot(SFX.player_jump);
+        RuntimeManager.PlayOneShot(AudioEvents.SFX.player_jump);
     }
 }

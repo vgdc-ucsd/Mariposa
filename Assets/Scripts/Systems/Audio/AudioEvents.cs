@@ -23,24 +23,6 @@ public class AudioEvents : MonoBehaviour
         if (_instance != null && _instance != this) Destroy(gameObject);
         else _instance = this;
     }
-
-    public static EventInstance CreateEventInstance(EventReference eventReference)
-    {
-        if (eventReference.IsNull || eventReference.Equals(default(EventReference)))
-        {
-            Debug.LogError("Tried to create an event instance from an invalid event");
-            return default;
-        }
-
-        EventInstance newEventInstance = RuntimeManager.CreateInstance(eventReference);
-        if (!newEventInstance.isValid())
-        {
-            Debug.LogError($"Failed to create a valid event instance for {eventReference.Path}");
-            return default;
-        }
-
-        return newEventInstance;
-    }
 }
 
 [System.Serializable]

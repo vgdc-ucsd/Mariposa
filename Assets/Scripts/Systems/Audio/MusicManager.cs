@@ -8,7 +8,6 @@ public class MusicManager : Singleton<MusicManager>
 {
     public EventInstance currentEventInstance { get; private set; }
     private EventInstance transitionEventInstance;
-    private Bus musicBus;
 
     private EventReference currentMusicEvent;
     private Coroutine transitionCoroutine;
@@ -32,7 +31,6 @@ public class MusicManager : Singleton<MusicManager>
 
     private void Start()
     {
-        musicBus = RuntimeManager.GetBus("bus:/Music");
         transitionCoroutine = null;
         currentMusicEvent = default;
     }
@@ -60,7 +58,7 @@ public class MusicManager : Singleton<MusicManager>
         if (currentEventInstance.isValid())
         {
             currentEventInstance.getPlaybackState(out PLAYBACK_STATE state);
-            return state != PLAYBACK_STATE.STOPPED && state != PLAYBACK_STATE.STOPPING;
+            return state == PLAYBACK_STATE.PLAYING || state == PLAYBACK_STATE.SUSTAINING || state == PLAYBACK_STATE.STOPPING;
         }
         return false;
     }
@@ -78,7 +76,7 @@ public class MusicManager : Singleton<MusicManager>
 
         if (!currentEventInstance.isValid())
         {
-            currentEventInstance = AudioEvents.CreateEventInstance(currentMusicEvent);
+            currentEventInstance = AudioManager.CreateEventInstance(currentMusicEvent);
             if (!currentEventInstance.isValid()) return;
         }
 
@@ -90,15 +88,15 @@ public class MusicManager : Singleton<MusicManager>
     {
         if (IsPlaying())
         {
-            currentEventInstance.stop(stopMode);
-            currentEventInstance.release();
+            AudioManager.StopEventInstance(currentEventInstance, stopMode);
+            currentEventInstance = default;
+            currentMusicEvent = default;
         }
 
         if (transitionCoroutine != null)
         {
             StopCoroutine(transitionCoroutine);
-            transitionEventInstance.stop(stopMode);
-            transitionEventInstance.release();
+            AudioManager.StopEventInstance(transitionEventInstance, stopMode);
             transitionEventInstance = default;
         }
     }
@@ -123,7 +121,7 @@ public class MusicManager : Singleton<MusicManager>
         if (!IsPlaying())
         {
             currentMusicEvent = musicEvent; 
-            currentEventInstance = AudioEvents.CreateEventInstance(musicEvent);
+            currentEventInstance = AudioManager.CreateEventInstance(musicEvent);
             Play();
             return;
         }
@@ -143,20 +141,9 @@ public class MusicManager : Singleton<MusicManager>
     }
     */
 
-    public void SetVolume(float newVolume)
-    {
-        if (newVolume > 1.0 || newVolume < 0.0)
-        {
-            Debug.LogError("MusicManager volume must be set between 0.0 and 1.0");
-            return;
-        }
-
-        musicBus.setVolume(newVolume);
-    }
-
     private IEnumerator DoCrossfade(EventReference nextTrack, float duration)
     {
-        transitionEventInstance = AudioEvents.CreateEventInstance(nextTrack);
+        transitionEventInstance = AudioManager.CreateEventInstance(nextTrack);
         if (transitionEventInstance.Equals(default)) yield break;
         transitionEventInstance.setVolume(0.0f);
         transitionEventInstance.start();
@@ -175,11 +162,7 @@ public class MusicManager : Singleton<MusicManager>
             yield return null;
         }
 
-        if (currentEventInstance.isValid())
-        {
-            currentEventInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-            currentEventInstance.release();
-        }
+        AudioManager.StopEventInstance(currentEventInstance, FMOD.Studio.STOP_MODE.IMMEDIATE);
 
         currentEventInstance = transitionEventInstance;
         transitionEventInstance = default;
@@ -191,5 +174,23 @@ public class MusicManager : Singleton<MusicManager>
     private void OnDisable()
     {
         Stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyUp(KeyCode.N))
+        {
+            if (currentEventInstance.isValid())
+            {
+                currentEventInstance.getVolume(out float volume);
+                currentEventInstance.getPlaybackState(out PLAYBACK_STATE state);
+                currentEventInstance.getTimelinePosition(out int position);
+                Debug.Log($"volume: {volume}, state: {state}, position: {position}");
+            }
+            else
+            {
+                Debug.Log("Invalid event instance");
+            }
+        }
     }
 }

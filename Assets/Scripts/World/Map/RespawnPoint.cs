@@ -14,7 +14,7 @@ public class RespawnPoint : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected void Start()
     {
-        respawnDebug = Settings.Instance.Debug.GetRespawnDebug();
+        respawnDebug = GameManager.Instance.Debug.RespawnDebugEnabled;
     }
 
     // insures no memory leaks occur when scene unloads or objects are disabled / destroyed

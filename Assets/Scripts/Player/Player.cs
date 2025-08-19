@@ -41,7 +41,7 @@ public class Player : MonoBehaviour
 
 	void Start()
 	{
-		playerDebug = Settings.Instance.Debug.GetPlayerDebug();
+		playerDebug = GameManager.Instance.Debug.PlayerDebugEnabled;
 	}
 
 

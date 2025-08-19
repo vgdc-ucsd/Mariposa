@@ -27,6 +27,10 @@ public class GameManager : Singleton<GameManager>, IDataPersistence
     public InteractionTrigger DefaultInteractionTrigger;
     private InputSystem_Actions actions;
 
+    public DebugSettings Debug;
+
+    public bool hasGameDataBeenLoaded;
+
     public StateMachine<GameState> GameStateMachine { get; private set; }
 
     public override void Awake()
@@ -52,6 +56,8 @@ public class GameManager : Singleton<GameManager>, IDataPersistence
         // Inventory
         GameStateMachine.AddTransition(GameState.INVENTORY, GameState.GAME);
         GameStateMachine.AddTransition(GameState.INVENTORY, GameState.PAUSE);
+
+        hasGameDataBeenLoaded = false;
     }
 
     public void LoadScene(GameScene scene)

@@ -56,11 +56,11 @@ public class BeeControlAbility : MonoBehaviour, IAbility
 
     private void Start()
     {
-        BeeFlap = RuntimeManager.CreateInstance(AudioEvents.SFX.bee_flap);
+        BeeFlap = AudioManager.CreateEventInstance(AudioEvents.SFX.bee_flap);
     }
 
     public void TurnOffBeeFlap()
     {
-        BeeFlap.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+         BeeFlap.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
     }
 }

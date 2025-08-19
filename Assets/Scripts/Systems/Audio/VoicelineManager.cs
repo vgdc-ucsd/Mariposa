@@ -145,16 +145,14 @@ public class VoicelineManager : Singleton<VoicelineManager>
     {
         foreach (EventInstance vo in playingDialogueVO)
         {
-            vo.stop(stopMode);
-            vo.release();
+            AudioManager.StopEventInstance(vo, stopMode);
         }
         playingDialogueVO.Clear();
         _playingDialogueVO.Clear();
 
         foreach (EventInstance sfx in playingSFX)
         {
-            sfx.stop(stopMode);
-            sfx.release();
+            AudioManager.StopEventInstance(sfx, stopMode);
         }
         playingSFX.Clear();
         _playingSFX.Clear();
@@ -174,7 +172,7 @@ public class VoicelineManager : Singleton<VoicelineManager>
 
     private void AddSFX(EventReference sfx)
     {
-        EventInstance sfxInstance = RuntimeManager.CreateInstance(sfx);
+        EventInstance sfxInstance = AudioManager.CreateEventInstance(sfx);
         if (!sfxInstance.isValid())
         {
             Debug.LogError($"The dialogue sfx event '{sfx.Path}' has an invalid path! Faulty AudioEvent! Skipping...");
@@ -188,7 +186,7 @@ public class VoicelineManager : Singleton<VoicelineManager>
 
     private void AddDialogueVO(EventReference vo)
     {
-        EventInstance voInstance = RuntimeManager.CreateInstance(vo);
+        EventInstance voInstance = AudioManager.CreateEventInstance(vo);
         if (!voInstance.isValid())
         {
             Debug.LogError($"The dialogue voiceover event '{vo.Path}' has an invalid path! Faulty AudioEvent! Skipping...");

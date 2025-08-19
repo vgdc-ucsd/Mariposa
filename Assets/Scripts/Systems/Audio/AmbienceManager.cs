@@ -47,7 +47,7 @@ public class AmbienceManager : Singleton<AmbienceManager>
 
         if (!ambienceEventInstance.isValid())
         {
-            ambienceEventInstance = AudioEvents.CreateEventInstance(ambienceEvent);
+            ambienceEventInstance = AudioManager.CreateEventInstance(ambienceEvent);
             if (!ambienceEventInstance.isValid()) return;
         }
 
@@ -63,6 +63,8 @@ public class AmbienceManager : Singleton<AmbienceManager>
         {
             ambienceEventInstance.stop(StopMode);
             ambienceEventInstance.release();
+            ambienceEventInstance = default;
+            ambienceEvent = default;
         }
         else LogError();
     }
@@ -73,11 +75,12 @@ public class AmbienceManager : Singleton<AmbienceManager>
         else ChangeAmbience(GetEventReference(ambience));
     }
 
-    public void ChangeAmbience(EventReference ambienceEvent)
+    public void ChangeAmbience(EventReference newAmbienceEvent)
     {
-        this.ambienceEvent = ambienceEvent;
+        if (newAmbienceEvent.Equals(ambienceEvent) && IsPlaying()) return;
 
         Stop();
+        ambienceEvent = newAmbienceEvent;
         Play();
     }
 
@@ -86,7 +89,7 @@ public class AmbienceManager : Singleton<AmbienceManager>
         if (ambienceEventInstance.isValid())
         {
             ambienceEventInstance.getPlaybackState(out PLAYBACK_STATE state);
-            return state != PLAYBACK_STATE.STOPPED && state != PLAYBACK_STATE.STOPPING;
+            return state == PLAYBACK_STATE.PLAYING || state == PLAYBACK_STATE.STOPPING || state == PLAYBACK_STATE.SUSTAINING;
         }
         return false;
     }
