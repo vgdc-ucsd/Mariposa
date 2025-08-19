@@ -6,21 +6,14 @@ using UnityEngine;
 
 public class MusicManager : Singleton<MusicManager>
 {
-    [SerializeField] private EventReference currentMusicEvent;
-    [SerializeField] private EventReference transitionMusicEvent;
-
-    private Bus music1Bus, music2Bus;
-
     public EventInstance currentEventInstance { get; private set; }
     private EventInstance transitionEventInstance;
+    private Bus musicBus;
 
-    private bool isCurrentlyTransitioning = false;
-    public bool PlayOnStart = false;
+    private EventReference currentMusicEvent;
+    private Coroutine transitionCoroutine;
 
     private const float DEFAULT_TRANSITION_DURATION = 1.5f;
-
-    private enum BusOptions { music1, music2 }
-    private BusOptions busChoice;
 
     public enum Music
     {
@@ -36,6 +29,13 @@ public class MusicManager : Singleton<MusicManager>
         Hometown_unnamed,
         titlescreen_title,
     };
+
+    private void Start()
+    {
+        musicBus = RuntimeManager.GetBus("bus:/Music");
+        transitionCoroutine = null;
+        currentMusicEvent = default;
+    }
 
     public EventReference GetEventReference(Music music)
     {
@@ -55,17 +55,6 @@ public class MusicManager : Singleton<MusicManager>
         };
     }
 
-    private void Start()
-    {
-        busChoice = BusOptions.music1;
-        music1Bus = RuntimeManager.GetBus("bus:/Music/Music1");
-        music2Bus = RuntimeManager.GetBus("bus:/Music/Music2");
-        SetTransitionVolume(0.0f);
-    }
-
-    private Bus GetCurrentBus() => busChoice == BusOptions.music1 ? music1Bus : music2Bus;
-    private Bus GetTransitionBus() => busChoice == BusOptions.music1 ? music2Bus : music1Bus;
-
     private bool IsPlaying()
     {
         if (currentEventInstance.isValid())
@@ -79,11 +68,17 @@ public class MusicManager : Singleton<MusicManager>
     [ContextMenu("Play")]
     public void Play()
     {
-        if (IsPlaying() || isCurrentlyTransitioning) return;
+        if (IsPlaying() || transitionCoroutine != null) return;
+
+        if (currentMusicEvent.IsNull || currentMusicEvent.Equals(default))
+        {
+            Debug.LogError("Tried to play music with an empty music eventReference");
+            return;
+        }
 
         if (!currentEventInstance.isValid())
         {
-            currentEventInstance = RuntimeManager.CreateInstance(currentMusicEvent);
+            currentEventInstance = AudioEvents.CreateEventInstance(currentMusicEvent);
             if (!currentEventInstance.isValid()) return;
         }
 
@@ -93,32 +88,26 @@ public class MusicManager : Singleton<MusicManager>
     [ContextMenu("Stop")]
     public void Stop(FMOD.Studio.STOP_MODE stopMode = FMOD.Studio.STOP_MODE.IMMEDIATE)
     {
-        if (IsPlaying()) currentEventInstance.stop(stopMode);
-
-        if (isCurrentlyTransitioning) transitionEventInstance.stop(stopMode);
-    }
-
-    private EventInstance CreateEventInstance(EventReference eventReference)
-    {
-        if (eventReference.IsNull || eventReference.Equals(default(EventReference)))
+        if (IsPlaying())
         {
-            Debug.LogError("Tried to create an event instance from an invalid event");
-            return default;
+            currentEventInstance.stop(stopMode);
+            currentEventInstance.release();
         }
 
-        EventInstance newEventInstance = RuntimeManager.CreateInstance(eventReference);
-        if (!newEventInstance.isValid())
+        if (transitionCoroutine != null)
         {
-            Debug.LogError($"Failed to create a valid event instance for {eventReference.Path}");
-            return default;
+            StopCoroutine(transitionCoroutine);
+            transitionEventInstance.stop(stopMode);
+            transitionEventInstance.release();
+            transitionEventInstance = default;
         }
-
-        return newEventInstance;
     }
+
 
     public void ChangeMusic(Music musicEvent, float transitionDuration = DEFAULT_TRANSITION_DURATION)
     {
-        ChangeMusic(GetEventReference(musicEvent), transitionDuration);
+        if (!Enum.IsDefined(typeof(Music), musicEvent) || musicEvent == Music.NONE) Stop();
+        else ChangeMusic(GetEventReference(musicEvent), transitionDuration);
     }
 
     public void ChangeMusic(EventReference musicEvent, float transitionDuration = DEFAULT_TRANSITION_DURATION)
@@ -129,65 +118,48 @@ public class MusicManager : Singleton<MusicManager>
             return;
         }
 
-        if (isCurrentlyTransitioning)
+        if (currentEventInstance.isValid() && currentMusicEvent.Equals(musicEvent)) return;
+
+        if (!IsPlaying())
         {
-            if (transitionEventInstance.isValid())
-            {
-                transitionEventInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-                transitionEventInstance.release();
-            }
-
-            StopAllCoroutines();
-
-            transitionEventInstance = CreateEventInstance(musicEvent);
-            if (!transitionEventInstance.isValid())
-            {
-                SetTransitionVolume(0.0f);
-                return;
-            }
-
-            transitionEventInstance.start();
-            StartCoroutine(VolumeTransition(transitionDuration));
-
+            currentMusicEvent = musicEvent; 
+            currentEventInstance = AudioEvents.CreateEventInstance(musicEvent);
+            Play();
             return;
         }
 
-        if (IsPlaying())
-        {
-            transitionEventInstance = CreateEventInstance(musicEvent);
+        // Already playing music, so do a crossfade transition
 
-            if (!transitionEventInstance.isValid()) return;
+        if (transitionCoroutine != null) StopCoroutine(transitionCoroutine);
 
-            transitionEventInstance.start();
-            StartCoroutine(VolumeTransition(transitionDuration));
-
-            return;
-        }
-
-        currentEventInstance = CreateEventInstance(musicEvent);
-        Play();
+        transitionCoroutine = StartCoroutine(DoCrossfade(musicEvent, transitionDuration));
     }
 
+    /*
     [ContextMenu("Transition Debug")]
     private void InspectorTransition()
     {
         ChangeMusic(transitionMusicEvent, 3.0f);
     }
+    */
 
-    public void SetVolume(float volume)
+    public void SetVolume(float newVolume)
     {
-        if (volume > 1.0 || volume < 0.0)
+        if (newVolume > 1.0 || newVolume < 0.0)
         {
             Debug.LogError("MusicManager volume must be set between 0.0 and 1.0");
             return;
         }
 
-        GetCurrentBus().setVolume(volume);
+        musicBus.setVolume(newVolume);
     }
 
-    private IEnumerator VolumeTransition(float duration)
+    private IEnumerator DoCrossfade(EventReference nextTrack, float duration)
     {
-        isCurrentlyTransitioning = true;
+        transitionEventInstance = AudioEvents.CreateEventInstance(nextTrack);
+        if (transitionEventInstance.Equals(default)) yield break;
+        transitionEventInstance.setVolume(0.0f);
+        transitionEventInstance.start();
 
         float elapsed = 0.0f;
         while (elapsed <= duration)
@@ -196,23 +168,12 @@ public class MusicManager : Singleton<MusicManager>
 
             float t = elapsed / duration;
             float transitionPercent = Mathf.SmoothStep(0.0f, 1.0f, t);
-            SetTransitionVolume(transitionPercent);
+
+            currentEventInstance.setVolume(1.0f - transitionPercent);
+            transitionEventInstance.setVolume(transitionPercent);
 
             yield return null;
         }
-
-        Swap();
-
-        isCurrentlyTransitioning = false;
-    }
-
-    // change all internal variables to reflect aftereffects of music transition
-    private void Swap()
-    {
-        // swap buses
-        busChoice = (busChoice == BusOptions.music1)
-            ? BusOptions.music2
-            : BusOptions.music1;
 
         if (currentEventInstance.isValid())
         {
@@ -221,14 +182,10 @@ public class MusicManager : Singleton<MusicManager>
         }
 
         currentEventInstance = transitionEventInstance;
-        currentMusicEvent = transitionMusicEvent;
-        transitionMusicEvent = default;
-    }
+        transitionEventInstance = default;
+        currentMusicEvent = nextTrack;
 
-    private void SetTransitionVolume(float transitionPercent)
-    {
-        GetCurrentBus().setVolume(1.0f - transitionPercent);
-        GetTransitionBus().setVolume(transitionPercent);
+        transitionCoroutine = null;
     }
 
     private void OnDisable()

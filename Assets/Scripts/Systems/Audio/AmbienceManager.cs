@@ -2,7 +2,6 @@ using System;
 using FMOD.Studio;
 using FMODUnity;
 using UnityEngine;
-using static AudioEvents;
 
 public class AmbienceManager : Singleton<AmbienceManager>
 {
@@ -17,8 +16,8 @@ public class AmbienceManager : Singleton<AmbienceManager>
         Hometown_unnamed,
     };
 
-    [SerializeField] private EventReference AmbienceEvent;
-    public EventInstance AmbienceEventInstance { get; private set; }
+    private EventReference ambienceEvent;
+    public EventInstance ambienceEventInstance { get; private set; }
     public FMOD.Studio.STOP_MODE StopMode = FMOD.Studio.STOP_MODE.ALLOWFADEOUT;
 
     public EventReference GetEventReference(Ambience ambience)
@@ -35,22 +34,24 @@ public class AmbienceManager : Singleton<AmbienceManager>
         };
     }
 
-    private bool CreateInstance()
-    {
-        if (AmbienceEvent.IsNull) return false;
-
-        AmbienceEventInstance = RuntimeManager.CreateInstance(AmbienceEvent);
-        return AmbienceEventInstance.isValid();
-    }
-
     [ContextMenu("Play")]
     public void Play()
     {
         if (IsPlaying()) return;
 
-        //Stop();
-        if (CreateInstance()) AmbienceEventInstance.start();
-        else LogError();
+        if (ambienceEvent.IsNull || ambienceEvent.Equals(default))
+        {
+            Debug.LogError("Tried to play ambience with an empty ambience eventReference");
+            return;
+        }
+
+        if (!ambienceEventInstance.isValid())
+        {
+            ambienceEventInstance = AudioEvents.CreateEventInstance(ambienceEvent);
+            if (!ambienceEventInstance.isValid()) return;
+        }
+
+        ambienceEventInstance.start();
     }
 
     [ContextMenu("Stop")]
@@ -58,25 +59,23 @@ public class AmbienceManager : Singleton<AmbienceManager>
     {
         if (!IsPlaying()) return;
 
-        if (AmbienceEventInstance.isValid()) AmbienceEventInstance.stop(StopMode);
+        if (ambienceEventInstance.isValid())
+        {
+            ambienceEventInstance.stop(StopMode);
+            ambienceEventInstance.release();
+        }
         else LogError();
     }
 
     public void ChangeAmbience(Ambience ambience)
     {
-        if (ambience == Ambience.NONE)
-        {
-            Debug.Log("Tried changing ambience to Ambience.NONE, stopping ambience instead!");
-            Stop();
-            return;
-        }
-
-        ChangeAmbience(GetEventReference(ambience));
+        if (!Enum.IsDefined(typeof(Ambience), ambience) || ambience == Ambience.NONE) Stop();
+        else ChangeAmbience(GetEventReference(ambience));
     }
 
     public void ChangeAmbience(EventReference ambienceEvent)
     {
-        AmbienceEvent = ambienceEvent;
+        this.ambienceEvent = ambienceEvent;
 
         Stop();
         Play();
@@ -84,9 +83,9 @@ public class AmbienceManager : Singleton<AmbienceManager>
 
     private bool IsPlaying()
     {
-        if (AmbienceEventInstance.isValid())
+        if (ambienceEventInstance.isValid())
         {
-            AmbienceEventInstance.getPlaybackState(out PLAYBACK_STATE state);
+            ambienceEventInstance.getPlaybackState(out PLAYBACK_STATE state);
             return state != PLAYBACK_STATE.STOPPED && state != PLAYBACK_STATE.STOPPING;
         }
         return false;
@@ -95,12 +94,12 @@ public class AmbienceManager : Singleton<AmbienceManager>
     // runs when a command could not execute
     private void LogError()
     {
-        if (AmbienceEvent.IsNull)
+        if (ambienceEvent.IsNull)
         {
             Debug.LogWarning("No event currently selected! Stopping ambience instead!");
             Stop();
         }
-        else if (!AmbienceEventInstance.isValid())
+        else if (!ambienceEventInstance.isValid())
         {
             Debug.LogError("Invalid event instance!");
         }
