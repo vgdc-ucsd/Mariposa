@@ -300,7 +300,7 @@ public class GrappleAbility : MonoBehaviour, IAbility
 
     private void PlayGrappleThrow()
     {
-        RuntimeManager.PlayOneShot(AudioEvents.SFX.unnamed_grapple.GetPath());
+        RuntimeManager.PlayOneShot(AudioEvents.SFX.unnamed_grapple_use);
     }
 
     private void ChangeGrappleState(GrappleState newState)

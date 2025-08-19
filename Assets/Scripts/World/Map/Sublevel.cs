@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static AudioEvents;
+using Music = MusicManager.Music;
+using Ambience = AmbienceManager.Ambience;
 
 public class Sublevel : MonoBehaviour
 {

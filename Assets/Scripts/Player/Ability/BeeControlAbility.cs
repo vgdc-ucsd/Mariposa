@@ -12,7 +12,7 @@ public class BeeControlAbility : MonoBehaviour, IAbility
     {
         if (Bee.Instance.Movement.CurrentBehavior is not Follow && !Bee.Instance.IsControlled)
         {
-            RuntimeManager.PlayOneShot(AudioEvents.SFX.mariposa_recall.GetPath());
+            RuntimeManager.PlayOneShot(AudioEvents.SFX.mariposa_recall);
             playSendOutSFX = true;
         }
         BeeRef.StartFollow();
@@ -41,7 +41,7 @@ public class BeeControlAbility : MonoBehaviour, IAbility
             BeeRef.ToggleControl(true);
             if (playSendOutSFX)
             {
-                RuntimeManager.PlayOneShot(AudioEvents.SFX.mariposa_send_out.GetPath());
+                RuntimeManager.PlayOneShot(AudioEvents.SFX.mariposa_send_out);
                 playSendOutSFX = false;
             }
             BeeFlap.start();
@@ -49,14 +49,14 @@ public class BeeControlAbility : MonoBehaviour, IAbility
         else
         {
             BeeRef.ToggleControl(false);
-            RuntimeManager.PlayOneShot(AudioEvents.SFX.bee_recall.GetPath());
+            RuntimeManager.PlayOneShot(AudioEvents.SFX.bee_recall);
             BeeFlap.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         }
     }
 
     private void Start()
     {
-        BeeFlap = RuntimeManager.CreateInstance(AudioEvents.SFX.bee_flap.GetPath());
+        BeeFlap = RuntimeManager.CreateInstance(AudioEvents.SFX.bee_flap);
     }
 
     public void TurnOffBeeFlap()

@@ -21,7 +21,7 @@ public class BeeGrabAnimation : MonoBehaviour
 
     IEnumerator runGrabOnce()
     {
-        RuntimeManager.PlayOneShot(AudioEvents.SFX.bee_pickup.GetPath());
+        RuntimeManager.PlayOneShot(AudioEvents.SFX.bee_pickup_short);
         beeAnimator.SetBool("startGrab", true);
         yield return new WaitForSeconds(0.5f);
         beeAnimator.SetBool("startGrab", false);

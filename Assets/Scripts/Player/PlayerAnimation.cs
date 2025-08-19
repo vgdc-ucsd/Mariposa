@@ -85,7 +85,7 @@ public class PlayerAnimation : MonoBehaviour
     {
         if (Player.ActivePlayer.Movement.State == BodyState.OnGround)
         {
-            EventInstance footstepInstance = RuntimeManager.CreateInstance(AudioEvents.SFX.player_footstep.GetPath());
+            EventInstance footstepInstance = RuntimeManager.CreateInstance(AudioEvents.SFX.player_footstep);
             footstepInstance.setParameterByNameWithLabel("Terrain", MaterialCheck());
             footstepInstance.start();
             footstepInstance.release();
@@ -101,7 +101,7 @@ public class PlayerAnimation : MonoBehaviour
         }
         else if (Player.ActivePlayer.Movement.State == BodyState.OnGround && willLand)
         {
-            RuntimeManager.PlayOneShot(AudioEvents.SFX.player_landing.GetPath());
+            RuntimeManager.PlayOneShot(AudioEvents.SFX.player_landing);
             willLand = false;
         }
     }

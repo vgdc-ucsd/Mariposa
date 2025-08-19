@@ -10,7 +10,7 @@ public class MainMenu : Singleton<MainMenu>
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        MusicManager.Instance.ChangeMusic(AudioEvents.Music.titlescreen_title_theme);
+        MusicManager.Instance.ChangeMusic(AudioEvents.Music.titlescreen_title);
     }
 
     public void NewGameBtn()
