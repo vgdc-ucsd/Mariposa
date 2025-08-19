@@ -196,7 +196,7 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
         airJumpAvailable = false;
         coyoteTimeRemaining = 0f;
         playJumpSFX();
-        RuntimeManager.PlayOneShot(SFX.bee_double_jump.GetPath());
+        RuntimeManager.PlayOneShot(SFX.bee_double_jump);
 
     }
 
@@ -299,11 +299,11 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
         // plays the active character's jump sound
         if (Player.ActivePlayer.Data.characterID == CharID.Mariposa)
         {
-            RuntimeManager.PlayOneShot(SFX.mariposa_jump.GetPath());
+            RuntimeManager.PlayOneShot(SFX.mariposa_jump);
         }
         else if (Player.ActivePlayer.Data.characterID == CharID.Unnamed)
         {
-            RuntimeManager.PlayOneShot(SFX.unnamed_jump.GetPath());
+            RuntimeManager.PlayOneShot(SFX.unnamed_jump);
         }
         else
         {
@@ -311,6 +311,6 @@ public class PlayerMovement : FreeBody, IInputListener, IControllable
         }
 
         // generic jump sfx
-        RuntimeManager.PlayOneShot(SFX.player_jump.GetPath());
+        RuntimeManager.PlayOneShot(SFX.player_jump);
     }
 }
