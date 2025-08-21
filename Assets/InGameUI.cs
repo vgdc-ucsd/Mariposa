@@ -40,16 +40,9 @@ public class InGameUI : Singleton<InGameUI>
     {
         yield return new WaitForFixedUpdate();
 
-        bool isInside = false;
         foreach (var trigger in FindObjectsOfType<InteractionTrigger>())
         {
-            if (trigger.IsPlayerInside(PlayerController.Instance.ControlledPlayer))
-            {
-                isInside = true;
-                break;
-            }
+            trigger.EnsureControlledPlayerInside();
         }
-
-        InteractPrompt(isInside);
     }
 }
