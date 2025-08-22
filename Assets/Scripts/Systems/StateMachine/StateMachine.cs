@@ -60,7 +60,7 @@ public class StateMachine<T>
             Debug.LogWarning($"Tried to transition state from {state} to {newState}!");
             return;
         }
-
+        
         if (onExitActions.ContainsKey(state))
         {
             onExitActions[state].Invoke();
