@@ -66,7 +66,7 @@ public class SFXEvents
     public EventReference unnamed_pain;
     public EventReference unnamed_grapple_impact;
     public EventReference unnamed_grapple_swing;
-    public EventReference unnamed_grapple_use;
+    public EventReference unnamed_grapple_throw;
     public EventReference unnamed_whistle_mariposa_motif;
     public EventReference unnamed_whistle_unnamed_motif;
 
@@ -124,15 +124,51 @@ public class SFXEvents
 [System.Serializable]
 public class DialogueVOEvents {
     [Header("Mariposa")]
-    public EventReference mariposa_neutral_short_hmm;
-    public EventReference mariposa_happy_short_alright;
-    public EventReference mariposa_happy_medium_i_promise;
-    public EventReference mariposa_happy_short_giggle;
-    public EventReference mariposa_happy_medium_thank_you;
-    public EventReference mariposa_happy_short_ready_to_go;
     public EventReference mariposa_happy_medium_glad_could_help;
+    public EventReference mariposa_happy_medium_i_promise;
+    public EventReference mariposa_happy_medium_in_order;
+    public EventReference mariposa_happy_medium_piece_of_cake;
+    public EventReference mariposa_happy_medium_see_ya_round;
+    public EventReference mariposa_happy_medium_thank_you;
+    public EventReference mariposa_happy_medium_up_and_running;
+
+    public EventReference mariposa_happy_short_alright;
+    public EventReference mariposa_happy_short_giggle;
+    public EventReference mariposa_happy_short_it_works;
+    public EventReference mariposa_happy_short_ready_to_go;
+    public EventReference mariposa_happy_short_yeah;
+
+    public EventReference mariposa_neutral_medium_how_bout_this;
+    public EventReference mariposa_neutral_medium_miscalculated;
+    public EventReference mariposa_neutral_medium_new_perspective;
+    public EventReference mariposa_neutral_medium_one_thing;
+    public EventReference mariposa_neutral_medium_the_way_around;
+
+    public EventReference mariposa_neutral_short_hmm;
+    public EventReference mariposa_neutral_short_i_mean;
+    public EventReference mariposa_neutral_short_well;
+
+    public EventReference mariposa_sad_medium_maybe_im_wrong;
+    public EventReference mariposa_sad_medium_nothing_i_can_do;
+    public EventReference mariposa_sad_medium_really_sorry;
+    public EventReference mariposa_sad_medium_try_again;
+    public EventReference mariposa_sad_medium_why_no_work;
+
+    public EventReference mariposa_sad_short_aww;
+    public EventReference mariposa_sad_short_no;
     public EventReference mariposa_sad_short_sigh;
+    public EventReference mariposa_sad_short_sorry;
+    public EventReference mariposa_sad_short_urgh;
+
+    public EventReference mariposa_surprised_medium_dont_scare_me;
+    public EventReference mariposa_surprised_medium_look_out;
+    public EventReference mariposa_surprised_medium_that_was_close;
+
+    public EventReference mariposa_surprised_short_hey;
+    public EventReference mariposa_surprised_short_seriously;
+    public EventReference mariposa_surprised_short_wait_a_second;
     public EventReference mariposa_surprised_short_woah;
+    public EventReference mariposa_surprised_short_you_ok;
 
     [Header("LukeNPC")]
     public EventReference luke_npc_neutral_well;
@@ -146,9 +182,72 @@ public class DialogueVOEvents {
     public EventReference luke_npc_neutral_lets_think_about_this;
 
     [Header("Unnamed")]
-    public EventReference unnamed_sfx_cough;
-    public EventReference unnamed_neutral_time_to_move_on;
+    public EventReference unnamed_happy_medium_maybe_youre_right;
+    public EventReference unnamed_happy_medium_sure_id_like_that;
+    public EventReference unnamed_happy_medium_you_did_it;
+    public EventReference unnamed_happy_medium_youre_ridiculous;
+
+    public EventReference unnamed_happy_short_dry_laugh;
+    public EventReference unnamed_happy_short_good_work;
+    public EventReference unnamed_happy_short_maybe;
+    public EventReference unnamed_happy_short_nice;
+
+    public EventReference unnamed_neutral_friendship_how_bout_this;
+    public EventReference unnamed_neutral_friendship_tell_me_about_it;
+    public EventReference unnamed_neutral_friendship_what_if;
+    public EventReference unnamed_neutral_friendship_youre_fine;
+
+    public EventReference unnamed_neutral_medium_another_way;
+    public EventReference unnamed_neutral_medium_fine_by_me;
+    public EventReference unnamed_neutral_medium_minor_setback;
+    public EventReference unnamed_neutral_medium_no_time_to_waste;
+    public EventReference unnamed_neutral_medium_struct_a_nerve;
+    public EventReference unnamed_neutral_medium_time_to_move_on;
+    public EventReference unnamed_neutral_medium_youre_telling_me;
+
+    public EventReference unnamed_neutral_short_come_on;
+    public EventReference unnamed_neutral_short_fine;
+    public EventReference unnamed_neutral_short_hey;
+    public EventReference unnamed_neutral_short_not_listening;
+    public EventReference unnamed_neutral_short_not_the_time;
+    public EventReference unnamed_neutral_short_tch;
+    public EventReference unnamed_neutral_short_this_again;
+    public EventReference unnamed_neutral_short_useless_drivel;
+    public EventReference unnamed_neutral_short_whatever;
+
+    public EventReference unnamed_neutral_some_happy_i_suppose_so;
+    public EventReference unnamed_neutral_some_happy_its_ok;
+    public EventReference unnamed_neutral_some_happy_thank_you;
+    public EventReference unnamed_neutral_some_happy_you_there;
+
+    public EventReference unnamed_sad_medium_had_to_be_like_this;
+    public EventReference unnamed_sad_medium_mari;
+    public EventReference unnamed_sad_medium_mariposa;
+    public EventReference unnamed_sad_medium_nowhere_to_run;
+    public EventReference unnamed_sad_medium_pain_had_to_be_like_this;
+    public EventReference unnamed_sad_medium_right_all_along;
+    public EventReference unnamed_sad_medium_theres_no_point;
+    public EventReference unnamed_sad_medium_wasnt_your_fault;
+
+    public EventReference unnamed_sad_short_im_sorry;
+    public EventReference unnamed_sad_short_no;
+    public EventReference unnamed_sad_short_not_yet;
+    public EventReference unnamed_sad_short_sigh;
     public EventReference unnamed_sad_short_ugh;
+
+    public EventReference unnamed_surprised_medium_get_back;
+    public EventReference unnamed_surprised_medium_not_a_step_closer;
+    public EventReference unnamed_surprised_medium_somethings_wrong;
+    public EventReference unnamed_surprised_medium_these_automatons;
+    public EventReference unnamed_surprised_medium_this_is;
+    public EventReference unnamed_surprised_medium_this_isnt_right;
+    public EventReference unnamed_surprised_medium_whos_there;
+
+    public EventReference unnamed_surprised_short_damn_it;
+    public EventReference unnamed_surprised_short_no;
+    public EventReference unnamed_surprised_short_this_isnt;
+
+    public EventReference unnamed_sfx_cough;
 
     [Header("RegineNPC")]
     public EventReference regine_npc_sad_okay;
