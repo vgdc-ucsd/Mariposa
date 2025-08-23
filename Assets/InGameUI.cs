@@ -33,6 +33,11 @@ public class InGameUI : Singleton<InGameUI>
     
     public void UpdateInteractPrompt()
     {
+        if (DialogueManager.Instance.isPlayingDialogue)
+        {
+            InteractPrompt(false);
+            return;
+        }
         StartCoroutine(UpdateInteractPromptCoroutine());
     }
 
@@ -40,9 +45,21 @@ public class InGameUI : Singleton<InGameUI>
     {
         yield return new WaitForFixedUpdate();
 
-        foreach (var trigger in FindObjectsOfType<InteractionTrigger>())
+        IControllable controlled = PlayerController.Instance.CurrentControllable;
+        bool isInsideAny = false;
+
+        if (controlled != null)
         {
-            trigger.EnsureControlledPlayerInside();
+            Body controlledBody = controlled.body;
+            foreach (var trigger in FindObjectsOfType<InteractionTrigger>())
+            {
+                trigger.EnsureControlledPlayerInside();
+                if (trigger.GetIsInside(controlledBody))
+                {
+                    isInsideAny = true;
+                }
+            }
         }
+        InteractPrompt(isInsideAny);
     }
 }
