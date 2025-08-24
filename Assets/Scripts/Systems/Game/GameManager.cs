@@ -24,6 +24,7 @@ public enum GameState
 public class GameManager : Singleton<GameManager>, IDataPersistence
 {
     public GameScene CurrentScene { get; private set; }
+    public GameScene SavedScene { get; private set; }
     public InteractionTrigger DefaultInteractionTrigger;
     private InputSystem_Actions actions;
 
@@ -65,8 +66,6 @@ public class GameManager : Singleton<GameManager>, IDataPersistence
     {
         UnregisterStartAction(GameState.INVENTORY);
         UnregisterExitAction(GameState.INVENTORY);
-        UnregisterStartAction(GameState.PAUSE);
-        UnregisterExitAction(GameState.PAUSE);
     }
 
     public void RegisterStartAction(GameState state, Action action)
@@ -91,7 +90,7 @@ public class GameManager : Singleton<GameManager>, IDataPersistence
 
     public void HandlePause()
     {
-        if (CurrentScene == GameScene.MAIN_MENU) MainMenuSettings.Instance.CloseAllMenus();
+        if (CurrentScene == GameScene.MAIN_MENU || CurrentScene == GameScene.CREDITS) PauseMenuScript.Instance.ResumeGame();
         else if (GameStateMachine.GetState() == GameState.PAUSE) GameStateMachine.Transition(GameState.GAME);
         else GameStateMachine.Transition(GameState.PAUSE);
     }
@@ -131,11 +130,11 @@ public class GameManager : Singleton<GameManager>, IDataPersistence
 
     public void SaveData(ref GameData data)
     {
-        data.SavedScene = CurrentScene;
+        data.SavedScene = SavedScene;
     }
 
     public void LoadData(GameData data)
     {
-        CurrentScene = data.SavedScene;
+        SavedScene = data.SavedScene;
     }
 }

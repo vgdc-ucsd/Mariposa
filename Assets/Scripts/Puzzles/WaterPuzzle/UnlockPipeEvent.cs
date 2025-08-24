@@ -16,7 +16,7 @@ public class UnlockPipeEvent : DialogueEvent
         pipeVisual.SetActive(true);
         initialY = pipeVisual.transform.localPosition.y;
         float timer = 0;
-        while (timer < 1f)
+        while (timer < 5f)
         {
             yield return null;
             timer += Time.deltaTime;
