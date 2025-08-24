@@ -13,6 +13,9 @@ public class Bee : MonoBehaviour
     public float FollowRadius = 2f;
     public bool IsControlled = false;
     [SerializeField] private SpriteRenderer beeRadius;
+    [SerializeField] private Animator beeAnimations;
+    private const string ACTIVE_ANIMATION = "Bee_Active";
+    private const string IDLE_ANIMATION = "Bee_Idle";
 
     private void Awake()
     {
@@ -31,10 +34,12 @@ public class Bee : MonoBehaviour
         Movement.ToggleCollisions(toggle);
         if (toggle)
         {
+            beeAnimations.Play(ACTIVE_ANIMATION);
             PlayerController.Instance.StartControlling(Movement);
         }
         else
         {
+            beeAnimations.Play(IDLE_ANIMATION);
             beeRadius.color = Color.clear;
             PlayerController.Instance.StartControlling(Player.ActivePlayer.Movement);
             Movement.SetBehavior(new Stay());
