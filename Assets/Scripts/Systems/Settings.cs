@@ -28,10 +28,10 @@ public class Settings : Singleton<Settings>, IDataPersistence
         if (audioSetting == null) audioSetting = FindFirstObjectByType<AudioSetting>();
         getSliders();
         // play background test audio if audio debug is on to test volume slider functionality
-        if (Debug.GetAudioDebug())
-        {
-            backgroundAudioTest();
-        }
+        // if (Debug.GetAudioDebug())
+        // {
+        //     backgroundAudioTest();
+        // }
     }
 
     public void ResetVolumeSettings()
@@ -89,7 +89,7 @@ public class Settings : Singleton<Settings>, IDataPersistence
         // {
         //     UnityEngine.Debug.LogWarning("Audio setting referenced is already set! This may be caused by multiple instances of AudioSetting. Overriding current reference...");
         // }
-        // this.audioSetting = audioSetting;
+        this.audioSetting = audioSetting;
     }
 
     private void backgroundAudioTest()
