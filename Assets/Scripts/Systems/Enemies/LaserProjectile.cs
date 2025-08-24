@@ -38,8 +38,7 @@ public class LaserProjectile : Projectile
         Vector3[] endPoints = { this.transform.position, this.transform.position };
         if (hitBarrierRay)
         {
-            endPoints[1] = (Vector3)hitBarrierRay.point;
-
+            endPoints[1] = (Vector3)hitBarrierRay.centroid;
         }
         else
         {
