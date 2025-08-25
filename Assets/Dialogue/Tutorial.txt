@@ -229,11 +229,11 @@ UNNAMED
 MARIPOSA
 !a Mariposa_Woah4.wav 
 (surprised)
-Hello? Is someone there?[a]
+Hello? Is someone there?
 
 
 #CUT TO UNNAMED
-!event switch_to_unnamed1
+!event switch_to_unnamed1 end
 ________________
 
 
@@ -296,7 +296,7 @@ UNNAMED
 ...Not much left around here.
 !event hide_radio
 #A static crackling noise echoes in the subway tunnel. An unknown voice flickers in and out of audibility. The screen may shake slightly as the sound of gnashing metal rumbles through the tunnel. 
-!event screenshake
+!event screenshake[a]
 !audio tunnel
 !a radio-clip3-novoices.wav
 
@@ -325,34 +325,9 @@ UNNAMED
 (How do I shut this thing off??)
 
 
-#UNNAMED escapes from the train car. They move to the maintenance room and try the emergency exit. It’s jammed.
-
-
-________________
-
-
-!name backtrack_attempt
-#>IF TRY TO BACKTRACK 
-
-
-#1:
 UNNAMED
 (neutral)
-(Can’t go back. I’ll be torn apart.)
-
-
-#2: (repeat forever)
-
-
-________________
-
-
-
-
-!name door_jammed[b][c]
-UNNAMED
-(neutral)
-Of course the door is jammed. Why wouldn’t it be?
+That door is jammed too. No way to brute force through it. No way to get around it. Just my luck.
 
 
 MARIPOSA
@@ -363,7 +338,8 @@ What’s happening? It’s awfully noisy on your end, stranger.
 
 UNNAMED
 (neutral)
-Can’t backtrack. And I won’t be able to hold off those bots forever. 
+Can’t backtrack. And I won’t be able to hide from those bots forever. 
+[b]
 
 
 MARIPOSA
@@ -385,6 +361,40 @@ Damn it, how do I get out of here?
 MARIPOSA
 (sad)
 Um—alright then.
+
+
+
+
+
+
+#UNNAMED escapes from the train car. They move to the maintenance room and try the emergency exit. It’s jammed.
+
+
+________________
+
+
+!name backtrack_attempt
+#>IF TRY TO BACKTRACK 
+
+
+#1[c]:
+UNNAMED
+(neutral)
+(Can’t go back. I’ll be torn apart.)
+
+
+#2: (repeat forever)
+
+
+________________
+
+
+
+
+!name door_jammed[d][e]
+UNNAMED
+(neutral)
+The door is jammed. Gotta look for a way to open it.
 
 
 
@@ -456,7 +466,7 @@ Well, since I’m already here, I’ll keep the bots running around here in good
 
 
 MARIPOSA
-[d]
+[f]
 !a Mariposa_Well2.wav
 (happy)
 Let’s take a look here...
@@ -1195,10 +1205,12 @@ It's struggling to move. The charging station sounds like it's straining to keep
 [a]@eschwartzman@ucsd.edu 
 
 
-line gets cut off during playing :o
-[b]@eschwartzman@ucsd.edu I think this entire part before the switch is not in the game? which means that talking to mariposa later on is kinda confusing
-[c]*solution maybe: hide battery semi-behind scrap pile do not let them pick it up until you have interacted with the door
-[d]@eschwartzman@ucsd.edu 
+In the original there was more of a description of robots chasing him here. So they couldn’t backtrack through the abandoned cart bc there was a bot on the other side.
+[b]@eschwartzman@ucsd.edu  sorry for all the tags, just minor adjustments here. does this work?
+[c]@eschwartzman@ucsd.edu I think that’s what this is too
+[d]@eschwartzman@ucsd.edu I think this entire part before the switch is not in the game? which means that talking to mariposa later on is kinda confusing
+[e]*solution maybe: hide battery semi-behind scrap pile do not let them pick it up until you have interacted with the door
+[f]@eschwartzman@ucsd.edu 
 
 
 draft one of this dialogue; lmk if any edits are needed on it

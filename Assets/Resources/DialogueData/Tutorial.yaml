@@ -277,7 +277,7 @@ waiting_for_train:
   Choice1: 
   Choice2: 
 - Speaker: Mariposa
-  Line: Hello? Is someone there?[a]
+  Line: Hello? Is someone there?
   Icon: 
   Background: 
   FromRadio: 
@@ -285,7 +285,7 @@ waiting_for_train:
   - Mariposa_Woah4.wav
   Events:
   - EventName: switch_to_unnamed1
-    TriggerAtEnd: false
+    TriggerAtEnd: true
   Choice1: 
   Choice2: 
 unnamed_start:
@@ -361,7 +361,7 @@ radio_pickup:
   Events:
   - EventName: hide_radio
     TriggerAtEnd: false
-  - EventName: screenshake
+  - EventName: screenshake[a]
     TriggerAtEnd: false
   Choice1: 
   Choice2: 
@@ -403,19 +403,8 @@ radio_pickup:
   Events: []
   Choice1: 
   Choice2: 
-backtrack_attempt:
 - Speaker: Unnamed
-  Line: (Can’t go back. I’ll be torn apart.)
-  Icon: Neutral
-  Background: 
-  FromRadio: 
-  Sounds: []
-  Events: []
-  Choice1: 
-  Choice2: 
-door_jammed[b][c]:
-- Speaker: Unnamed
-  Line: Of course the door is jammed. Why wouldn’t it be?
+  Line: That door is jammed too. No way to brute force through it. No way to get around it. Just my luck.
   Icon: Neutral
   Background: 
   FromRadio: 
@@ -434,7 +423,7 @@ door_jammed[b][c]:
   Choice1: 
   Choice2: 
 - Speaker: Unnamed
-  Line: Can’t backtrack. And I won’t be able to hold off those bots forever.
+  Line: '[b]'
   Icon: Neutral
   Background: 
   FromRadio: 
@@ -473,6 +462,26 @@ door_jammed[b][c]:
 - Speaker: Mariposa
   Line: Um—alright then.
   Icon: Sad
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+backtrack_attempt:
+- Speaker: Unnamed
+  Line: (Can’t go back. I’ll be torn apart.)
+  Icon: Neutral
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events: []
+  Choice1: 
+  Choice2: 
+door_jammed[d][e]:
+- Speaker: Unnamed
+  Line: The door is jammed. Gotta look for a way to open it.
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds: []
