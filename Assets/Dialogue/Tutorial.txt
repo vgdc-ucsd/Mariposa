@@ -23,9 +23,9 @@ MARIPOSA
 
 
 MARIPOSA 
-!a Mariposa_Sigh4.wav
 (neutral)
 (I can’t wait to get home and take a nice, long nap...)
+!a Mariposa_Sigh4.wav
 
 
 MARIPOSA
@@ -50,9 +50,9 @@ Oh, yeah. Guess we did. It’s been acting up. Sometimes works, sometimes doesn�
 
 
 MARIPOSA
-!a Mariposa_IPromise1.wav
 (neutral)
 Got it! No worries, I’ll get this thing working in no time.
+!a Mariposa_IPromise1.wav
 
 
 GUARD
@@ -86,21 +86,21 @@ Looks like this turnstile is giving me more trouble than I had anticipated...
 
 
 BEEBO
-!a Beebo_Processing5.wav
 (neutral)
 <Putting task: <i>Get Keycard</i> into task list. Task number 17.>
+!a Beebo_Processing5.wav
 
 
-BEEBO 
-!a Beebo_ReadyToGo1.wav
+BEEBO
 (happy)
- Would you like to prioritize this task?>
+ <Would you like to prioritize this task?>
+!a Beebo_ReadyToGo1.wav
 
 
 MARIPOSA
-!a Mariposa_ThankYou1.wav
 (neutral)
 Please do. Thanks, BEEBO!
+!a Mariposa_ThankYou1.wav
 
 
 #[GAMEPLAY]- INTRODUCTION TO [BEE] MECHANICS.
@@ -115,9 +115,9 @@ ________________
 !name interact_turnstile_no_fix
 #1:
 MARIPOSA
-!a Mariposa_Hmm5.wav
 (bashful)
 I can’t access the interior without it...
+!a Mariposa_Hmm5.wav
 
 
 #2: (repeat forever)
@@ -132,8 +132,8 @@ ________________
 !name interact_guard
 #1:
 GUARD
-!a Luke_NPC_Sigh3.wav
 When’s this girl going to be done...?
+!a Luke_NPC_Sigh3.wav
 
 
 ________________
@@ -142,20 +142,20 @@ ________________
 #After PLAYER successfully uses the [BEE] to grab the keycard, PLAYER will be introduced to inventory set up. PLAYER uses the item to fix the turnstile. 
 !name fix_turnstile
 MARIPOSA
-!a Mariposa_ReadyToGo3.wav
 (happy)
 There we go. Everything should be in order now!
+!a Mariposa_ReadyToGo3.wav
 
 
 GUARD
-!a Luke_NPC_AppreciateIt2.wav
 Oh, you’re finished? Thanks. Someone’ll send the payment later. 
+!a Luke_NPC_AppreciateIt2.wav
 
 
 MARIPOSA
-!a Mariposa_GladCouldHelp2.wav 
 (neutral)
 See you around!
+!a Mariposa_GladCouldHelp2.wav
 
 
 GUARD
@@ -163,9 +163,9 @@ Sure. See ya.
 
 
 MARIPOSA
-!a Mariposa_Hmm1.wav
 (neutral)
 (I’m finally all done for the day.)
+!a Mariposa_Hmm1.wav
 
 
 MARIPOSA
@@ -174,9 +174,9 @@ MARIPOSA
 
 
 MARIPOSA 
-!a Mariposa_Sigh2.wav
 (bashful)
 (I miss my bed...)
+!a Mariposa_Sigh2.wav
 
 
 ________________
@@ -188,8 +188,8 @@ ________________
 
 #1:
 GUARD
-!a Luke_NPC_Sigh2.wav
 Is my shift over yet?
+!a Luke_NPC_Sigh2.wav
 ________________
 
 
@@ -207,15 +207,15 @@ BEEBO, how much time until the train gets here?
 
 
 BEEBO
-!a Beebo_Processing1.wav
 (neutral)
 <ETA: 12 Minutes>
+!a Beebo_Processing1.wav
 
 
 MARIPOSA
-!a Mariposa_Hmm7.wav
 (neutral)
 Hmm, I think I have some time then. Can you pull up my notes for Project #314? Let’s see if I can’t get this thing working...
+!a Mariposa_Hmm7.wav
 
 
 #A static crackling noise echoes in the subway tunnel.
@@ -227,9 +227,9 @@ UNNAMED
 
 
 MARIPOSA
-!a Mariposa_Woah4.wav 
 (surprised)
 Hello? Is someone there?
+!a Mariposa_Woah4.wav 
 
 
 #CUT TO UNNAMED
@@ -248,15 +248,15 @@ UNNAMED
 
 
 UNNAMED
-!a Unnamed_Cough1.wav
-(neutral)
+(sad)
 (...!)
+!a Unnamed_Cough1.wav
 
 
 UNNAMED
-!a Unnamed_TimeToMoveOn4.wav
 (neutral)
 (...No time to rest now. Keep moving.)
+!a Unnamed_TimeToMoveOn4.wav
 
 
 #[GAMEPLAY]- INTRODUCTION TO UNNAMED MECHANICS
@@ -291,10 +291,12 @@ Just scrap metal. Might have some useful parts though.
 
 
 UNNAMED
-!a Unnamed_TimeToMoveOn5.wav
 (neutral)
 ...Not much left around here.
-!event hide_radio
+!a Unnamed_TimeToMoveOn5.wav
+
+
+!event hide_radio end
 #A static crackling noise echoes in the subway tunnel. An unknown voice flickers in and out of audibility. The screen may shake slightly as the sound of gnashing metal rumbles through the tunnel. 
 !event screenshake[a]
 !audio tunnel
@@ -304,9 +306,9 @@ UNNAMED
 
 
 MARIPOSA 
-!a Mariposa_Woah4.wav 
 (surprised)
 Hello? Is someone there?
+!a Mariposa_Woah4.wav 
 
 
 MARIPOSA
@@ -320,9 +322,9 @@ Thought I already rewired this part...
 
 
 UNNAMED
-!a Unnamed_Tch1.wav
-(neutral)
+(surprised)
 (How do I shut this thing off??)
+!a Unnamed_Tch1.wav
 
 
 UNNAMED
@@ -331,9 +333,9 @@ That door is jammed too. No way to brute force through it. No way to get around 
 
 
 MARIPOSA
-!a Mariposa_YouOk1.wav
 (neutral)
 What’s happening? It’s awfully noisy on your end, stranger.
+!a Mariposa_YouOk1.wav
 
 
 UNNAMED
@@ -417,9 +419,9 @@ Well, ones that don’t want to kill me, that is.
 
 
 UNNAMED
-!a Unnamed_Sigh2.wav
 (neutral)
 ...but they scrapped the chargers for parts a long, long time ago. 
+!a Unnamed_Sigh2.wav
 
 
 #PLAYER now switches to MARIPOSA.
@@ -428,9 +430,9 @@ UNNAMED
 
 !name mariposa_part2_start
 MARIPOSA
-!a Mariposa_NothingICanDo2.wav
 (neutral)
 (I think I’ll give them a bit of space for now. Seems like they’re not interested in talking to me...)
+!a Mariposa_NothingICanDo2.wav
 
 
 #She notices the train still hasn’t arrived and decides to walk around. She can walk around the platform. She will see the charging station for maintenance bots.
@@ -447,15 +449,15 @@ Though, honestly, it looks kind of scuffed...
 
 
 MARIPOSA
-!a Mariposa_Hmm3.wav
 (neutral)
 Needs just a few little tweaks to get back into shape, though. I wonder why no one’s bothered?
+!a Mariposa_Hmm3.wav
 
 
 MARIPOSA
-!a Mariposa_Well2.wav
 (happy)
 Well, since I’m already here, I’ll keep the bots running around here in good shape for a bit longer.
+!a Mariposa_Well2.wav
 
 
 #[BEE] hits the lever to restart the electricity flow to the charger on the edge of the platform. MARIPOSA completes a block puzzle to fully fix the charging station, and the maintenance robot will be able to function again.
@@ -466,10 +468,9 @@ Well, since I’m already here, I’ll keep the bots running around here in good
 
 
 MARIPOSA
-[f]
-!a Mariposa_Well2.wav
 (happy)
 Let’s take a look here...
+!a Mariposa_Well2.wav
 
 
 MARIPOSA 
@@ -495,9 +496,9 @@ ________________
 
 
 UNNAMED
-!a Unnamed_TheresNoPoint1.wav
 (neutral)
 No way out of this. I’m trapped here.
+!a Unnamed_TheresNoPoint1.wav
 
 
 !name block_puzzle_incomplete_mariposa
@@ -511,9 +512,9 @@ MARIPOSA
 
 
 UNNAMED
-!a Unnamed_ThisIsntRight3.wav
 (neutral) 
 (Maybe I can rig this thing up and...no. That won’t work.)
+!a Unnamed_ThisIsntRight3.wav
 
 
 UNNAMED 
@@ -523,9 +524,9 @@ UNNAMED
 
 !name block_puzzle_halfway_mariposa
 MARIPOSA
-!a Mariposa_Hmm1.wav
 (neutral)
 (Just a bit more.)
+!a Mariposa_Hmm1.wav
 
 
 ________________
@@ -538,33 +539,33 @@ ________________
 
 
 MARIPOSA
-!a Mariposa_UpAndRunning1.wav
 (happy)
 There we go! Everything’s in working order now.
+!a Mariposa_UpAndRunning1.wav
 
 
 BEEBO
-!a Beebo_Alert2.wav
 (neutral)
 <ALERT: Train has been delayed. Estimated wait time: 1 hour. Recommended Route: Bus.>
+!a Beebo_Alert2.wav
 
 
 MARIPOSA
-!a Mariposa_Urgh3.wav
 (bashful)
 Delayed? Again? That’s the second time this week...
+!a Mariposa_Urgh3.wav
 
 
 BEEBO
-!a Beebo_Understood1.wav
 (happy)
 <Understood. Do you wish to file a complaint?>
+!a Beebo_Understood1.wav
 
 
 MARIPOSA
-!a Mariposa_No1.wav
 (neutral)
 No! No, I mean–Don’t send anything, BEEBO. Let’s just head to the bus stop. I don’t want to get back to town too late.
+!a Mariposa_No1.wav
 
 
 !event switch_unnamed2 end
@@ -591,9 +592,9 @@ Well, I fixed things on my end.
 
 
 MARIPOSA
-!a Mariposa_HowBoutThis1.wav
 (bashful)
 I know a few things about bots if you need some help; If you just describe what you’re seeing...I could tell you what to do?
+!a Mariposa_HowBoutThis1.wav
 
 
 NARRATION 
@@ -628,9 +629,9 @@ UNNAMED
 
 
 UNNAMED
-!a Unnamed_YouThere4.wav
 (neutral)
 You said you...fixed something. What did you do?
+!a Unnamed_YouThere4.wav
 
 
 MARIPOSA
@@ -644,15 +645,15 @@ What model?
 
 
 MARIPOSA
-!a Mariposa_Hmm7.wav
 (neutral)
 Hmm. Not sure, actually. I think my station is still on the MK6? They’re pretty reliable, if a little clunky. 
+!a Mariposa_Hmm7.wav
 
 
 MARIPOSA
-!a Mariposa_Giggle1.wav
 (happy)
 I think they’re cute, though! 
+!a Mariposa_Giggle1.wav
 
 
 UNNAMED
@@ -707,8 +708,8 @@ It's struggling to move. The charging station sounds like it's straining to keep
 
 
 TRAVELLER
-!a Luke_NPC_Hey2.wav
 What’s that you’re holding? A radio?
+!a Luke_NPC_Hey2.wav
 
 
 TRAVELLER
@@ -716,8 +717,8 @@ You know, I used to have something cooler. It’s like, called a flip phone. It�
 
 
 TRAVELLER
-!a Luke_NPC_IThink3.wav
 Flip phone. It’s like super vintage. You wouldn’t know it.
+!a Luke_NPC_IThink3.wav
 
 
 !name Traveller2
@@ -1210,7 +1211,3 @@ In the original there was more of a description of robots chasing him here. So t
 [c]@eschwartzman@ucsd.edu I think that’s what this is too
 [d]@eschwartzman@ucsd.edu I think this entire part before the switch is not in the game? which means that talking to mariposa later on is kinda confusing
 [e]*solution maybe: hide battery semi-behind scrap pile do not let them pick it up until you have interacted with the door
-[f]@eschwartzman@ucsd.edu 
-
-
-draft one of this dialogue; lmk if any edits are needed on it

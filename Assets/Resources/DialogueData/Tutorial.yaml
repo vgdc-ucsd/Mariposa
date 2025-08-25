@@ -10,7 +10,7 @@ start:
   Choice2: 
 - Speaker: Mariposa
   Line: (I can’t wait to get home and take a nice, long nap...)
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -48,7 +48,7 @@ guard:
   Choice2: 
 - Speaker: Mariposa
   Line: Got it! No worries, I’ll get this thing working in no time.
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -107,7 +107,7 @@ turnstile_keycard_rejected:
   Choice2: 
 - Speaker: Beebo
   Line: '<Putting task: <i>Get Keycard</i> into task list. Task number 17.>'
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -116,8 +116,8 @@ turnstile_keycard_rejected:
   Choice1: 
   Choice2: 
 - Speaker: Beebo
-  Line: Would you like to prioritize this task?>
-  Icon: 
+  Line: <Would you like to prioritize this task?>
+  Icon: Happy
   Background: 
   FromRadio: 
   Sounds:
@@ -127,7 +127,7 @@ turnstile_keycard_rejected:
   Choice2: 
 - Speaker: Mariposa
   Line: Please do. Thanks, BEEBO!
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -138,7 +138,7 @@ turnstile_keycard_rejected:
 interact_turnstile_no_fix:
 - Speaker: Mariposa
   Line: I can’t access the interior without it...
-  Icon: 
+  Icon: Bashful
   Background: 
   FromRadio: 
   Sounds:
@@ -160,7 +160,7 @@ interact_guard:
 fix_turnstile:
 - Speaker: Mariposa
   Line: There we go. Everything should be in order now!
-  Icon: 
+  Icon: Happy
   Background: 
   FromRadio: 
   Sounds:
@@ -180,7 +180,7 @@ fix_turnstile:
   Choice2: 
 - Speaker: Mariposa
   Line: See you around!
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -199,7 +199,7 @@ fix_turnstile:
   Choice2: 
 - Speaker: Mariposa
   Line: (I’m finally all done for the day.)
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -218,7 +218,7 @@ fix_turnstile:
   Choice2: 
 - Speaker: Mariposa
   Line: (I miss my bed...)
-  Icon: 
+  Icon: Bashful
   Background: 
   FromRadio: 
   Sounds:
@@ -249,7 +249,7 @@ waiting_for_train:
   Choice2: 
 - Speaker: Beebo
   Line: '<ETA: 12 Minutes>'
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -259,7 +259,7 @@ waiting_for_train:
   Choice2: 
 - Speaker: Mariposa
   Line: 'Hmm, I think I have some time then. Can you pull up my notes for Project #314? Let’s see if I can’t get this thing working...'
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -278,7 +278,7 @@ waiting_for_train:
   Choice2: 
 - Speaker: Mariposa
   Line: Hello? Is someone there?
-  Icon: 
+  Icon: Surprised
   Background: 
   FromRadio: 
   Sounds:
@@ -300,7 +300,7 @@ unnamed_start:
   Choice2: 
 - Speaker: Unnamed
   Line: (...!)
-  Icon: 
+  Icon: Sad
   Background: 
   FromRadio: 
   Sounds:
@@ -310,7 +310,7 @@ unnamed_start:
   Choice2: 
 - Speaker: Unnamed
   Line: (...No time to rest now. Keep moving.)
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -351,7 +351,7 @@ radio_pickup:
   Choice2: 
 - Speaker: Unnamed
   Line: '...Not much left around here.'
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -360,14 +360,14 @@ radio_pickup:
   - radio-clip3-novoices.wav
   Events:
   - EventName: hide_radio
-    TriggerAtEnd: false
+    TriggerAtEnd: true
   - EventName: screenshake[a]
     TriggerAtEnd: false
   Choice1: 
   Choice2: 
 - Speaker: Mariposa
   Line: Hello? Is someone there?
-  Icon: 
+  Icon: Surprised
   Background: 
   FromRadio: 
   Sounds:
@@ -395,7 +395,7 @@ radio_pickup:
   Choice2: 
 - Speaker: Unnamed
   Line: (How do I shut this thing off??)
-  Icon: 
+  Icon: Surprised
   Background: 
   FromRadio: 
   Sounds:
@@ -414,7 +414,7 @@ radio_pickup:
   Choice2: 
 - Speaker: Mariposa
   Line: What’s happening? It’s awfully noisy on your end, stranger.
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -509,7 +509,7 @@ battery:
   Choice2: 
 - Speaker: Unnamed
   Line: '...but they scrapped the chargers for parts a long, long time ago.'
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -522,7 +522,7 @@ battery:
 mariposa_part2_start:
 - Speaker: Mariposa
   Line: (I think I’ll give them a bit of space for now. Seems like they’re not interested in talking to me...)
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -550,7 +550,7 @@ mariposa_part2_start:
   Choice2: 
 - Speaker: Mariposa
   Line: Needs just a few little tweaks to get back into shape, though. I wonder why no one’s bothered?
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -560,7 +560,7 @@ mariposa_part2_start:
   Choice2: 
 - Speaker: Mariposa
   Line: '!blockus_tockus'
-  Icon: 
+  Icon: Happy
   Background: 
   FromRadio: 
   Sounds:
@@ -570,7 +570,7 @@ mariposa_part2_start:
   Choice2: 
 - Speaker: Mariposa
   Line: Let’s take a look here...
-  Icon: 
+  Icon: Happy
   Background: 
   FromRadio: 
   Sounds:
@@ -608,7 +608,7 @@ mariposa_part2_start:
 block_puzzle_incomplete_unnamed:
 - Speaker: Unnamed
   Line: No way out of this. I’m trapped here.
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -629,7 +629,7 @@ block_puzzle_incomplete_mariposa:
 block_puzzle_halfway_unnamed:
 - Speaker: Unnamed
   Line: (Maybe I can rig this thing up and...no. That won’t work.)
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -649,7 +649,7 @@ block_puzzle_halfway_unnamed:
 block_puzzle_halfway_mariposa:
 - Speaker: Mariposa
   Line: (Just a bit more.)
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -660,7 +660,7 @@ block_puzzle_halfway_mariposa:
 block_puzzle_complete:
 - Speaker: Mariposa
   Line: There we go! Everything’s in working order now.
-  Icon: 
+  Icon: Happy
   Background: 
   FromRadio: 
   Sounds:
@@ -670,7 +670,7 @@ block_puzzle_complete:
   Choice2: 
 - Speaker: Beebo
   Line: '<ALERT: Train has been delayed. Estimated wait time: 1 hour. Recommended Route: Bus.>'
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -680,7 +680,7 @@ block_puzzle_complete:
   Choice2: 
 - Speaker: Mariposa
   Line: Delayed? Again? That’s the second time this week...
-  Icon: 
+  Icon: Bashful
   Background: 
   FromRadio: 
   Sounds:
@@ -690,7 +690,7 @@ block_puzzle_complete:
   Choice2: 
 - Speaker: Beebo
   Line: <Understood. Do you wish to file a complaint?>
-  Icon: 
+  Icon: Happy
   Background: 
   FromRadio: 
   Sounds:
@@ -700,7 +700,7 @@ block_puzzle_complete:
   Choice2: 
 - Speaker: Mariposa
   Line: No! No, I mean–Don’t send anything, BEEBO. Let’s just head to the bus stop. I don’t want to get back to town too late.
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -740,7 +740,7 @@ unnamed_stuck:
   Choice2: 
 - Speaker: Mariposa
   Line: I know a few things about bots if you need some help; If you just describe what you’re seeing...I could tell you what to do?
-  Icon: 
+  Icon: Bashful
   Background: 
   FromRadio: 
   Sounds:
@@ -796,7 +796,7 @@ unnamed_bot_appear:
   Choice2: 
 - Speaker: Unnamed
   Line: You said you...fixed something. What did you do?
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -824,7 +824,7 @@ unnamed_bot_appear:
   Choice2: 
 - Speaker: Mariposa
   Line: Hmm. Not sure, actually. I think my station is still on the MK6? They’re pretty reliable, if a little clunky.
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -834,7 +834,7 @@ unnamed_bot_appear:
   Choice2: 
 - Speaker: Mariposa
   Line: I think they’re cute, though!
-  Icon: 
+  Icon: Happy
   Background: 
   FromRadio: 
   Sounds:
@@ -1588,7 +1588,7 @@ interact_charging_station_use_after_fix1:
   Choice2: 
 interact_charging_station_use_after_fix2:
 - Speaker: Hetellsyousecretsithink
-  Line: draft one of this dialogue; lmk if any edits are needed on it
+  Line: '[e]*solution maybe: hide battery semi-behind scrap pile do not let them pick it up until you have interacted with the door'
   Icon: 
   Background: 
   FromRadio: 
