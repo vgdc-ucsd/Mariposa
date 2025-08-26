@@ -142,6 +142,8 @@ public class DialoguePlayer : MonoBehaviour
 
     public void TryAdvanceDialogue()
     {
+        if (GameManager.Instance.GameStateMachine.GetState() == GameState.PAUSE) return;
+
         // If currently fading, in cinematic mode, or at the very start of a dialogue, don't advance
         if (isFading || !acceptingInput) return;
 

@@ -172,10 +172,7 @@ public class PlayerController : MonoBehaviour
 
     public void TryAdvanceDialogue()
     {
-        if (GameManager.Instance.GameStateMachine.GetState() != GameState.PAUSE)
-        {
-            DialogueManager.Instance.TryAdvanceDialogue();
-        }
+        DialogueManager.Instance.TryAdvanceDialogue();
     }
 
     private void FixedUpdate()
