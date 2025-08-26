@@ -209,8 +209,7 @@ public class PlayerController : MonoBehaviour
         }
 
         SwitchTo(character);
-        ControlledPlayer.transform.position = spawn;
-        ControlledPlayer.Movement.ResolveInitialCollisions();
+        ControlledPlayer.SpawnAt(spawn);
         if (ControlledPlayer.Ability is BeeControlAbility bc)
         {
             bc.BeeRef.transform.position = ControlledPlayer.transform.position + new Vector3(0, 2, 0);
