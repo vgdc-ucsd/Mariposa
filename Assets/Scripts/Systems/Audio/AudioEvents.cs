@@ -94,6 +94,7 @@ public class SFXEvents
     public EventReference keycard_spit;
     public EventReference keycard_tap;
     public EventReference radio_static;
+    public EventReference radio_static_no_voices;
 
     [Header("Puzzle")]
     public EventReference puzzle_complete_mariposa;
@@ -170,17 +171,6 @@ public class DialogueVOEvents {
     public EventReference mariposa_surprised_short_woah;
     public EventReference mariposa_surprised_short_you_ok;
 
-    [Header("LukeNPC")]
-    public EventReference luke_npc_neutral_well;
-    public EventReference luke_npc_happy_appreciate_it;
-    public EventReference luke_npc_sad_sigh;
-    public EventReference luke_npc_neutral_i_think;
-    public EventReference luke_npc_neutral_hey;
-    public EventReference luke_npc_sad_dont;
-    public EventReference luke_npc_happy_yeah;
-    public EventReference luke_npc_robot_aww;
-    public EventReference luke_npc_neutral_lets_think_about_this;
-
     [Header("Unnamed")]
     public EventReference unnamed_happy_medium_maybe_youre_right;
     public EventReference unnamed_happy_medium_sure_id_like_that;
@@ -248,6 +238,21 @@ public class DialogueVOEvents {
     public EventReference unnamed_surprised_short_this_isnt;
 
     public EventReference unnamed_sfx_cough;
+    public EventReference unnamed_sfx_pain;
+
+    [Header("LukeNPC")]
+    public EventReference luke_npc_neutral_well;
+    public EventReference luke_npc_happy_appreciate_it;
+    public EventReference luke_npc_sad_sigh;
+    public EventReference luke_npc_neutral_i_think;
+    public EventReference luke_npc_neutral_hey;
+    public EventReference luke_npc_sad_dont;
+    public EventReference luke_npc_happy_yeah;
+    public EventReference luke_npc_robot_aww;
+    public EventReference luke_npc_neutral_lets_think_about_this;
+    public EventReference luke_npc_happy_thanks_mariposa;
+    public EventReference luke_npc_robot_alright;
+    public EventReference luke_npc_robot_woah;
 
     [Header("RegineNPC")]
     public EventReference regine_npc_sad_okay;
@@ -258,6 +263,7 @@ public class DialogueVOEvents {
     public EventReference regine_npc_sad_sigh;
     public EventReference regine_npc_neutral_i_think;
     public EventReference regine_npc_greetings_mari;
+    public EventReference regine_npc_greetings_oh_hey;
 
     [Header("RubyNPC")]
     public EventReference ruby_npc_surprised_woah;
