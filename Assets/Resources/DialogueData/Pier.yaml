@@ -19,7 +19,7 @@ pier_arrival:
   Choice2: 
 - Speaker: Unnamed
   Line: (Besides, maybe the ocean breeze will do me some good.)
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -29,7 +29,7 @@ pier_arrival:
   Choice2: 
 - Speaker: Unnamed
   Line: (...Hah. As if.)
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -57,7 +57,7 @@ pier_arrival:
   Choice2: 
 - Speaker: Unnamed
   Line: (Ah. Never mind that for now. Best to get on with it.)
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -77,7 +77,7 @@ pier_dead_end:
   Choice2: 
 - Speaker: Mariposa
   Line: Kairo? You there?
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -90,7 +90,7 @@ pier_dead_end:
     Friendship: 3
   Choice2:
     Response: Stay quiet.
-    LinkedDialogue: pier_no_response
+    LinkedDialogue: pier_no_response_transition
     Friendship: -3
 pier_respond:
 - Speaker: Unnamed
@@ -123,7 +123,7 @@ pier_respond:
   Choice2: 
 - Speaker: Mariposa
   Line: Not usually in my line of work, but the automatons in the gutters need a check-up.
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -133,7 +133,7 @@ pier_respond:
   Choice2: 
 - Speaker: Mariposa
   Line: Ah, the breeze is so nice!
-  Icon: 
+  Icon: Happy
   Background: 
   FromRadio: 
   Sounds:
@@ -161,12 +161,14 @@ pier_respond:
   Choice2: 
 - Speaker: Unnamed
   Line: The pier, that is. What is it like?
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
   - Unnamed_TellMeAboutIt3.wav
   Events:
+  - EventName: set_trigger_respond
+    TriggerAtEnd: false
   - EventName: switch_sublevels
     TriggerAtEnd: true
   Choice1: 
@@ -174,7 +176,7 @@ pier_respond:
 pier_respond_part2:
 - Speaker: Mariposa
   Line: Well, it’s a bit early, so it’s not as busy as it usually is. The shops are opening up, and the seagulls are starting to wake up.
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -184,7 +186,7 @@ pier_respond_part2:
   Choice2: 
 - Speaker: Mariposa
   Line: The water’s really pretty too; the way the sun hits it, it’s like the tides are sparkling.
-  Icon: 
+  Icon: Happy
   Background: 
   FromRadio: 
   Sounds:
@@ -218,16 +220,17 @@ pier_respond_part2:
   Sounds: []
   Events:
   - EventName: check_friendship
-    TriggerAtEnd: false
+    TriggerAtEnd: true
   Choice1: 
   Choice2: 
 seriously:
 - Speaker: Unnamed
   Line: It doesn’t matter. No point in talking more about it.
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Unnamed_UselessDrivel2.wav
   Events: []
   Choice1: 
   Choice2: 
@@ -242,7 +245,7 @@ seriously:
   Choice2: 
 - Speaker: Unnamed
   Line: '...'
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -264,7 +267,7 @@ bonkers:
   Choice2: 
 - Speaker: Unnamed
   Line: No one’s around right now, and...well, I get this whole place to myself.
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -310,7 +313,7 @@ bonkers:
   Choice2: 
 - Speaker: Mariposa
   Line: As much as I love talking with everyone, it’s honestly just so exhausting sometimes and—
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -320,11 +323,11 @@ bonkers:
   Choice2: 
 - Speaker: Unnamed
   Line: (She’s off in her own world...)
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
-  - ''
+  - Unnamed_NotListening3.wav
   Events:
   - EventName: play_woops_from_bonkers
     TriggerAtEnd: true
@@ -352,13 +355,27 @@ woops:
   Choice2: 
 - Speaker: Mariposa
   Line: (Looks like I’ll have to try again later.)
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
   - Mariposa_Urgh3.wav
   Events:
   - EventName: play_control_panel_from_pier_respond_part2
+    TriggerAtEnd: true
+  Choice1: 
+  Choice2: 
+pier_no_response_transition:
+- Speaker: Mariposa
+  Line: (neutral)
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events:
+  - EventName: set_trigger_no_response
+    TriggerAtEnd: false
+  - EventName: switch_sublevels
     TriggerAtEnd: false
   Choice1: 
   Choice2: 
@@ -392,14 +409,12 @@ pier_no_response:
   Choice2: 
 - Speaker: Mariposa
   Line: (Should’ve expected as much.)
-  Icon: 
+  Icon: Sad
   Background: 
   FromRadio: 
   Sounds:
   - Mariposa_NothingICanDo4.wav
   Events:
-  - EventName: switch_sublevels
-    TriggerAtEnd: true
   - EventName: play_control_panel_from_pier_no_response
     TriggerAtEnd: false
   Choice1: 
@@ -407,7 +422,7 @@ pier_no_response:
 control_panel:
 - Speaker: Mariposa
   Line: Well, I should get to work. The plumbing maintenance control panel is around here somewhere; it should be an easy fix to get it connected to the automaton in the pipes.
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -418,7 +433,7 @@ control_panel:
 control_panel_not_fixed:
 - Speaker: Mariposa
   Line: I’ve got it this time. Let’s try again.
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -429,7 +444,7 @@ control_panel_not_fixed:
 control_panel_fixed:
 - Speaker: Mariposa
   Line: That should do it!
-  Icon: 
+  Icon: Happy
   Background: 
   FromRadio: 
   Sounds:
@@ -459,7 +474,7 @@ leave_attempt:
 pipe_fail:
 - Speaker: Mariposa
   Line: You’ve got this little guy! Let’s try this again.
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -499,7 +514,7 @@ pipe_three_no_others:
 pipe_missing:
 - Speaker: Mariposa
   Line: Huh. Looks like there’s a piece missing.
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -527,7 +542,7 @@ pipe_missing:
   Choice2: 
 - Speaker: Beebo
   Line: <The nearest supply warehouse is 2 hours away by public transit.>
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -537,7 +552,7 @@ pipe_missing:
   Choice2: 
 - Speaker: Beebo
   Line: '<Recommended route: A Scrap Hawker located down the pier could be selling the missing part, or a fitting alternative.>'
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -556,7 +571,7 @@ pipe_missing:
   Choice2: 
 - Speaker: Mariposa
   Line: Sure, it’s worth a shot!
-  Icon: 
+  Icon: Happy
   Background: 
   FromRadio: 
   Sounds:
@@ -614,7 +629,7 @@ scrap_vendor:
   Choice2: 
 - Speaker: Mariposa
   Line: Yup, just looking for a certain pipe fitting.
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -673,7 +688,7 @@ scrap_vendor:
 complete_scale_1:
 - Speaker: Mariposa
   Line: I think I get it now!
-  Icon: 
+  Icon: Happy
   Background: 
   FromRadio: 
   Sounds:
@@ -707,7 +722,8 @@ complete_scale_2:
   Icon: 
   Background: 
   FromRadio: 
-  Sounds: []
+  Sounds:
+  - Luke_NPC_Alright3.wav
   Events:
   - EventName: start_scale_3
     TriggerAtEnd: true
@@ -735,7 +751,7 @@ complete_scale_3:
   Choice2: 
 - Speaker: Mariposa
   Line: Oh, no, you don’t need to do that! I shouldn’t—
-  Icon: 
+  Icon: Surprised
   Background: 
   FromRadio: 
   Sounds:
@@ -825,7 +841,7 @@ Izote1:
   Choice2: 
 - Speaker: Mariposa
   Line: Wait, Daisy? Like, robotics team captain Daisy? Time sure flies...
-  Icon: 
+  Icon: Surprised
   Background: 
   FromRadio: 
   Sounds:
@@ -921,7 +937,7 @@ gig_done_choice:
 response:
 - Speaker: Unnamed
   Line: Just...looking around.
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -958,7 +974,7 @@ response:
   Choice2: 
 - Speaker: Unnamed
   Line: It’s nothing like what you have.
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -1004,7 +1020,7 @@ response:
   Choice2: 
 - Speaker: Unnamed
   Line: '...don’t think they’ll ever figure it out, either...'
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -1041,7 +1057,7 @@ response:
   Choice2: 
 - Speaker: Mariposa
   Line: But, I just don’t want to regret not spending more time with my mum, or my grandpa, or...
-  Icon: 
+  Icon: Sad
   Background: 
   FromRadio: 
   Sounds:
@@ -1078,7 +1094,7 @@ response:
   Choice2: 
 - Speaker: Unnamed
   Line: Sorry. I need a second. To think about something.
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -1088,7 +1104,7 @@ response:
   Choice2: 
 - Speaker: Mariposa
   Line: Alright, not a problem!
-  Icon: 
+  Icon: Happy
   Background: 
   FromRadio: 
   Sounds:
@@ -1107,7 +1123,7 @@ response:
   Choice2: 
 - Speaker: Unnamed
   Line: '...yeah, sure. Will do.'
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -1129,7 +1145,7 @@ dont_respond:
   Choice2: 
 - Speaker: Unnamed
   Line: (I’m watching the harbor morph before my eyes; twisting, churning, melting away—-time shifts with her every step.)
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -1148,7 +1164,7 @@ dont_respond:
   Choice2: 
 - Speaker: Unnamed
   Line: (But it doesn’t matter now. What good is a miracle for someone like me?)
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -1167,7 +1183,7 @@ dont_respond:
   Choice2: 
 - Speaker: Mariposa
   Line: Well, I’ve still got work to do. I should get going.
-  Icon: 
+  Icon: Sad
   Background: 
   FromRadio: 
   Sounds:
@@ -1192,7 +1208,7 @@ pier_friendship_check:
 future_friends:
 - Speaker: Unnamed
   Line: '...Mari?'
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -1211,7 +1227,7 @@ future_friends:
   Choice2: 
 - Speaker: Unnamed
   Line: (...there’s no good way to ask this.)
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -1257,7 +1273,7 @@ future_friends:
   Choice2: 
 - Speaker: Mariposa
   Line: Kairo, I didn’t think you were the type to ask about these kinds of things!
-  Icon: 
+  Icon: Happy
   Background: 
   FromRadio: 
   Sounds:
@@ -1267,7 +1283,7 @@ future_friends:
   Choice2: 
 - Speaker: Unnamed
   Line: Humor me.
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -1286,7 +1302,7 @@ future_friends:
   Choice2: 
 - Speaker: Mariposa
   Line: I think, maybe, deep down, everyone wants to save something. Someone they love, something they cherish—maybe even the whole world.
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -1350,7 +1366,7 @@ future_friends:
   Choice2: 
 - Speaker: Mariposa
   Line: Well, when you say it like that, you make me sound crazy.
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -1387,7 +1403,7 @@ future_friends:
   Choice2: 
 - Speaker: Unnamed
   Line: '...you’re ridiculous, you know that?'
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -1397,7 +1413,7 @@ future_friends:
   Choice2: 
 - Speaker: Mariposa
   Line: Aw, come on! I bet you’re the same way, aren’t you?
-  Icon: 
+  Icon: Happy
   Background: 
   FromRadio: 
   Sounds:
@@ -1407,7 +1423,7 @@ future_friends:
   Choice2: 
 - Speaker: Unnamed
   Line: '...maybe you’re right.'
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -1447,7 +1463,7 @@ future_not_friends:
   Choice2: 
 - Speaker: Unnamed
   Line: (Still, if I want to keep going, I need her help. I’ve only gotten this far because of what she’s done. Whether she knows it or not.)
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -1457,7 +1473,7 @@ future_not_friends:
   Choice2: 
 - Speaker: Unnamed
   Line: (...)
-  Icon: 
+  Icon: Sad
   Background: 
   FromRadio: 
   Sounds:
@@ -1467,7 +1483,7 @@ future_not_friends:
   Choice2: 
 - Speaker: Unnamed
   Line: (...maybe it’ll all be over anyway. What a waste.)
-  Icon: 
+  Icon: Neutral
   Background: 
   FromRadio: 
   Sounds:
@@ -1723,7 +1739,7 @@ interact_city_poster_1:
 interact_city_poster_2:
 - Speaker: Mariposa
   Line: The city always feels so lively with all the decorations up.
-  Icon: 
+  Icon: Happy
   Background: 
   FromRadio: 
   Sounds:

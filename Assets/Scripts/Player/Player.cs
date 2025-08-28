@@ -23,6 +23,7 @@ public class Player : MonoBehaviour
 	public IAbility Ability;
 	public PlayerData Data;
 
+	private readonly string[] barrierLayer = new string[] { "Barrier" };
 
 	// which way the character is facing
 	// 1 = right, -1 = left, can never be 0
@@ -113,13 +114,28 @@ public class Player : MonoBehaviour
 		else
 		{
 			Movement.Velocity = Vector2.zero;
-			transform.position = CurrentRespawnPoint.GetComponent<RespawnPoint>().GetRespawnPosition();
-			Movement.ResolveInitialCollisions();
+			SpawnAt(CurrentRespawnPoint.GetComponent<RespawnPoint>().GetRespawnPosition());			
 			if (playerDebug) Debug.Log($"Player respawned to: {CurrentRespawnPoint.gameObject.name} @ {CurrentRespawnPoint.GetRespawnPosition().ToString()}");
 			RuntimeManager.PlayOneShot("event:/sfx/player/respawn");
 		}
 		LevelManager.Instance.RestartFromCheckpoint();
     }
+
+	public void SpawnAt(Vector3 spawn)
+	{
+		Vector2 spawn2D = spawn;
+		RaycastHit2D hit = Physics2D.Raycast(spawn2D, Vector2.down, 1000f, LayerMask.GetMask(barrierLayer));
+		if (hit)
+		{
+			// Slight vertical offset to favor pushing up when resolving initial collisions
+			transform.position = hit.point + Vector2.up * 1.5f;
+		}
+		else
+		{
+			Debug.LogError($"Unable to respawn at the spawnpoint at {spawn}");
+		}
+		Movement.ResolveInitialCollisions();
+	}
 
 	public void TurnTowards(int dir)
 	{

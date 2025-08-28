@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.Cinemachine;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -7,23 +8,34 @@ public class UnlockPipeEvent : DialogueEvent
     [SerializeField] private ItemData pipeItemSO;
     [SerializeField] private GameObject pipeVisual;
     [SerializeField] private GameObject pipePickup;
+    [SerializeField] private PipeEnterTrigger pipes;
+    [SerializeField] private CinemachineCamera pipeCamera;
+
     private float initialY;
+    private const float DROP_TIME = 2.0f;
     private const float n1 = 7.5625f;
     private const float d1 = 2.75f;
 
     IEnumerator DropPipe()
     {
+        pipeCamera.gameObject.SetActive(true);
+        PlayerController.Instance.SetMovementLock(true);
+        pipes.SetVisibility(true);
         pipeVisual.SetActive(true);
         initialY = pipeVisual.transform.localPosition.y;
         float timer = 0;
-        while (timer < 1f)
+        while (timer < DROP_TIME)
         {
             yield return null;
             timer += Time.deltaTime;
-            pipeVisual.transform.localPosition = (1f - easeOutBounce(timer)) * initialY * Vector3.up;
+            pipeVisual.transform.localPosition = (1f - easeOutBounce(timer / DROP_TIME)) * initialY * Vector3.up;
         }
         pipeVisual.transform.localPosition = Vector3.zero;
         pipePickup.SetActive(true);
+        yield return new WaitForSeconds(2.0f);
+        pipes.SetVisibility(false);
+        PlayerController.Instance.SetMovementLock(false);
+        pipeCamera.gameObject.SetActive(false);
     }
 
     // function from https://easings.net/#easeOutBounce

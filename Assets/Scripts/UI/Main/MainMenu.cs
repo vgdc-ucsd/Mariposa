@@ -23,13 +23,17 @@ public class MainMenu : Singleton<MainMenu>
 
     public void LoadGameBtn()
     {
-        DataPersistenceManager.Instance.LoadGame();
-        GameManager.Instance.LoadScene(GameManager.Instance.CurrentScene);
+        GameManager.Instance.LoadScene(GameManager.Instance.SavedScene);
     }
 
-    public void SettingsBtn()
+    public void OpenAudioSettingsBtn()
     {
-        // Opens via onClick event in inspector
+        PauseMenuScript.Instance.OpenAudioSettings();
+    }
+
+    public void OpenVideoSettingsBtn()
+    {
+        PauseMenuScript.Instance.OpenVideoSettings();
     }
 
     public void ExitBtn()

@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 4762288415368172127}
   - component: {fileID: 3714982226823402566}
   - component: {fileID: 8232306207890004563}
-  - component: {fileID: 3725978591248990984}
   m_Layer: 0
   m_Name: PierDeadEndTrigger
   m_TagString: Untagged
@@ -94,22 +93,69 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1.84, y: 3.33}
   m_EdgeRadius: 0
---- !u!114 &3725978591248990984
+--- !u!1 &825255706002785556
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3749703859863675816}
+  - component: {fileID: 5665090121138974842}
+  - component: {fileID: 3637186426424835885}
+  m_Layer: 0
+  m_Name: SetNextStartTriggerEvents
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3749703859863675816
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 825255706002785556}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3520058787248030899}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5665090121138974842
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 222499740981102993}
+  m_GameObject: {fileID: 825255706002785556}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 559faee510dd1af4f80a18e747ff10f9, type: 3}
+  m_Script: {fileID: 11500000, guid: 54b65e02860cd234799b17a9ad33c8ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: check_friendship
-  friendshipThreshold: 0
-  goodBranch: pier_friends
-  badBranch: pier_job_not_friends
+  Name: set_trigger_respond
+  mariposaPierStartTrigger: {fileID: 0}
+  doSwitchSublevel: 0
+--- !u!114 &3637186426424835885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 825255706002785556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54b65e02860cd234799b17a9ad33c8ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: set_trigger_no_response
+  mariposaPierStartTrigger: {fileID: 0}
+  doSwitchSublevel: 0
 --- !u!1 &1924627833542899955
 GameObject:
   m_ObjectHideFlags: 0
@@ -446,6 +492,7 @@ Transform:
   - {fileID: 6997698551663222209}
   - {fileID: 4762288415368172127}
   - {fileID: 4154507731466106529}
+  - {fileID: 3749703859863675816}
   m_Father: {fileID: 4117438975644157790}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &683164422319090669

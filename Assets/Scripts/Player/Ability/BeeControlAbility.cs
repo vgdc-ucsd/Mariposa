@@ -10,8 +10,10 @@ public class BeeControlAbility : MonoBehaviour, IAbility
 
     public void RecallBee()
     {
-        if (Bee.Instance.Movement.CurrentBehavior is not Follow && !Bee.Instance.IsControlled)
+        if (BeeRef.IsControlled || (Bee.Instance.Movement.CurrentBehavior is not Follow && !Bee.Instance.IsControlled))
         {
+            BeeRef.ToggleControl(false);
+            TurnOffBeeFlap();
             RuntimeManager.PlayOneShot(AudioEvents.SFX.mariposa_recall);
             playSendOutSFX = true;
         }

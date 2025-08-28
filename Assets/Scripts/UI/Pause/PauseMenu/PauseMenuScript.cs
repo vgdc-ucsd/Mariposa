@@ -58,7 +58,10 @@ public class PauseMenuScript : Singleton<PauseMenuScript>
 
     public void OpenPauseMenu()
     {
-        PauseMenu.SetActive(true);
+        GameScene currentScene = GameManager.Instance.CurrentScene;
+        bool reopenMenu = currentScene != GameScene.MAIN_MENU && currentScene != GameScene.CREDITS;
+
+        PauseMenu.SetActive(reopenMenu);
         AudioSettingsMenu.SetActive(false);
         VideoSettingsMenu.SetActive(false);
         RestartConfirmMenu.SetActive(false);
@@ -98,7 +101,6 @@ public class PauseMenuScript : Singleton<PauseMenuScript>
 
     public void GoToMainMenu()
     {
-        CloseAllMenus();
         ResumeGame();
         GameManager.Instance.LoadScene(GameScene.MAIN_MENU);
     }
@@ -123,10 +125,10 @@ public class PauseMenuScript : Singleton<PauseMenuScript>
 
     public void QuitLevel()
     {
-        Time.timeScale = 1.0f;
         AudioManager.Instance.ToggleGlobalPause(false, pauseFlags);
         AmbienceManager.Instance.Stop();
         DataPersistenceManager.Instance.SaveGame();
+        ResumeGame();
         GameManager.Instance.LoadScene(GameScene.MAIN_MENU);
     }
 }

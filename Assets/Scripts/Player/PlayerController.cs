@@ -58,6 +58,7 @@ public class PlayerController : MonoBehaviour
         inputs.Player.Interact.started += ctx => SendInteract();
         inputs.Player.Recall.performed += TryRecallBee;
         inputs.Player.Click.performed += ctx => TryAdvanceDialogue();
+        inputs.Player.Jump.performed += ctx => TryAdvanceDialogue();
     }
 
     private void OnDisable()
@@ -68,6 +69,7 @@ public class PlayerController : MonoBehaviour
         inputs.Player.Interact.started -= ctx => SendInteract();
         inputs.Player.Recall.performed -= TryRecallBee;
         inputs.Player.Click.performed -= ctx => TryAdvanceDialogue();
+        inputs.Player.Jump.performed -= ctx => TryAdvanceDialogue();
         inputs.Disable();
     }
 
@@ -172,10 +174,7 @@ public class PlayerController : MonoBehaviour
 
     public void TryAdvanceDialogue()
     {
-        if (GameManager.Instance.GameStateMachine.GetState() != GameState.PAUSE)
-        {
-            DialogueManager.Instance.TryAdvanceDialogue();
-        }
+        DialogueManager.Instance.TryAdvanceDialogue();
     }
 
     private void FixedUpdate()
@@ -212,8 +211,7 @@ public class PlayerController : MonoBehaviour
         }
 
         SwitchTo(character);
-        ControlledPlayer.transform.position = spawn;
-        ControlledPlayer.Movement.ResolveInitialCollisions();
+        ControlledPlayer.SpawnAt(spawn);
         if (ControlledPlayer.Ability is BeeControlAbility bc)
         {
             bc.BeeRef.transform.position = ControlledPlayer.transform.position + new Vector3(0, 2, 0);

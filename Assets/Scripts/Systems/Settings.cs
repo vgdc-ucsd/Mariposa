@@ -84,7 +84,7 @@ public class Settings : Singleton<Settings>
         // {
         //     UnityEngine.Debug.LogWarning("Audio setting referenced is already set! This may be caused by multiple instances of AudioSetting. Overriding current reference...");
         // }
-        // this.audioSetting = audioSetting;
+        this.audioSetting = audioSetting;
     }
 
     private void backgroundAudioTest()

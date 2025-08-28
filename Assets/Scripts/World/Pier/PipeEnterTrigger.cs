@@ -31,7 +31,7 @@ public class PipeEnterTrigger : MonoBehaviour
         }
     }
 
-    private void SetVisibility(bool isVisible)
+    public void SetVisibility(bool isVisible)
     {
         isInteriorVisible = isVisible;
         foreach (SpriteRenderer renderer in interiorRenderers)

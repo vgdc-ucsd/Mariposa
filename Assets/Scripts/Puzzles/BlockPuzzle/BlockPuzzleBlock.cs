@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class BlockPuzzleBlock : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class BlockPuzzleBlock : MonoBehaviour
 {
     public Vector2Int GridPos;
     public Vector2Int Size;
@@ -18,20 +18,16 @@ public class BlockPuzzleBlock : MonoBehaviour, IBeginDragHandler, IDragHandler, 
     private Vector2Int dragOffsetCell;
 
     private RectTransform rectTransform;
-    private Image image;
+    [SerializeField] private Image image;
     private BlockPreview preview = null;
-    private Canvas canvas;
     private CanvasGroup canvasGroup;
 
     public void InitializeBlock()
     {
         rectTransform = GetComponent<RectTransform>();
-        image = GetComponent<Image>();
-        image.alphaHitTestMinimumThreshold = 0.95f;
 
         canvasGroup = GetComponent<CanvasGroup>();
         if (canvasGroup == null) canvasGroup = gameObject.AddComponent<CanvasGroup>();
-        canvas = GetComponentInParent<Canvas>();
 
         if (isFixed)
         {
@@ -41,6 +37,7 @@ public class BlockPuzzleBlock : MonoBehaviour, IBeginDragHandler, IDragHandler, 
         }
         else
         {
+            image.alphaHitTestMinimumThreshold = 0.05f;
             GridPos = -99 * Vector2Int.one;
             if (PreviewPrefab != null && preview == null)
             {
@@ -209,5 +206,21 @@ public class BlockPuzzleBlock : MonoBehaviour, IBeginDragHandler, IDragHandler, 
         else preview.SetSprite(rectTransform.sizeDelta, image.sprite, new Color(1f, 0.3f, 0.3f));
 
         preview.Show();
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (eventData.button != PointerEventData.InputButton.Left) return;
+        if (isFixed) return;
+
+        image.color = new Color(0.7f, 1f, 1f, 1f);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (eventData.button != PointerEventData.InputButton.Left) return;
+        if (isFixed) return;
+
+        image.color = new Color(1f, 1f, 1f, 1f);
     }
 }
