@@ -58,6 +58,7 @@ public class PlayerController : MonoBehaviour
         inputs.Player.Interact.started += ctx => SendInteract();
         inputs.Player.Recall.performed += TryRecallBee;
         inputs.Player.Click.performed += ctx => TryAdvanceDialogue();
+        inputs.Player.Jump.performed += ctx => TryAdvanceDialogue();
     }
 
     private void OnDisable()
@@ -68,6 +69,7 @@ public class PlayerController : MonoBehaviour
         inputs.Player.Interact.started -= ctx => SendInteract();
         inputs.Player.Recall.performed -= TryRecallBee;
         inputs.Player.Click.performed -= ctx => TryAdvanceDialogue();
+        inputs.Player.Jump.performed -= ctx => TryAdvanceDialogue();
         inputs.Disable();
     }
 
