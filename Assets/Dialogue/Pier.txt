@@ -76,7 +76,7 @@ ________________
 Respond.
 
 
-!choice2 pier_no_response -3
+!choice2 pier_no_response_transition -3
 Stay quiet.
 
 
@@ -128,6 +128,7 @@ The pier, that is. What is it like?
 # SWITCH to Mariposa’s perspective.
 
 
+!e set_trigger_respond
 !e switch_sublevels end
 
 
@@ -165,7 +166,7 @@ MARIPOSA
 Different? How so?
 
 
-!event check_friendship
+!event check_friendship end
 
 
 ________________
@@ -283,12 +284,19 @@ MARIPOSA
 !a Mariposa_Urgh3.wav
 
 
-!event play_control_panel_from_pier_respond_part2
+!event play_control_panel_from_pier_respond_part2 end
 ________________
 
 
 
 
+!name pier_no_response_transition
+MARIPOSA
+(neutral)
+
+
+!e set_trigger_no_response
+!e switch_sublevels
 
 
 # SWITCH to Mariposa’s perspective.
@@ -303,7 +311,7 @@ ________________
 !name pier_no_response
 MARIPOSA
 (neutral)
-Wonder if they’re still there. 
+Wonder if they’re still there.
 
 
 MARIPOSA
@@ -322,7 +330,6 @@ MARIPOSA
 !a Mariposa_NothingICanDo4.wav
 
 
-!e switch_sublevels end
 !event play_control_panel_from_pier_no_response
 ________________
 

@@ -90,7 +90,7 @@ pier_dead_end:
     Friendship: 3
   Choice2:
     Response: Stay quiet.
-    LinkedDialogue: pier_no_response
+    LinkedDialogue: pier_no_response_transition
     Friendship: -3
 pier_respond:
 - Speaker: Unnamed
@@ -167,6 +167,8 @@ pier_respond:
   Sounds:
   - Unnamed_TellMeAboutIt3.wav
   Events:
+  - EventName: set_trigger_respond
+    TriggerAtEnd: false
   - EventName: switch_sublevels
     TriggerAtEnd: true
   Choice1: 
@@ -218,7 +220,7 @@ pier_respond_part2:
   Sounds: []
   Events:
   - EventName: check_friendship
-    TriggerAtEnd: false
+    TriggerAtEnd: true
   Choice1: 
   Choice2: 
 seriously:
@@ -360,6 +362,20 @@ woops:
   - Mariposa_Urgh3.wav
   Events:
   - EventName: play_control_panel_from_pier_respond_part2
+    TriggerAtEnd: true
+  Choice1: 
+  Choice2: 
+pier_no_response_transition:
+- Speaker: Mariposa
+  Line: (neutral)
+  Icon: 
+  Background: 
+  FromRadio: 
+  Sounds: []
+  Events:
+  - EventName: set_trigger_no_response
+    TriggerAtEnd: false
+  - EventName: switch_sublevels
     TriggerAtEnd: false
   Choice1: 
   Choice2: 
@@ -399,8 +415,6 @@ pier_no_response:
   Sounds:
   - Mariposa_NothingICanDo4.wav
   Events:
-  - EventName: switch_sublevels
-    TriggerAtEnd: true
   - EventName: play_control_panel_from_pier_no_response
     TriggerAtEnd: false
   Choice1: 
