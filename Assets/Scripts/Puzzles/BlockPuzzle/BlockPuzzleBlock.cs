@@ -1,3 +1,4 @@
+using FMODUnity;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -68,7 +69,6 @@ public class BlockPuzzleBlock : MonoBehaviour, IBeginDragHandler, IDragHandler, 
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        
         if (eventData.button != PointerEventData.InputButton.Left) return;
         if (isFixed) return;
         BlockPuzzle.Instance.ClearBlockFromGrid(this);
@@ -97,6 +97,8 @@ public class BlockPuzzleBlock : MonoBehaviour, IBeginDragHandler, IDragHandler, 
             lastPos = GridPos;
         }
         BlockPuzzle.Instance.ClearBlockFromGrid(this);
+
+        RuntimeManager.PlayOneShot(AudioEvents.SFX.block_pickup);
 
         transform.SetAsLastSibling();
     }
@@ -193,6 +195,8 @@ public class BlockPuzzleBlock : MonoBehaviour, IBeginDragHandler, IDragHandler, 
         }
 
         if (preview != null) preview.Hide();
+
+        RuntimeManager.PlayOneShot(AudioEvents.SFX.block_place);
     }
 
     private void ShowPreview(Vector2 worldPos, bool isValid)

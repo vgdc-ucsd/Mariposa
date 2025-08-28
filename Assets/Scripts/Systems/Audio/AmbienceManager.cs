@@ -28,7 +28,6 @@ public class AmbienceManager : Singleton<AmbienceManager>
             Ambience.Tutorial_unnamed => AudioEvents.Ambience.s0Tutorial_unnamed,
             Ambience.Downtown_mariposa => AudioEvents.Ambience.s1Downtown_mariposa,
             Ambience.Downtown_unnamed => AudioEvents.Ambience.s1Downtown_unnamed,
-            Ambience.Hometown_mariposa => AudioEvents.Ambience.s4Hometown_mariposa,
             Ambience.Hometown_unnamed => AudioEvents.Ambience.s4Hometown_unnamed,
             _ => throw new ArgumentException($"{ambience} does not correspond to a valid EventReference")
         };

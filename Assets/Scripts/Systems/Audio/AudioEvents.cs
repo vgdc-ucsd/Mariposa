@@ -1,6 +1,8 @@
 using FMOD.Studio;
 using FMODUnity;
 using UnityEngine;
+using System.Reflection;
+using System.Text;
 
 public class AudioEvents : MonoBehaviour
 {
@@ -47,7 +49,6 @@ public class AmbienceEvents
     public EventReference s0Tutorial_unnamed;
     public EventReference s1Downtown_mariposa;
     public EventReference s1Downtown_unnamed;
-    public EventReference s4Hometown_mariposa;
     public EventReference s4Hometown_unnamed;
 }
 
@@ -99,6 +100,7 @@ public class SFXEvents
     [Header("Puzzle")]
     public EventReference puzzle_complete_mariposa;
     public EventReference puzzle_complete_unnamed;
+    public EventReference block_pickup;
     public EventReference block_place;
     public EventReference lever_pull;
 
@@ -239,6 +241,28 @@ public class DialogueVOEvents {
 
     public EventReference unnamed_sfx_cough;
     public EventReference unnamed_sfx_pain;
+
+    [Header("Beebo")]
+    public EventReference beebo_alert;
+    public EventReference beebo_bee_right_back;
+    public EventReference beebo_error_erro;
+    public EventReference beebo_fastest_route;
+    public EventReference beebo_got_mail;
+    public EventReference beebo_home_safe;
+    public EventReference beebo_im_back;
+    public EventReference beebo_just_a_moment;
+    public EventReference beebo_lets_go;
+    public EventReference beebo_ms_mariposa;
+    public EventReference beebo_on_my_way;
+    public EventReference beebo_order_received;
+    public EventReference beebo_ow;
+    public EventReference beebo_processing;
+    public EventReference beebo_ready_to_go;
+    public EventReference beebo_ready_when_you_are;
+    public EventReference beebo_rerouting;
+    public EventReference beebo_right_on_schedule;
+    public EventReference beebo_understood;
+    public EventReference beebo_where_to_next;
 
     [Header("LukeNPC")]
     public EventReference luke_npc_neutral_well;

@@ -179,13 +179,23 @@ public class AudioManager : Singleton<AudioManager>, IDataPersistence
     }
     #endregion
 
-    public void ToggleGlobalPause(bool shouldPause)
+    [System.Flags]
+    public enum PauseTypes
     {
-        masterBus.setPaused(shouldPause);
-        musicBus.setPaused(shouldPause);
-        sfxBus.setPaused(shouldPause);
-        ambienceBus.setPaused(shouldPause);
-        dialogueBus.setPaused(shouldPause);
+        Master = 1 << 0,
+        Music = 1 << 1,
+        SFX = 1 << 2,
+        Ambience = 1 << 3,
+        Dialogue = 1 << 4,
+    };
+
+    public void ToggleGlobalPause(bool shouldPause, PauseTypes pauseBusFlags)
+    {
+        if ((pauseBusFlags & PauseTypes.Master) != 0) masterBus.setPaused(shouldPause);
+        if ((pauseBusFlags & PauseTypes.Music) != 0) musicBus.setPaused(shouldPause);
+        if ((pauseBusFlags & PauseTypes.SFX) != 0) sfxBus.setPaused(shouldPause);
+        if ((pauseBusFlags & PauseTypes.Ambience) != 0) ambienceBus.setPaused(shouldPause);
+        if ((pauseBusFlags & PauseTypes.Dialogue) != 0) dialogueBus.setPaused(shouldPause);
     }
 
     public void SaveData(ref GameData data)

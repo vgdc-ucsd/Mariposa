@@ -142,6 +142,7 @@ GameObject:
   - component: {fileID: 6260858183149911570}
   - component: {fileID: 6715191084165633224}
   - component: {fileID: 988824889744194793}
+  - component: {fileID: 3807775849129006594}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Untagged
@@ -223,8 +224,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84517412152b3f348a79f08e9e2a1051, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playingDialogueVO: []
-  _playingSFX: []
+  playingDialogueVOEvent: []
 --- !u!114 &988824889744194793
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -512,6 +512,13 @@ MonoBehaviour:
         Data3: -1298938221
         Data4: 2005707069
       Path: event:/sfx/item/radio/static
+    radio_static_no_voices:
+      Guid:
+        Data1: 805732606
+        Data2: 1101350426
+        Data3: -604008285
+        Data4: -1003881226
+      Path: event:/sfx/item/radio/static_dialogue
     puzzle_complete_mariposa:
       Guid:
         Data1: -856637882
@@ -526,6 +533,13 @@ MonoBehaviour:
         Data3: 494241438
         Data4: -447299516
       Path: event:/sfx/puzzle/puzzle_complete/unnamed
+    block_pickup:
+      Guid:
+        Data1: -134741214
+        Data2: 1115319889
+        Data3: 1175713708
+        Data4: -1090856042
+      Path: event:/sfx/puzzle/block_pickup
     block_place:
       Guid:
         Data1: -1586219093
@@ -674,13 +688,6 @@ MonoBehaviour:
         Data3: 571006380
         Data4: -1958493163
       Path: event:/ambience/s1_downtown_city1/unnamed
-    s4Hometown_mariposa:
-      Guid:
-        Data1: 0
-        Data2: 0
-        Data3: 0
-        Data4: 0
-      Path: 
     s4Hometown_unnamed:
       Guid:
         Data1: 0
@@ -689,48 +696,6 @@ MonoBehaviour:
         Data4: 0
       Path: 
   _dialogueVO:
-    mariposa_neutral_short_hmm:
-      Guid:
-        Data1: -108575348
-        Data2: 1281907671
-        Data3: -793896829
-        Data4: -79769589
-      Path: event:/dialogue/mariposa/neutral/short/hmm
-    mariposa_happy_short_alright:
-      Guid:
-        Data1: 340745070
-        Data2: 1126709970
-        Data3: -1543582592
-        Data4: -1371103661
-      Path: event:/dialogue/mariposa/happy/short/alright
-    mariposa_happy_medium_i_promise:
-      Guid:
-        Data1: 284083586
-        Data2: 1240113993
-        Data3: 1991031960
-        Data4: -756278691
-      Path: event:/dialogue/mariposa/happy/medium/i_promise
-    mariposa_happy_short_giggle:
-      Guid:
-        Data1: -2020502958
-        Data2: 1281449825
-        Data3: -1883671878
-        Data4: -1880169301
-      Path: event:/dialogue/mariposa/happy/short/giggle
-    mariposa_happy_medium_thank_you:
-      Guid:
-        Data1: 281147789
-        Data2: 1076635175
-        Data3: 367663489
-        Data4: -1386852522
-      Path: event:/dialogue/mariposa/happy/medium/thank_you
-    mariposa_happy_short_ready_to_go:
-      Guid:
-        Data1: -1569651837
-        Data2: 1263850541
-        Data3: -263635823
-        Data4: 999031346
-      Path: event:/dialogue/mariposa/happy/short/ready_to_go
     mariposa_happy_medium_glad_could_help:
       Guid:
         Data1: -1923472825
@@ -738,6 +703,188 @@ MonoBehaviour:
         Data3: 2050905256
         Data4: -788581741
       Path: event:/dialogue/mariposa/happy/medium/glad_could_help
+    mariposa_happy_medium_i_promise:
+      Guid:
+        Data1: 284083586
+        Data2: 1240113993
+        Data3: 1991031960
+        Data4: -756278691
+      Path: event:/dialogue/mariposa/happy/medium/i_promise
+    mariposa_happy_medium_in_order:
+      Guid:
+        Data1: -1003774653
+        Data2: 1079835414
+        Data3: 397379007
+        Data4: 6220513
+      Path: event:/dialogue/mariposa/happy/medium/in_order
+    mariposa_happy_medium_piece_of_cake:
+      Guid:
+        Data1: 39953977
+        Data2: 1278527459
+        Data3: 1527112126
+        Data4: 434358006
+      Path: event:/dialogue/mariposa/happy/medium/piece_of_cake
+    mariposa_happy_medium_see_ya_round:
+      Guid:
+        Data1: 1372005335
+        Data2: 1160091800
+        Data3: -1436250707
+        Data4: 481560501
+      Path: event:/dialogue/mariposa/happy/medium/see_ya_round
+    mariposa_happy_medium_thank_you:
+      Guid:
+        Data1: 281147789
+        Data2: 1076635175
+        Data3: 367663489
+        Data4: -1386852522
+      Path: event:/dialogue/mariposa/happy/medium/thank_you
+    mariposa_happy_medium_up_and_running:
+      Guid:
+        Data1: -1305435300
+        Data2: 1200371804
+        Data3: -228886610
+        Data4: 234532861
+      Path: event:/dialogue/mariposa/happy/medium/up_and_running
+    mariposa_happy_short_alright:
+      Guid:
+        Data1: 340745070
+        Data2: 1126709970
+        Data3: -1543582592
+        Data4: -1371103661
+      Path: event:/dialogue/mariposa/happy/short/alright
+    mariposa_happy_short_giggle:
+      Guid:
+        Data1: -2020502958
+        Data2: 1281449825
+        Data3: -1883671878
+        Data4: -1880169301
+      Path: event:/dialogue/mariposa/happy/short/giggle
+    mariposa_happy_short_it_works:
+      Guid:
+        Data1: -1884116327
+        Data2: 1259373620
+        Data3: 712354231
+        Data4: -2068674504
+      Path: event:/dialogue/mariposa/happy/short/it_works
+    mariposa_happy_short_ready_to_go:
+      Guid:
+        Data1: -1569651837
+        Data2: 1263850541
+        Data3: -263635823
+        Data4: 999031346
+      Path: event:/dialogue/mariposa/happy/short/ready_to_go
+    mariposa_happy_short_yeah:
+      Guid:
+        Data1: -1930145480
+        Data2: 1109791242
+        Data3: -621370993
+        Data4: 37890344
+      Path: event:/dialogue/mariposa/happy/short/yeah
+    mariposa_neutral_medium_how_bout_this:
+      Guid:
+        Data1: 2093421154
+        Data2: 1107735007
+        Data3: -749119850
+        Data4: 1774103444
+      Path: event:/dialogue/mariposa/neutral/medium/how_bout_this
+    mariposa_neutral_medium_miscalculated:
+      Guid:
+        Data1: -612354624
+        Data2: 1147833355
+        Data3: -1361318775
+        Data4: -2031923796
+      Path: event:/dialogue/mariposa/neutral/medium/miscalculated
+    mariposa_neutral_medium_new_perspective:
+      Guid:
+        Data1: 1574216447
+        Data2: 1105961236
+        Data3: -910232659
+        Data4: -261667744
+      Path: event:/dialogue/mariposa/neutral/medium/new_perspective
+    mariposa_neutral_medium_one_thing:
+      Guid:
+        Data1: 176081385
+        Data2: 1090300144
+        Data3: -220292938
+        Data4: -1466928853
+      Path: event:/dialogue/mariposa/neutral/medium/one_thing
+    mariposa_neutral_medium_the_way_around:
+      Guid:
+        Data1: -1795428704
+        Data2: 1194001441
+        Data3: 1982236816
+        Data4: 7459406
+      Path: event:/dialogue/mariposa/neutral/medium/the_way_around
+    mariposa_neutral_short_hmm:
+      Guid:
+        Data1: -108575348
+        Data2: 1281907671
+        Data3: -793896829
+        Data4: -79769589
+      Path: event:/dialogue/mariposa/neutral/short/hmm
+    mariposa_neutral_short_i_mean:
+      Guid:
+        Data1: -312678358
+        Data2: 1251299475
+        Data3: 704930747
+        Data4: 955255399
+      Path: event:/dialogue/mariposa/neutral/short/i_mean
+    mariposa_neutral_short_well:
+      Guid:
+        Data1: -1039699133
+        Data2: 1323127334
+        Data3: 915647628
+        Data4: -1845789523
+      Path: event:/dialogue/mariposa/neutral/short/well
+    mariposa_sad_medium_maybe_im_wrong:
+      Guid:
+        Data1: -303929317
+        Data2: 1286437808
+        Data3: -1326984033
+        Data4: -2137049068
+      Path: event:/dialogue/mariposa/sad/medium/maybe_im_wrong
+    mariposa_sad_medium_nothing_i_can_do:
+      Guid:
+        Data1: 583460168
+        Data2: 1330155472
+        Data3: 1143208073
+        Data4: -382043776
+      Path: event:/dialogue/mariposa/sad/medium/nothing_i_can_do
+    mariposa_sad_medium_really_sorry:
+      Guid:
+        Data1: -1962278825
+        Data2: 1159231607
+        Data3: 1741274023
+        Data4: -891876489
+      Path: event:/dialogue/mariposa/sad/medium/really_sorry
+    mariposa_sad_medium_try_again:
+      Guid:
+        Data1: 558759011
+        Data2: 1145681327
+        Data3: -158069073
+        Data4: -1085254764
+      Path: event:/dialogue/mariposa/sad/medium/try_again
+    mariposa_sad_medium_why_no_work:
+      Guid:
+        Data1: -323389595
+        Data2: 1242251614
+        Data3: -1070530147
+        Data4: -1916873005
+      Path: event:/dialogue/mariposa/sad/medium/why_no_work
+    mariposa_sad_short_aww:
+      Guid:
+        Data1: 728462149
+        Data2: 1185043507
+        Data3: 777705113
+        Data4: -777077947
+      Path: event:/dialogue/mariposa/sad/short/aww
+    mariposa_sad_short_no:
+      Guid:
+        Data1: 937104073
+        Data2: 1097639386
+        Data3: -43180641
+        Data4: 894914252
+      Path: event:/dialogue/mariposa/sad/short/no
     mariposa_sad_short_sigh:
       Guid:
         Data1: 1231191970
@@ -745,6 +892,62 @@ MonoBehaviour:
         Data3: 848324029
         Data4: 331867586
       Path: event:/dialogue/mariposa/sad/short/sigh
+    mariposa_sad_short_sorry:
+      Guid:
+        Data1: -1661105306
+        Data2: 1105395543
+        Data3: 71885491
+        Data4: 1364449106
+      Path: event:/dialogue/mariposa/sad/short/sorry
+    mariposa_sad_short_urgh:
+      Guid:
+        Data1: 621324918
+        Data2: 1187196201
+        Data3: -1431401561
+        Data4: -1248203124
+      Path: event:/dialogue/mariposa/sad/short/urgh
+    mariposa_surprised_medium_dont_scare_me:
+      Guid:
+        Data1: 140764483
+        Data2: 1099821122
+        Data3: 127890335
+        Data4: -1607340549
+      Path: event:/dialogue/mariposa/surprised/medium/dont_scare_me
+    mariposa_surprised_medium_look_out:
+      Guid:
+        Data1: 1259587416
+        Data2: 1299700848
+        Data3: 1504567693
+        Data4: 181358369
+      Path: event:/dialogue/mariposa/surprised/medium/look_out
+    mariposa_surprised_medium_that_was_close:
+      Guid:
+        Data1: -1243919733
+        Data2: 1281322842
+        Data3: 482488726
+        Data4: 960226241
+      Path: event:/dialogue/mariposa/surprised/medium/that_was_close
+    mariposa_surprised_short_hey:
+      Guid:
+        Data1: 240059060
+        Data2: 1203327858
+        Data3: 313745029
+        Data4: -291410698
+      Path: event:/dialogue/mariposa/surprised/short/hey
+    mariposa_surprised_short_seriously:
+      Guid:
+        Data1: -1816334417
+        Data2: 1087803510
+        Data3: -1517980791
+        Data4: 702754491
+      Path: event:/dialogue/mariposa/surprised/short/seriously
+    mariposa_surprised_short_wait_a_second:
+      Guid:
+        Data1: -980797972
+        Data2: 1104119956
+        Data3: 692535943
+        Data4: -531739430
+      Path: event:/dialogue/mariposa/surprised/short/wait_a_second
     mariposa_surprised_short_woah:
       Guid:
         Data1: 1485185906
@@ -752,6 +955,552 @@ MonoBehaviour:
         Data3: 476145305
         Data4: -1434101325
       Path: event:/dialogue/mariposa/surprised/short/woah
+    mariposa_surprised_short_you_ok:
+      Guid:
+        Data1: 269997148
+        Data2: 1162050403
+        Data3: 1046783672
+        Data4: -2072665165
+      Path: event:/dialogue/mariposa/surprised/short/you_ok
+    unnamed_happy_medium_maybe_youre_right:
+      Guid:
+        Data1: -422993624
+        Data2: 1133162251
+        Data3: -1267238782
+        Data4: -849854728
+      Path: event:/dialogue/unnamed/happy/medium/maybe_youre_right
+    unnamed_happy_medium_sure_id_like_that:
+      Guid:
+        Data1: -224778883
+        Data2: 1210538252
+        Data3: 605614226
+        Data4: 2036523618
+      Path: event:/dialogue/unnamed/happy/medium/sure_id_like_that
+    unnamed_happy_medium_you_did_it:
+      Guid:
+        Data1: -1154486418
+        Data2: 1118227417
+        Data3: 545171631
+        Data4: -256561936
+      Path: event:/dialogue/unnamed/happy/medium/you_did_it
+    unnamed_happy_medium_youre_ridiculous:
+      Guid:
+        Data1: 195305724
+        Data2: 1109870718
+        Data3: -2114910038
+        Data4: 1274055457
+      Path: event:/dialogue/unnamed/happy/medium/youre_ridiculous
+    unnamed_happy_short_dry_laugh:
+      Guid:
+        Data1: -1961326182
+        Data2: 1115252437
+        Data3: -104300661
+        Data4: 1546003290
+      Path: event:/dialogue/unnamed/happy/short/dry_laugh
+    unnamed_happy_short_good_work:
+      Guid:
+        Data1: -1707776765
+        Data2: 1194632289
+        Data3: -830492515
+        Data4: 1547013873
+      Path: event:/dialogue/unnamed/happy/short/good_work
+    unnamed_happy_short_maybe:
+      Guid:
+        Data1: 1188200193
+        Data2: 1160899005
+        Data3: -808513378
+        Data4: 851186067
+      Path: event:/dialogue/unnamed/happy/short/maybe
+    unnamed_happy_short_nice:
+      Guid:
+        Data1: -1089967347
+        Data2: 1210559771
+        Data3: 815641743
+        Data4: -1031351531
+      Path: event:/dialogue/unnamed/happy/short/nice
+    unnamed_neutral_friendship_how_bout_this:
+      Guid:
+        Data1: 1323135819
+        Data2: 1316090871
+        Data3: -11879499
+        Data4: -1122829967
+      Path: event:/dialogue/unnamed/neutral/friendship/how_bout_this
+    unnamed_neutral_friendship_tell_me_about_it:
+      Guid:
+        Data1: -1153050836
+        Data2: 1083910667
+        Data3: 83912074
+        Data4: -1972226255
+      Path: event:/dialogue/unnamed/neutral/friendship/tell_me_about_it
+    unnamed_neutral_friendship_what_if:
+      Guid:
+        Data1: 1833590115
+        Data2: 1074595272
+        Data3: 142303143
+        Data4: -1773323592
+      Path: event:/dialogue/unnamed/neutral/friendship/what_if
+    unnamed_neutral_friendship_youre_fine:
+      Guid:
+        Data1: 2024139302
+        Data2: 1125403180
+        Data3: -1317089651
+        Data4: -698442509
+      Path: event:/dialogue/unnamed/neutral/friendship/youre_fine
+    unnamed_neutral_medium_another_way:
+      Guid:
+        Data1: -1551210518
+        Data2: 1098284597
+        Data3: 1762270380
+        Data4: -1687624901
+      Path: event:/dialogue/unnamed/neutral/medium/another_way
+    unnamed_neutral_medium_fine_by_me:
+      Guid:
+        Data1: 1008651727
+        Data2: 1197355089
+        Data3: -506856824
+        Data4: 1613970920
+      Path: event:/dialogue/unnamed/neutral/medium/fine_by_me
+    unnamed_neutral_medium_minor_setback:
+      Guid:
+        Data1: -43059802
+        Data2: 1103572093
+        Data3: 1054735786
+        Data4: 740295199
+      Path: event:/dialogue/unnamed/neutral/medium/minor_setback
+    unnamed_neutral_medium_no_time_to_waste:
+      Guid:
+        Data1: 458957553
+        Data2: 1076545087
+        Data3: -2079287636
+        Data4: 2030689763
+      Path: event:/dialogue/unnamed/neutral/medium/no_time_to_waste
+    unnamed_neutral_medium_struct_a_nerve:
+      Guid:
+        Data1: -120048952
+        Data2: 1182945529
+        Data3: 1812368519
+        Data4: 229600234
+      Path: event:/dialogue/unnamed/neutral/medium/struck_a_nerve
+    unnamed_neutral_medium_time_to_move_on:
+      Guid:
+        Data1: 754806110
+        Data2: 1115350022
+        Data3: -585595497
+        Data4: -491399520
+      Path: event:/dialogue/unnamed/neutral/medium/time_to_move_on
+    unnamed_neutral_medium_youre_telling_me:
+      Guid:
+        Data1: -639332507
+        Data2: 1278064084
+        Data3: 263432627
+        Data4: -82832087
+      Path: event:/dialogue/unnamed/neutral/medium/youre_telling_me
+    unnamed_neutral_short_come_on:
+      Guid:
+        Data1: 1325043523
+        Data2: 1105133372
+        Data3: 479075488
+        Data4: 233948627
+      Path: event:/dialogue/unnamed/neutral/short/come_on
+    unnamed_neutral_short_fine:
+      Guid:
+        Data1: 463037777
+        Data2: 1293143810
+        Data3: 898630812
+        Data4: -1396663285
+      Path: event:/dialogue/unnamed/neutral/short/fine
+    unnamed_neutral_short_hey:
+      Guid:
+        Data1: 1215493992
+        Data2: 1084530627
+        Data3: 901738933
+        Data4: -499863738
+      Path: event:/dialogue/unnamed/neutral/short/hey
+    unnamed_neutral_short_not_listening:
+      Guid:
+        Data1: 1140405863
+        Data2: 1179100697
+        Data3: -1925700478
+        Data4: -471746526
+      Path: event:/dialogue/unnamed/neutral/short/not_listening
+    unnamed_neutral_short_not_the_time:
+      Guid:
+        Data1: 497327062
+        Data2: 1199350475
+        Data3: 1491289987
+        Data4: -1406369060
+      Path: event:/dialogue/unnamed/neutral/short/not_the_time
+    unnamed_neutral_short_tch:
+      Guid:
+        Data1: -1984629293
+        Data2: 1081972955
+        Data3: 947862660
+        Data4: -526830833
+      Path: event:/dialogue/unnamed/neutral/short/tch
+    unnamed_neutral_short_this_again:
+      Guid:
+        Data1: -1766780533
+        Data2: 1112474074
+        Data3: -312937058
+        Data4: -1987283037
+      Path: event:/dialogue/unnamed/neutral/short/this_again
+    unnamed_neutral_short_useless_drivel:
+      Guid:
+        Data1: -1194258187
+        Data2: 1308711233
+        Data3: -773644120
+        Data4: 734796284
+      Path: event:/dialogue/unnamed/neutral/short/useless_drivel
+    unnamed_neutral_short_whatever:
+      Guid:
+        Data1: -1562281253
+        Data2: 1337332409
+        Data3: 1389355940
+        Data4: 177542369
+      Path: event:/dialogue/unnamed/neutral/short/whatever
+    unnamed_neutral_some_happy_i_suppose_so:
+      Guid:
+        Data1: 436202969
+        Data2: 1144763238
+        Data3: 1685893772
+        Data4: -1403226206
+      Path: event:/dialogue/unnamed/neutral/some_happy/i_suppose_so
+    unnamed_neutral_some_happy_its_ok:
+      Guid:
+        Data1: 1399266997
+        Data2: 1231579457
+        Data3: -347270263
+        Data4: -1143288565
+      Path: event:/dialogue/unnamed/neutral/some_happy/its_ok
+    unnamed_neutral_some_happy_thank_you:
+      Guid:
+        Data1: 631057191
+        Data2: 1168032610
+        Data3: 1048286630
+        Data4: 1060088932
+      Path: event:/dialogue/unnamed/neutral/some_happy/thank_you
+    unnamed_neutral_some_happy_you_there:
+      Guid:
+        Data1: 371064815
+        Data2: 1314244341
+        Data3: -594396006
+        Data4: 2015172194
+      Path: event:/dialogue/unnamed/neutral/some_happy/you_there
+    unnamed_sad_medium_had_to_be_like_this:
+      Guid:
+        Data1: -1006122608
+        Data2: 1224066156
+        Data3: 2016950941
+        Data4: 1205437077
+      Path: event:/dialogue/unnamed/sad/medium/had_to_be_like_this
+    unnamed_sad_medium_mari:
+      Guid:
+        Data1: -961811852
+        Data2: 1196605767
+        Data3: 1870131361
+        Data4: 1560598990
+      Path: event:/dialogue/unnamed/sad/medium/mari
+    unnamed_sad_medium_mariposa:
+      Guid:
+        Data1: 1049308962
+        Data2: 1161885535
+        Data3: -857485133
+        Data4: -311188093
+      Path: event:/dialogue/unnamed/sad/medium/mariposa
+    unnamed_sad_medium_nowhere_to_run:
+      Guid:
+        Data1: -1980222713
+        Data2: 1187702376
+        Data3: 1204081027
+        Data4: 1505618636
+      Path: event:/dialogue/unnamed/sad/medium/nowhere_to_run
+    unnamed_sad_medium_pain_had_to_be_like_this:
+      Guid:
+        Data1: -2049900714
+        Data2: 1131800131
+        Data3: -1202730575
+        Data4: 1183503859
+      Path: event:/dialogue/unnamed/sad/medium/pain_had_to_be_like_this
+    unnamed_sad_medium_right_all_along:
+      Guid:
+        Data1: -2052855648
+        Data2: 1235864703
+        Data3: 16883092
+        Data4: -533568686
+      Path: event:/dialogue/unnamed/sad/medium/right_all_along
+    unnamed_sad_medium_theres_no_point:
+      Guid:
+        Data1: -1034820540
+        Data2: 1180014792
+        Data3: -360517244
+        Data4: 195971079
+      Path: event:/dialogue/unnamed/sad/medium/theres_no_point
+    unnamed_sad_medium_wasnt_your_fault:
+      Guid:
+        Data1: 917927594
+        Data2: 1276898550
+        Data3: 599912351
+        Data4: 642985894
+      Path: event:/dialogue/unnamed/sad/medium/wasnt_your_fault
+    unnamed_sad_short_im_sorry:
+      Guid:
+        Data1: -376236177
+        Data2: 1110996852
+        Data3: 1897632644
+        Data4: 787290685
+      Path: event:/dialogue/unnamed/sad/short/im_sorry
+    unnamed_sad_short_no:
+      Guid:
+        Data1: 1445632030
+        Data2: 1242108425
+        Data3: 783480712
+        Data4: 263941149
+      Path: event:/dialogue/unnamed/sad/short/no
+    unnamed_sad_short_not_yet:
+      Guid:
+        Data1: 774615195
+        Data2: 1273513656
+        Data3: 252235414
+        Data4: 2146510895
+      Path: event:/dialogue/unnamed/sad/short/not_yet
+    unnamed_sad_short_sigh:
+      Guid:
+        Data1: -1448935991
+        Data2: 1295905328
+        Data3: -1164444750
+        Data4: 1520611809
+      Path: event:/dialogue/unnamed/sad/short/sigh
+    unnamed_sad_short_ugh:
+      Guid:
+        Data1: -1292437058
+        Data2: 1162151639
+        Data3: -1844395881
+        Data4: 1558090878
+      Path: event:/dialogue/unnamed/sad/short/ugh
+    unnamed_surprised_medium_get_back:
+      Guid:
+        Data1: -1794769827
+        Data2: 1209197510
+        Data3: -1777603660
+        Data4: -1472568250
+      Path: event:/dialogue/unnamed/surprised/medium/get_back
+    unnamed_surprised_medium_not_a_step_closer:
+      Guid:
+        Data1: -824615666
+        Data2: 1217757506
+        Data3: 1773688766
+        Data4: -1353413127
+      Path: event:/dialogue/unnamed/surprised/medium/not_a_step_closer
+    unnamed_surprised_medium_somethings_wrong:
+      Guid:
+        Data1: -544856593
+        Data2: 1321092690
+        Data3: -1109676380
+        Data4: -564039551
+      Path: event:/dialogue/unnamed/surprised/medium/somethings_wrong
+    unnamed_surprised_medium_these_automatons:
+      Guid:
+        Data1: 882108983
+        Data2: 1081983265
+        Data3: 772815258
+        Data4: 1669830731
+      Path: event:/dialogue/unnamed/surprised/medium/these_automatons
+    unnamed_surprised_medium_this_is:
+      Guid:
+        Data1: 5385741
+        Data2: 1322420012
+        Data3: 1006026907
+        Data4: 734202447
+      Path: event:/dialogue/unnamed/surprised/medium/this_is
+    unnamed_surprised_medium_this_isnt_right:
+      Guid:
+        Data1: -941751839
+        Data2: 1232345049
+        Data3: -1470260083
+        Data4: -687716719
+      Path: event:/dialogue/unnamed/surprised/medium/this_isnt_right
+    unnamed_surprised_medium_whos_there:
+      Guid:
+        Data1: -652415883
+        Data2: 1288393107
+        Data3: -1736614003
+        Data4: 155379432
+      Path: event:/dialogue/unnamed/surprised/medium/whos_there
+    unnamed_surprised_short_damn_it:
+      Guid:
+        Data1: -1314892867
+        Data2: 1108555852
+        Data3: 1248962985
+        Data4: -765858861
+      Path: event:/dialogue/unnamed/surprised/short/damn_it
+    unnamed_surprised_short_no:
+      Guid:
+        Data1: 1249375942
+        Data2: 1236690550
+        Data3: -757214581
+        Data4: -4226264
+      Path: event:/dialogue/unnamed/surprised/short/no
+    unnamed_surprised_short_this_isnt:
+      Guid:
+        Data1: -708817500
+        Data2: 1188569939
+        Data3: 560317615
+        Data4: 122958633
+      Path: event:/dialogue/unnamed/surprised/short/this_isnt
+    unnamed_sfx_cough:
+      Guid:
+        Data1: 25104988
+        Data2: 1249158114
+        Data3: 158014592
+        Data4: -1994438221
+      Path: event:/dialogue/unnamed/sfx/cough
+    unnamed_sfx_pain:
+      Guid:
+        Data1: -1599004591
+        Data2: 1263981392
+        Data3: -1853474676
+        Data4: -609768586
+      Path: event:/dialogue/unnamed/sfx/pain
+    beebo_alert:
+      Guid:
+        Data1: -1571750135
+        Data2: 1224510125
+        Data3: -363780441
+        Data4: 674524361
+      Path: event:/dialogue/beebo/alert
+    beebo_bee_right_back:
+      Guid:
+        Data1: -947538682
+        Data2: 1191740592
+        Data3: 2112214409
+        Data4: 1523587399
+      Path: event:/dialogue/beebo/bee_right_back
+    beebo_error_erro:
+      Guid:
+        Data1: -1998126781
+        Data2: 1228830432
+        Data3: 1331150015
+        Data4: 672593554
+      Path: event:/dialogue/beebo/error_error
+    beebo_fastest_route:
+      Guid:
+        Data1: -794744525
+        Data2: 1226695375
+        Data3: 1456937362
+        Data4: 1999300227
+      Path: event:/dialogue/beebo/fastest_route
+    beebo_got_mail:
+      Guid:
+        Data1: 193621682
+        Data2: 1216822834
+        Data3: -853339201
+        Data4: -582377939
+      Path: event:/dialogue/beebo/got_mail
+    beebo_home_safe:
+      Guid:
+        Data1: 1912589264
+        Data2: 1218484820
+        Data3: -1640156493
+        Data4: 2103703726
+      Path: event:/dialogue/beebo/home_safe
+    beebo_im_back:
+      Guid:
+        Data1: 385053565
+        Data2: 1138311759
+        Data3: 675771277
+        Data4: 1038257938
+      Path: event:/dialogue/beebo/im_back
+    beebo_just_a_moment:
+      Guid:
+        Data1: -1580962688
+        Data2: 1159198344
+        Data3: -881933691
+        Data4: 361443374
+      Path: event:/dialogue/beebo/just_a_moment
+    beebo_lets_go:
+      Guid:
+        Data1: 127845376
+        Data2: 1189342297
+        Data3: -1896749908
+        Data4: -1300006609
+      Path: event:/dialogue/beebo/lets_go
+    beebo_ms_mariposa:
+      Guid:
+        Data1: -542808097
+        Data2: 1215362278
+        Data3: 1998844317
+        Data4: -1460779728
+      Path: event:/dialogue/beebo/ms_mariposa
+    beebo_on_my_way:
+      Guid:
+        Data1: 409767135
+        Data2: 1305830963
+        Data3: 508255660
+        Data4: -1047610920
+      Path: event:/dialogue/beebo/on_my_way
+    beebo_order_received:
+      Guid:
+        Data1: 540549239
+        Data2: 1321071621
+        Data3: -2060951402
+        Data4: 205824212
+      Path: event:/dialogue/beebo/order_received
+    beebo_ow:
+      Guid:
+        Data1: -794248539
+        Data2: 1122796508
+        Data3: -1635148887
+        Data4: -437130910
+      Path: event:/dialogue/beebo/ow
+    beebo_processing:
+      Guid:
+        Data1: 232780296
+        Data2: 1145226913
+        Data3: -604942958
+        Data4: -1731634331
+      Path: event:/dialogue/beebo/processing
+    beebo_ready_to_go:
+      Guid:
+        Data1: -344198575
+        Data2: 1191780205
+        Data3: -656144461
+        Data4: 163763614
+      Path: event:/dialogue/beebo/ready_to_go
+    beebo_ready_when_you_are:
+      Guid:
+        Data1: -9088832
+        Data2: 1171665178
+        Data3: 222922906
+        Data4: 605041059
+      Path: event:/dialogue/beebo/ready_when_you_are
+    beebo_rerouting:
+      Guid:
+        Data1: 2088576326
+        Data2: 1149150030
+        Data3: 1077979545
+        Data4: 306891193
+      Path: event:/dialogue/beebo/rerouting
+    beebo_right_on_schedule:
+      Guid:
+        Data1: 276072788
+        Data2: 1107943303
+        Data3: 1851036095
+        Data4: -1973668308
+      Path: event:/dialogue/beebo/right_on_schedule
+    beebo_understood:
+      Guid:
+        Data1: 1888155241
+        Data2: 1295459944
+        Data3: -1053043324
+        Data4: 1821285162
+      Path: event:/dialogue/beebo/understood
+    beebo_where_to_next:
+      Guid:
+        Data1: 1729381577
+        Data2: 1212280848
+        Data3: -789409863
+        Data4: 436869486
+      Path: event:/dialogue/beebo/where_to_next
     luke_npc_neutral_well:
       Guid:
         Data1: 247012369
@@ -815,27 +1564,27 @@ MonoBehaviour:
         Data3: 1068166530
         Data4: 381653589
       Path: event:/dialogue/luke/npc_neutral/lets_think_about_this
-    unnamed_sfx_cough:
+    luke_npc_happy_thanks_mariposa:
       Guid:
-        Data1: 25104988
-        Data2: 1249158114
-        Data3: 158014592
-        Data4: -1994438221
-      Path: event:/dialogue/unnamed/sfx/cough
-    unnamed_neutral_time_to_move_on:
+        Data1: 1378758054
+        Data2: 1113952945
+        Data3: -2082933588
+        Data4: 188788149
+      Path: event:/dialogue/luke/npc_happy/thanks_mariposa
+    luke_npc_robot_alright:
       Guid:
-        Data1: 754806110
-        Data2: 1115350022
-        Data3: -585595497
-        Data4: -491399520
-      Path: event:/dialogue/unnamed/neutral/medium/time_to_move_on
-    unnamed_sad_short_ugh:
+        Data1: -177242092
+        Data2: 1097895969
+        Data3: -771768703
+        Data4: 1045280491
+      Path: event:/dialogue/luke/npc_robot/alright
+    luke_npc_robot_woah:
       Guid:
-        Data1: -1292437058
-        Data2: 1162151639
-        Data3: -1844395881
-        Data4: 1558090878
-      Path: event:/dialogue/unnamed/sad/short/ugh
+        Data1: 1157128353
+        Data2: 1107568879
+        Data3: 2072905890
+        Data4: -25791991
+      Path: event:/dialogue/luke/npc_robot/woah1
     regine_npc_sad_okay:
       Guid:
         Data1: 2064888220
@@ -892,6 +1641,13 @@ MonoBehaviour:
         Data3: -697648961
         Data4: 2112580913
       Path: event:/dialogue/regine/npc_greetings/mari
+    regine_npc_greetings_oh_hey:
+      Guid:
+        Data1: -1237600115
+        Data2: 1258203206
+        Data3: -1625369461
+        Data4: 2094259621
+      Path: event:/dialogue/regine/npc_greetings/oh_hey
     ruby_npc_surprised_woah:
       Guid:
         Data1: -233130390
@@ -948,6 +1704,18 @@ MonoBehaviour:
         Data3: 959782065
         Data4: -2048292170
       Path: event:/dialogue/justin/npc_happy/laugh
+--- !u!114 &3807775849129006594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3251428376167967339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f1b17e9e7eb3a64fbeb00defa721a31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3753503467226008353
 GameObject:
   m_ObjectHideFlags: 0
