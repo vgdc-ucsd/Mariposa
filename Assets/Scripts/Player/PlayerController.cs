@@ -105,6 +105,10 @@ public class PlayerController : MonoBehaviour
         Subscribe(ControlledPlayer.Ability);
         ControlledPlayer.Ability.Initialize();
         ControlledPlayer.gameObject.SetActive(true);
+        foreach (var trigger in FindObjectsOfType<InteractionTrigger>())
+        {
+            trigger.EnsureControlledPlayerInside();
+        }
         InGameUI.Instance.UpdateInteractPrompt();
     }
 

@@ -47,11 +47,11 @@ public class InteractionTrigger : Trigger
     }
     public void EnsureControlledPlayerInside()
     {
-        Player controlledPlayer = PlayerController.Instance.ControlledPlayer;
+        IControllable controlledPlayer = PlayerController.Instance.CurrentControllable;
         if (controlledPlayer == null || TriggerCollider == null) return;
-        Body playerBody = controlledPlayer.GetComponent<Body>();
+        Body playerBody = controlledPlayer.body;
         if (playerBody == null) return;
-        Collider2D playerCollider = controlledPlayer.GetComponent<Collider2D>();
+        Collider2D playerCollider = controlledPlayer.transform.GetComponent<Collider2D>();
         if (playerCollider == null) return;
         bool touching = TriggerCollider.IsTouching(playerCollider);
         if (touching && !GetIsInside(playerBody))
