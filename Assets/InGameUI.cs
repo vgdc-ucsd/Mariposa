@@ -15,21 +15,6 @@ public class InGameUI : Singleton<InGameUI>
     {
         InteractPromptUI.SetActive(toggle);
     }
-    /*
-    public void UpdateInteractPrompt()
-    {
-        bool isInside = false;
-        foreach (var trigger in FindObjectsOfType<InteractionTrigger>())
-        {
-            if (trigger.IsPlayerInside(PlayerController.Instance.ControlledPlayer))
-            {
-                isInside = true;
-                break;
-            }
-        }
-        InGameUI.Instance.InteractPrompt(isInside);
-    }
-    */
     
     public void UpdateInteractPrompt()
     {
@@ -54,6 +39,17 @@ public class InGameUI : Singleton<InGameUI>
             foreach (var trigger in FindObjectsOfType<InteractionTrigger>())
             {
                 trigger.EnsureControlledPlayerInside();
+                if (controlled is BeeMovement &&
+                    trigger.LinkedInteractable is not Switch &&
+                    trigger.LinkedInteractable is not ItemPickup)
+                {
+                    continue;
+                }
+                if (controlled is SquidMovement &&
+                    trigger.LinkedInteractable is not WaterPuzzleInteractable)
+                {
+                    continue;
+                }
                 if (trigger.GetIsInside(controlledBody))
                 {
                     isInsideAny = true;
