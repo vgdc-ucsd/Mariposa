@@ -33,6 +33,7 @@ public class PlayerController : MonoBehaviour
     public IControllable CurrentControllable;
 
     private InputSystem_Actions inputs;
+    private bool canBufferAbility;
     public bool IsLocked { get; private set; }
 
     private void Awake()
@@ -85,6 +86,7 @@ public class PlayerController : MonoBehaviour
 
     public void SwitchCharacters()
     {
+        DeactivateInputBuffers();
         if (ControlledPlayer.Data.characterID == CharID.Mariposa) SwitchTo(CharID.Unnamed);
         else SwitchTo(CharID.Mariposa);
     }
@@ -140,12 +142,23 @@ public class PlayerController : MonoBehaviour
     public void SendAbilityDown(InputAction.CallbackContext ctx)
     {
         if (IsLocked) return;
+        canBufferAbility = true;
         listeners.ForEachReverse(x => x.AbilityInputDown());
     }
 
     public void SendAbilityUp(InputAction.CallbackContext ctx)
     {
         listeners.ForEachReverse(x => x.AbilityInputUp());
+    }
+
+    public void DeactivateInputBuffers()
+    {
+        canBufferAbility = false;
+    }
+
+    public bool CheckAbilityBuffer()
+    {
+        return canBufferAbility && inputs.Player.Ability.IsPressed();
     }
 
     public void SendJump(InputAction.CallbackContext ctx)
