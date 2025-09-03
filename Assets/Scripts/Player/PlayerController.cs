@@ -109,6 +109,12 @@ public class PlayerController : MonoBehaviour
         StartControlling(ControlledPlayer.Movement);
         Subscribe(ControlledPlayer.Ability);
         ControlledPlayer.Ability.Initialize();
+        ControlledPlayer.gameObject.SetActive(true);
+        foreach (var trigger in FindObjectsOfType<InteractionTrigger>())
+        {
+            trigger.EnsureControlledPlayerInside();
+        }
+        InGameUI.Instance.UpdateInteractPrompt();
     }
 
     // map inputs to this controllable and make it the camera target
@@ -198,6 +204,7 @@ public class PlayerController : MonoBehaviour
             if (IsLocked) listener.SetMoveDir(Vector2.zero);
             else listener.SetMoveDir(moveDir);
         }
+        InGameUI.Instance.UpdateInteractPrompt();
     }
 
     public void EnableSquid(SquidControlAbility squidAbility)
