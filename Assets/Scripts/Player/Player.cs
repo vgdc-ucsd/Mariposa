@@ -84,6 +84,7 @@ public class Player : MonoBehaviour
 	[ContextMenu("Respawn")]
 	public void Respawn()
 	{
+		PlayerController.Instance.DeactivateInputBuffers();
 		if (CurrentRespawnPoint == null)
 		{
 			transform.position = new Vector3(0f, 0f, transform.position.z);

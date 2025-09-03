@@ -25,6 +25,11 @@ public interface IControllable : IInputListener
         {
             if (trigger is InteractionTrigger it)
             {
+                if (this is BeeMovement && it.LinkedInteractable is not Switch && it.LinkedInteractable is not ItemPickup)
+                    continue;
+
+                if (this is SquidMovement && it.LinkedInteractable is not WaterPuzzleInteractable && it.LinkedInteractable is not PipePickup)
+                    continue;
                 it.InteractTrigger(this);
             }
         }

@@ -30,7 +30,10 @@ public class GrappleAbility : MonoBehaviour, IAbility
 
     // when is the player considered "close"
     private const float STOP_DISTANCE = 1;
-    public float grappleForce = 50;
+    private const float MAX_GRAPPLE_FORCE = 65f;
+    private const float BASE_GRAPPLE_FORCE = 50f;
+    private const float GRAPPLE_FORCE_INCREASE = 0.15f;
+    public float grappleForce = BASE_GRAPPLE_FORCE;
     private float fdt;
 
     public float maxSpeed = 50f;
@@ -164,11 +167,22 @@ public class GrappleAbility : MonoBehaviour, IAbility
 
         if (closest == currentTarget) return;
 
-        if (currentTarget != null) currentTarget.ToggleHighlight(false);
+        bool canAutoGrapple = true;
+        if (currentTarget != null)
+        {
+            canAutoGrapple = false;
+            currentTarget.ToggleHighlight(false);
+        }
         currentTarget = closest;
         if (closest != null)
         {
             currentTarget.ToggleHighlight(true);
+
+            // Buffered grapple
+            if (canAutoGrapple && PlayerController.Instance.CheckAbilityBuffer())
+            {
+                AbilityInputDown();
+            }
         }
 
     }
@@ -220,12 +234,12 @@ public class GrappleAbility : MonoBehaviour, IAbility
             Player.ActivePlayer.Movement.Velocity = Player.ActivePlayer.Movement.Velocity.normalized * maxSpeed;
         }
 
+        grappleForce = Mathf.Min(grappleForce + GRAPPLE_FORCE_INCREASE, MAX_GRAPPLE_FORCE);
         storedMomentum = Player.ActivePlayer.Movement.Velocity;
 
         if (Vector2.Distance(playerPos, (Vector2)lockedTarget.transform.position) < STOP_DISTANCE)
         {
-            state = GrappleState.Stopped;
-            retentionTimer = retentionDuration;
+            AbilityInputUp();
         }
     }
 
@@ -262,13 +276,16 @@ public class GrappleAbility : MonoBehaviour, IAbility
     // Maintain the current speed
     private void GrappleRelease()
     {
-        state = GrappleState.Idle;
-        storedMomentum = Vector2.zero;
-        Player.ActivePlayer.Movement.ToggleGravity(true);
-        hookProjectile.SetActive(false);
-        lockedTarget.ReleaseGrapple();
+        if (state != GrappleState.Idle)
+        {
+            state = GrappleState.Idle;
+            storedMomentum = Vector2.zero;
+            grappleForce = BASE_GRAPPLE_FORCE;
+            Player.ActivePlayer.Movement.ToggleGravity(true);
+            hookProjectile.SetActive(false);
+            lockedTarget.ReleaseGrapple();
+        }
     }
-
 
 
     private void RenderLine()
@@ -334,6 +351,10 @@ public class GrappleAbility : MonoBehaviour, IAbility
 
     private void ResetGrapple()
     {
-        if (currentTarget != null) GrappleRelease();
+        if (currentTarget != null)
+        {
+            GrappleRelease();
+            currentTarget.ResetGrappleTarget();
+        }
     }
 }
