@@ -46,7 +46,8 @@ public class InGameUI : Singleton<InGameUI>
                     continue;
                 }
                 if (controlled is SquidMovement &&
-                    trigger.LinkedInteractable is not WaterPuzzleInteractable)
+                    trigger.LinkedInteractable is not WaterPuzzleInteractable
+                    && trigger.LinkedInteractable is not PipePickup)
                 {
                     continue;
                 }
