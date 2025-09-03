@@ -3,6 +3,7 @@ using UnityEngine;
 public class FriendshipManager : Singleton<FriendshipManager>, IDataPersistence
 {
     public int Score { get; private set; }
+    public const int INITIAL_SCORE = 7;
 
     public void SetScore(int score) => Score = score;
     public void ChangeScore(int delta) => Score += delta;
@@ -10,11 +11,11 @@ public class FriendshipManager : Singleton<FriendshipManager>, IDataPersistence
 
     public void LoadData(GameData data)
     {
-        data.friendshipScore = Score;
+        Score = data.friendshipScore;
     }
 
     public void SaveData(ref GameData data)
     {
-        Score = data.friendshipScore;
+        data.friendshipScore = Score;
     }
 }

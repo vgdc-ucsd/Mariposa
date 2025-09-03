@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EndingManager : Singleton<EndingManager>
 {
@@ -32,9 +33,6 @@ public class EndingManager : Singleton<EndingManager>
 
     void Start()
     {
-        // TODO: for testing, remove before building
-        FriendshipManager.Instance.SetScore(GOOD_ENDING_THRESHOLD);
-
         IsCutsceneActive = false;
         bool isGoodEnding = FriendshipManager.Instance.CompareScore(GOOD_ENDING_THRESHOLD);
         foreach (GameObject obj in goodDialogueTriggers) obj.SetActive(isGoodEnding);
@@ -60,6 +58,25 @@ public class EndingManager : Singleton<EndingManager>
         }
     }
 
+    public IEnumerator FadeImages(List<Image> images, bool fadeIn)
+    {
+        float timer = 0;
+        while (timer < fadeDuration)
+        {
+            timer += Time.deltaTime;
+            foreach (Image img in images)
+            {
+                img.color = new(img.color.r, img.color.g, img.color.b, fadeIn ? timer / fadeDuration : (fadeDuration - timer) / fadeDuration);
+            }
+            yield return new WaitForEndOfFrame();
+        }
+
+        foreach (Image img in images)
+        {
+            img.color = new(img.color.r, img.color.g, img.color.b, fadeIn ? 1f : 0f);
+        }
+    }
+
     public void PlayCutscene()
     {
         IsCutsceneActive = true;
@@ -78,7 +95,6 @@ public class EndingManager : Singleton<EndingManager>
         // DialogueManager.Instance.EndCutscene();
         // IsCutsceneActive = false;
 
-        // TODO: go to credits
-        GameManager.Instance.LoadScene(GameScene.MAIN_MENU);
+        GameManager.Instance.LoadScene(GameScene.CREDITS);
     }
 }

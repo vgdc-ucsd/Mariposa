@@ -36,6 +36,10 @@ public class DialoguePlayer : MonoBehaviour
 
     [SerializeField] private Image portrait;
     [SerializeField] private SpriteMap spriteMap;
+    [SerializeField] private Transform portraitStart;
+    [SerializeField] private Transform portraitMain;
+    [SerializeField] private Transform portraitOut;
+    [SerializeField] private Transform portraitBelow;
 
     [SerializeField] private Image backgroundGraphic;
     [SerializeField] private SpriteMap backgroundMap;
@@ -49,6 +53,10 @@ public class DialoguePlayer : MonoBehaviour
     private TMP_Text activeLineTarget;
     private GameObject activeDialogueWindow;
 
+    // Portrait animation
+    private Coroutine portraitTransition;
+    private const float TRANSITION_TIME = 0.4f;
+
     // dialogue control
     private List<DialogueElement> conversation = new List<DialogueElement>();
     private int dialogueIndex = 0;
@@ -59,6 +67,7 @@ public class DialoguePlayer : MonoBehaviour
 
     // typewriter control
     private bool finishedTypewriter;
+    private Coroutine typewriterEffect;
     private const float DIALOGUE_SPEED = 0.03f;
 
     // Regex
@@ -68,6 +77,7 @@ public class DialoguePlayer : MonoBehaviour
 
     // state
     private string speaker = null;
+    private string lastSpeaker = null;
     private Dictionary<string, Sprite> speakerSprites = new Dictionary<string, Sprite>();
     private List<string> endingEvents = new List<string>();
 
@@ -80,12 +90,14 @@ public class DialoguePlayer : MonoBehaviour
 
     public void PlayDialogue(List<DialogueElement> dialogue, bool initAdvance)
     {
-        StopAllCoroutines();
+        if (typewriterEffect != null) StopCoroutine(typewriterEffect);
         conversation = dialogue;
         dialogueIndex = -1;
         speaker = null;
+        lastSpeaker = null;
         buttonDisplay.SetActive(false);
         portraitBG.gameObject.SetActive(false);
+        portraitBG.sprite = null;
         radio.gameObject.SetActive(false);
         advanceIndicator.gameObject.SetActive(false);
         speakerSprites = new Dictionary<string, Sprite>();
@@ -130,6 +142,8 @@ public class DialoguePlayer : MonoBehaviour
 
     public void TryAdvanceDialogue()
     {
+        if (GameManager.Instance.GameStateMachine.GetState() == GameState.PAUSE) return;
+
         // If currently fading, in cinematic mode, or at the very start of a dialogue, don't advance
         if (isFading || !acceptingInput) return;
 
@@ -137,7 +151,7 @@ public class DialoguePlayer : MonoBehaviour
         if (!finishedTypewriter)
         {
             // finish typewriter effect
-            StopAllCoroutines();
+            if (typewriterEffect != null) StopCoroutine(typewriterEffect);
             finishedTypewriter = true;
             activeLineTarget.maxVisibleCharacters = taglessText.Length;
             advanceHoverer.Reset();
@@ -183,6 +197,7 @@ public class DialoguePlayer : MonoBehaviour
         element.Line = namePattern.Replace(element.Line, unnamedName);
         if (element.Speaker != null)
         {
+            lastSpeaker = speaker;
             speaker = namePattern.Replace(element.Speaker, unnamedName);
         }
 
@@ -213,22 +228,38 @@ public class DialoguePlayer : MonoBehaviour
 
         if (element.Icon != null)
         {
-            portrait.sprite = spriteMap.GetSprite(element.Speaker + element.Icon);
-            portraitBG.gameObject.SetActive(true);
+            Sprite expression = spriteMap.GetSprite(element.Speaker + element.Icon);
+            if (portrait.sprite != expression)
+            {
+                if (lastSpeaker == speaker) PlayPortraitTransition(PortraitJump());
+                else PlayPortraitTransition(PortraitEnter());
+            }
+            portrait.sprite = expression;
         }
         else if (speakerSprites.ContainsKey(speaker))
         {
             portrait.sprite = speakerSprites[speaker];
+            portrait.color = Color.white;
             portraitBG.gameObject.SetActive(true);
         }
         else if (speaker == "Mariposa" || element.Speaker == "Unnamed" || speaker == "Beebo")
         {
-            portrait.sprite = spriteMap.GetSprite(element.Speaker + "Neutral");
-            portraitBG.gameObject.SetActive(true);
+            Sprite neutral = spriteMap.GetSprite(element.Speaker + "Neutral");
+            if (portrait.sprite != neutral)
+            {
+                portrait.sprite = neutral;
+                PlayPortraitTransition(PortraitEnter());
+            }
+            else
+            {
+                portrait.sprite = neutral;
+                portrait.color = Color.white;
+                portraitBG.gameObject.SetActive(true);
+            }
         }
         else
         {
-            portraitBG.gameObject.SetActive(false);
+            PlayPortraitTransition(PortraitExit());
         }
 
         if (element.Background != null && !EndingManager.Instance.IsCutsceneActive)
@@ -250,7 +281,7 @@ public class DialoguePlayer : MonoBehaviour
 
                     activeLineTarget.text = conversation[dialogueIndex].Line;
                     speakerTarget.text = speaker;
-                    StartCoroutine(TypewriterEffect());
+                    typewriterEffect = StartCoroutine(TypewriterEffect());
                 });
             }
         }
@@ -259,7 +290,7 @@ public class DialoguePlayer : MonoBehaviour
             // If no background change, execute text update immediately
             activeLineTarget.text = conversation[dialogueIndex].Line;
             speakerTarget.text = speaker;
-            StartCoroutine(TypewriterEffect());
+            typewriterEffect = StartCoroutine(TypewriterEffect());
         }
 
         if (element.Choice1 != null && element.Choice2 != null)
@@ -322,9 +353,82 @@ public class DialoguePlayer : MonoBehaviour
         finishedTypewriter = true;
     }
 
+    private void OnDestroy()
+    {
+        if (portraitTransition != null) StopCoroutine(portraitTransition);
+    }
+
     private IEnumerator ReenableInput()
     {
         yield return new WaitForSeconds(0.1f);
         acceptingInput = true;
+    }
+
+    private void PlayPortraitTransition(IEnumerator transition)
+    {
+        if (portraitTransition != null) StopCoroutine(portraitTransition);
+        portraitTransition = StartCoroutine(transition);
+    }
+
+    private IEnumerator PortraitEnter()
+    {
+        yield return BasicAnimations.Interpolate
+        (
+            () => portraitBG.gameObject.SetActive(true),
+            (t) =>
+            {
+                float curve = BasicAnimations.EaseOut(t);
+                portrait.color = new Color(1.0f, 1.0f, 1.0f, curve);
+                portrait.transform.position = Vector3.Lerp
+                (
+                    portraitStart.transform.position,
+                    portraitMain.transform.position,
+                    curve
+                );
+            },
+            () => portrait.transform.position = portraitMain.transform.position,
+            TRANSITION_TIME
+        );
+    }
+
+    private IEnumerator PortraitExit()
+    {
+        yield return BasicAnimations.Interpolate
+        (
+            null,
+            (t) =>
+            {
+                float curve = BasicAnimations.EaseOut(t);
+                portrait.color = new Color(1.0f, 1.0f, 1.0f, 1.0f - curve);
+                portrait.transform.position = Vector3.Lerp
+                (
+                    portraitMain.transform.position,
+                    portraitOut.transform.position,
+                    curve
+                );
+            },
+            () => portraitBG.gameObject.SetActive(false),
+            TRANSITION_TIME
+        );
+    }
+    
+    private IEnumerator PortraitJump()
+    {
+        yield return BasicAnimations.Interpolate
+        (
+            () => portraitBG.gameObject.SetActive(true),
+            (t) =>
+            {
+                float curve = BasicAnimations.EaseOutElastic(t);
+                portrait.transform.position = Vector3.Lerp
+                (
+                    portraitBelow.transform.position,
+                    portraitMain.transform.position,
+                    curve
+                );
+            },
+            () => portrait.transform.position = portraitMain.transform.position,
+            TRANSITION_TIME * 1.5f
+        );
     }
 }

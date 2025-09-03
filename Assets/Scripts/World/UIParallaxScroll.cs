@@ -20,7 +20,7 @@ public class UIParallaxScroll : MonoBehaviour
 
     void FixedUpdate()
     {
-        float distance = Camera.main.transform.position.x * parallaxEffect;
+        float distance = Camera.main.transform.position.x * -1 * parallaxEffect;
         float movement = Camera.main.transform.position.x * (1 - parallaxEffect);
 
         transform.localPosition = new Vector3(startPos + distance, yOffset, transform.position.z);

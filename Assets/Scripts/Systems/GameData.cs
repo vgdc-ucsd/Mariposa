@@ -37,7 +37,7 @@ public class GameData
     public void ResetPlaythrough()
     {
         UnnamedName = "???";
-        friendshipScore = 0;
+        friendshipScore = FriendshipManager.INITIAL_SCORE;
         SavedScene = GameScene.TUTORIAL;
     }
 }

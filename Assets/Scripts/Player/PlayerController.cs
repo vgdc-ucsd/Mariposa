@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -32,6 +33,7 @@ public class PlayerController : MonoBehaviour
     public IControllable CurrentControllable;
 
     private InputSystem_Actions inputs;
+    private bool canBufferAbility;
     public bool IsLocked { get; private set; }
 
     private void Awake()
@@ -57,6 +59,7 @@ public class PlayerController : MonoBehaviour
         inputs.Player.Interact.started += ctx => SendInteract();
         inputs.Player.Recall.performed += TryRecallBee;
         inputs.Player.Click.performed += ctx => TryAdvanceDialogue();
+        inputs.Player.Jump.performed += ctx => TryAdvanceDialogue();
     }
 
     private void OnDisable()
@@ -67,6 +70,7 @@ public class PlayerController : MonoBehaviour
         inputs.Player.Interact.started -= ctx => SendInteract();
         inputs.Player.Recall.performed -= TryRecallBee;
         inputs.Player.Click.performed -= ctx => TryAdvanceDialogue();
+        inputs.Player.Jump.performed -= ctx => TryAdvanceDialogue();
         inputs.Disable();
     }
 
@@ -82,6 +86,7 @@ public class PlayerController : MonoBehaviour
 
     public void SwitchCharacters()
     {
+        DeactivateInputBuffers();
         if (ControlledPlayer.Data.characterID == CharID.Mariposa) SwitchTo(CharID.Unnamed);
         else SwitchTo(CharID.Mariposa);
     }
@@ -143,12 +148,23 @@ public class PlayerController : MonoBehaviour
     public void SendAbilityDown(InputAction.CallbackContext ctx)
     {
         if (IsLocked) return;
+        canBufferAbility = true;
         listeners.ForEachReverse(x => x.AbilityInputDown());
     }
 
     public void SendAbilityUp(InputAction.CallbackContext ctx)
     {
         listeners.ForEachReverse(x => x.AbilityInputUp());
+    }
+
+    public void DeactivateInputBuffers()
+    {
+        canBufferAbility = false;
+    }
+
+    public bool CheckAbilityBuffer()
+    {
+        return canBufferAbility && inputs.Player.Ability.IsPressed();
     }
 
     public void SendJump(InputAction.CallbackContext ctx)
@@ -177,10 +193,7 @@ public class PlayerController : MonoBehaviour
 
     public void TryAdvanceDialogue()
     {
-        if (GameManager.Instance.GameStateMachine.GetState() != GameState.PAUSE)
-        {
-            DialogueManager.Instance.TryAdvanceDialogue();
-        }
+        DialogueManager.Instance.TryAdvanceDialogue();
     }
 
     private void FixedUpdate()
@@ -218,8 +231,7 @@ public class PlayerController : MonoBehaviour
         }
 
         SwitchTo(character);
-        ControlledPlayer.transform.position = spawn;
-        ControlledPlayer.Movement.ResolveInitialCollisions();
+        ControlledPlayer.SpawnAt(spawn);
         if (ControlledPlayer.Ability is BeeControlAbility bc)
         {
             bc.BeeRef.transform.position = ControlledPlayer.transform.position + new Vector3(0, 2, 0);

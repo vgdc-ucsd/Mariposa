@@ -79,4 +79,9 @@ public class CameraManager : MonoBehaviour
         playerCamera = cameras.Find(obj => obj.CompareTag("MainCamera"));
     }
 
+    public bool IsDefaultCameraEnabled()
+    {
+        return playerCamera.activeSelf;
+    }
+
 }
