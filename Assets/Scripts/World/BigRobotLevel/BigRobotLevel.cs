@@ -101,6 +101,11 @@ public class BigRobotLevel : MonoBehaviour
             currentSection = CurrentSection.CLIMB;
             StartCoroutine(ResetRobot(1));
         }
+        else if (Player.ActivePlayer.CurrentRespawnPoint == checkpoints[3])
+        {
+            currentSection = CurrentSection.SPIKE_JUMPS;
+            StartCoroutine(ResetRobot(5));
+        }
         else
         {
             Debug.Log("Invalid checkpoint");
@@ -122,6 +127,7 @@ public class BigRobotLevel : MonoBehaviour
                 SendRobot(2);
                 break;
             case CurrentSection.SPIKE_JUMPS:
+                SendRobot(5);
                 break;
             case CurrentSection.FINAL_CHASE:
                 SendRobot(3);
