@@ -100,4 +100,14 @@ public abstract class Trigger : MonoBehaviour
             }
         }
     }
+    
+    public bool IsPlayerInside(Player player)
+    {
+        if (player == null) return false;
+        Collider2D playerCollider = player.GetComponent<Collider2D>();
+        Collider2D triggerCollider = GetComponent<Collider2D>();
+        if (playerCollider == null || triggerCollider == null) return false;
+    
+        return triggerCollider.IsTouching(playerCollider);
+    }
 }
