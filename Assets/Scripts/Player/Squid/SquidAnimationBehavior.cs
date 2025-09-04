@@ -67,6 +67,6 @@ public class SquidAnimationBehavior : MonoBehaviour
 
     public void PlaySquidFootstep()
     {
-        RuntimeManager.PlayOneShot(AudioEvents.SFX.squid_footstep);
+        RuntimeManager.PlayOneShot(AudioEvents.SFX.squid_footstep.GetPath());
     }
 }

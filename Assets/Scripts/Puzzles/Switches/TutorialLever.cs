@@ -20,7 +20,7 @@ public class TutorialLever : Switch
         {
             SwitchToggled = true;
             spriteRenderer.flipX = true;
-            RuntimeManager.PlayOneShot(AudioEvents.SFX.lever_pull);
+            RuntimeManager.PlayOneShot("event:/sfx/puzzle/lever_pull");
             chargingStation.SetCharged();
             Destroy(GetComponentInChildren<InteractionTrigger>().gameObject);
         }

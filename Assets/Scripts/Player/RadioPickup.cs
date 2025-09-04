@@ -28,7 +28,7 @@ public class RadioPickup : ItemPickup
         RadioPickupEvent = RuntimeManager.CreateInstance("event:/sfx/item/pickup");
         radioStatic = RuntimeManager.CreateInstance("event:/sfx/item/radio/static");
         RuntimeManager.AttachInstanceToGameObject(radioStatic, gameObject);
-        playerDebug = GameManager.Instance.Debug.PlayerDebugEnabled;
+        playerDebug = Settings.Instance.Debug.GetPlayerDebug();
     }
 
     void Update()

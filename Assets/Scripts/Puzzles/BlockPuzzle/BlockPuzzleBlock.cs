@@ -1,4 +1,3 @@
-using FMODUnity;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -95,8 +94,6 @@ public class BlockPuzzleBlock : MonoBehaviour
         }
         BlockPuzzle.Instance.ClearBlockFromGrid(this);
 
-        RuntimeManager.PlayOneShot(AudioEvents.SFX.block_pickup);
-
         transform.SetAsLastSibling();
     }
 
@@ -192,8 +189,6 @@ public class BlockPuzzleBlock : MonoBehaviour
         }
 
         if (preview != null) preview.Hide();
-
-        RuntimeManager.PlayOneShot(AudioEvents.SFX.block_place);
     }
 
     private void ShowPreview(Vector2 worldPos, bool isValid)

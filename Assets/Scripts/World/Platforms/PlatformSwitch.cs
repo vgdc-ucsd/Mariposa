@@ -1,4 +1,3 @@
-using FMODUnity;
 using System;
 using UnityEngine;
 
@@ -22,6 +21,5 @@ public class PlatformSwitch : Switch
         {
             platformMovement.platform.SendPlatform(platformMovement.nodesToMove);
         }
-        RuntimeManager.PlayOneShot(AudioEvents.SFX.lever_pull);
     }
 }

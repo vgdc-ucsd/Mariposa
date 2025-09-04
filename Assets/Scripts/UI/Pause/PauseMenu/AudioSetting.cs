@@ -1,42 +1,40 @@
 using UnityEngine;
-using UnityEngine.Audio;
 using UnityEngine.UI;
 
 public class AudioSetting : MonoBehaviour
 {
-    public Slider MasterSlider;
-    public Slider MusicSlider;
+    [Header("Refer to Settings for Volume Settings and Controls")]
     public Slider SfxSlider;
-    public Slider AmbienceSlider;
+    public Slider MusicSlider;
     public Slider DialogueSlider;
+    public Slider MasterSlider;
+    public Slider AmbienceSlider;
 
-    private void OnEnable()
+    [SerializeField] private float defaultSFXVolumeValue;
+    [SerializeField] private float defaultMusicVolumeValue;
+    [SerializeField] private float defaultMasterVolumeValue;
+    [SerializeField] private float defaultDialogueVolumeValue;
+    [SerializeField] private float defaultAmbienceVolumeValue;
+
+    void Start()
     {
-        MasterSlider.value = AudioManager.Instance.masterVolume;
-        MusicSlider.value = AudioManager.Instance.musicVolume;
-        SfxSlider.value = AudioManager.Instance.sfxVolume;
-        AmbienceSlider.value = AudioManager.Instance.ambienceVolume;
-        DialogueSlider.value = AudioManager.Instance.dialogueVolume;
+        // sending reference to Settings to handle audio controls
+        Settings.Instance.setAudioSettingReference(this);
     }
 
-    public void UpdateMasterVolume() => AudioManager.Instance.SetMasterVolume(MasterSlider.value);
-    public void UpdateMusicVolume() => AudioManager.Instance.SetMusicVolume(MusicSlider.value);
-    public void UpdateSFXVolume() => AudioManager.Instance.SetSFXVolume(SfxSlider.value);
-    public void UpdateAmbienceVolume() => AudioManager.Instance.SetAmbienceVolume(AmbienceSlider.value);
-    public void UpdateDialogueVolume() => AudioManager.Instance.SetDialogueVolume(DialogueSlider.value);
+    // Note: The gameObject "Settings" is directly grabbing the slider values to update volume, only default values are stored here
 
-    public void ResetAllVolumesToDefault()
+    public void ResetVolumeSettings()
     {
-        MasterSlider.value = AudioManager.Instance.defaultMasterVolume;
-        MusicSlider.value = AudioManager.Instance.defaultMusicVolume;
-        SfxSlider.value = AudioManager.Instance.defaultSFXVolume;
-        AmbienceSlider.value = AudioManager.Instance.defaultAmbienceVolume;
-        DialogueSlider.value = AudioManager.Instance.defaultDialogueVolume;
+        Settings.Instance.ResetVolumeSettings();
+    }
 
-        UpdateMasterVolume();
-        UpdateMusicVolume();
-        UpdateSFXVolume();
-        UpdateAmbienceVolume();
-        UpdateDialogueVolume();
+    public void SetToDefaultVolume()
+    {
+        SfxSlider.value = defaultSFXVolumeValue;
+        MusicSlider.value = defaultMusicVolumeValue;
+        MasterSlider.value = defaultMasterVolumeValue;
+        AmbienceSlider.value = defaultAmbienceVolumeValue;
+        DialogueSlider.value = defaultDialogueVolumeValue;
     }
 }

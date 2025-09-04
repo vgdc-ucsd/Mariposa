@@ -12,7 +12,7 @@ public class DebugManager : Singleton<DebugManager>
 
     public void Start()
     {
-        if (!GameManager.Instance.Debug.DebugEnabled)
+        if (!Settings.Instance.Debug.GetDebug())
         {
             Destroy(gameObject);
         }

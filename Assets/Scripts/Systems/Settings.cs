@@ -6,12 +6,17 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-// THIS SCRIPT IS OBSOLETE
 [System.Serializable]
-public class Settings : Singleton<Settings>
+public class Settings : Singleton<Settings>, IDataPersistence
 {
-    /*
+    public DebugSettings Debug;
     [SerializeField] private AudioSetting audioSetting;
+
+    private Slider MasterSlider;
+    private Slider MusicSlider;
+    private Slider SFXSlider;
+    private Slider DialogueSlider;
+    private Slider AmbienceSlider;
 
     public UnityEvent<string> ChangeTestAudio;
     public UnityAction ResetAudioValues;
@@ -23,10 +28,10 @@ public class Settings : Singleton<Settings>
         if (audioSetting == null) audioSetting = FindFirstObjectByType<AudioSetting>();
         getSliders();
         // play background test audio if audio debug is on to test volume slider functionality
-        if (Debug.AudioDebugEnabled)
-        {
-            backgroundAudioTest();
-        }
+        // if (Debug.GetAudioDebug())
+        // {
+        //     backgroundAudioTest();
+        // }
     }
 
     public void ResetVolumeSettings()
@@ -143,5 +148,20 @@ public class Settings : Singleton<Settings>
         testBus.setMute(mute);
     }
     
-    */
+    public void SaveData(ref GameData data)
+    {
+        data.sfxValue = audioSetting.SfxSlider.value;
+        data.musicValue = audioSetting.MusicSlider.value;
+        data.masterValue = audioSetting.MasterSlider.value;
+        data.ambienceValue = audioSetting.AmbienceSlider.value;
+        data.dialogueValue = audioSetting.DialogueSlider.value;
+    }
+    public void LoadData(GameData data)
+    {
+        audioSetting.SfxSlider.value = data.sfxValue;
+        audioSetting.MusicSlider.value = data.musicValue;
+        audioSetting.MasterSlider.value = data.masterValue;
+        audioSetting.AmbienceSlider.value = data.ambienceValue;
+        audioSetting.DialogueSlider.value = data.dialogueValue;
+    }
 }

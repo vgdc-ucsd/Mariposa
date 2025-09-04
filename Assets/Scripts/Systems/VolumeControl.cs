@@ -5,10 +5,8 @@ using System;
 using FMOD.Studio;
 using UnityEngine.EventSystems;
 
-// THIS SCRIPT IS OBSOLETE
-public class VolumeControl : MonoBehaviour
+public class VolumeControl : MonoBehaviour, IPointerUpHandler
 {
-    /*
     [SerializeField] private Slider VolumeSlider;
     [SerializeField] private string VolumeBusPath;
     [SerializeField] private string testAudioPath;
@@ -181,5 +179,4 @@ public class VolumeControl : MonoBehaviour
         isResetting = true;
         testAudioTimer = -1.0f;
     }
-    */
 }
