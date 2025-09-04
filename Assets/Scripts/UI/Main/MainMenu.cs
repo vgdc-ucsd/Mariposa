@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 //To assign a method to the onclick for a button...
@@ -7,10 +6,21 @@ using UnityEngine;
 
 public class MainMenu : Singleton<MainMenu>
 {
+    [SerializeField] private UnityEngine.UI.Button loadButton;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         MusicManager.Instance.ChangeMusic(AudioEvents.Music.titlescreen_title_theme);
+
+        // If no saved game, disable load button
+        if (!DataPersistenceManager.Instance.HasSavedGame())
+        {
+            if (loadButton != null)
+            {
+                loadButton.interactable = false;
+            }
+        }
     }
 
     public void NewGameBtn()
@@ -23,7 +33,8 @@ public class MainMenu : Singleton<MainMenu>
 
     public void LoadGameBtn()
     {
-        GameManager.Instance.LoadScene(GameManager.Instance.SavedScene);
+        Debug.Log("Loading saved game, level: " + DataPersistenceManager.Instance.gameData.SavedScene);
+        GameManager.Instance.LoadScene(DataPersistenceManager.Instance.gameData.SavedScene);
     }
 
     public void OpenAudioSettingsBtn()
@@ -38,7 +49,7 @@ public class MainMenu : Singleton<MainMenu>
 
     public void ExitBtn()
     {
-        DataPersistenceManager.Instance.SaveGame();
+        // DataPersistenceManager.Instance.SaveGame();
         Application.Quit();
     }
 

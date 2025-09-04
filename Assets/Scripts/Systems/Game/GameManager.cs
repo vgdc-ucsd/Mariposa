@@ -130,7 +130,8 @@ public class GameManager : Singleton<GameManager>, IDataPersistence
 
     public void SaveData(ref GameData data)
     {
-        data.SavedScene = SavedScene;
+        data.SavedScene = CurrentScene;
+        Debug.Log("Saved scene: " + data.SavedScene);
     }
 
     public void LoadData(GameData data)

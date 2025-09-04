@@ -129,8 +129,8 @@ public class PauseMenuScript : Singleton<PauseMenuScript>
 
     public void QuitLevel()
     {
+        GameManager.Instance.HandlePause();
         DataPersistenceManager.Instance.SaveGame();
-        ResumeGame();
         GameManager.Instance.LoadScene(GameScene.MAIN_MENU);
     }
 }
