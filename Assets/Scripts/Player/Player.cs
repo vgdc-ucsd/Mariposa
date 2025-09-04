@@ -5,7 +5,6 @@ using FMODUnity;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
-using Unity.Mathematics;
 
 public class Player : MonoBehaviour
 {
@@ -30,10 +29,6 @@ public class Player : MonoBehaviour
 	// facing direction does not affect movement in most cases
 	public int FacingDirection = 1;
 
-	[SerializeField, Min(0f)] private float characterVocalizationAttemptInterval = 15.0f;
-	[SerializeField, Range(0f, 1f)] private float characterVocalizationChance = 0.1f;
-	private float characterVocalizationTime;
-
 	private void Awake()
 	{
 		Movement = GetComponent<PlayerMovement>();
@@ -43,13 +38,11 @@ public class Player : MonoBehaviour
 			Debug.LogError("Player object not fully set up with Movement, Character, and Ability classes");
 			return;
 		}
-
-		characterVocalizationTime = 0.0f;
 	}
 
 	void Start()
 	{
-		playerDebug = GameManager.Instance.Debug.PlayerDebugEnabled;
+		playerDebug = Settings.Instance.Debug.GetPlayerDebug();
 	}
 
 
@@ -73,20 +66,6 @@ public class Player : MonoBehaviour
 
 	private void Update()
 	{
-		characterVocalizationTime += Time.deltaTime;
-
-		if (characterVocalizationTime >= characterVocalizationAttemptInterval)
-		{
-			float outcome = UnityEngine.Random.value;
-			if (outcome <= characterVocalizationChance)
-			{
-				EventReference vocalization = Data.characterID == CharID.Mariposa
-					? AudioEvents.SFX.mariposa_hum_motif
-					: AudioEvents.SFX.unnamed_whistle_unnamed_motif;
-				RuntimeManager.PlayOneShot(vocalization);
-			}
-			characterVocalizationTime = 0.0f;
-		}
 	}
 
 	private void FixedUpdate()
@@ -147,8 +126,7 @@ public class Player : MonoBehaviour
 	{
         // TODO: there may be not that much delay between death and respawn, so remove the below line or add a delay after this line to prevent it overlapping with respawn sfx
         OnDeath.Invoke();
-		if (Data.characterID == CharID.Unnamed) RuntimeManager.PlayOneShot(AudioEvents.SFX.unnamed_pain);
-		else RuntimeManager.PlayOneShot("event:/sfx/player/death");
+		RuntimeManager.PlayOneShot("event:/sfx/player/death");
 		SetPlayerActive(false);
 		CameraController.ActiveCamera?.PauseCamera();
 		yield return FadeController.Instance.FadeOut();

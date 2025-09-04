@@ -11,6 +11,11 @@ public class PlayerAnimation : MonoBehaviour
     [SerializeField] string TerrainTag = "Default";
     // NOTE: jump sfx is being handled by PlayerMovement.cs
 
+    private bool willLand = false;
+    private const float LANDING_VELOCITY_THRESHOLD = -16.0f; // set slightly above the normal velocity when jumping and falling in place (aprox. -14.6)
+    // TODO: should it be set so that jump height triggers landing sfx or slightly above or below it
+
+
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -25,6 +30,9 @@ public class PlayerAnimation : MonoBehaviour
 
     void FixedUpdate()
     {
+        // Landing SFX
+        PlayLand();
+
         // Idle, not moving
         if (Player.ActivePlayer.Movement.Velocity.sqrMagnitude <= 0.005f)
         {
@@ -77,10 +85,24 @@ public class PlayerAnimation : MonoBehaviour
     {
         if (Player.ActivePlayer.Movement.State == BodyState.OnGround)
         {
-            EventInstance footstepInstance = AudioManager.CreateEventInstance(AudioEvents.SFX.player_footstep);
+            EventInstance footstepInstance = RuntimeManager.CreateInstance(AudioEvents.SFX.player_footstep.GetPath());
             footstepInstance.setParameterByNameWithLabel("Terrain", MaterialCheck());
             footstepInstance.start();
             footstepInstance.release();
+        }
+    }
+
+    public void PlayLand()
+    {
+        if (Player.ActivePlayer.Movement.State == BodyState.InAir && Player.ActivePlayer.Movement.Velocity.y <= LANDING_VELOCITY_THRESHOLD)
+        {
+            //Debug.Log(Player.ActivePlayer.Movement.Velocity.y);
+            willLand = true;
+        }
+        else if (Player.ActivePlayer.Movement.State == BodyState.OnGround && willLand)
+        {
+            RuntimeManager.PlayOneShot(AudioEvents.SFX.player_landing.GetPath());
+            willLand = false;
         }
     }
 }

@@ -9,7 +9,7 @@ public class UnlockSquidEvent : MonoBehaviour
     public void UnlockSquid()
     {
         squid.SetActive(true);
-        RuntimeManager.PlayOneShot(AudioEvents.SFX.squid_activation);
+        RuntimeManager.PlayOneShot(AudioEvents.SFX.squid_activation.GetPath());
         PlayerController.Instance.EnableSquid(ability);
     }
 }

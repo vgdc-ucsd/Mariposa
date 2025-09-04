@@ -55,7 +55,7 @@ public class ItemPickup : Interactable
     private void playPickupSFX()
     {
         string itemSFX = item.ItemSFXType.ToString();
-        EventInstance itemPickupSFX = AudioManager.CreateEventInstance(AudioEvents.SFX.item_pickup);
+        EventInstance itemPickupSFX = RuntimeManager.CreateInstance(AudioEvents.SFX.item_pickup.GetPath());
         itemPickupSFX.setParameterByNameWithLabel("ItemType", itemSFX);
         itemPickupSFX.start();
         itemPickupSFX.release();

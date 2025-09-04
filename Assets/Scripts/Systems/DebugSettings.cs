@@ -9,9 +9,28 @@ public class DebugSettings
     [SerializeField] private bool audioDebug = false;
     [SerializeField] private bool puzzleDebug = false;
 
-    public bool DebugEnabled => enableDebug;
-    public bool PlayerDebugEnabled => enableDebug && playerDebug;
-    public bool RespawnDebugEnabled => enableDebug && respawnDebug;
-    public bool AudioDebugEnabled => enableDebug && audioDebug;
-    public bool PuzzleDebugEnabled => enableDebug && puzzleDebug;
+    public bool GetDebug()
+    {
+        return enableDebug;
+    }
+    
+    public bool GetPlayerDebug()
+    {
+        return enableDebug && playerDebug;
+    }
+
+    public bool GetRespawnDebug()
+    {
+        return enableDebug && respawnDebug;
+    }
+
+    public bool GetAudioDebug()
+    {
+        return enableDebug && audioDebug;
+    }
+
+    public bool GetPuzzleDebug()
+    {
+        return enableDebug && puzzleDebug;
+    }
 }

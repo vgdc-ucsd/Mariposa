@@ -74,8 +74,6 @@ public abstract class Trigger : MonoBehaviour
   
     private void Clear()
     {
-        if (ContainedBodies == null) return;
-
         foreach (var body in ContainedBodies.ToArray())
         {
             Remove(body);
