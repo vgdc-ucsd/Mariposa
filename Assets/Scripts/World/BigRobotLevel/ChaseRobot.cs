@@ -145,7 +145,6 @@ public class ChaseRobot : MonoBehaviour
 
     public void ResetRobot()
     {
-        Debug.Log("Reset Robot "+ gameObject.name);
         state = RobotWallState.IDLE;
         transform.position = startPos;
         currentSpeed = baseMovementSpeed;
