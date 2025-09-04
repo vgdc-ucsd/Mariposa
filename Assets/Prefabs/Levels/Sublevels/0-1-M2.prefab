@@ -105,6 +105,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: 0-1-M2
       objectReference: {fileID: 0}
+    - target: {fileID: 3466073932169799765, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4291255975227824074, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 25.8
@@ -116,6 +120,34 @@ PrefabInstance:
     - target: {fileID: 6845957221351400407, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
       propertyPath: m_LocalPosition.y
       value: 4.55
+      objectReference: {fileID: 0}
+    - target: {fileID: 7134879220642953002, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
+      propertyPath: completionEvent.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7134879220642953002, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
+      propertyPath: completionEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7134879220642953002, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
+      propertyPath: completionEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 8556043232600336087}
+    - target: {fileID: 7134879220642953002, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
+      propertyPath: completionEvent.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7134879220642953002, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
+      propertyPath: completionEvent.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: OnRepair
+      objectReference: {fileID: 0}
+    - target: {fileID: 7134879220642953002, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
+      propertyPath: completionEvent.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: OpenMariposaDoorEvent, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7134879220642953002, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
+      propertyPath: completionEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 7781438879541944464, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
       propertyPath: m_LocalPosition.x
@@ -172,10 +204,38 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3768536734801895760, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
       insertIndex: 0
       addedObject: {fileID: 5950081227435410924}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4067898870166346239, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8556043232600336087}
   m_SourcePrefab: {fileID: 100100000, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
+--- !u!1 &3483423265595917456 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4067898870166346239, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
+  m_PrefabInstance: {fileID: 586470127656459631}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8556043232600336087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3483423265595917456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6f1787581876dd43811c8bb0cac84b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 6780659116736363409}
+  closedSprite: {fileID: 21300000, guid: 8087c60ea8888fe44ad76de0f5533435, type: 3}
+  openSprite: {fileID: 21300000, guid: b0c4c0834a863504393acba94837760c, type: 3}
 --- !u!4 &4354707374111980607 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3768536734801895760, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
+  m_PrefabInstance: {fileID: 586470127656459631}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &6780659116736363409 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 6213334658428626686, guid: 9cb2ec489a963d249a475e0090ef19b5, type: 3}
   m_PrefabInstance: {fileID: 586470127656459631}
   m_PrefabAsset: {fileID: 0}
