@@ -187,7 +187,7 @@ public class DowntownTurret : MonoBehaviour
     public void RemoveBattery()
     {
         HasBattery = false;
-        RuntimeManager.PlayOneShot("event:/sfx/item/pickup");
+        RuntimeManager.PlayOneShot(AudioEvents.SFX.item_pickup);
         ShutDown();
     }
 

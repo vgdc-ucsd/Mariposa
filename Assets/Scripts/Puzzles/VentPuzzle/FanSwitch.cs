@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using FMODUnity;
 
 public class FanSwitch : Switch
 {
@@ -13,5 +14,6 @@ public class FanSwitch : Switch
         {
             field.OnFieldToggle();
         }
+        RuntimeManager.PlayOneShot(AudioEvents.SFX.lever_pull);
     }
 }

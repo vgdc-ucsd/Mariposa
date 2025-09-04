@@ -27,6 +27,7 @@ public class GrappleAbility : MonoBehaviour, IAbility
     private GrappleState state;
     private GrappleTarget lockedTarget;
     private LineRenderer lineRenderer;
+    private EventInstance swingSoundInstance;
 
     // when is the player considered "close"
     private const float STOP_DISTANCE = 1;
@@ -208,6 +209,7 @@ public class GrappleAbility : MonoBehaviour, IAbility
         player.Movement.Stop();
         player.Movement.ToggleGravity(false);
         ChangeGrappleState(GrappleState.Firing);
+        RuntimeManager.PlayOneShot(AudioEvents.SFX.unnamed_grapple_throw);
     }
 
     // hook is travelling towards the target
@@ -220,6 +222,10 @@ public class GrappleAbility : MonoBehaviour, IAbility
         if (Vector2.Distance(hookProjectile.transform.position, currentTarget.transform.position) < 1f)
         {
             ChangeGrappleState(GrappleState.Pulling);
+
+            RuntimeManager.PlayOneShot(AudioEvents.SFX.unnamed_grapple_impact);
+            swingSoundInstance = AudioManager.CreateEventInstance(AudioEvents.SFX.unnamed_grapple_swing);
+            if (swingSoundInstance.isValid()) swingSoundInstance.start();
         }
 
     }
@@ -284,6 +290,8 @@ public class GrappleAbility : MonoBehaviour, IAbility
             Player.ActivePlayer.Movement.ToggleGravity(true);
             hookProjectile.SetActive(false);
             lockedTarget.ReleaseGrapple();
+            AudioManager.StopEventInstance(swingSoundInstance, FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            swingSoundInstance = default;
         }
     }
 
@@ -315,11 +323,6 @@ public class GrappleAbility : MonoBehaviour, IAbility
 
     }
 
-    private void PlayGrappleThrow()
-    {
-        RuntimeManager.PlayOneShot(AudioEvents.SFX.unnamed_grapple.GetPath());
-    }
-
     private void ChangeGrappleState(GrappleState newState)
     {
         GrappleState previous = state;
@@ -331,7 +334,6 @@ public class GrappleAbility : MonoBehaviour, IAbility
             {
                 hookProjectile.SetActive(true);
                 hookProjectile.transform.position = Player.ActivePlayer.transform.position;
-                PlayGrappleThrow();
             }
             else
             {
