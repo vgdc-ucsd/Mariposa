@@ -3,79 +3,62 @@ using System.Collections;
 using FMOD.Studio;
 using FMODUnity;
 using UnityEngine;
-using static AudioEvents;
 
 public class MusicManager : Singleton<MusicManager>
 {
-    private string currentMusicPath, transitionMusicPath = "";
-    [SerializeField] private Music currentMusicEvent = Music.NONE;
-    [SerializeField] private Music transitionMusicEvent = Music.NONE;
-
-    private Bus music1Bus, music2Bus;
-
     public EventInstance currentEventInstance { get; private set; }
     private EventInstance transitionEventInstance;
 
-    private float transitionPercent = 0.0f;
-    private float elapsed = 0.0f;
-    private bool isTransitionValid = false;
-    private bool isCurrentlyTransitioning = false;
-    public bool PlayOnStart = false;
+    private EventReference currentMusicEvent;
+    private Coroutine transitionCoroutine;
 
     private const float DEFAULT_TRANSITION_DURATION = 1.5f;
 
-    private enum busOptions
+    public enum Music
     {
-        music1,
-        music2
-    }
-    private busOptions busChoice;
+        NONE,
+        Tutorial_mariposa,
+        Tutorial_unnamed,
+        Downtown_mariposa,
+        Downtown_unnamed,
+        Pier_mariposa,
+        Pier_unnamed,
+        BigRobot_unnamed,
+        Hometown_mariposa,
+        Hometown_unnamed,
+        titlescreen_title,
+    };
 
     private void Start()
     {
-        busChoice = busOptions.music1;
-        music1Bus = RuntimeManager.GetBus("bus:/Music/Music1");
-        music2Bus = RuntimeManager.GetBus("bus:/Music/Music2");
-        transitionPercent = 0.0f;
-        setTransitionVolume();
-        updatePath();
-
-        if (PlayOnStart)
-        {
-            Play();
-        }
+        transitionCoroutine = null;
+        currentMusicEvent = default;
     }
 
-    private Bus getCurrentBus()
+    public EventReference GetEventReference(Music music)
     {
-        if (busChoice == busOptions.music1)
+        return music switch
         {
-            return music1Bus;
-        }
-        else
-        {
-            return music2Bus;
-        }
+            Music.Tutorial_mariposa => AudioEvents.Music.s0Tutorial_mariposa,
+            Music.Tutorial_unnamed => AudioEvents.Music.s0Tutorial_unnamed,
+            Music.Downtown_mariposa => AudioEvents.Music.s1Downtown_mariposa,
+            Music.Downtown_unnamed => AudioEvents.Music.s1Downtown_unnamed,
+            Music.Pier_mariposa => AudioEvents.Music.s2Pier_mariposa,
+            Music.Pier_unnamed => AudioEvents.Music.S2Pier_unnamed,
+            Music.BigRobot_unnamed => AudioEvents.Music.s3BigRobot_unnamed,
+            Music.Hometown_mariposa => AudioEvents.Music.s4Hometown_mariposa,
+            Music.Hometown_unnamed => AudioEvents.Music.s4Hometown_unnamed,
+            Music.titlescreen_title => AudioEvents.Music.titlescreen_title,
+            _ => throw new ArgumentException($"{music} does not correspond to a valid EventReference")
+        };
     }
 
-    private Bus getTransitionBus()
-    {
-        if (busChoice != busOptions.music1)
-        {
-            return music1Bus;
-        }
-        else
-        {
-            return music2Bus;
-        }
-    }
-
-    private bool isPlaying()
+    private bool IsPlaying()
     {
         if (currentEventInstance.isValid())
         {
             currentEventInstance.getPlaybackState(out PLAYBACK_STATE state);
-            return state != PLAYBACK_STATE.STOPPED && state != PLAYBACK_STATE.STOPPING;
+            return state == PLAYBACK_STATE.PLAYING || state == PLAYBACK_STATE.SUSTAINING || state == PLAYBACK_STATE.STOPPING;
         }
         return false;
     }
@@ -83,188 +66,131 @@ public class MusicManager : Singleton<MusicManager>
     [ContextMenu("Play")]
     public void Play()
     {
-        if (isPlaying()) { return; }
+        if (IsPlaying() || transitionCoroutine != null) return;
 
-        if (currentMusicEvent.IsValid())
+        if (currentMusicEvent.IsNull || currentMusicEvent.Equals(default))
         {
-            currentMusicPath = currentMusicEvent.GetPath();
-            updatePath();
-            currentEventInstance = RuntimeManager.CreateInstance(currentMusicPath);
-        }
-        else
-        {
-            Debug.LogWarning($"Invalid music for '{currentMusicEvent}': Skipping Play()");
+            Debug.LogError("Tried to play music with an empty music eventReference");
             return;
         }
 
-        currentEventInstance.start();
-
-        if (isTransitionValid)
+        if (!currentEventInstance.isValid())
         {
-            transitionEventInstance.start();
+            currentEventInstance = AudioManager.CreateEventInstance(currentMusicEvent);
+            if (!currentEventInstance.isValid()) return;
         }
+
+        currentEventInstance.start();
     }
 
     [ContextMenu("Stop")]
     public void Stop(FMOD.Studio.STOP_MODE stopMode = FMOD.Studio.STOP_MODE.IMMEDIATE)
     {
-        if (!isPlaying()) { return; }
-
-        currentEventInstance.stop(stopMode);
-
-        if (isTransitionValid)
+        if (IsPlaying())
         {
-            transitionEventInstance.stop(stopMode);
+            AudioManager.StopEventInstance(currentEventInstance, stopMode);
+            currentEventInstance = default;
+            currentMusicEvent = default;
+        }
+
+        if (transitionCoroutine != null)
+        {
+            StopCoroutine(transitionCoroutine);
+            AudioManager.StopEventInstance(transitionEventInstance, stopMode);
+            transitionEventInstance = default;
         }
     }
 
-    public void ChangeMusic(Music transitionEvent, float duration = DEFAULT_TRANSITION_DURATION)
+
+    public void ChangeMusic(Music musicEvent, float transitionDuration = DEFAULT_TRANSITION_DURATION)
     {
-        if (duration < 0)
+        if (!Enum.IsDefined(typeof(Music), musicEvent) || musicEvent == Music.NONE) Stop();
+        else ChangeMusic(GetEventReference(musicEvent), transitionDuration);
+    }
+
+    public void ChangeMusic(EventReference musicEvent, float transitionDuration = DEFAULT_TRANSITION_DURATION)
+    {
+        if (transitionDuration < 0)
         {
             Debug.LogError("Music transition duration must be >= 0 seconds. Aborting...");
             return;
         }
-        if (!transitionEvent.IsValid())
+
+        if (currentEventInstance.isValid() && currentMusicEvent.Equals(musicEvent)) return;
+
+        if (!IsPlaying())
         {
-            Debug.Log("No music exists! Stopping music instead!");
-            Stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-            return;
-        }
-        if (currentMusicEvent == Music.NONE)
-        {
-            currentMusicEvent = transitionEvent;
-            updatePath();
-            currentEventInstance = RuntimeManager.CreateInstance(currentMusicPath);
-            if (!currentEventInstance.isValid())
-            {
-                Debug.LogError("Current event is not valid! Most likely caused by typo in AudioEvents.cs");
-                return;
-            }
+            currentMusicEvent = musicEvent; 
+            currentEventInstance = AudioManager.CreateEventInstance(musicEvent);
             Play();
-        }
-        if (isCurrentlyTransitioning)
-        {
-            transitionEventInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-            StopAllCoroutines();
-            transitionMusicEvent = transitionEvent;
-            transitionMusicPath = transitionMusicEvent.GetPath();
-            updatePath();
-            transitionEventInstance = RuntimeManager.CreateInstance(transitionMusicPath);
-            if (!transitionEventInstance.isValid())
-            {
-                Debug.LogError("Transition Event is not valid! Most likely caused by typo in AudioEvents.cs. Aborting transition...");
-                transitionPercent = 0.0f;
-                setTransitionVolume();
-            }
-            transitionEventInstance.start();
-            isTransitionValid = true;
-            StartCoroutine(VolumeTransition(duration));
             return;
         }
 
-        transitionMusicEvent = transitionEvent;
-        transitionMusicPath = transitionMusicEvent.GetPath();
-        updatePath();
-        transitionEventInstance = RuntimeManager.CreateInstance(transitionMusicPath);
-        if (!transitionEventInstance.isValid())
-        {
-            Debug.LogError("Transition Event is not valid! Most likely caused by typo in AudioEvents.cs");
-            return;
-        }
-        isTransitionValid = true;
-        StartCoroutine(SongTransition(duration));
+        // Already playing music, so do a crossfade transition
+
+        if (transitionCoroutine != null) StopCoroutine(transitionCoroutine);
+
+        transitionCoroutine = StartCoroutine(DoCrossfade(musicEvent, transitionDuration));
     }
 
+    /*
     [ContextMenu("Transition Debug")]
     private void InspectorTransition()
     {
         ChangeMusic(transitionMusicEvent, 3.0f);
     }
+    */
 
-    public void SetVolume(float volume)
+    private IEnumerator DoCrossfade(EventReference nextTrack, float duration)
     {
-        if (volume > 1.0 || volume < 0.0)
-        {
-            Debug.LogError("MusicManager volume must be set between 0.0 and 1.0");
-            return;
-        }
-
-        getCurrentBus().setVolume(volume);
-    }
-
-    private IEnumerator SongTransition(float duration)
-    {
-        isCurrentlyTransitioning = true;
+        transitionEventInstance = AudioManager.CreateEventInstance(nextTrack);
+        if (transitionEventInstance.Equals(default)) yield break;
+        transitionEventInstance.setVolume(0.0f);
         transitionEventInstance.start();
-        elapsed = 0.0f;
-        yield return StartCoroutine(VolumeTransition(duration));
-    }
 
-    private IEnumerator VolumeTransition(float duration)
-    {
+        float elapsed = 0.0f;
         while (elapsed <= duration)
         {
             elapsed += Time.deltaTime;
+
             float t = elapsed / duration;
-            transitionPercent = Mathf.Lerp(0.0f, 1.0f, t);
-            setTransitionVolume();
+            float transitionPercent = Mathf.SmoothStep(0.0f, 1.0f, t);
+
+            currentEventInstance.setVolume(1.0f - transitionPercent);
+            transitionEventInstance.setVolume(transitionPercent);
+
             yield return null;
         }
-        transitionPercent = 0.0f;
-        swap();
-        isCurrentlyTransitioning = false;
-    }
 
-    // change all internal variables to reflect aftereffects of music transition
-    private void swap()
-    {
-        // swap buses
-        if (busChoice == busOptions.music1)
-        {
-            busChoice = busOptions.music2;
-        }
-        else
-        {
-            busChoice = busOptions.music1;
-        }
+        AudioManager.StopEventInstance(currentEventInstance, FMOD.Studio.STOP_MODE.IMMEDIATE);
 
-        if (isTransitionValid)
-        {
-            currentEventInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-            currentEventInstance.release();
-            currentEventInstance = transitionEventInstance;
+        currentEventInstance = transitionEventInstance;
+        transitionEventInstance = default;
+        currentMusicEvent = nextTrack;
 
-            // same with EventReferences and paths
-            currentMusicEvent = transitionMusicEvent;
-            transitionMusicEvent = Music.NONE;
-        }
-        updatePath();
-        isTransitionValid = false;
-    }
-
-    private void setTransitionVolume()
-    {
-        getCurrentBus().setVolume(1.0f - transitionPercent);
-        getTransitionBus().setVolume(transitionPercent);
-    }
-
-    private void updatePath()
-    {
-        if (busChoice == busOptions.music1)
-        {
-            if (currentMusicEvent.IsValid()) { currentMusicPath = currentMusicEvent.GetPath().Replace("music2", "music1"); }
-            if (transitionMusicEvent.IsValid()) { transitionMusicPath = transitionMusicEvent.GetPath().Replace("music1", "music2"); }
-        }
-        else
-        {
-            if (currentMusicEvent.IsValid()) { currentMusicPath = currentMusicEvent.GetPath().Replace("music1", "music2"); }
-            if (transitionMusicEvent.IsValid()) { transitionMusicPath = transitionMusicEvent.GetPath().Replace("music2", "music1"); }
-        }
+        transitionCoroutine = null;
     }
 
     private void OnDisable()
     {
         Stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyUp(KeyCode.N))
+        {
+            if (currentEventInstance.isValid())
+            {
+                currentEventInstance.getVolume(out float volume);
+                currentEventInstance.getPlaybackState(out PLAYBACK_STATE state);
+                currentEventInstance.getTimelinePosition(out int position);
+                Debug.Log($"volume: {volume}, state: {state}, position: {position}");
+            }
+            else
+            {
+                Debug.Log("Invalid event instance");
+            }
+        }
     }
 }
