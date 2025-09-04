@@ -44,10 +44,10 @@ public class RespawnPoint : MonoBehaviour
             switch (Player.ActivePlayer.Data.characterID)
             {
                 case CharID.Mariposa:
-                    RuntimeManager.PlayOneShot("event:/sfx/world/spawnpoint_activate/mariposa");
+                    RuntimeManager.PlayOneShot(AudioEvents.SFX.spawnpoint_activate_mariposa);
                     break;
                 case CharID.Unnamed:
-                    RuntimeManager.PlayOneShot("event:/sfx/world/spawnpoint_activate/unnamed");
+                    RuntimeManager.PlayOneShot(AudioEvents.SFX.spawnpoint_activate_unnamed);
                     break;
             }
         }

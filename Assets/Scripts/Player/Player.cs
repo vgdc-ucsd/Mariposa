@@ -116,7 +116,6 @@ public class Player : MonoBehaviour
 			Movement.Velocity = Vector2.zero;
 			SpawnAt(CurrentRespawnPoint.GetComponent<RespawnPoint>().GetRespawnPosition());			
 			if (playerDebug) Debug.Log($"Player respawned to: {CurrentRespawnPoint.gameObject.name} @ {CurrentRespawnPoint.GetRespawnPosition().ToString()}");
-			RuntimeManager.PlayOneShot("event:/sfx/player/respawn");
 		}
 		LevelManager.Instance.RestartFromCheckpoint();
     }
@@ -147,7 +146,7 @@ public class Player : MonoBehaviour
         // TODO: there may be not that much delay between death and respawn, so remove the below line or add a delay after this line to prevent it overlapping with respawn sfx
         OnDeath.Invoke();
 		if (Data.characterID == CharID.Unnamed) RuntimeManager.PlayOneShot(AudioEvents.SFX.unnamed_pain);
-		else RuntimeManager.PlayOneShot("event:/sfx/player/death");
+		else Debug.LogError($"Died as {Data.characterID}");
 		SetPlayerActive(false);
 		CameraController.ActiveCamera?.PauseCamera();
 		yield return FadeController.Instance.FadeOut();
@@ -182,10 +181,10 @@ public class Player : MonoBehaviour
 		switch (Player.ActivePlayer.Data.characterID)
 		{
 			case CharID.Mariposa:
-				RuntimeManager.PlayOneShot("event:/sfx/world/spawnpoint_activate/mariposa");
+				RuntimeManager.PlayOneShot(AudioEvents.SFX.spawnpoint_activate_mariposa);
 				break;
 			case CharID.Unnamed:
-				RuntimeManager.PlayOneShot("event:/sfx/world/spawnpoint_activate/unnamed");
+				RuntimeManager.PlayOneShot(AudioEvents.SFX.spawnpoint_activate_unnamed);
 				break;
 		}
 	}

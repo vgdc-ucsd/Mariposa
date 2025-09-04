@@ -40,6 +40,7 @@ public class MusicEvents
     public EventReference s4Hometown_mariposa;
     public EventReference s4Hometown_unnamed;
     public EventReference titlescreen_title;
+    public EventReference credits_theme;
 }
 
 [System.Serializable]

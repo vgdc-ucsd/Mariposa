@@ -14,7 +14,7 @@ public class KeycardDoor : Door
     public override void Open()
     {
         base.Open();
-        RuntimeManager.PlayOneShot("event:/sfx/item/keycard/tap");
+        RuntimeManager.PlayOneShot(AudioEvents.SFX.keycard_tap);
     }
 
     public override void OnInteract(IControllable controllable)

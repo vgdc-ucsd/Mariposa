@@ -1,5 +1,7 @@
 using FMODUnity;
+using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -9,11 +11,13 @@ public class ButtonSoundApplicator : MonoBehaviour
 {
     private void Awake()
     {
-        SceneManager.sceneLoaded += (Scene, LoadSceneMode) => AddButtonSounds();
+        StartCoroutine(AddButtonSounds());
     }
 
-    private void AddButtonSounds()
+    private IEnumerator AddButtonSounds()
     {
+        yield return new WaitForEndOfFrame();
+
         UIButton[] existingButtons = FindObjectsByType<UIButton>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         foreach (UIButton button in existingButtons)
         {
