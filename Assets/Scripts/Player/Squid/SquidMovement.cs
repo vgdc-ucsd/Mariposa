@@ -112,7 +112,7 @@ public class SquidMovement : FreeBody, IInputListener, IControllable
         {
             Velocity.y = jumpVelocity;
             coyoteTimeRemaining = 0f;   // consume coyote time
-            RuntimeManager.PlayOneShot("event:/sfx/player/jump");
+            RuntimeManager.PlayOneShot(AudioEvents.SFX.player_jump);
         }
         else if (State != BodyState.OnGround && coyoteTimeRemaining <= 0.0f)
         {

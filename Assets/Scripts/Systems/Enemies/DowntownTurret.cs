@@ -29,6 +29,7 @@ public class DowntownTurret : MonoBehaviour
     [SerializeField] private GameObject projectile;
     [SerializeField] private TurretType type;
     [SerializeField] private GameObject playerTargetObj;
+    private Vector2 targetPoint;
 
     // -------- private variables --------
     [Header("Turret Attribute")]
@@ -44,6 +45,7 @@ public class DowntownTurret : MonoBehaviour
 
     [Header("Range Detector")]
     [SerializeField][Range(0.1f, 10.0f)] float rangeRadius;
+    private float minRange;
 
     [Tooltip("Determines how precise turret is. The greater the number, the farther the player can be before the turret starts to charge. Number is in degrees.")]
     [SerializeField][Range(0.0f, 90.0f)] float precision;
@@ -61,6 +63,8 @@ public class DowntownTurret : MonoBehaviour
         playerLayer = LayerMask.GetMask("Player");
         playerAndEnvLayer = LayerMask.GetMask("Player", "Barrier");
         chargingPointSprite = chargingPoint.GetComponent<SpriteRenderer>();
+
+        minRange = (chargingPoint.transform.position - turretHead.transform.position).magnitude * 0.85f;
     }
 
     private void OnEnable()
@@ -119,15 +123,14 @@ public class DowntownTurret : MonoBehaviour
         // if made it this far, target is in range
 
         // 0.0174533f = pi / 180.0f;
-        Vector3 playerDirectionVector = (playerTargetObj.transform.position - chargingPoint.transform.position).normalized;
-        Vector3 currentFaceDirection = new((float)Math.Cos(turretHead.transform.eulerAngles.z * 0.0174533f), (float)Math.Sin(turretHead.transform.eulerAngles.z * 0.0174533f));
-        // Debug.DrawRay(chargingPoint.transform.position, currentFaceDirection, Color.yellow, 0.5f);
+        Vector2 playerDirectionVector = targetPoint - (Vector2)chargingPoint.transform.position;
+        Vector2 currentFaceDirection = new((float)Math.Cos(turretHead.transform.eulerAngles.z * 0.0174533f), (float)Math.Sin(turretHead.transform.eulerAngles.z * 0.0174533f));
 
-        float angleBetweenTurretAndPlayer = Vector2.SignedAngle(currentFaceDirection, playerDirectionVector);
+        float angleBetweenTurretAndPlayer = Vector2.SignedAngle(currentFaceDirection, playerDirectionVector.normalized);
 
         // lock on to target
         isFocusing = true;
-        TurnToTarget(dt, angleBetweenTurretAndPlayer);
+        TurnToTarget(dt, angleBetweenTurretAndPlayer, playerDirectionVector);
 
         // if locked on (enough), charge projectile
         if (Math.Abs(angleBetweenTurretAndPlayer) <= precision)
@@ -144,7 +147,7 @@ public class DowntownTurret : MonoBehaviour
         // if charged up, fire
         if (projectileFocusCounter >= projectileFocusDuration)
         {
-            FireProjectile(dt, (Vector2)currentFaceDirection);
+            FireProjectile(dt, currentFaceDirection);
             ResetState();
             isOnCooldown = true;
         }
@@ -154,20 +157,16 @@ public class DowntownTurret : MonoBehaviour
     public bool CheckForTargetInRange()
     {
         Vector3 turretPos = chargingPoint.transform.position;
-
-        // Collider2D rangeCheck = Physics2D.OverlapCircle(turretPos, rangeRadius, playerLayer);
-        // if (rangeCheck.gameObject.CompareTag("Player"))
-        // {
-        //     Vector3 playerDirectionVector = (rangeCheck.gameObject.transform.position - turretPos).normalized;
-        //     RaycastHit2D ray = Physics2D.Raycast(turretPos, playerDirectionVector, rangeRadius, playerAndEnvLayer);
-        //     if (ray.collider.gameObject.CompareTag("Player")) ;
-        // }
-        // return null;
-
-        Vector3 playerDirectionVector = (playerTargetObj.transform.position - turretPos).normalized;
-        RaycastHit2D ray = Physics2D.Raycast(turretPos, playerDirectionVector, rangeRadius, playerAndEnvLayer);
+        Vector3 playerDirectionVector = playerTargetObj.transform.position - turretPos;
+        float distanceFromCenter = (turretCenter.transform.position - playerTargetObj.transform.position).magnitude;
+        // check if player is "inside" turret. if he is, no longer in range
+        if (minRange > distanceFromCenter)
+        {
+            return false;
+        }
+        RaycastHit2D ray = Physics2D.Raycast(turretPos, playerDirectionVector.normalized, rangeRadius, playerAndEnvLayer);
         if (!ray) return false;
-        // Debug.DrawRay(turretPos, playerDirectionVector, Color.white, 0.5f);
+        targetPoint = ray.point;
         return ray.collider.gameObject.CompareTag("Player");
     }
 
@@ -188,7 +187,7 @@ public class DowntownTurret : MonoBehaviour
     public void RemoveBattery()
     {
         HasBattery = false;
-        RuntimeManager.PlayOneShot("event:/sfx/item/pickup");
+        RuntimeManager.PlayOneShot(AudioEvents.SFX.item_pickup);
         ShutDown();
     }
 
@@ -208,9 +207,12 @@ public class DowntownTurret : MonoBehaviour
     }
 
     // locks on to first target with the tag of "player"
-    public void TurnToTarget(float dt, float angle)
+    public void TurnToTarget(float dt, float angle, Vector2 playerDirectionVector)
     {
         float angularDisplacement = Math.Min(rotationSpeed * dt, Math.Abs(angle));
+        // angles may get messed up in a sweet spot between turret and player due to conflicting angles between raycasting and positions
+        if (Math.Abs(180.0f - angle) < 2.0f && playerDirectionVector.magnitude < minRange) return;
+        
         if (angle < 0.0f) angularDisplacement *= -1.0f;
         turretHead.transform.Rotate(Vector3.forward, angularDisplacement);
     }

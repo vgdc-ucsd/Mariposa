@@ -9,7 +9,7 @@ public class PreventAdvancingTrigger : Trigger
 
     public override bool OnEnter(Body body)
     {
-        if (InventoryManager.Instance.GetInventory().HasItem(requiredItem))
+        if (requiredItem != null && InventoryManager.Instance.GetInventory().HasItem(requiredItem))
         {
             Destroy(gameObject);
         }

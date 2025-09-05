@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -54,9 +55,9 @@ public class WirePuzzleDraggable : MonoBehaviour, IBeginDragHandler, IDragHandle
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (eventData.clickCount == 2)
+        if (eventData.clickCount == 2 || eventData.button == PointerEventData.InputButton.Right)
         {
-            DisconnectWire();
+            DisconnectWire(Mathf.Max(ConnectedReceivers.Count - 1, 0));
         }
     }
 
@@ -101,6 +102,12 @@ public class WirePuzzleDraggable : MonoBehaviour, IBeginDragHandler, IDragHandle
 
     private void TryConnectWire(WirePuzzleReceiver wirePuzzleReceiver)
     {
+        if (wirePuzzleReceiver.ConnectedDraggable != null)
+        {
+            wireVisuals.SnapBackVisuals(this);
+            return;
+        }
+
         if (wirePuzzleReceiver is WirePuzzleTail)
         {
             ConnectedTail = (WirePuzzleTail)wirePuzzleReceiver;
@@ -113,17 +120,24 @@ public class WirePuzzleDraggable : MonoBehaviour, IBeginDragHandler, IDragHandle
         }
     }
 
-    public void DisconnectWire()
+    public void DisconnectWire(int layer)
     {
-        ConnectedTail = null;
-        if (ConnectedReceivers.Count > 0)
+        while (ConnectedReceivers.Count > layer)
         {
-            ConnectedReceivers[^1].ConnectedDraggable = null;
-            ConnectedReceivers[^1].GetComponent<Image>().raycastTarget = true;
-            ConnectedReceivers.RemoveAt(ConnectedReceivers.Count - 1);
+            ConnectedTail = null;
+            if (ConnectedReceivers.Count > 0)
+            {
+                ConnectedReceivers[^1].ConnectedDraggable = null;
+                ConnectedReceivers[^1].GetComponent<Image>().raycastTarget = true;
+                ConnectedReceivers.RemoveAt(ConnectedReceivers.Count - 1);
+            }
+            // Reset position of "draggable" game object
+            SnapBackToPos();
         }
-        // Reset position of "draggable" game object
-        SnapBackToPos();
+        
+        Image bottomReceiver = null;
+        if (ConnectedReceivers.Count > 0) bottomReceiver = ConnectedReceivers[^1].GetComponent<Image>();
+        if (bottomReceiver != null) bottomReceiver.raycastTarget = false;
     }
 
     public void AddConnectedNode(WirePuzzleReceiver receiver)
@@ -138,6 +152,9 @@ public class WirePuzzleDraggable : MonoBehaviour, IBeginDragHandler, IDragHandle
 
             // Turn off raycast target for connected node
             receiver.GetComponent<Image>().raycastTarget = false;
+            
+            // Turn on raycast target for parent node
+            if (receiver.layer > 1) ConnectedReceivers[receiver.layer - 2].GetComponent<Image>().raycastTarget = true;
         }
         else
         {

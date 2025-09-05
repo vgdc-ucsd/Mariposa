@@ -29,6 +29,7 @@ public class TextInputDisplay : MonoBehaviour
 
     public void SubmitName()
     {
+        if (inputField.text.Length < 1) return;
         DataPersistenceManager.Instance.gameData.UnnamedName = inputField.text;
         Close();
     }

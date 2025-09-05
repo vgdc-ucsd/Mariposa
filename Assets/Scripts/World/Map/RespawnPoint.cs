@@ -14,7 +14,7 @@ public class RespawnPoint : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected void Start()
     {
-        respawnDebug = Settings.Instance.Debug.GetRespawnDebug();
+        respawnDebug = GameManager.Instance.Debug.RespawnDebugEnabled;
     }
 
     // insures no memory leaks occur when scene unloads or objects are disabled / destroyed
@@ -44,10 +44,10 @@ public class RespawnPoint : MonoBehaviour
             switch (Player.ActivePlayer.Data.characterID)
             {
                 case CharID.Mariposa:
-                    RuntimeManager.PlayOneShot("event:/sfx/world/spawnpoint_activate/mariposa");
+                    RuntimeManager.PlayOneShot(AudioEvents.SFX.spawnpoint_activate_mariposa);
                     break;
                 case CharID.Unnamed:
-                    RuntimeManager.PlayOneShot("event:/sfx/world/spawnpoint_activate/unnamed");
+                    RuntimeManager.PlayOneShot(AudioEvents.SFX.spawnpoint_activate_unnamed);
                     break;
             }
         }

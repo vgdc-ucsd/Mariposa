@@ -170,6 +170,7 @@ public class BeeMovement : FreeBody, IInputListener, IControllable
             tempVelocity = tempVelocity - clampedNormalComp * resistance * RESISTANCE_ADJUSTMENT;
         }
 
+        if (tempVelocity.magnitude >= 10f) tempVelocity = Vector2.zero;
         Velocity = tempVelocity;
 
         // remove all speed when close to at rest and not moving in any direction

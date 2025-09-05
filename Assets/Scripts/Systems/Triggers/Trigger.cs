@@ -74,6 +74,8 @@ public abstract class Trigger : MonoBehaviour
   
     private void Clear()
     {
+        if (ContainedBodies == null) return;
+
         foreach (var body in ContainedBodies.ToArray())
         {
             Remove(body);
@@ -97,5 +99,15 @@ public abstract class Trigger : MonoBehaviour
                 OnExit(body);
             }
         }
+    }
+    
+    public bool IsPlayerInside(Player player)
+    {
+        if (player == null) return false;
+        Collider2D playerCollider = player.GetComponent<Collider2D>();
+        Collider2D triggerCollider = GetComponent<Collider2D>();
+        if (playerCollider == null || triggerCollider == null) return false;
+    
+        return triggerCollider.IsTouching(playerCollider);
     }
 }
