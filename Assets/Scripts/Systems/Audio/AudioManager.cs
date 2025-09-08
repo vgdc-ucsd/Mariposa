@@ -95,7 +95,7 @@ public class AudioManager : Singleton<AudioManager>, IDataPersistence
         EventInstance newEventInstance = RuntimeManager.CreateInstance(eventReference);
         if (!newEventInstance.isValid())
         {
-            Debug.LogError($"Failed to create a valid event instance for {eventReference.Path}");
+            Debug.LogError($"Failed to create a valid event instance for {eventReference.Guid}");
             return default;
         }
 

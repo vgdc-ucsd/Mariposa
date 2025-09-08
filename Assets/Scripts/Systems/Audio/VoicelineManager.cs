@@ -231,7 +231,7 @@ public class VoicelineManager : Singleton<VoicelineManager>
         EventInstance voInstance = AudioManager.CreateEventInstance(vo);
         if (!voInstance.isValid())
         {
-            Debug.LogError($"The dialogue voiceover event '{vo.Path}' has an invalid path! Faulty AudioEvent! Skipping...");
+            Debug.LogError($"The dialogue voiceover event '{vo.Guid}' has an invalid path! Faulty AudioEvent! Skipping...");
             return;
         }
         voInstance.start();
