@@ -127,8 +127,8 @@ public class PauseMenuScript : Singleton<PauseMenuScript>
     {
         AudioManager.Instance.ToggleGlobalPause(false, disabledBussesOnPause);
         AmbienceManager.Instance.Stop();
+        GameManager.Instance.HandlePause();
         DataPersistenceManager.Instance.SaveGame();
-        ResumeGame();
         GameManager.Instance.LoadScene(GameScene.MAIN_MENU);
     }
 }

@@ -21,7 +21,7 @@ public class DataPersistenceManager : Singleton<DataPersistenceManager>
     {
         fullPath = $"{Application.persistentDataPath}{Path.DirectorySeparatorChar}{fileName}";
         dataPersistenceObjects = FindAllDataPersistenceObjects();
-        
+
         LoadGame();
     }
 
@@ -65,6 +65,7 @@ public class DataPersistenceManager : Singleton<DataPersistenceManager>
     /// </summary>
     public void SaveGame()
     {
+        Debug.Log("Saving, current level: " + gameData.SavedScene);
         foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)
         {
             dataPersistenceObj.SaveData(ref gameData);
@@ -89,5 +90,10 @@ public class DataPersistenceManager : Singleton<DataPersistenceManager>
         IEnumerable<IDataPersistence> dataPersistenceObjects = FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None)
                                                                 .OfType<IDataPersistence>();
         return new List<IDataPersistence>(dataPersistenceObjects);
+    }
+    
+    public bool HasSavedGame()
+    {
+        return File.Exists(fullPath);
     }
 }

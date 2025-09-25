@@ -28,7 +28,7 @@ public class GameManager : Singleton<GameManager>, IDataPersistence
     public InteractionTrigger DefaultInteractionTrigger;
     private InputSystem_Actions actions;
 
-    public DebugSettings Debug;
+    public DebugSettings DebugSettings;
 
     public bool hasGameDataBeenLoaded;
 
@@ -136,7 +136,8 @@ public class GameManager : Singleton<GameManager>, IDataPersistence
 
     public void SaveData(ref GameData data)
     {
-        data.SavedScene = SavedScene;
+        data.SavedScene = CurrentScene;
+        Debug.Log("Saved scene: " + data.SavedScene);
     }
 
     public void LoadData(GameData data)
