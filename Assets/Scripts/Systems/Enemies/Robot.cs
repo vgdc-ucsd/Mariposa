@@ -64,7 +64,7 @@ public class Robot : Enemy
         playStepCtr += dt;
         if (playStepCtr > playStepInterval)
         {
-            RuntimeManager.PlayOneShot("event:/sfx/world/robot/step", this.transform.position);
+            RuntimeManager.PlayOneShot(AudioEvents.SFX.robot_step, this.transform.position);
             playStepCtr = 0.0f;
         }
     }

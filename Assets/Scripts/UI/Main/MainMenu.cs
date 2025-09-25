@@ -11,8 +11,6 @@ public class MainMenu : Singleton<MainMenu>
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        MusicManager.Instance.ChangeMusic(AudioEvents.Music.titlescreen_title_theme);
-
         // If no saved game, disable load button
         if (!DataPersistenceManager.Instance.HasSavedGame())
         {
@@ -21,6 +19,7 @@ public class MainMenu : Singleton<MainMenu>
                 loadButton.interactable = false;
             }
         }
+        MusicManager.Instance.ChangeMusic(AudioEvents.Music.titlescreen_title);
     }
 
     public void NewGameBtn()

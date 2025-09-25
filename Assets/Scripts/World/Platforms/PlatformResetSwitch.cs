@@ -1,4 +1,5 @@
- using UnityEngine;
+using FMODUnity;
+using UnityEngine;
 
 public class PlatformResetSwitch : Switch
 {
@@ -10,5 +11,6 @@ public class PlatformResetSwitch : Switch
         {
             platform.state = MovingPlatform.PlatformState.Resetting;
         }
+        RuntimeManager.PlayOneShot(AudioEvents.SFX.lever_pull);
     }
 }

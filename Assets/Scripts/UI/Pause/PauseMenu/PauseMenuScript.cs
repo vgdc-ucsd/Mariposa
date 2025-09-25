@@ -9,6 +9,8 @@ public class PauseMenuScript : Singleton<PauseMenuScript>
     public GameObject ExitConfirmMenu;
     public GameObject BackgroundImage;
 
+    private const AudioManager.PauseTypes disabledBussesOnPause = AudioManager.PauseTypes.SFX | AudioManager.PauseTypes.Ambience | AudioManager.PauseTypes.Dialogue;
+
     void Start()
     {
         GameManager.Instance.RegisterStartAction(GameState.PAUSE, PauseGame);
@@ -41,8 +43,7 @@ public class PauseMenuScript : Singleton<PauseMenuScript>
         VideoSettingsMenu.SetActive(true);
         RestartConfirmMenu.SetActive(false);
         ExitConfirmMenu.SetActive(false);
-        Settings.Instance.PauseSounds(true);
-        Settings.Instance.MuteTestSounds(true);
+        AudioManager.Instance.ToggleGlobalPause(true, disabledBussesOnPause);
     }
 
     public void OpenAudioSettings()
@@ -52,8 +53,7 @@ public class PauseMenuScript : Singleton<PauseMenuScript>
         VideoSettingsMenu.SetActive(false);
         RestartConfirmMenu.SetActive(false);
         ExitConfirmMenu.SetActive(false);
-        Settings.Instance.PauseSounds(true);
-        Settings.Instance.MuteTestSounds(false);
+        AudioManager.Instance.ToggleGlobalPause(true, disabledBussesOnPause);
     }
 
     public void OpenPauseMenu()
@@ -66,8 +66,7 @@ public class PauseMenuScript : Singleton<PauseMenuScript>
         VideoSettingsMenu.SetActive(false);
         RestartConfirmMenu.SetActive(false);
         ExitConfirmMenu.SetActive(false);
-        Settings.Instance.PauseSounds(true);
-        Settings.Instance.MuteTestSounds(true);
+        AudioManager.Instance.ToggleGlobalPause(true, disabledBussesOnPause);
     }
 
     public void OpenRestartConfirmMenu()
@@ -77,8 +76,7 @@ public class PauseMenuScript : Singleton<PauseMenuScript>
         VideoSettingsMenu.SetActive(false);
         RestartConfirmMenu.SetActive(true);
         ExitConfirmMenu.SetActive(false);
-        Settings.Instance.PauseSounds(true);
-        Settings.Instance.MuteTestSounds(true);
+        AudioManager.Instance.ToggleGlobalPause(true, disabledBussesOnPause);
     }
 
     public void OpenExitConfirmMenu()
@@ -88,8 +86,7 @@ public class PauseMenuScript : Singleton<PauseMenuScript>
         VideoSettingsMenu.SetActive(false);
         RestartConfirmMenu.SetActive(false);
         ExitConfirmMenu.SetActive(true);
-        Settings.Instance.PauseSounds(true);
-        Settings.Instance.MuteTestSounds(true);
+        AudioManager.Instance.ToggleGlobalPause(true, disabledBussesOnPause);
     }
 
     public void CloseAllMenus()
@@ -99,8 +96,7 @@ public class PauseMenuScript : Singleton<PauseMenuScript>
         VideoSettingsMenu.SetActive(false);
         RestartConfirmMenu.SetActive(false);
         ExitConfirmMenu.SetActive(false);
-        Settings.Instance.PauseSounds(false);
-        Settings.Instance.MuteTestSounds(true);
+        AudioManager.Instance.ToggleGlobalPause(false, disabledBussesOnPause);
     }
 
     public void GoToMainMenu()
@@ -129,6 +125,8 @@ public class PauseMenuScript : Singleton<PauseMenuScript>
 
     public void QuitLevel()
     {
+        AudioManager.Instance.ToggleGlobalPause(false, disabledBussesOnPause);
+        AmbienceManager.Instance.Stop();
         GameManager.Instance.HandlePause();
         DataPersistenceManager.Instance.SaveGame();
         GameManager.Instance.LoadScene(GameScene.MAIN_MENU);

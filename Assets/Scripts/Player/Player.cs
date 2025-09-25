@@ -5,6 +5,7 @@ using FMODUnity;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using Unity.Mathematics;
 
 public class Player : MonoBehaviour
 {
@@ -29,6 +30,10 @@ public class Player : MonoBehaviour
 	// facing direction does not affect movement in most cases
 	public int FacingDirection = 1;
 
+	[SerializeField, Min(0f)] private float characterVocalizationAttemptInterval = 15.0f;
+	[SerializeField, Range(0f, 1f)] private float characterVocalizationChance = 0.1f;
+	private float characterVocalizationTime;
+
 	private void Awake()
 	{
 		Movement = GetComponent<PlayerMovement>();
@@ -38,11 +43,13 @@ public class Player : MonoBehaviour
 			Debug.LogError("Player object not fully set up with Movement, Character, and Ability classes");
 			return;
 		}
+
+		characterVocalizationTime = 0.0f;
 	}
 
 	void Start()
 	{
-		playerDebug = Settings.Instance.Debug.GetPlayerDebug();
+		playerDebug = GameManager.Instance.Debug.PlayerDebugEnabled;
 	}
 
 
@@ -66,6 +73,20 @@ public class Player : MonoBehaviour
 
 	private void Update()
 	{
+		characterVocalizationTime += Time.deltaTime;
+
+		if (characterVocalizationTime >= characterVocalizationAttemptInterval)
+		{
+			float outcome = UnityEngine.Random.value;
+			if (outcome <= characterVocalizationChance)
+			{
+				EventReference vocalization = Data.characterID == CharID.Mariposa
+					? AudioEvents.SFX.mariposa_hum_motif
+					: AudioEvents.SFX.unnamed_whistle_unnamed_motif;
+				RuntimeManager.PlayOneShot(vocalization);
+			}
+			characterVocalizationTime = 0.0f;
+		}
 	}
 
 	private void FixedUpdate()
@@ -96,7 +117,6 @@ public class Player : MonoBehaviour
 			Movement.Velocity = Vector2.zero;
 			SpawnAt(CurrentRespawnPoint.GetComponent<RespawnPoint>().GetRespawnPosition());			
 			if (playerDebug) Debug.Log($"Player respawned to: {CurrentRespawnPoint.gameObject.name} @ {CurrentRespawnPoint.GetRespawnPosition().ToString()}");
-			RuntimeManager.PlayOneShot("event:/sfx/player/respawn");
 		}
 		LevelManager.Instance.RestartFromCheckpoint();
     }
@@ -126,7 +146,8 @@ public class Player : MonoBehaviour
 	{
         // TODO: there may be not that much delay between death and respawn, so remove the below line or add a delay after this line to prevent it overlapping with respawn sfx
         OnDeath.Invoke();
-		RuntimeManager.PlayOneShot("event:/sfx/player/death");
+		if (Data.characterID == CharID.Unnamed) RuntimeManager.PlayOneShot(AudioEvents.SFX.unnamed_pain);
+		else Debug.LogError($"Died as {Data.characterID}");
 		SetPlayerActive(false);
 		CameraController.ActiveCamera?.PauseCamera();
 		yield return FadeController.Instance.FadeOut();
@@ -161,10 +182,10 @@ public class Player : MonoBehaviour
 		switch (Player.ActivePlayer.Data.characterID)
 		{
 			case CharID.Mariposa:
-				RuntimeManager.PlayOneShot("event:/sfx/world/spawnpoint_activate/mariposa");
+				RuntimeManager.PlayOneShot(AudioEvents.SFX.spawnpoint_activate_mariposa);
 				break;
 			case CharID.Unnamed:
-				RuntimeManager.PlayOneShot("event:/sfx/world/spawnpoint_activate/unnamed");
+				RuntimeManager.PlayOneShot(AudioEvents.SFX.spawnpoint_activate_unnamed);
 				break;
 		}
 	}

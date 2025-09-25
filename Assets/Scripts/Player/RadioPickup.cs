@@ -25,10 +25,10 @@ public class RadioPickup : ItemPickup
     {
         base.Start();
         manager = DialogueManager.Instance;
-        RadioPickupEvent = RuntimeManager.CreateInstance("event:/sfx/item/pickup");
-        radioStatic = RuntimeManager.CreateInstance("event:/sfx/item/radio/static");
+        RadioPickupEvent = RuntimeManager.CreateInstance(AudioEvents.SFX.item_pickup);
+        radioStatic = RuntimeManager.CreateInstance(AudioEvents.SFX.radio_static);
         RuntimeManager.AttachInstanceToGameObject(radioStatic, gameObject);
-        playerDebug = Settings.Instance.Debug.GetPlayerDebug();
+        playerDebug = GameManager.Instance.Debug.PlayerDebugEnabled;
     }
 
     void Update()

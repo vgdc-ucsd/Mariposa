@@ -49,6 +49,8 @@ public class DataPersistenceManager : Singleton<DataPersistenceManager>
             {
                 dataPersistenceObj.LoadData(gameData);
             }
+
+            GameManager.Instance.hasGameDataBeenLoaded = true;
         }
         else
         {
