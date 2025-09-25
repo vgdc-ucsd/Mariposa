@@ -28,7 +28,7 @@ public class GameManager : Singleton<GameManager>, IDataPersistence
     public InteractionTrigger DefaultInteractionTrigger;
     private InputSystem_Actions actions;
 
-    public DebugSettings Debug;
+    public DebugSettings DebugSettings;
 
     public bool hasGameDataBeenLoaded;
 
