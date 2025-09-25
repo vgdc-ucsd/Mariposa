@@ -15,7 +15,8 @@ public class TextInputDisplay : MonoBehaviour
     public void Open()
     {
         PlayerController.Instance.SetMovementLock(true);
-        DebugManager.Instance.gameObject.SetActive(false);
+        // Prevent debug inputs while naming
+        // DebugManager.Instance.gameObject.SetActive(false);
         gameObject.SetActive(true);
     }
 
@@ -24,7 +25,8 @@ public class TextInputDisplay : MonoBehaviour
         gameObject.SetActive(false);
         DialogueManager.Instance.PlayDialogue("tell_her_your_name_after_naming");
         PlayerController.Instance.SetMovementLock(false);
-        DebugManager.Instance.gameObject.SetActive(true);
+        // Re-enable debug inputs after naming
+        // DebugManager.Instance.gameObject.SetActive(true);
     }
 
     public void SubmitName()
