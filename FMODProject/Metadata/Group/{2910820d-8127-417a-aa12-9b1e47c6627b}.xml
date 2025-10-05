@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="MixerGroup" id="{2910820d-8127-417a-aa12-9b1e47c6627b}">
+		<property name="volume">
+			<value>-12</value>
+		</property>
+		<property name="name">
+			<value>Beebo</value>
+		</property>
+		<relationship name="effectChain">
+			<destination>{cf9b48f5-7e41-43cf-9ea8-90eec7cf1b2d}</destination>
+		</relationship>
+		<relationship name="panner">
+			<destination>{c688133f-547e-467a-bc4e-634626a74f00}</destination>
+		</relationship>
+		<relationship name="output">
+			<destination>{d15708c8-95b0-4d39-a149-c6a9b90abea7}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusEffectChain" id="{cf9b48f5-7e41-43cf-9ea8-90eec7cf1b2d}">
+		<relationship name="effects">
+			<destination>{2c4631fd-b940-456f-b9c4-7933bd0fdaba}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusPanner" id="{c688133f-547e-467a-bc4e-634626a74f00}" />
+	<object class="MixerBusFader" id="{2c4631fd-b940-456f-b9c4-7933bd0fdaba}" />
+</objects>
