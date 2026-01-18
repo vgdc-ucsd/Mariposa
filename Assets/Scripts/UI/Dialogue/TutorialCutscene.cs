@@ -20,10 +20,12 @@ public class TutorialSlideshowCutscene : MonoBehaviour
     private void Start()
     {
         StartCoroutine(PlayCutscene());
+        Debug.Log("Playing First Cutscene");
     }
 
     private IEnumerator PlayCutscene()
     {
+        MusicManager.Instance.ChangeMusic(MusicManager.Music.Tutorial_cutscene, 1.5f);
         Player.ActivePlayer.gameObject.SetActive(false);
         for (int i = 0; i < 3 && i < slides.Count; i++)
         {
@@ -54,6 +56,7 @@ public class TutorialSlideshowCutscene : MonoBehaviour
         }
         slideDisplay.gameObject.SetActive(false);
         Player.ActivePlayer.gameObject.SetActive(true);
+        MusicManager.Instance.ChangeMusic(MusicManager.Music.Tutorial_mariposa, 3.0f);
     }
 
 }

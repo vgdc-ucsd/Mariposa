@@ -30,6 +30,7 @@ public class AudioEvents : MonoBehaviour
 [System.Serializable]
 public class MusicEvents
 {
+    public EventReference s0Tutorial_cutscene;
     public EventReference s0Tutorial_mariposa;
     public EventReference s0Tutorial_unnamed;
     public EventReference s1Downtown_mariposa;

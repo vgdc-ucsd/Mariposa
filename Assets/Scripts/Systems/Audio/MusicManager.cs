@@ -17,6 +17,7 @@ public class MusicManager : Singleton<MusicManager>
     public enum Music
     {
         NONE,
+        Tutorial_cutscene,
         Tutorial_mariposa,
         Tutorial_unnamed,
         Downtown_mariposa,
@@ -39,6 +40,7 @@ public class MusicManager : Singleton<MusicManager>
     {
         return music switch
         {
+            Music.Tutorial_cutscene => AudioEvents.Music.s0Tutorial_cutscene,
             Music.Tutorial_mariposa => AudioEvents.Music.s0Tutorial_mariposa,
             Music.Tutorial_unnamed => AudioEvents.Music.s0Tutorial_unnamed,
             Music.Downtown_mariposa => AudioEvents.Music.s1Downtown_mariposa,
