@@ -8,11 +8,10 @@ public class MusicManager : Singleton<MusicManager>
 {
     public EventInstance currentEventInstance { get; private set; }
     private EventInstance transitionEventInstance;
-
     private EventReference currentMusicEvent;
     private Coroutine transitionCoroutine;
 
-    private const float DEFAULT_TRANSITION_DURATION = 1.5f;
+    private const float DEFAULT_TRANSITION_DURATION = 2.5f;
 
     public enum Music
     {
@@ -145,6 +144,7 @@ public class MusicManager : Singleton<MusicManager>
 
     private IEnumerator DoCrossfade(EventReference nextTrack, float duration)
     {
+        AudioManager.StopEventInstance(currentEventInstance, FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         transitionEventInstance = AudioManager.CreateEventInstance(nextTrack);
         if (transitionEventInstance.Equals(default)) yield break;
         transitionEventInstance.setVolume(0.0f);
@@ -164,7 +164,7 @@ public class MusicManager : Singleton<MusicManager>
             yield return null;
         }
 
-        AudioManager.StopEventInstance(currentEventInstance, FMOD.Studio.STOP_MODE.IMMEDIATE);
+        
 
         currentEventInstance = transitionEventInstance;
         transitionEventInstance = default;

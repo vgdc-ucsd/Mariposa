@@ -11,7 +11,6 @@ public class TypewriterSFXManager : Singleton<TypewriterSFXManager>
 
     private Coroutine transitionCoroutine;
 
-    private const float DEFAULT_TRANSITION_DURATION = 0.5f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     public enum Speaker

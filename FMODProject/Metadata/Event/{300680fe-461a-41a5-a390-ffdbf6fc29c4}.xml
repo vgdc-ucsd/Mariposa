@@ -56,7 +56,11 @@
 			<destination>{47ec4aa1-32eb-43ba-ade8-756835834659}</destination>
 		</relationship>
 	</object>
-	<object class="EventAutomatableProperties" id="{1a57fc4b-b510-4d64-9015-9d7d4e1ec7eb}" />
+	<object class="EventAutomatableProperties" id="{1a57fc4b-b510-4d64-9015-9d7d4e1ec7eb}">
+		<property name="dopplerEnabled">
+			<value>true</value>
+		</property>
+	</object>
 	<object class="MarkerTrack" id="{1a64a82c-4346-420a-9579-6efe037786f1}" />
 	<object class="GroupTrack" id="{0883282f-6f3b-401a-9bb2-896832c84741}">
 		<relationship name="modules">
@@ -144,10 +148,12 @@
 	<object class="MixerBusEffectChain" id="{a50029a5-e321-4d94-879d-ecf02a2d6dbf}">
 		<relationship name="effects">
 			<destination>{89adc4ae-5207-4ecb-a2f1-736982856206}</destination>
+			<destination>{e6df9179-2654-43a6-8a46-ad8bb3f146be}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{1aa14cce-1579-432d-986f-3b424caf0b8f}" />
 	<object class="MixerBusFader" id="{1c2d0ce1-4e11-4ab8-b316-47db50cf03bb}" />
 	<object class="SpatialiserEffect" id="{e62c86ec-15d6-4a86-a1a7-42114b7abd58}" />
 	<object class="MixerBusFader" id="{89adc4ae-5207-4ecb-a2f1-736982856206}" />
+	<object class="SpatialiserEffect" id="{e6df9179-2654-43a6-8a46-ad8bb3f146be}" />
 </objects>

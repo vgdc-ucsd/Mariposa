@@ -29,6 +29,8 @@ public class RadioPickup : ItemPickup
         radioStatic = RuntimeManager.CreateInstance(AudioEvents.SFX.radio_static);
         RuntimeManager.AttachInstanceToGameObject(radioStatic, gameObject);
         playerDebug = GameManager.Instance.DebugSettings.PlayerDebugEnabled;
+        Debug.Log("Created "+ radioStatic.ToString());
+        Debug.Log("Created "+ RadioPickupEvent.ToString());
     }
 
     void Update()
@@ -36,6 +38,7 @@ public class RadioPickup : ItemPickup
         if (gameObject.activeInHierarchy && playRadioStatic)
         {
             radioStatic.start();
+            Debug.Log("Playing radio static");
             playRadioStatic = false;
         }
     }
