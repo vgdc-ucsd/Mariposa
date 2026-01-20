@@ -337,6 +337,9 @@ public class DialoguePlayer : MonoBehaviour
 
         int i = 0;
         activeLineTarget.maxVisibleCharacters = i;
+
+        TypewriterSFXManager.Instance.ChangeTypeSFX(speakerTarget.text);
+        
         while (i < length)
         {
             i++;
@@ -344,6 +347,8 @@ public class DialoguePlayer : MonoBehaviour
             bool punctuation = taglessText[i - 1] == ',' || taglessText[i - 1] == '.' || taglessText[i - 1] == '?' || taglessText[i - 1] == '!' || taglessText[i - 1] == ':' || taglessText[i - 1] == ';';
             if (punctuation) yield return new WaitForSeconds(DIALOGUE_SPEED * 10.0f);
             else yield return new WaitForSeconds(DIALOGUE_SPEED);
+            // TODO Put typewriter sfx here
+            TypewriterSFXManager.Instance.Play();
         }
 
         if (!awaitingChoice)

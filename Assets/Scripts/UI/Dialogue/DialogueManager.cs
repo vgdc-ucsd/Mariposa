@@ -52,6 +52,7 @@ public class DialogueManager : Singleton<DialogueManager>
             Debug.LogError($"Could not find dialogue with the name \"{dialogueName}\"! Check that there's no typos and the dialogue file has been loaded!");
             return;
         }
+    
         dialoguePlayer.PlayDialogue(dialogueDictionary[dialogueName], initAdvance);
         isPlayingDialogue = true;
     }

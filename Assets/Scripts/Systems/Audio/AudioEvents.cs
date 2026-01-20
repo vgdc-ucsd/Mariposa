@@ -110,6 +110,9 @@ public class SFXEvents
     public EventReference button_click;
     public EventReference dialogue_advance;
     public EventReference slider_click;
+    public EventReference mariposa_typewriter;
+    public EventReference unnamed_typewriter;
+    public EventReference general_typewriter;
 
     [Header("World")]
     public EventReference earthquake_rocks;
