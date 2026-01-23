@@ -78,7 +78,7 @@ public class TypewriterSFXManager : Singleton<TypewriterSFXManager>
             speakerID = 3;
         }
 
-        Debug.Log("Typewriter sfx changed to " + name +", Speaker ID: " + speakerID);
+        //Debug.Log("Typewriter sfx changed to " + name +", Speaker ID: " + speakerID);
         currentEventInstance.setParameterByName("Speaker", speakerID);
     }
 

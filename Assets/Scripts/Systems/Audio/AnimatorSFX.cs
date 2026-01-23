@@ -10,10 +10,26 @@ using Unity.VisualScripting;
 public class AnimatorSFX : MonoBehaviour
 {
     [SerializeField] private EventReference sfxEventReference;
-   
-    public void PlaySFX()
+
+    private EventInstance sfxEventInstance;
+
+    bool hasPlay = false;
+
+    void Start()
     {
-        RuntimeManager.PlayOneShotAttached(sfxEventReference,gameObject);
+        sfxEventInstance = RuntimeManager.CreateInstance(sfxEventReference);
+        RuntimeManager.AttachInstanceToGameObject(sfxEventInstance,gameObject);
+
+    }
+
+    void Update()
+    {
+        if(gameObject.activeInHierarchy && !hasPlay)
+        {
+            sfxEventInstance.start();
+            hasPlay = true;
+            Debug.Log("Playing SFX");
+        }
     }
 
 }
