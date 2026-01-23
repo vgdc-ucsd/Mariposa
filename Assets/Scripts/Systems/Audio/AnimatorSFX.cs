@@ -14,7 +14,6 @@ public class AnimatorSFX : MonoBehaviour
     private EventInstance sfxEventInstance;
 
     bool hasPlay = false;
-
     void Start()
     {
         sfxEventInstance = RuntimeManager.CreateInstance(sfxEventReference);
@@ -30,6 +29,13 @@ public class AnimatorSFX : MonoBehaviour
             hasPlay = true;
             Debug.Log("Playing SFX");
         }
+    }
+
+    public void Stop()
+    {
+        sfxEventInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        sfxEventInstance.release();
+        Debug.Log("Stop Playing SFX");
     }
 
 }
