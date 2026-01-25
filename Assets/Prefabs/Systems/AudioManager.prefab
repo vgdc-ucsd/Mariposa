@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 7192395704558135771}
   - component: {fileID: 3699884667813478906}
   - component: {fileID: 735859748922911505}
+  - component: {fileID: 119596626944587303}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Untagged
@@ -110,6 +111,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _music:
+    s0Tutorial_cutscene:
+      Guid:
+        Data1: -851808100
+        Data2: 1093359688
+        Data3: -1164226404
+        Data4: 1071611227
+      Path: event:/music/cutscenes/antique_shop
     s0Tutorial_mariposa:
       Guid:
         Data1: -273843201
@@ -433,6 +441,20 @@ MonoBehaviour:
         Data3: 1031813054
         Data4: 600646925
       Path: event:/sfx/puzzle/lever_pull
+    pressure_plate_step:
+      Guid:
+        Data1: -751358888
+        Data2: 1105560214
+        Data3: -782800747
+        Data4: -95651677
+      Path: event:/sfx/ui/pressureplate_step
+    pressure_plate_release:
+      Guid:
+        Data1: 2070529060
+        Data2: 1279840441
+        Data3: 512159385
+        Data4: 1225579937
+      Path: event:/sfx/ui/pressureplate_release
     button_click:
       Guid:
         Data1: -1661725778
@@ -454,6 +476,27 @@ MonoBehaviour:
         Data3: 685436316
         Data4: -1292657742
       Path: event:/sfx/ui/slider_click
+    mariposa_typewriter:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    unnamed_typewriter:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    general_typewriter:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
     earthquake_rocks:
       Guid:
         Data1: -922059343
@@ -1595,3 +1638,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f1b17e9e7eb3a64fbeb00defa721a31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &119596626944587303
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1440808415222191992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9de9439b8c5c0841b4bcad637028dff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentTypeSFX:
+    Guid:
+      Data1: 742678136
+      Data2: 1272234373
+      Data3: 1820360597
+      Data4: 671672692
+    Path: event:/sfx/ui/typewriter_sfx

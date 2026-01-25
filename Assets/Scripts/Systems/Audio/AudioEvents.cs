@@ -105,6 +105,8 @@ public class SFXEvents
     public EventReference block_pickup;
     public EventReference block_place;
     public EventReference lever_pull;
+    public EventReference pressure_plate_step;
+    public EventReference pressure_plate_release;
 
     [Header("UI")]
     public EventReference button_click;

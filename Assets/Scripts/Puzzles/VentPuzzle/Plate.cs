@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
-
+using FMODUnity;
 public class Plate : MonoBehaviour
 {
     [SerializeField]
@@ -19,6 +19,8 @@ public class Plate : MonoBehaviour
         {
             _field.RecomputeFieldCollider();
         }
+
+        RuntimeManager.PlayOneShot(AudioEvents.SFX.pressure_plate_step);
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -32,5 +34,8 @@ public class Plate : MonoBehaviour
         {
             _field.RecomputeFieldCollider();
         }
+
+         RuntimeManager.PlayOneShot(AudioEvents.SFX.pressure_plate_release);
     }
 }
+
