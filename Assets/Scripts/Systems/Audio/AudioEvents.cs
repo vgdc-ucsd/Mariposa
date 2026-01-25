@@ -107,6 +107,10 @@ public class SFXEvents
     public EventReference lever_pull;
     public EventReference pressure_plate_step;
     public EventReference pressure_plate_release;
+    public EventReference fan_vent;
+    public EventReference wire_connect;
+    public EventReference wire_pull;
+    public EventReference wire_disconnect;
 
     [Header("UI")]
     public EventReference button_click;
@@ -129,6 +133,8 @@ public class SFXEvents
     public EventReference exit_tutorial_unnamed;
     public EventReference turnstile_beep;
     public EventReference wall_jump_rock_shift;
+    public EventReference drop_crane;
+    public EventReference crushed_robot;
 }
 
 [System.Serializable]

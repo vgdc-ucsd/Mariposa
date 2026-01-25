@@ -6,6 +6,8 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using FMOD.Studio;
+using FMODUnity;
 
 public class WirePuzzleDraggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
 {
@@ -64,6 +66,7 @@ public class WirePuzzleDraggable : MonoBehaviour, IBeginDragHandler, IDragHandle
     public void OnBeginDrag(PointerEventData eventData)
     {
         wireVisuals.BeginDragVisuals(this);
+        RuntimeManager.PlayOneShot(AudioEvents.SFX.wire_pull);
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -118,6 +121,8 @@ public class WirePuzzleDraggable : MonoBehaviour, IBeginDragHandler, IDragHandle
         {
             AddConnectedNode(wirePuzzleReceiver);
         }
+
+        RuntimeManager.PlayOneShot(AudioEvents.SFX.wire_connect);
     }
 
     public void DisconnectWire(int layer)
@@ -138,6 +143,8 @@ public class WirePuzzleDraggable : MonoBehaviour, IBeginDragHandler, IDragHandle
         Image bottomReceiver = null;
         if (ConnectedReceivers.Count > 0) bottomReceiver = ConnectedReceivers[^1].GetComponent<Image>();
         if (bottomReceiver != null) bottomReceiver.raycastTarget = false;
+
+        RuntimeManager.PlayOneShot(AudioEvents.SFX.wire_disconnect);
     }
 
     public void AddConnectedNode(WirePuzzleReceiver receiver)

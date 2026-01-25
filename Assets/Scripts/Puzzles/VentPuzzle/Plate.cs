@@ -35,7 +35,7 @@ public class Plate : MonoBehaviour
             _field.RecomputeFieldCollider();
         }
 
-         RuntimeManager.PlayOneShot(AudioEvents.SFX.pressure_plate_release);
+        RuntimeManager.PlayOneShot(AudioEvents.SFX.pressure_plate_release);
     }
 }
 

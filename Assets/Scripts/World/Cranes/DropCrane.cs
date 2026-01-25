@@ -1,6 +1,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
-
+using FMOD.Studio;
+using FMODUnity;
 public class DropCrane : Crane
 {
     [SerializeField] protected Rigidbody2D loadRB;
@@ -19,8 +20,9 @@ public class DropCrane : Crane
     public override void TriggerCrane()
     {
         Debug.Log("dropcrane triggered");
+        RuntimeManager.PlayOneShot(AudioEvents.SFX.drop_crane);
         if (loadRB == null) return;
-
+        
         preemptiveCollider.SetActive(false);
         loadRB.simulated = true;
         lineRenderer.enabled = false;

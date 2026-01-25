@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using FMODUnity;
 public class PlatformSwitchAutomatic : Switch
 {
     [SerializeField] private AutomaticMovingPlatform platform;
@@ -17,5 +17,6 @@ public class PlatformSwitchAutomatic : Switch
         SwitchToggled = true;
         sr.flipX = true;
         platform.state = MovingPlatform.PlatformState.Moving;
+        RuntimeManager.PlayOneShot(AudioEvents.SFX.lever_pull);
     }
 }

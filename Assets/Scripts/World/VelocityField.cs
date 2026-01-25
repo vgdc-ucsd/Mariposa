@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
-
+using FMODUnity;
+using FMOD.Studio;
 public class VelocityField : MonoBehaviour
 {
     [Tooltip("The acceleration to apply to the Bee when it stays in the field")]
@@ -15,8 +16,14 @@ public class VelocityField : MonoBehaviour
 
     public bool inactiveOnStart = false;
 
+    private EventInstance fanInstance;
+
+    private EventReference fanReference;
     private void Awake()
     {
+        fanReference = AudioEvents.SFX.fan_vent;
+        fanInstance = RuntimeManager.CreateInstance(fanReference);
+        RuntimeManager.AttachInstanceToGameObject(fanInstance,gameObject);
         fieldMaxSize = blowField.transform.localScale;
         RecomputeFieldCollider();
         if (inactiveOnStart)
@@ -24,6 +31,10 @@ public class VelocityField : MonoBehaviour
             windParticles.Stop();
             windParticles.Clear();
             gameObject.SetActive(false);
+        }
+        else
+        {
+            fanInstance.start();
         }
     }
 
@@ -79,10 +90,14 @@ public class VelocityField : MonoBehaviour
         {
             windParticles.gameObject.SetActive(true);
             windParticles.Play();
+            if(!AudioManager.IsPlaying(fanInstance)) fanInstance.start();
+            Debug.Log("Fan sfx: " + fanInstance.isValid());
         }
         else
         {
             windParticles.Stop();
+            fanInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            Debug.Log("Fan sfx stop playing");
         }
     }
 }

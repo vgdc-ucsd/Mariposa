@@ -110,6 +110,12 @@ public class AudioManager : Singleton<AudioManager>, IDataPersistence
         eventInstance.release();
     }
 
+    public static bool IsPlaying(EventInstance eventInstance) {
+        PLAYBACK_STATE state;   
+        eventInstance.getPlaybackState(out state);
+        return state != PLAYBACK_STATE.STOPPED;
+    }
+
     #region SetVolumes
     private void SetVolume(Bus bus, float newVolume)
     {

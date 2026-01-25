@@ -1,5 +1,6 @@
 using UnityEngine;
-
+using FMOD.Studio;
+using FMODUnity;
 public class DroppableCraneLoad : CraneLoad
 {
     int entityLayer;
@@ -17,6 +18,7 @@ public class DroppableCraneLoad : CraneLoad
         if (collidedObj.CompareTag("CrushableObject") || collidedObj.layer == entityLayer)
         {
             // maybe an explosion effect here
+            RuntimeManager.PlayOneShot(AudioEvents.SFX.crushed_robot);
             Destroy(collidedObj);
         }
     }
