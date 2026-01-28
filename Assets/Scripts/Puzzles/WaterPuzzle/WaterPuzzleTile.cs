@@ -1,4 +1,5 @@
 using System.Collections;
+using FMODUnity;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -169,6 +170,7 @@ public class WaterPuzzleTile : MonoBehaviour, IPointerClickHandler
     /// </summary>
     public IEnumerator RotateThisTile(bool shouldRotateClockwise)
     {
+        RuntimeManager.PlayOneShot(AudioEvents.SFX.pipe_turn);
         animating = true;
         Vector3 axis = shouldRotateClockwise ? Vector3.back : Vector3.forward;
         Quaternion startRot = Image.transform.rotation;

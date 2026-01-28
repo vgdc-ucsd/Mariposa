@@ -69,4 +69,6 @@ public class SquidAnimationBehavior : MonoBehaviour
     {
         RuntimeManager.PlayOneShot(AudioEvents.SFX.squid_footstep);
     }
+
+
 }

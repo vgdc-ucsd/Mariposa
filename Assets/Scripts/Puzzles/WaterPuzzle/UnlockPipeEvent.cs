@@ -1,4 +1,5 @@
 using System.Collections;
+using FMODUnity;
 using Unity.Cinemachine;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -24,6 +25,7 @@ public class UnlockPipeEvent : DialogueEvent
         pipeVisual.SetActive(true);
         initialY = pipeVisual.transform.localPosition.y;
         float timer = 0;
+        RuntimeManager.PlayOneShot(AudioEvents.SFX.pipe_drop);
         while (timer < DROP_TIME)
         {
             yield return null;

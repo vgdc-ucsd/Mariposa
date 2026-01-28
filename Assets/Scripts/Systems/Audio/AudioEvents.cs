@@ -90,6 +90,7 @@ public class SFXEvents
     [Header("Squid")]
     public EventReference squid_activation;
     public EventReference squid_footstep;
+    public EventReference squid_jump;
 
     [Header("Item")]
     public EventReference item_pickup;
@@ -111,6 +112,8 @@ public class SFXEvents
     public EventReference wire_connect;
     public EventReference wire_pull;
     public EventReference wire_disconnect;
+    public EventReference pipe_turn;
+    public EventReference pipe_drop;
 
     [Header("UI")]
     public EventReference button_click;
