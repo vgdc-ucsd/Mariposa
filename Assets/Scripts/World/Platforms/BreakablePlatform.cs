@@ -1,4 +1,5 @@
 using System.Collections;
+using FMODUnity;
 using UnityEditor;
 using UnityEngine;
 
@@ -67,6 +68,7 @@ public class BreakablePlatform : MonoBehaviour
 
         spriteRenderer.color = originalColor;
         state = PlatformState.Broken;
+        RuntimeManager.PlayOneShotAttached(AudioEvents.SFX.wood_platform_breaks,gameObject);
         gameObject.SetActive(false);
     }
 
@@ -75,6 +77,7 @@ public class BreakablePlatform : MonoBehaviour
         if (!breakFromPlayer && state != PlatformState.Broken)
         {
             state = PlatformState.Broken;
+            RuntimeManager.PlayOneShotAttached(AudioEvents.SFX.wood_platform_breaks,gameObject);
             gameObject.SetActive(false);
         }
     }

@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using FMODUnity;
 
 public class Turret : MonoBehaviour
 {
@@ -177,6 +178,8 @@ public class Turret : MonoBehaviour
         Vector3 laserOriginScale = laser.transform.localScale;
         RaycastHit2D hit = GetHit();
         laser.SetActive(true);
+
+        RuntimeManager.PlayOneShotAttached(AudioEvents.SFX.robot_shoot,gameObject);
 
         float laserLength = rangeDetectorForAttack.GetMaxLength(transform.TransformDirection(Vector2.up));
 

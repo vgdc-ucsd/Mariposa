@@ -37,6 +37,7 @@ public class MusicEvents
     public EventReference s1Downtown_unnamed;
     public EventReference s2Pier_mariposa;
     public EventReference S2Pier_unnamed;
+    public EventReference S2Pier_unnamed_boat;
     public EventReference s3BigRobot_unnamed;
     public EventReference s4Hometown_mariposa;
     public EventReference s4Hometown_unnamed;
@@ -119,9 +120,6 @@ public class SFXEvents
     public EventReference button_click;
     public EventReference dialogue_advance;
     public EventReference slider_click;
-    public EventReference mariposa_typewriter;
-    public EventReference unnamed_typewriter;
-    public EventReference general_typewriter;
 
     [Header("World")]
     public EventReference earthquake_rocks;
@@ -130,6 +128,7 @@ public class SFXEvents
     public EventReference metal_door_thud;
     public EventReference robot_noises;
     public EventReference robot_step;
+    public EventReference robot_shoot;
     public EventReference spawnpoint_activate_mariposa;
     public EventReference spawnpoint_activate_unnamed;
     public EventReference change_battery;
@@ -138,6 +137,7 @@ public class SFXEvents
     public EventReference wall_jump_rock_shift;
     public EventReference drop_crane;
     public EventReference crushed_robot;
+    public EventReference wood_platform_breaks;
 }
 
 [System.Serializable]
