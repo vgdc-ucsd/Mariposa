@@ -188,6 +188,11 @@ public class VoicelineManager : Singleton<VoicelineManager>
             {"Ruby_NPC_Woah5", AudioEvents.DialogueVO.ruby_npc_surprised_woah},
             {"Ruby_NPC_YouOkay1", AudioEvents.DialogueVO.ruby_npc_surprised_you_okay},
 
+            {"Jeffery_NPC_Well1", AudioEvents.DialogueVO.jeffery_npc_neutral_well},
+            {"Jeffery_NPC_Honestly1", AudioEvents.DialogueVO.jeffery_npc_neutral_honestly},
+            {"Jeffery_NPC_Sigh2", AudioEvents.DialogueVO.jeffery_npc_sad_sigh},
+            {"Jeffery_NPC_AppreciateIt", AudioEvents.DialogueVO.jeffery_npc_happy_appreciate_it},
+
             {"radio-clip3-novoices", AudioEvents.SFX.radio_static_no_voices},
         };
     }

@@ -13,6 +13,7 @@ public class ChargingStation : MonoBehaviour
     void Start()
     {
         interactionTrigger = GetComponentInChildren<InteractionTrigger>();
+        interactionTrigger.buttonSFX = AudioManager.CreateEventInstance(AudioEvents.SFX.charging_station_click);
         interactionTrigger.gameObject.SetActive(false);
     }
 

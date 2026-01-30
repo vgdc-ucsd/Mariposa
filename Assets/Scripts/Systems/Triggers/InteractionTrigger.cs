@@ -1,3 +1,4 @@
+using FMOD.Studio;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -5,6 +6,8 @@ using UnityEngine;
 public class InteractionTrigger : Trigger
 {
     public Interactable LinkedInteractable = null;
+
+    public EventInstance buttonSFX;
     
     public void Start()
     {
@@ -42,6 +45,10 @@ public class InteractionTrigger : Trigger
             if (LinkedInteractable.DestroyOnInteract)
             {
                 Destroy(LinkedInteractable.gameObject);
+            }
+            if(buttonSFX.isValid())
+            {
+                buttonSFX.start();
             }
         }
     }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using FMODUnity;
 using Unity.Cinemachine;
 using UnityEngine;
 
@@ -35,6 +36,8 @@ public class TutorialRobotChaseTrigger : Trigger
                 break;
             }
         }
+
+        RuntimeManager.PlayOneShot(AudioEvents.SFX.earthquale_rumble_rocks);
         PlayerController.Instance.SetMovementLock(true);
         robotNoise.FrequencyGain = SHAKE_FREQUENCY;
         robotNoise.AmplitudeGain = SHAKE_AMPLITUDE;

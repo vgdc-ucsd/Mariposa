@@ -106,6 +106,7 @@ public class SFXEvents
     public EventReference puzzle_complete_unnamed;
     public EventReference block_pickup;
     public EventReference block_place;
+    public EventReference charging_station_click;
     public EventReference lever_pull;
     public EventReference pressure_plate_step;
     public EventReference pressure_plate_release;
@@ -113,6 +114,7 @@ public class SFXEvents
     public EventReference wire_connect;
     public EventReference wire_pull;
     public EventReference wire_disconnect;
+    public EventReference billboard_slide;
     public EventReference pipe_turn;
     public EventReference pipe_drop;
 
@@ -120,6 +122,7 @@ public class SFXEvents
     public EventReference button_click;
     public EventReference dialogue_advance;
     public EventReference slider_click;
+    public EventReference typewriter;
 
     [Header("World")]
     public EventReference earthquake_rocks;
@@ -316,4 +319,10 @@ public class DialogueVOEvents {
     [Header("JustinNPC")]
     public EventReference justin_npc_sad_ok;
     public EventReference justin_npc_happy_laugh;
+
+    [Header("JefferyNPC")]
+    public EventReference jeffery_npc_neutral_well;
+    public EventReference jeffery_npc_neutral_honestly;
+    public EventReference jeffery_npc_sad_sigh;
+    public EventReference jeffery_npc_happy_appreciate_it;
 }

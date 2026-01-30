@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using FMODUnity;
 
 public class BlockPuzzleInteractable : GenericInteractable
 {
@@ -9,6 +10,7 @@ public class BlockPuzzleInteractable : GenericInteractable
     {
         /* PuzzlePopupManager.Instance.ActivePuzzle = puzzle.gameObject; */
         base.OnInteract(controllable);
+        RuntimeManager.PlayOneShot(AudioEvents.SFX.charging_station_click);
         SceneManager.LoadScene(2); // TODO remove after EOQ social
     }
 

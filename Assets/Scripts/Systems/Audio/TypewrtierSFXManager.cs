@@ -5,9 +5,9 @@ using FMOD.Studio;
 using FMODUnity;
 public class TypewriterSFXManager : Singleton<TypewriterSFXManager>
 {
-    public EventInstance currentEventInstance {get;set;}
+    private EventInstance currentEventInstance;
 
-    [SerializeField] private EventReference currentTypeSFX;
+    private EventReference currentTypeSFX;
 
     private Coroutine transitionCoroutine;
 
@@ -22,6 +22,7 @@ public class TypewriterSFXManager : Singleton<TypewriterSFXManager>
     void Start()
     {
         transitionCoroutine = null;
+        currentTypeSFX = AudioEvents.SFX.typewriter;
     }
 
     private bool IsPlaying()

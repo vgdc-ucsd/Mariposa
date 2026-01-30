@@ -108,12 +108,14 @@ public class BackgroundCameraShake : MonoBehaviour
         // Debug.Log("active camera set");
         int numShakes = (int)(shakeDuration * shakeFrequency);
         float timeBetweenShakes = 1.0f / shakeFrequency;
+        RuntimeManager.PlayOneShot(AudioEvents.SFX.earthquale_rumble_rocks);
+
         for (int i = 0; i < numShakes; i++)
         {
             cameraOffsetComponent.Offset = new(UnityEngine.Random.Range(-shakeIntensity, shakeIntensity) * 0.1f, UnityEngine.Random.Range(-shakeIntensity, shakeIntensity) * 0.1f, 0.0f);
             yield return new WaitForSeconds(timeBetweenShakes);
         }
-
+        
         // end
         shakingCamera = false;
         shakeCamObject.SetActive(false);
