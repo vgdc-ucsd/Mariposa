@@ -41,6 +41,7 @@ public class MusicEvents
     public EventReference s3BigRobot_unnamed;
     public EventReference s4Hometown_mariposa;
     public EventReference s4Hometown_unnamed;
+    public EventReference s4Hometown_death_cutscene;
     public EventReference titlescreen_title;
     public EventReference credits_theme;
 }
@@ -141,6 +142,7 @@ public class SFXEvents
     public EventReference drop_crane;
     public EventReference crushed_robot;
     public EventReference wood_platform_breaks;
+    public EventReference wood_door_opens;
 }
 
 [System.Serializable]
@@ -286,11 +288,14 @@ public class DialogueVOEvents {
     [Header("LukeNPC")]
     public EventReference luke_npc_neutral_well;
     public EventReference luke_npc_happy_appreciate_it;
+    public EventReference luke_npc_happy_giggle_laugh;
+    public EventReference luke_npc_greetings_hi_there;
     public EventReference luke_npc_sad_sigh;
     public EventReference luke_npc_neutral_i_think;
     public EventReference luke_npc_neutral_hey;
     public EventReference luke_npc_sad_dont;
     public EventReference luke_npc_happy_yeah;
+    public EventReference luke_npc_alright;
     public EventReference luke_npc_robot_aww;
     public EventReference luke_npc_neutral_lets_think_about_this;
     public EventReference luke_npc_happy_thanks_mariposa;

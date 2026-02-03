@@ -27,6 +27,7 @@ public class MusicManager : Singleton<MusicManager>
         BigRobot_unnamed,
         Hometown_mariposa,
         Hometown_unnamed,
+        Hometown_cutscene,
         titlescreen_title,
     };
 
@@ -51,6 +52,7 @@ public class MusicManager : Singleton<MusicManager>
             Music.BigRobot_unnamed => AudioEvents.Music.s3BigRobot_unnamed,
             Music.Hometown_mariposa => AudioEvents.Music.s4Hometown_mariposa,
             Music.Hometown_unnamed => AudioEvents.Music.s4Hometown_unnamed,
+            Music.Hometown_cutscene => AudioEvents.Music.s4Hometown_death_cutscene,
             Music.titlescreen_title => AudioEvents.Music.titlescreen_title,
             _ => throw new ArgumentException($"{music} does not correspond to a valid EventReference")
         };

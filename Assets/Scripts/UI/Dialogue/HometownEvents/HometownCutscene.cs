@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Text.RegularExpressions;
+using FMODUnity;
 
 public class HometownCutscene : MonoBehaviour
 {
@@ -43,5 +44,12 @@ public class HometownCutscene : MonoBehaviour
         snakeCase = snakeCase.ToLowerInvariant();
 
         return snakeCase;
+    }
+
+    public void OnEnable()
+    {
+        Debug.Log("First frame is up");
+        RuntimeManager.PlayOneShot(AudioEvents.SFX.wood_door_opens);
+        MusicManager.Instance.ChangeMusic(AudioEvents.Music.s4Hometown_death_cutscene);
     }
 }
