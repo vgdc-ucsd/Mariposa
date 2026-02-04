@@ -90,10 +90,6 @@ public class Player : MonoBehaviour
 				 	: AudioManager.CreateEventInstance(AudioEvents.SFX.unnamed_whistle_unnamed_motif);
 				StartCoroutine(PlayMotif());
 			}
-			else
-			{
-				
-			}
 			characterVocalizationTime = 0.0f;
 		}
 	}
@@ -211,7 +207,7 @@ public class Player : MonoBehaviour
 	private IEnumerator PlayMotif()
 	{
 		yield return null;
-		OnStart.Invoke();
+		OnStart?.Invoke();
 		yield return new WaitForSeconds(1.0f);
 		Debug.Log("Playing Motif");
 		vocalization.start();
