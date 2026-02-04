@@ -25,7 +25,10 @@ public class TutorialSlideshowCutscene : MonoBehaviour
 
     private IEnumerator PlayCutscene()
     {
-        MusicManager.Instance.ChangeMusic(MusicManager.Music.Tutorial_cutscene, 1.5f);
+        //AudioManager.StopEventInstance(MusicManager.Instance.currentEventInstance);
+        MusicManager.Instance.ChangeMusic(AudioEvents.Music.s0Tutorial_cutscene, 1.5f);
+        Debug.Log("Music Playing : " + MusicManager.Instance.currentEventInstance.isValid());
+        Player.vocalization.setParameterByName("play_motif", 1.0f);
         Player.ActivePlayer.gameObject.SetActive(false);
         for (int i = 0; i < 3 && i < slides.Count; i++)
         {
@@ -57,6 +60,9 @@ public class TutorialSlideshowCutscene : MonoBehaviour
         slideDisplay.gameObject.SetActive(false);
         Player.ActivePlayer.gameObject.SetActive(true);
         MusicManager.Instance.ChangeMusic(MusicManager.Music.Tutorial_mariposa, 3.0f);
+        Player.vocalization.setParameterByName("play_motif", 0f);
     }
+
+
 
 }

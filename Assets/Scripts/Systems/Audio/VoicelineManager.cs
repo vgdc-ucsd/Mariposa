@@ -195,6 +195,7 @@ public class VoicelineManager : Singleton<VoicelineManager>
             {"Jeffery_NPC_AppreciateIt", AudioEvents.DialogueVO.jeffery_npc_happy_appreciate_it},
 
             {"radio-clip3-novoices", AudioEvents.SFX.radio_static_no_voices},
+            {"fix_radio", AudioEvents.SFX.radio_fix}
         };
     }
 

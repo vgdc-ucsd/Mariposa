@@ -102,6 +102,8 @@ public class SFXEvents
     public EventReference radio_static;
     public EventReference radio_static_no_voices;
 
+    public EventReference radio_fix;
+
     [Header("Puzzle")]
     public EventReference puzzle_complete_mariposa;
     public EventReference puzzle_complete_unnamed;

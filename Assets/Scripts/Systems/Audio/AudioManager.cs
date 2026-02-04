@@ -50,7 +50,7 @@ public class AudioManager : Singleton<AudioManager>, IDataPersistence
             Debug.LogWarning("VoicelineManager not found! Attaching default VoicelineManager to AudioManager.");
             voicelineManager = gameObject.AddComponent<VoicelineManager>();
         }
-
+       
         StartCoroutine(LoadBusses());
     }
 
@@ -230,4 +230,5 @@ public class AudioManager : Singleton<AudioManager>, IDataPersistence
             dialogueBus.setVolume(dialogueVolume);
         }
     }
+
 }

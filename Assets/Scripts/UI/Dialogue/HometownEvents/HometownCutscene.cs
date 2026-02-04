@@ -50,6 +50,6 @@ public class HometownCutscene : MonoBehaviour
     {
         Debug.Log("First frame is up");
         RuntimeManager.PlayOneShot(AudioEvents.SFX.wood_door_opens);
-        MusicManager.Instance.ChangeMusic(AudioEvents.Music.s4Hometown_death_cutscene);
+        MusicManager.Instance.ChangeMusic(AudioEvents.Music.s4Hometown_death_cutscene, 2.0f);
     }
 }
