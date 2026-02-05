@@ -135,6 +135,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{b4ed4b63-75da-4be5-a0ea-a37e404304ec}">
+		<property name="volume">
+			<value>3.5</value>
+		</property>
 		<property name="name">
 			<value>Audio 1</value>
 		</property>
@@ -173,6 +176,7 @@
 			<destination>{4bdec2e4-89bf-4977-aef1-d19befdc7489}</destination>
 			<destination>{a71d8937-5f6a-47c8-97f7-240ebc737281}</destination>
 			<destination>{e49a24e8-2383-44de-ba14-4b369ed4e816}</destination>
+			<destination>{afd563a6-06ab-4f90-b97e-62c83bb33a11}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{9e864415-a82e-4ac8-9c0b-45de4c0464d1}" />
@@ -256,6 +260,14 @@
 		</property>
 	</object>
 	<object class="MixerBusFader" id="{e49a24e8-2383-44de-ba14-4b369ed4e816}" />
+	<object class="ProxyEffect" id="{afd563a6-06ab-4f90-b97e-62c83bb33a11}">
+		<property name="inputFormat">
+			<value>1</value>
+		</property>
+		<relationship name="preset">
+			<destination>{a02d113f-e061-46dd-ac55-d28b33b4562a}</destination>
+		</relationship>
+	</object>
 	<object class="AutomationPoint" id="{67e127e2-4ff4-4b97-9d40-0c3ab0c546e3}">
 		<property name="position">
 			<value>0</value>

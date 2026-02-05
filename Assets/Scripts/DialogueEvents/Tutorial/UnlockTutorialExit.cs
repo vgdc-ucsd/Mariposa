@@ -1,3 +1,4 @@
+using FMODUnity;
 using UnityEngine;
 
 public class UnlockTutorialExit : DialogueEvent
@@ -9,5 +10,6 @@ public class UnlockTutorialExit : DialogueEvent
     {
         jammedDoorInteraction.SetActive(false);
         openDoorInteraction.SetActive(true);
+        RuntimeManager.PlayOneShot(AudioEvents.SFX.exit_tutorial_unnamed);
     }
 }

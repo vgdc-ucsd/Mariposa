@@ -16,9 +16,36 @@
 	</object>
 	<object class="MixerBusEffectChain" id="{b98bf077-5a4d-46b7-a190-9545ac992b49}">
 		<relationship name="effects">
+			<destination>{93515186-ad58-4fff-b289-99ddc7e0ba33}</destination>
 			<destination>{67c1074d-fd3f-4e31-a47e-927c723f67dc}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{db2289a2-1f63-4b0d-94e1-476b2fc7b413}" />
+	<object class="SFXReverbEffect" id="{93515186-ad58-4fff-b289-99ddc7e0ba33}">
+		<property name="earlyDelay">
+			<value>7</value>
+		</property>
+		<property name="lateDelay">
+			<value>11</value>
+		</property>
+		<property name="HFDecayRatio">
+			<value>67</value>
+		</property>
+		<property name="diffusion">
+			<value>50</value>
+		</property>
+		<property name="highCut">
+			<value>4050</value>
+		</property>
+		<property name="earlyLateMix">
+			<value>66</value>
+		</property>
+		<property name="wetLevel">
+			<value>0</value>
+		</property>
+		<property name="dryLevel">
+			<value>-80</value>
+		</property>
+	</object>
 	<object class="MixerBusFader" id="{67c1074d-fd3f-4e31-a47e-927c723f67dc}" />
 </objects>

@@ -139,6 +139,7 @@ public class SFXEvents
     public EventReference spawnpoint_activate_unnamed;
     public EventReference change_battery;
     public EventReference exit_tutorial_unnamed;
+    public EventReference walking_up_stairs;
     public EventReference turnstile_beep;
     public EventReference wall_jump_rock_shift;
     public EventReference drop_crane;

@@ -121,6 +121,7 @@
 	<object class="MixerBusEffectChain" id="{0114c7fa-bd84-4796-99d9-c9180f448169}">
 		<relationship name="effects">
 			<destination>{4646ff60-fe0a-4cc8-aa3e-13dee9a0a3fa}</destination>
+			<destination>{8082142f-4a43-4021-b7a2-f8d334dd34a5}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{266fd58f-ffea-40c7-afb9-bb1c7d994669}" />
@@ -171,6 +172,17 @@
 	</object>
 	<object class="MixerBusPanner" id="{eb16b870-0620-4845-966f-ee5721745121}" />
 	<object class="MixerBusFader" id="{4646ff60-fe0a-4cc8-aa3e-13dee9a0a3fa}" />
+	<object class="MixerSend" id="{8082142f-4a43-4021-b7a2-f8d334dd34a5}">
+		<property name="level">
+			<value>-26.5</value>
+		</property>
+		<property name="inputFormat">
+			<value>2</value>
+		</property>
+		<relationship name="mixerReturn">
+			<destination>{fe701d39-1f74-44d8-b50f-743719b7e5e1}</destination>
+		</relationship>
+	</object>
 	<object class="ADSRModulator" id="{f63c1669-8020-4cf8-a46a-785209d280d2}">
 		<property name="nameOfPropertyBeingModulated">
 			<value>volume</value>
