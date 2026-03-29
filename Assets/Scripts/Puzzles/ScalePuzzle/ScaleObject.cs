@@ -1,3 +1,4 @@
+using FMODUnity;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -47,6 +48,7 @@ public class ScaleObject : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     {
         blockSprite.raycastTarget = false;
         origin = transform.position;
+        RuntimeManager.PlayOneShot(AudioEvents.SFX.block_pickup);
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -54,6 +56,7 @@ public class ScaleObject : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         blockSprite.raycastTarget = true;
         ghostBlock.gameObject.SetActive(false);
         scalePuzzle.DropBlock(this);
+        RuntimeManager.PlayOneShot(AudioEvents.SFX.block_place);
     }
 
     public void OnPointerDown(PointerEventData eventData)

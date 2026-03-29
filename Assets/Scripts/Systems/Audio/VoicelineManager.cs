@@ -148,10 +148,10 @@ public class VoicelineManager : Singleton<VoicelineManager>
 
             {"Luke_NPC_AppreciateIt2", AudioEvents.DialogueVO.luke_npc_happy_appreciate_it},
             {"Luke_NPC_Dont1", AudioEvents.DialogueVO.luke_npc_sad_dont},
-            {"Luke_NPC_Giggle-Laugh2", AudioEvents.DialogueVO.ruby_npc_happy_giggle_laugh},
+            {"Luke_NPC_Giggle-Laugh2", AudioEvents.DialogueVO.luke_npc_happy_giggle_laugh},
             {"Luke_NPC_Hey1", AudioEvents.DialogueVO.luke_npc_neutral_hey},
             {"Luke_NPC_Hey2", AudioEvents.DialogueVO.luke_npc_neutral_hey},
-            {"Luke_NPC_HiThere3", AudioEvents.DialogueVO.ruby_npc_greetings_hi_there},
+            {"Luke_NPC_HiThere3", AudioEvents.DialogueVO.luke_npc_greetings_hi_there},
             {"Luke_NPC_IThink1", AudioEvents.DialogueVO.luke_npc_neutral_i_think},
             {"Luke_NPC_IThink3", AudioEvents.DialogueVO.luke_npc_neutral_i_think},
             {"Luke_NPC_LetsThinkAboutThis1", AudioEvents.DialogueVO.luke_npc_neutral_lets_think_about_this},
@@ -161,6 +161,7 @@ public class VoicelineManager : Singleton<VoicelineManager>
             {"Luke_NPC_ThanksMariposa3", AudioEvents.DialogueVO.luke_npc_happy_thanks_mariposa},
             {"Luke_NPC_Well3", AudioEvents.DialogueVO.luke_npc_neutral_well},
             {"Luke_NPC_Yeah2", AudioEvents.DialogueVO.luke_npc_happy_yeah},
+            {"Luke_NPC_Alright3", AudioEvents.DialogueVO.luke_npc_alright},
             {"Luke_Robot_NPC_Alright2", AudioEvents.DialogueVO.luke_npc_robot_alright},
             {"Luke_Robot_NPC_Aww", AudioEvents.DialogueVO.luke_npc_robot_aww},
             {"Luke_Robot_NPC_Woah2", AudioEvents.DialogueVO.luke_npc_robot_woah},
@@ -188,7 +189,13 @@ public class VoicelineManager : Singleton<VoicelineManager>
             {"Ruby_NPC_Woah5", AudioEvents.DialogueVO.ruby_npc_surprised_woah},
             {"Ruby_NPC_YouOkay1", AudioEvents.DialogueVO.ruby_npc_surprised_you_okay},
 
+            {"Jeffery_NPC_Well1", AudioEvents.DialogueVO.jeffery_npc_neutral_well},
+            {"Jeffery_NPC_Honestly1", AudioEvents.DialogueVO.jeffery_npc_neutral_honestly},
+            {"Jeffery_NPC_Sigh2", AudioEvents.DialogueVO.jeffery_npc_sad_sigh},
+            {"Jeffery_NPC_AppreciateIt", AudioEvents.DialogueVO.jeffery_npc_happy_appreciate_it},
+
             {"radio-clip3-novoices", AudioEvents.SFX.radio_static_no_voices},
+            {"fix_radio", AudioEvents.SFX.radio_fix}
         };
     }
 

@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using Unity.Mathematics;
+using FMOD.Studio;
 
 public class Player : MonoBehaviour
 {
@@ -16,6 +17,8 @@ public class Player : MonoBehaviour
 	public static Player ActivePlayer => PlayerController.Instance.ControlledPlayer;
 
     public static event Action OnDeath;
+
+	public static event Action OnStart; // When player first spawns in the scene
 
 	private bool playerDebug;
 	public PlayerCharacter Character;
@@ -33,6 +36,8 @@ public class Player : MonoBehaviour
 	[SerializeField, Min(0f)] private float characterVocalizationAttemptInterval = 15.0f;
 	[SerializeField, Range(0f, 1f)] private float characterVocalizationChance = 0.1f;
 	private float characterVocalizationTime;
+
+	public static EventInstance vocalization;
 
 	private void Awake()
 	{
@@ -80,10 +85,10 @@ public class Player : MonoBehaviour
 			float outcome = UnityEngine.Random.value;
 			if (outcome <= characterVocalizationChance)
 			{
-				EventReference vocalization = Data.characterID == CharID.Mariposa
-					? AudioEvents.SFX.mariposa_hum_motif
-					: AudioEvents.SFX.unnamed_whistle_unnamed_motif;
-				RuntimeManager.PlayOneShot(vocalization);
+				vocalization = Data.characterID == CharID.Mariposa
+				 	? AudioManager.CreateEventInstance(AudioEvents.SFX.mariposa_hum_motif)
+				 	: AudioManager.CreateEventInstance(AudioEvents.SFX.unnamed_whistle_unnamed_motif);
+				StartCoroutine(PlayMotif());
 			}
 			characterVocalizationTime = 0.0f;
 		}
@@ -197,5 +202,15 @@ public class Player : MonoBehaviour
 			case "Death": StartCoroutine(Die()); break;
 			case "Checkpoint": ObtainCheckpoint(collision.gameObject); break;
 		}
+	}
+
+	private IEnumerator PlayMotif()
+	{
+		yield return null;
+		OnStart?.Invoke();
+		yield return new WaitForSeconds(1.0f);
+		Debug.Log("Playing Motif");
+		vocalization.start();
+
 	}
 }

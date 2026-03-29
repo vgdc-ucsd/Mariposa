@@ -50,7 +50,7 @@ public class AudioManager : Singleton<AudioManager>, IDataPersistence
             Debug.LogWarning("VoicelineManager not found! Attaching default VoicelineManager to AudioManager.");
             voicelineManager = gameObject.AddComponent<VoicelineManager>();
         }
-
+       
         StartCoroutine(LoadBusses());
     }
 
@@ -108,6 +108,12 @@ public class AudioManager : Singleton<AudioManager>, IDataPersistence
 
         eventInstance.stop(stopMode);
         eventInstance.release();
+    }
+
+    public static bool IsPlaying(EventInstance eventInstance) {
+        PLAYBACK_STATE state;   
+        eventInstance.getPlaybackState(out state);
+        return state != PLAYBACK_STATE.STOPPED;
     }
 
     #region SetVolumes
@@ -224,4 +230,5 @@ public class AudioManager : Singleton<AudioManager>, IDataPersistence
             dialogueBus.setVolume(dialogueVolume);
         }
     }
+
 }

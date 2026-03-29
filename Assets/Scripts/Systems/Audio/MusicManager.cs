@@ -8,24 +8,26 @@ public class MusicManager : Singleton<MusicManager>
 {
     public EventInstance currentEventInstance { get; private set; }
     private EventInstance transitionEventInstance;
-
     private EventReference currentMusicEvent;
     private Coroutine transitionCoroutine;
 
-    private const float DEFAULT_TRANSITION_DURATION = 1.5f;
+    private const float DEFAULT_TRANSITION_DURATION = 2.5f;
 
     public enum Music
     {
         NONE,
+        Tutorial_cutscene,
         Tutorial_mariposa,
         Tutorial_unnamed,
         Downtown_mariposa,
         Downtown_unnamed,
         Pier_mariposa,
         Pier_unnamed,
+        Pier_unnamed_boat,
         BigRobot_unnamed,
         Hometown_mariposa,
         Hometown_unnamed,
+        Hometown_cutscene,
         titlescreen_title,
     };
 
@@ -39,15 +41,18 @@ public class MusicManager : Singleton<MusicManager>
     {
         return music switch
         {
+            Music.Tutorial_cutscene => AudioEvents.Music.s0Tutorial_cutscene,
             Music.Tutorial_mariposa => AudioEvents.Music.s0Tutorial_mariposa,
             Music.Tutorial_unnamed => AudioEvents.Music.s0Tutorial_unnamed,
             Music.Downtown_mariposa => AudioEvents.Music.s1Downtown_mariposa,
             Music.Downtown_unnamed => AudioEvents.Music.s1Downtown_unnamed,
             Music.Pier_mariposa => AudioEvents.Music.s2Pier_mariposa,
             Music.Pier_unnamed => AudioEvents.Music.S2Pier_unnamed,
+            Music.Pier_unnamed_boat => AudioEvents.Music.S2Pier_unnamed_boat,
             Music.BigRobot_unnamed => AudioEvents.Music.s3BigRobot_unnamed,
             Music.Hometown_mariposa => AudioEvents.Music.s4Hometown_mariposa,
             Music.Hometown_unnamed => AudioEvents.Music.s4Hometown_unnamed,
+            Music.Hometown_cutscene => AudioEvents.Music.s4Hometown_death_cutscene,
             Music.titlescreen_title => AudioEvents.Music.titlescreen_title,
             _ => throw new ArgumentException($"{music} does not correspond to a valid EventReference")
         };
@@ -143,6 +148,7 @@ public class MusicManager : Singleton<MusicManager>
 
     private IEnumerator DoCrossfade(EventReference nextTrack, float duration)
     {
+        AudioManager.StopEventInstance(currentEventInstance, FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         transitionEventInstance = AudioManager.CreateEventInstance(nextTrack);
         if (transitionEventInstance.Equals(default)) yield break;
         transitionEventInstance.setVolume(0.0f);
@@ -162,7 +168,7 @@ public class MusicManager : Singleton<MusicManager>
             yield return null;
         }
 
-        AudioManager.StopEventInstance(currentEventInstance, FMOD.Studio.STOP_MODE.IMMEDIATE);
+        
 
         currentEventInstance = transitionEventInstance;
         transitionEventInstance = default;

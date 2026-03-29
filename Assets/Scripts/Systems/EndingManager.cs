@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using FMODUnity;
 
 public class EndingManager : Singleton<EndingManager>
 {
@@ -31,12 +32,19 @@ public class EndingManager : Singleton<EndingManager>
     }
     public bool IsCutsceneActive { get; private set; }
 
+
     void Start()
     {
+        Player.OnStart += OffMotif;
         IsCutsceneActive = false;
         bool isGoodEnding = FriendshipManager.Instance.CompareScore(GOOD_ENDING_THRESHOLD);
         foreach (GameObject obj in goodDialogueTriggers) obj.SetActive(isGoodEnding);
         foreach (GameObject obj in badDialogueTriggers) obj.SetActive(!isGoodEnding);
+    }
+
+    void OnDestroy()
+    {
+        Player.OnStart -= OffMotif;
     }
 
     public IEnumerator FadeSprites(List<SpriteRenderer> sprites, bool fadeIn)
@@ -96,5 +104,10 @@ public class EndingManager : Singleton<EndingManager>
         // IsCutsceneActive = false;
 
         GameManager.Instance.LoadScene(GameScene.CREDITS);
+    }
+
+    public void OffMotif()
+    {
+        Player.vocalization.setParameterByName("play_motif", 1);
     }
 }

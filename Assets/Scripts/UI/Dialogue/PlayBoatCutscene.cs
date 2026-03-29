@@ -25,6 +25,7 @@ public class PlayBoatCutscene : DialogueEvent
             boat.Translate(speed * Time.deltaTime * Vector3.right);
         }
 		yield return FadeController.Instance.FadeOut();
+        
         SceneManager.LoadScene("RobotStage");
     }
 }

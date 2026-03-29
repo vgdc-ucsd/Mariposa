@@ -19,7 +19,8 @@ public class MainMenu : Singleton<MainMenu>
                 loadButton.interactable = false;
             }
         }
-        MusicManager.Instance.ChangeMusic(AudioEvents.Music.titlescreen_title);
+        MusicManager.Instance.ChangeMusic(AudioEvents.Music.titlescreen_title, 1.0f);
+        
     }
 
     public void NewGameBtn()

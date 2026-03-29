@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 7192395704558135771}
   - component: {fileID: 3699884667813478906}
   - component: {fileID: 735859748922911505}
+  - component: {fileID: 119596626944587303}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Untagged
@@ -110,6 +111,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _music:
+    s0Tutorial_cutscene:
+      Guid:
+        Data1: -851808100
+        Data2: 1093359688
+        Data3: -1164226404
+        Data4: 1071611227
+      Path: event:/music/cutscenes/antique_shop
     s0Tutorial_mariposa:
       Guid:
         Data1: -273843201
@@ -152,6 +160,13 @@ MonoBehaviour:
         Data3: 954167691
         Data4: 108617442
       Path: event:/music/s2_pier/theme_unnamed
+    S2Pier_unnamed_boat:
+      Guid:
+        Data1: -227320425
+        Data2: 1151793249
+        Data3: -1373458261
+        Data4: -1366477488
+      Path: event:/music/s2_pier/theme_unnamed_boat
     s3BigRobot_unnamed:
       Guid:
         Data1: -2074718990
@@ -173,6 +188,13 @@ MonoBehaviour:
         Data3: -1735488111
         Data4: -1330379231
       Path: event:/music/s4_hometown/theme_unnamed
+    s4Hometown_death_cutscene:
+      Guid:
+        Data1: -2056762740
+        Data2: 1150291079
+        Data3: 737347978
+        Data4: -604921211
+      Path: event:/music/cutscenes/unnamed_death_cutscene
     titlescreen_title:
       Guid:
         Data1: 1892826309
@@ -356,6 +378,13 @@ MonoBehaviour:
         Data3: -299588457
         Data4: -2069953100
       Path: event:/sfx/player/squid/footstep
+    squid_jump:
+      Guid:
+        Data1: 546273003
+        Data2: 1260603793
+        Data3: 1972751521
+        Data4: 1013028907
+      Path: event:/sfx/player/squid/jump
     item_pickup:
       Guid:
         Data1: -283954261
@@ -393,11 +422,18 @@ MonoBehaviour:
       Path: event:/sfx/item/radio/static
     radio_static_no_voices:
       Guid:
-        Data1: 805732606
-        Data2: 1101350426
-        Data3: -604008285
-        Data4: -1003881226
+        Data1: 1317626324
+        Data2: 1187880881
+        Data3: 577115814
+        Data4: 1466034940
       Path: event:/sfx/item/radio/static_dialogue
+    radio_fix:
+      Guid:
+        Data1: 1589486672
+        Data2: 1188684254
+        Data3: -845375090
+        Data4: 871790819
+      Path: event:/sfx/item/radio/fix_radio
     puzzle_complete_mariposa:
       Guid:
         Data1: -856637882
@@ -426,6 +462,13 @@ MonoBehaviour:
         Data3: -212566602
         Data4: -606303660
       Path: event:/sfx/puzzle/block_place
+    charging_station_click:
+      Guid:
+        Data1: 616656525
+        Data2: 1124993790
+        Data3: -1248363604
+        Data4: 1158342014
+      Path: event:/sfx/puzzle/charging_station_click
     lever_pull:
       Guid:
         Data1: 68199477
@@ -433,6 +476,69 @@ MonoBehaviour:
         Data3: 1031813054
         Data4: 600646925
       Path: event:/sfx/puzzle/lever_pull
+    pressure_plate_step:
+      Guid:
+        Data1: -751358888
+        Data2: 1105560214
+        Data3: -782800747
+        Data4: -95651677
+      Path: event:/sfx/puzzle/pressureplate_step
+    pressure_plate_release:
+      Guid:
+        Data1: 2070529060
+        Data2: 1279840441
+        Data3: 512159385
+        Data4: 1225579937
+      Path: event:/sfx/puzzle/pressureplate_release
+    fan_vent:
+      Guid:
+        Data1: 727714181
+        Data2: 1309739644
+        Data3: 1485007272
+        Data4: -466082196
+      Path: event:/sfx/puzzle/fan_vent
+    wire_connect:
+      Guid:
+        Data1: -1215352882
+        Data2: 1079181831
+        Data3: -1335233636
+        Data4: 382017883
+      Path: event:/sfx/puzzle/wire_task/wire_connect
+    wire_pull:
+      Guid:
+        Data1: -1183077192
+        Data2: 1217262136
+        Data3: -1509606513
+        Data4: -961586472
+      Path: event:/sfx/puzzle/wire_task/wire_pull
+    wire_disconnect:
+      Guid:
+        Data1: 442302539
+        Data2: 1228958082
+        Data3: -1450861383
+        Data4: 689847545
+      Path: event:/sfx/puzzle/wire_task/wire_disconnect
+    billboard_slide:
+      Guid:
+        Data1: -1348746121
+        Data2: 1169277536
+        Data3: -1195907928
+        Data4: 521321657
+      Path: event:/sfx/puzzle/billboard
+    pipe_turn:
+      Guid:
+        Data1: -174031221
+        Data2: 1310647418
+        Data3: 276080050
+        Data4: 1893708463
+      Path: event:/sfx/puzzle/pipe/pipe_turn
+    pipe_drop:
+      Guid:
+        Data1: -384674488
+        Data2: 1166988738
+        Data3: 957325738
+        Data4: -1529183055
+      Path: event:/sfx/puzzle/pipe/pipe_drop
     button_click:
       Guid:
         Data1: -1661725778
@@ -454,6 +560,13 @@ MonoBehaviour:
         Data3: 685436316
         Data4: -1292657742
       Path: event:/sfx/ui/slider_click
+    typewriter:
+      Guid:
+        Data1: 742678136
+        Data2: 1272234373
+        Data3: 1820360597
+        Data4: 671672692
+      Path: event:/sfx/ui/typewriter_sfx
     earthquake_rocks:
       Guid:
         Data1: -922059343
@@ -496,6 +609,13 @@ MonoBehaviour:
         Data3: -2074125418
         Data4: -301500146
       Path: event:/sfx/world/robot/step
+    robot_shoot:
+      Guid:
+        Data1: 533373113
+        Data2: 1224555504
+        Data3: -1356838008
+        Data4: 1386764888
+      Path: event:/sfx/world/robot/shoot_laser
     spawnpoint_activate_mariposa:
       Guid:
         Data1: 985633777
@@ -524,6 +644,13 @@ MonoBehaviour:
         Data3: -416593782
         Data4: -1962557248
       Path: event:/sfx/world/exit_tutorial_unnamed
+    walking_up_stairs:
+      Guid:
+        Data1: 1026499603
+        Data2: 1125029567
+        Data3: 700669855
+        Data4: -372057843
+      Path: event:/sfx/world/walking_concrete_stairs
     turnstile_beep:
       Guid:
         Data1: -1567087535
@@ -538,6 +665,34 @@ MonoBehaviour:
         Data3: 924785550
         Data4: 298343279
       Path: event:/sfx/world/wall_jump_rock_shift
+    drop_crane:
+      Guid:
+        Data1: -998476085
+        Data2: 1269123357
+        Data3: 17099708
+        Data4: -2045222832
+      Path: event:/sfx/world/drop_crane
+    crushed_robot:
+      Guid:
+        Data1: 1564261567
+        Data2: 1098047850
+        Data3: -1619665788
+        Data4: 1375882925
+      Path: event:/sfx/world/beam_kill_robot_and_ground
+    wood_platform_breaks:
+      Guid:
+        Data1: -505749682
+        Data2: 1271179698
+        Data3: -566119525
+        Data4: -115746298
+      Path: event:/sfx/world/wood_platform_breaks
+    wood_door_opens:
+      Guid:
+        Data1: 1262748213
+        Data2: 1152634058
+        Data3: 600819609
+        Data4: 1027464433
+      Path: event:/sfx/world/wood_door_open
   _ambience:
     s0Tutorial_mariposa:
       Guid:
@@ -1394,6 +1549,20 @@ MonoBehaviour:
         Data3: -122111312
         Data4: -47061100
       Path: event:/dialogue/luke/npc_happy/appreciate_it
+    luke_npc_happy_giggle_laugh:
+      Guid:
+        Data1: -1122917420
+        Data2: 1181981603
+        Data3: 1737744010
+        Data4: 2129974229
+      Path: event:/dialogue/luke/npc_happy/giggle_laugh
+    luke_npc_greetings_hi_there:
+      Guid:
+        Data1: -537427333
+        Data2: 1287714710
+        Data3: -1842195534
+        Data4: -609415163
+      Path: event:/dialogue/luke/npc_greetings/hi_there
     luke_npc_sad_sigh:
       Guid:
         Data1: 1648403780
@@ -1429,6 +1598,13 @@ MonoBehaviour:
         Data3: 938069904
         Data4: 322930394
       Path: event:/dialogue/luke/npc_happy/yeah
+    luke_npc_alright:
+      Guid:
+        Data1: -1876778017
+        Data2: 1246276744
+        Data3: 1311662006
+        Data4: 97800388
+      Path: event:/dialogue/luke/npc_happy/alright
     luke_npc_robot_aww:
       Guid:
         Data1: 1899402981
@@ -1583,6 +1759,34 @@ MonoBehaviour:
         Data3: 959782065
         Data4: -2048292170
       Path: event:/dialogue/justin/npc_happy/laugh
+    jeffery_npc_neutral_well:
+      Guid:
+        Data1: -1585244983
+        Data2: 1134696183
+        Data3: 388143758
+        Data4: 514494959
+      Path: event:/dialogue/jeffery/npc_neutral/well
+    jeffery_npc_neutral_honestly:
+      Guid:
+        Data1: -2122661317
+        Data2: 1207538466
+        Data3: -200647031
+        Data4: 184199423
+      Path: event:/dialogue/jeffery/npc_neutral/honestly
+    jeffery_npc_sad_sigh:
+      Guid:
+        Data1: 1164446526
+        Data2: 1291138230
+        Data3: -285697915
+        Data4: 1084289752
+      Path: event:/dialogue/jeffery/npc_sad/sigh
+    jeffery_npc_happy_appreciate_it:
+      Guid:
+        Data1: 810508552
+        Data2: 1248227870
+        Data3: -1984523337
+        Data4: 895138508
+      Path: event:/dialogue/jeffery/npc_greetings/appreciate_it
 --- !u!114 &735859748922911505
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1593,5 +1797,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0f1b17e9e7eb3a64fbeb00defa721a31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &119596626944587303
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1440808415222191992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9de9439b8c5c0841b4bcad637028dff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

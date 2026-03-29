@@ -50,6 +50,8 @@ public class BigRobotLevel : MonoBehaviour
     {
         yield return new WaitForEndOfFrame();
 
+        Player.OnStart += OffMotif;
+
         waitForFade = new(FadeController.Instance._fadeDuration);
         Player.ActivePlayer.gameObject.SetActive(false);
 
@@ -81,6 +83,7 @@ public class BigRobotLevel : MonoBehaviour
     private void OnDisable()
     {
         Player.OnDeath -= OnPlayerDeath;
+        Player.OnStart -= OffMotif;
     }
 
     private void OnPlayerDeath()
@@ -187,5 +190,10 @@ public class BigRobotLevel : MonoBehaviour
             robot.col.enabled = true;
             robot.gameObject.SetActive(false);
         }
+    }
+
+    public void OffMotif()
+    {
+        Player.vocalization.setParameterByName("play_motif", 1.0f);
     }
 }

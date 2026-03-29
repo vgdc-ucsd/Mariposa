@@ -14,7 +14,7 @@ public class DataPersistenceManager : Singleton<DataPersistenceManager>
     private string fileName = "save.json";
     public GameData gameData;
 
-    private List<IDataPersistence> dataPersistenceObjects;
+    [SerializeField] private List<IDataPersistence> dataPersistenceObjects;
     private string fullPath;
 
     private void Start()

@@ -1,4 +1,5 @@
 using System.Collections;
+using FMODUnity;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -60,6 +61,7 @@ public class BlockPuzzle : Puzzle
 
         StartCoroutine(DelayInitializeBlocks());
         isInitialized = true;
+        
     }
 
     IEnumerator DelayInitializeBlocks()

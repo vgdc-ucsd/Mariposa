@@ -30,15 +30,18 @@ public class AudioEvents : MonoBehaviour
 [System.Serializable]
 public class MusicEvents
 {
+    public EventReference s0Tutorial_cutscene;
     public EventReference s0Tutorial_mariposa;
     public EventReference s0Tutorial_unnamed;
     public EventReference s1Downtown_mariposa;
     public EventReference s1Downtown_unnamed;
     public EventReference s2Pier_mariposa;
     public EventReference S2Pier_unnamed;
+    public EventReference S2Pier_unnamed_boat;
     public EventReference s3BigRobot_unnamed;
     public EventReference s4Hometown_mariposa;
     public EventReference s4Hometown_unnamed;
+    public EventReference s4Hometown_death_cutscene;
     public EventReference titlescreen_title;
     public EventReference credits_theme;
 }
@@ -89,6 +92,7 @@ public class SFXEvents
     [Header("Squid")]
     public EventReference squid_activation;
     public EventReference squid_footstep;
+    public EventReference squid_jump;
 
     [Header("Item")]
     public EventReference item_pickup;
@@ -98,17 +102,30 @@ public class SFXEvents
     public EventReference radio_static;
     public EventReference radio_static_no_voices;
 
+    public EventReference radio_fix;
+
     [Header("Puzzle")]
     public EventReference puzzle_complete_mariposa;
     public EventReference puzzle_complete_unnamed;
     public EventReference block_pickup;
     public EventReference block_place;
+    public EventReference charging_station_click;
     public EventReference lever_pull;
+    public EventReference pressure_plate_step;
+    public EventReference pressure_plate_release;
+    public EventReference fan_vent;
+    public EventReference wire_connect;
+    public EventReference wire_pull;
+    public EventReference wire_disconnect;
+    public EventReference billboard_slide;
+    public EventReference pipe_turn;
+    public EventReference pipe_drop;
 
     [Header("UI")]
     public EventReference button_click;
     public EventReference dialogue_advance;
     public EventReference slider_click;
+    public EventReference typewriter;
 
     [Header("World")]
     public EventReference earthquake_rocks;
@@ -117,12 +134,18 @@ public class SFXEvents
     public EventReference metal_door_thud;
     public EventReference robot_noises;
     public EventReference robot_step;
+    public EventReference robot_shoot;
     public EventReference spawnpoint_activate_mariposa;
     public EventReference spawnpoint_activate_unnamed;
     public EventReference change_battery;
     public EventReference exit_tutorial_unnamed;
+    public EventReference walking_up_stairs;
     public EventReference turnstile_beep;
     public EventReference wall_jump_rock_shift;
+    public EventReference drop_crane;
+    public EventReference crushed_robot;
+    public EventReference wood_platform_breaks;
+    public EventReference wood_door_opens;
 }
 
 [System.Serializable]
@@ -268,11 +291,14 @@ public class DialogueVOEvents {
     [Header("LukeNPC")]
     public EventReference luke_npc_neutral_well;
     public EventReference luke_npc_happy_appreciate_it;
+    public EventReference luke_npc_happy_giggle_laugh;
+    public EventReference luke_npc_greetings_hi_there;
     public EventReference luke_npc_sad_sigh;
     public EventReference luke_npc_neutral_i_think;
     public EventReference luke_npc_neutral_hey;
     public EventReference luke_npc_sad_dont;
     public EventReference luke_npc_happy_yeah;
+    public EventReference luke_npc_alright;
     public EventReference luke_npc_robot_aww;
     public EventReference luke_npc_neutral_lets_think_about_this;
     public EventReference luke_npc_happy_thanks_mariposa;
@@ -301,4 +327,10 @@ public class DialogueVOEvents {
     [Header("JustinNPC")]
     public EventReference justin_npc_sad_ok;
     public EventReference justin_npc_happy_laugh;
+
+    [Header("JefferyNPC")]
+    public EventReference jeffery_npc_neutral_well;
+    public EventReference jeffery_npc_neutral_honestly;
+    public EventReference jeffery_npc_sad_sigh;
+    public EventReference jeffery_npc_happy_appreciate_it;
 }

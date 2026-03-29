@@ -95,11 +95,15 @@
 	<object class="MixerBusPanner" id="{5d3596b3-84d9-418d-a402-43d64489acbf}" />
 	<object class="MixerBusEffectChain" id="{438d4c9f-5e24-4d8d-887d-4a985f964d39}">
 		<relationship name="effects">
+			<destination>{963c101c-9678-4b59-bb0c-adf595bf9bb1}</destination>
 			<destination>{f63a7265-822a-4b07-ade0-eca2b28074c3}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{2f827382-befb-403f-b27e-2fdac9c6e5c7}" />
 	<object class="MultiSound" id="{2ac3c739-e8bb-4aa8-b4c4-2b59177a6a31}">
+		<property name="volume">
+			<value>10</value>
+		</property>
 		<relationship name="sounds">
 			<destination>{ac7dea05-abf9-49f3-bb1a-764f23a227e4}</destination>
 			<destination>{69566310-84be-4a96-a1a4-8f5c1d0d6e93}</destination>
@@ -114,6 +118,11 @@
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{d80d1400-c299-4a79-9a4a-5eeec5613f46}" />
+	<object class="GainEffect" id="{963c101c-9678-4b59-bb0c-adf595bf9bb1}">
+		<property name="gain">
+			<value>1</value>
+		</property>
+	</object>
 	<object class="MixerBusFader" id="{f63a7265-822a-4b07-ade0-eca2b28074c3}" />
 	<object class="SingleSound" id="{ac7dea05-abf9-49f3-bb1a-764f23a227e4}">
 		<relationship name="audioFile">

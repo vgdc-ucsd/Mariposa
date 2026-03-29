@@ -42,14 +42,14 @@ public class Robot : Enemy
             Movement.SetMoveDir(Vector2.right);
             animationController.SetBool("IsMoving", true);
             spriteRenderer.flipX = false;
-            HandleStepAudio(dt);
+            // HandleStepAudio(dt);
         }
         else if (transform.position.x - targetPos.x > closeDistance)
         {
             Movement.SetMoveDir(Vector2.left);
             animationController.SetBool("IsMoving", true);
             spriteRenderer.flipX = true;
-            HandleStepAudio(dt);
+            // HandleStepAudio(dt);
         }
         else
         {
@@ -59,13 +59,10 @@ public class Robot : Enemy
         }
     }
 
-    private void HandleStepAudio(float dt)
+    public void StepAudio()
     {
-        playStepCtr += dt;
-        if (playStepCtr > playStepInterval)
-        {
-            RuntimeManager.PlayOneShot(AudioEvents.SFX.robot_step, this.transform.position);
-            playStepCtr = 0.0f;
-        }
+        
+        RuntimeManager.PlayOneShot(AudioEvents.SFX.robot_step, this.transform.position);
+
     }
 }

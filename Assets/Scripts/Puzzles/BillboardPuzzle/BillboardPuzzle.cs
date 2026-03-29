@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using System.Linq;
 using UnityEngine.UI;
+using FMODUnity;
 
 public class BillboardPuzzle : Puzzle
 {
@@ -174,6 +175,8 @@ public class BillboardPuzzle : Puzzle
                 miniBoardDisplay[index].transform.eulerAngles = Vector3.forward * board[i, j].rotation * -90;
             }
         }
+
+        RuntimeManager.PlayOneShot(AudioEvents.SFX.billboard_slide);
 
         if (IsPuzzleComplete()) StartCoroutine(PauseBeforeCompletion());
     }

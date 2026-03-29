@@ -243,6 +243,7 @@ public class DowntownTurret : MonoBehaviour
         {
             newProjOBj.GetComponent<BallProjectile>().Initialize(chargingPoint.transform.position, direction);
         }
+        RuntimeManager.PlayOneShotAttached(AudioEvents.SFX.robot_shoot,gameObject);
         // Debug.Log("boom");
     }
 

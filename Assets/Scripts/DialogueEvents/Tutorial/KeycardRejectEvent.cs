@@ -1,4 +1,5 @@
 using System.Collections;
+using FMODUnity;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Splines;
@@ -20,6 +21,8 @@ public class KeycardRejectEvent : DialogueEvent
 
         Collider2D collider = keycard.GetComponentInChildren<Collider2D>();
         collider.enabled = false;
+
+        RuntimeManager.PlayOneShot(AudioEvents.SFX.keycard_spit, origin);
 
         yield return BasicAnimations.Interpolate
         (

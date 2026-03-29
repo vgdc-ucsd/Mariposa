@@ -4,6 +4,8 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using FMOD.Studio;
+using FMODUnity;
 
 public class DialoguePlayer : MonoBehaviour
 {
@@ -33,6 +35,7 @@ public class DialoguePlayer : MonoBehaviour
     [SerializeField] private Hoverer advanceHoverer;
     [SerializeField] private Sprite mariAdvance;
     [SerializeField] private Sprite unnAdvance;
+    [SerializeField] private EventInstance advanceIndicatorSFX;
 
     [SerializeField] private Image portrait;
     [SerializeField] private SpriteMap spriteMap;
@@ -86,6 +89,7 @@ public class DialoguePlayer : MonoBehaviour
         activeDialogueWindow = defaultDialogueWindow;
         activeLineTarget = defaultLineTarget;
         activeDialogueWindow.SetActive(false);
+        advanceIndicatorSFX = AudioManager.CreateEventInstance(AudioEvents.SFX.dialogue_advance);
     }
 
     public void PlayDialogue(List<DialogueElement> dialogue, bool initAdvance)
@@ -121,6 +125,8 @@ public class DialoguePlayer : MonoBehaviour
             textboxRect.sprite = mariRect;
             radio.sprite = mariRadio;
             advanceIndicator.sprite = mariAdvance;
+            advanceIndicatorSFX.setParameterByName("Speaker", 0);
+
         }
         else
         {
@@ -128,6 +134,8 @@ public class DialoguePlayer : MonoBehaviour
             textboxRect.sprite = unnRect;
             radio.sprite = unnRadio;
             advanceIndicator.sprite = unnAdvance;
+            advanceIndicatorSFX.setParameterByName("Speaker", 1);
+
         }
 
         StartCoroutine(ReenableInput());
@@ -157,6 +165,7 @@ public class DialoguePlayer : MonoBehaviour
             activeLineTarget.maxVisibleCharacters = taglessText.Length;
             advanceHoverer.Reset();
             advanceIndicator.gameObject.SetActive(true);
+            
         }
         else
         {
@@ -301,6 +310,8 @@ public class DialoguePlayer : MonoBehaviour
             SetChoiceButton(choiceButton1, choiceText1, element.Choice1);
             SetChoiceButton(choiceButton2, choiceText2, element.Choice2);
         }
+        advanceIndicatorSFX.start();
+
     }
 
     private void SetChoiceButton(UnityEngine.UI.Button button, TextMeshProUGUI choiceText, DialogueChoice choice)
@@ -337,6 +348,9 @@ public class DialoguePlayer : MonoBehaviour
 
         int i = 0;
         activeLineTarget.maxVisibleCharacters = i;
+
+        TypewriterSFXManager.Instance.ChangeTypeSFX(speakerTarget.text);
+        
         while (i < length)
         {
             i++;
@@ -344,6 +358,8 @@ public class DialoguePlayer : MonoBehaviour
             bool punctuation = taglessText[i - 1] == ',' || taglessText[i - 1] == '.' || taglessText[i - 1] == '?' || taglessText[i - 1] == '!' || taglessText[i - 1] == ':' || taglessText[i - 1] == ';';
             if (punctuation) yield return new WaitForSeconds(DIALOGUE_SPEED * 10.0f);
             else yield return new WaitForSeconds(DIALOGUE_SPEED);
+            // TODO Put typewriter sfx here
+            TypewriterSFXManager.Instance.Play();
         }
 
         if (!awaitingChoice)
